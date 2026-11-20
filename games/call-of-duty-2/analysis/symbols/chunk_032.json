@@ -1,0 +1,808 @@
+{
+ "chunk": 32,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080bc58a",
+   "name": "Quat_MultiplyInPlace",
+   "signature": "void Quat_MultiplyInPlace(const float *a, float *b)",
+   "subsystem": "math/quat",
+   "confidence": "unknown",
+   "evidence": "no name evidence: no string or callee-name evidence; quaternion-style product with reversed cross-term sign, written back into b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc6c4",
+   "name": "XAnim_InitSlotPool",
+   "signature": "void XAnim_InitSlotPool(void)",
+   "subsystem": "xanim/blend-slots",
+   "confidence": "inferred",
+   "evidence": "string/callee evidence: writes a 4096-entry ring of 40-byte slots (g_085bc900, slot 0 sentinel); handle name \"end\" at rodata 0x0814ff80; reads g_081a2174+8 as a flag",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc7f6",
+   "name": "XAnim_ShutdownSlotPool",
+   "signature": "void XAnim_ShutdownSlotPool(void)",
+   "subsystem": "xanim/blend-slots",
+   "confidence": "inferred",
+   "evidence": "string/callee evidence: releases the handle that XAnim_InitSlotPool created (g_085e4900 pairing)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc81e",
+   "name": "XAnim_ClearEndNotifyString",
+   "signature": "void XAnim_ClearEndNotifyString(void)",
+   "subsystem": "xanim/blend-slots",
+   "confidence": "inferred",
+   "evidence": "no name evidence: clears g_085e4900 without releasing it [rename fx-anim: objdump: only `mov [0x85e4900],0`; chunk_032.cpp line 89 shows that global holds interned \"end\". Store-only; no release performed.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc82e",
+   "name": "XAnim_ReleaseHandleTable",
+   "signature": "void XAnim_ReleaseHandleTable(struct XAnimParts *t)",
+   "subsystem": "xanim/asset-table",
+   "confidence": "inferred",
+   "evidence": "string/callee evidence: releases every handle of an asset table (handle list at +0x10, entry list at +0x1c); layout cloned by XAnim_CloneHandleTable",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc8b6",
+   "name": "XAnim_Find",
+   "signature": "struct XAnimParts * XAnim_Find(const char *name)",
+   "subsystem": "xanim/asset-table",
+   "confidence": "inferred",
+   "evidence": "string/callee evidence: thin wrapper over asset lookup type 5; callers print \"Couldn't find xanim\" (0x0814ffa0) and \"Cannot find xanim\" (0x08150000)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc8d2",
+   "name": "XAnim_CloneHandleTable",
+   "signature": "struct XAnimParts * XAnim_CloneHandleTable(const struct XAnimParts *src, void *(*alloc)(int))",
+   "subsystem": "xanim/asset-table",
+   "confidence": "inferred",
+   "evidence": "string/callee evidence: copies the 0x2c-byte asset table through the allocator and takes one reference per handle; called from XAnim_FindOrLoad",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc986",
+   "name": "XAnim_FindOrLoad",
+   "signature": "struct XAnimParts * XAnim_FindOrLoad(const char *name, void *(*alloc)(int))",
+   "subsystem": "xanim/asset-table",
+   "confidence": "inferred",
+   "evidence": "string/callee evidence: string \"^3WARNING: Couldn't find xanim '%s', using default xanim '%s' instead\" at 0x0814ffa0; default name \"void\" at 0x0814ff84 [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "fallback path clones the default asset and sets is_fallback"
+  },
+  {
+   "addr": "0x080bcab0",
+   "name": "XAnim_SetLeafNode",
+   "signature": "void XAnim_SetLeafNode(struct XAnimNodeTable *tbl, int k, const char *name)",
+   "subsystem": "xanim/node-table",
+   "confidence": "inferred",
+   "evidence": "string/callee evidence: stores a found xanim as a leaf node payload and copies its name when debug names are on; error text at 0x08150000",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bcb52",
+   "name": "XAnim_SetGroupNode",
+   "signature": "void XAnim_SetGroupNode(struct XAnimNodeTable *tbl, int k, const char *name, uint16 first_child, uint32 child_count, uint16 mode_flags)",
+   "subsystem": "xanim/node-table",
+   "confidence": "inferred",
+   "evidence": "string/callee evidence: defines a group node (child count, mode flags, first child) and writes its index onto each child aux field",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bcbfe",
+   "name": "XAnim_AllocNodeTable",
+   "signature": "struct XAnimNodeTable * XAnim_AllocNodeTable(const char *name, int node_count, void *(*alloc)(int))",
+   "subsystem": "xanim/node-table",
+   "confidence": "inferred",
+   "evidence": "string/callee evidence: allocates 0x0c header plus 8 bytes per node; debug name and name array when g_085e4f24 is set; 0x0c/8k layout shared with SetLeafNode",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bcca8",
+   "name": "XAnim_ReinitNodeTable",
+   "signature": "void XAnim_ReinitNodeTable(struct XAnimNodeTable *tbl, void (*init)(void *, int))",
+   "subsystem": "xanim/node-table",
+   "confidence": "unknown",
+   "evidence": "no name evidence: frees names then calls the init callback with the table and its new size",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bccdc",
+   "name": "XAnim_FreeNodeTableNames",
+   "signature": "void XAnim_FreeNodeTableNames(struct XAnimNodeTable *tbl)",
+   "subsystem": "xanim/node-table",
+   "confidence": "unknown",
+   "evidence": "no name evidence: frees the debug name and each node name, then the name array",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bcd88",
+   "name": "XAnim_SetUnnamedFlag25",
+   "signature": "void XAnim_SetUnnamedFlag25(void)",
+   "subsystem": "xanim/config",
+   "confidence": "unknown",
+   "evidence": "no name evidence: sets global byte g_085e4f25 to 1; no string evidence",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bcd94",
+   "name": "XAnim_BlockSizeForCount",
+   "signature": "int32 XAnim_BlockSizeForCount(int32 count)",
+   "subsystem": "xanim/blocks",
+   "confidence": "unknown",
+   "evidence": "no name evidence: block size is 5 bytes per entry plus a 9-byte header",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bcdbc",
+   "name": "XAnim_AllocBlock",
+   "signature": "void ** XAnim_AllocBlock(struct XAnimNodeTable *owner, void *(*alloc)(int))",
+   "subsystem": "xanim/blocks",
+   "confidence": "unknown",
+   "evidence": "no name evidence: allocates a zeroed block sized from the owner count and stores the owner pointer in word 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bce0e",
+   "name": "XAnim_ReinitBlock",
+   "signature": "void XAnim_ReinitBlock(void **block, void (*init)(void *, int))",
+   "subsystem": "xanim/blocks",
+   "confidence": "unknown",
+   "evidence": "no name evidence: releases a block then reinitialises it via callback using the size computed from the owner",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bce54",
+   "name": "XAnim_GetBlockOwnerWord",
+   "signature": "uint32 XAnim_GetBlockOwnerWord(const uint32 *block)",
+   "subsystem": "xanim/blocks",
+   "confidence": "unknown",
+   "evidence": "no name evidence: returns the first word of a block",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bce5e",
+   "name": "XAnim_BuildPartMap",
+   "signature": "uint32 XAnim_BuildPartMap(struct XAnimNode *node, void **links, int link_count)",
+   "subsystem": "xanim/part-map",
+   "confidence": "unknown",
+   "evidence": "no name evidence: assigns each child part id a 1-based slot (first occurrence wins) and returns fn_0807943c over the resulting bitset",
+   "status": "translated",
+   "notes": "slot 0 of the scratch map is never written by the original; translated as zero-initialised"
+  },
+  {
+   "addr": "0x080bd0a6",
+   "name": "XAnim_MakeFrameKey",
+   "signature": "void XAnim_MakeFrameKey(float value, int32 scale, struct xanim_frame_key_s *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: fills (value, int scale, value*scale, truncated frame); the frame is produced by fistp under chop rounding",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd0ee",
+   "name": "XAnim_TrackValueStride4",
+   "signature": "void XAnim_TrackValueStride4(const struct xanim_track_s *t, float scale, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: applies a stride-4 track value; value block inline at +4 when count is 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd144",
+   "name": "XAnim_TrackValueStride8",
+   "signature": "void XAnim_TrackValueStride8(const struct xanim_track_s *t, float scale, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: applies a stride-8 (rotation) track value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd1a6",
+   "name": "XAnim_TrackValueStride12",
+   "signature": "void XAnim_TrackValueStride12(const struct xanim_track_s *t, float scale, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: applies a stride-12 (vec3) track value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd20e",
+   "name": "XAnim_ApplyPartTracks",
+   "signature": "void XAnim_ApplyPartTracks(const struct xanim_clip_s *clip, const uint8 *part_map, float time, struct xanim_part_state_s *out, const uint32 *skip_mask)",
+   "subsystem": "xanim/part-eval",
+   "confidence": "unknown",
+   "evidence": "no name evidence: evaluates every unmasked part of a clip at one time into the part state buffer; bitset selects the rotation or scalar path",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd34e",
+   "name": "XAnim_ResetUnmaskedParts",
+   "signature": "void XAnim_ResetUnmaskedParts(const struct xanim_anim_state_s *anim, struct xanim_part_state_s *out, const struct xanim_calc_buffer_s *buf)",
+   "subsystem": "xanim/part-eval",
+   "confidence": "unknown",
+   "evidence": "no name evidence: resets time and position of each part not in the skip mask",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd3be",
+   "name": "XAnim_TrackCopy4",
+   "signature": "void XAnim_TrackCopy4(const struct xanim_track_s *t, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: copies a stride-4 track value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd406",
+   "name": "XAnim_PairRotCopy4",
+   "signature": "void XAnim_PairRotCopy4(const struct xanim_part_track_s *pair, float *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: copies the rotation track of a part pair, or (0, 32767) when it has none",
+   "status": "translated",
+   "notes": "32767.0f is the bit pattern 0x46fffe00 stored by the original"
+  },
+  {
+   "addr": "0x080bd446",
+   "name": "XAnim_TrackCopy12",
+   "signature": "void XAnim_TrackCopy12(const struct xanim_track_s *t, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: copies a stride-12 track value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd492",
+   "name": "XAnim_TrackSlotCopy12",
+   "signature": "void XAnim_TrackSlotCopy12(struct xanim_track_s *const *slot, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: copies a track held in a slot, or clears the output to zero",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd4c4",
+   "name": "XAnim_LocateKeyBytes",
+   "signature": "void XAnim_LocateKeyBytes(const struct xanim_frame_key_s *key, const uint8 *table, int count, int32 *out_index, float *out_frac)",
+   "subsystem": "xanim/keys",
+   "confidence": "unknown",
+   "evidence": "no name evidence: binary search of a byte key table for the window containing the frame; returns index and fraction",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd638",
+   "name": "XAnim_LocateKeyOrEndBytes",
+   "signature": "void XAnim_LocateKeyOrEndBytes(const struct xanim_frame_key_s *key, const uint8 *table, int count, int32 *out_index, float *out_frac)",
+   "subsystem": "xanim/keys",
+   "confidence": "unknown",
+   "evidence": "no name evidence: uses the byte search unless count is at least the frame scale, then the last window",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd692",
+   "name": "XAnim_EvalTrackStride4Bytes",
+   "signature": "void XAnim_EvalTrackStride4Bytes(const struct xanim_track_s *t, float value, int32 scale, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: interpolates a stride-4 track at a frame key with byte keys",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd736",
+   "name": "XAnim_EvalPairRot4Bytes",
+   "signature": "void XAnim_EvalPairRot4Bytes(const struct xanim_part_track_s *pair, float value, int32 scale, float *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: rotation-track wrapper over XAnim_EvalTrackStride4Bytes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd784",
+   "name": "XAnim_EvalTrackStride12Bytes",
+   "signature": "void XAnim_EvalTrackStride12Bytes(const struct xanim_track_s *t, float value, int32 scale, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: interpolates a stride-12 track with byte keys",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd836",
+   "name": "XAnim_EvalSlotStride12Bytes",
+   "signature": "void XAnim_EvalSlotStride12Bytes(struct xanim_track_s *const *slot, float value, int32 scale, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: slot wrapper over XAnim_EvalTrackStride12Bytes; empty slot gives zero vector",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bd876",
+   "name": "XAnim_LocateKeyWords",
+   "signature": "void XAnim_LocateKeyWords(const struct xanim_frame_key_s *key, const uint16 *table, int count, int32 *out_index, float *out_frac)",
+   "subsystem": "xanim/keys",
+   "confidence": "unknown",
+   "evidence": "no name evidence: ushort-keyed variant of XAnim_LocateKeyBytes (counts 0x100 and above)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bda1c",
+   "name": "XAnim_LocateKeyOrEndWords",
+   "signature": "void XAnim_LocateKeyOrEndWords(const struct xanim_frame_key_s *key, const uint16 *table, int count, int32 *out_index, float *out_frac)",
+   "subsystem": "xanim/keys",
+   "confidence": "unknown",
+   "evidence": "no name evidence: ushort-keyed variant of XAnim_LocateKeyOrEndBytes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bda76",
+   "name": "XAnim_EvalTrackStride4Words",
+   "signature": "void XAnim_EvalTrackStride4Words(const struct xanim_track_s *t, float value, int32 scale, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: ushort-keyed variant of XAnim_EvalTrackStride4Bytes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bdb1a",
+   "name": "XAnim_EvalPairRot4Words",
+   "signature": "void XAnim_EvalPairRot4Words(const struct xanim_part_track_s *pair, float value, int32 scale, float *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: rotation-track wrapper over XAnim_EvalTrackStride4Words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bdb68",
+   "name": "XAnim_EvalTrackStride12Words",
+   "signature": "void XAnim_EvalTrackStride12Words(const struct xanim_track_s *t, float value, int32 scale, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: ushort-keyed variant of XAnim_EvalTrackStride12Bytes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bdc1a",
+   "name": "XAnim_EvalSlotStride12Words",
+   "signature": "void XAnim_EvalSlotStride12Words(struct xanim_track_s *const *slot, float value, int32 scale, void *out)",
+   "subsystem": "xanim/sampling",
+   "confidence": "unknown",
+   "evidence": "no name evidence: slot wrapper over XAnim_EvalTrackStride12Words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bdc5a",
+   "name": "XAnim_EvalKeyedPart",
+   "signature": "void XAnim_EvalKeyedPart(const struct xanim_keyed_part_s *part, float value, float *out_a, void *out_b)",
+   "subsystem": "xanim/part-eval",
+   "confidence": "unknown",
+   "evidence": "no name evidence: samples rotation and position of a keyed part at a time; byte keys for count below 0x100, ushort keys otherwise",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bdd54",
+   "name": "XAnim_ReflectPair",
+   "signature": "void XAnim_ReflectPair(const float *dir, float *v)",
+   "subsystem": "math/vec2",
+   "confidence": "unknown",
+   "evidence": "no name evidence: 2D reflection-style update of a pair from a direction",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bde02",
+   "name": "XAnim_AccumulatePartMotion",
+   "signature": "void XAnim_AccumulatePartMotion(const struct xanim_keyed_part_s *part, float scale, float time0, float time1, float *accum, int which)",
+   "subsystem": "xanim/part-eval",
+   "confidence": "unknown",
+   "evidence": "no name evidence: samples a keyed part at two times and accumulates motion, applying a wrap correction when the part wraps",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bdf80",
+   "name": "XAnim_ApplyKeyedPartDelta",
+   "signature": "void XAnim_ApplyKeyedPartDelta(const struct xanim_keyed_part_s *part, float scale, float time, struct xanim_part_state_s *state)",
+   "subsystem": "xanim/part-eval",
+   "confidence": "unknown",
+   "evidence": "no name evidence: applies a keyed part sample to a part state (rotation, scalar and position increments)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080be006",
+   "name": "XAnim_ReleaseSlotHandle",
+   "signature": "void XAnim_ReleaseSlotHandle(struct XAnimSlot *slot)",
+   "subsystem": "xanim/blend-slots",
+   "confidence": "inferred",
+   "evidence": "string/callee evidence: releases a slot resource handle and invalidates its cached index (-1)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080be03a",
+   "name": "XAnim_PushFreeSlot",
+   "signature": "void XAnim_PushFreeSlot(int32 unused, int index)",
+   "subsystem": "xanim/blend-slots",
+   "confidence": "inferred",
+   "evidence": "string/callee evidence: releases a slot and pushes it on the front of the free ring rooted at slot 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080be0a8",
+   "name": "XAnim_NodeWeightedLength",
+   "signature": "long double XAnim_NodeWeightedLength(struct XAnimTree *tree, int node_index)",
+   "subsystem": "xanim/blend",
+   "confidence": "unknown",
+   "evidence": "no name evidence: leaf: clip length; group: rate-weighted mean of active children (recursive)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080be1de",
+   "name": "XAnim_FindKeyAtOrAfter",
+   "signature": "uint32 XAnim_FindKeyAtOrAfter(const struct XAnimNode *node, float time)",
+   "subsystem": "xanim/keys",
+   "confidence": "unknown",
+   "evidence": "no name evidence: index of the smallest key time at or after the given time, as ushort",
+   "status": "translated",
+   "notes": "interpreted from a signed pointer difference"
+  },
+  {
+   "addr": "0x080be26c",
+   "name": "XAnim_WindowFraction",
+   "signature": "long double XAnim_WindowFraction(const struct xanim_window_s *cur, const struct xanim_window_s *key, float t, float length)",
+   "subsystem": "xanim/cursor",
+   "confidence": "unknown",
+   "evidence": "no name evidence: fraction of a playback interval reached by time t with wrap-aware key ordering; 1.0 when complete",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080be3a0",
+   "name": "XAnim_EvalNodeWindow",
+   "signature": "long double XAnim_EvalNodeWindow(struct XAnimTree *tree, struct XAnimSlot *slot, struct XAnimNode *node, struct xanim_window_s *cur, struct xanim_window_s *key, float length)",
+   "subsystem": "xanim/cursor",
+   "confidence": "unknown",
+   "evidence": "no name evidence: window fraction for a node key; recomputes the cached key index when missing",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080be4ae",
+   "name": "XAnim_InsertPendingEntry",
+   "signature": "void XAnim_InsertPendingEntry(int32 unused, uint32 handle, float key, int32 count)",
+   "subsystem": "xanim/pending",
+   "confidence": "unknown",
+   "evidence": "no name evidence: inserts (resource, count, key) into the key-sorted pending list g_085e4920; no capacity check in the original",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080be554",
+   "name": "XAnim_QueueNodeKeys",
+   "signature": "void XAnim_QueueNodeKeys(struct XAnimSlot *slot, struct XAnimNode *node, float length)",
+   "subsystem": "xanim/pending",
+   "confidence": "unknown",
+   "evidence": "no name evidence: queues keys inside the cursor window into the pending list, weighted by the window fraction",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080be95a",
+   "name": "XAnim_PropagateCursor",
+   "signature": "void XAnim_PropagateCursor(struct XAnimTree *tree, int node_index, char flag, struct xanim_window_s *cursor, float length)",
+   "subsystem": "xanim/cursor",
+   "confidence": "unknown",
+   "evidence": "no name evidence: propagates a cursor update into a subtree: refresh, fire keys, queue keys, recurse",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080beb06",
+   "name": "XAnim_AdvanceNodeCursor",
+   "signature": "void XAnim_AdvanceNodeCursor(struct XAnimTree *tree, int node_index, float dt, char flag)",
+   "subsystem": "xanim/cursor",
+   "confidence": "unknown",
+   "evidence": "no name evidence: advances a node cursor by dt (rate and clip length for leaves; weighted length for groups), wraps the key index, propagates",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080beea0",
+   "name": "XAnim_ResetSlotRecord",
+   "signature": "void XAnim_ResetSlotRecord(struct XAnimSlot *slot)",
+   "subsystem": "xanim/blend-slots",
+   "confidence": "unknown",
+   "evidence": "no name evidence: clears the cursor and weight block of a slot and its handle, track count and cached index",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080beeea",
+   "name": "XAnim_SyncInstanceSlots",
+   "signature": "void XAnim_SyncInstanceSlots(struct XAnimTree *tree, struct XAnimTree *inst)",
+   "subsystem": "xanim/blend-slots",
+   "confidence": "unknown",
+   "evidence": "no name evidence: synchronises an instance tree slot index array with the static tree",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bf01a",
+   "name": "XAnim_ResetCursorIfMoved",
+   "signature": "uint32 XAnim_ResetCursorIfMoved(struct XAnimSlot *slot)",
+   "subsystem": "xanim/cursor",
+   "confidence": "unknown",
+   "evidence": "no name evidence: resets a slot cursor to zero and invalidates its cached index; returns 1 when it changed",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bf08c",
+   "name": "XAnim_ResetCursorRecursive",
+   "signature": "void XAnim_ResetCursorRecursive(struct XAnimTree *tree, int node_index)",
+   "subsystem": "xanim/cursor",
+   "confidence": "unknown",
+   "evidence": "no name evidence: resets the cursor of a node subtree",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bf112",
+   "name": "XAnim_UpdateBlendRecursive",
+   "signature": "void XAnim_UpdateBlendRecursive(struct XAnimTree *tree, int node_index, float *src, float dt, char allow_blend, uint8 *active_out, uint8 *conflict_out)",
+   "subsystem": "xanim/blend",
+   "confidence": "unknown",
+   "evidence": "no name evidence: linear weight blend toward target over the remaining blend time; recursive active and conflict reporting",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bf3f4",
+   "name": "XAnim_NotifyKeyEvent",
+   "signature": "void XAnim_NotifyKeyEvent(const struct XAnimTree *tree, uint32 handle, uint32 track)",
+   "subsystem": "xanim/events",
+   "confidence": "unknown",
+   "evidence": "no name evidence: notifies a key event for a track and a tree-wide marker on the last node index",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bf42e",
+   "name": "XAnim_EvalNodeWindowMin",
+   "signature": "long double XAnim_EvalNodeWindowMin(struct XAnimTree *tree, struct XAnimSlot *slot, struct XAnimNode *node, struct xanim_window_s *cur, struct xanim_window_s *key, float length)",
+   "subsystem": "xanim/cursor",
+   "confidence": "unknown",
+   "evidence": "no name evidence: minimum window fraction over a node and its active children (recursive)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bf54c",
+   "name": "XAnim_EvalNodeWeightMin",
+   "signature": "long double XAnim_EvalNodeWeightMin(struct XAnimTree *tree, int node_index, float dt)",
+   "subsystem": "xanim/cursor",
+   "confidence": "unknown",
+   "evidence": "no name evidence: minimum time-to-next-key over a node and its weighted children (recursive)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bf8d4",
+   "name": "XAnim_FireKeysBetween",
+   "signature": "void XAnim_FireKeysBetween(struct XAnimTree *tree, struct XAnimSlot *slot, struct XAnimNode *node, float t)",
+   "subsystem": "xanim/events",
+   "confidence": "unknown",
+   "evidence": "no name evidence: fires key events the cursor passes between its time and t",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bfc04",
+   "name": "XAnim_EvalNodeParts",
+   "signature": "void XAnim_EvalNodeParts(struct xanim_anim_state_s *anim, int node_index, float time, struct xanim_part_state_s *out, char root, char no_blend, struct xanim_calc_buffer_s *buf, int used)",
+   "subsystem": "xanim/part-eval",
+   "confidence": "unknown",
+   "evidence": "no name evidence: evaluates a node subtree into a part buffer: pairwise child blend by weight, leaf sampling through a cached part map, mask bookkeeping",
+   "status": "translated",
+   "notes": "buf used count limit 0x200 is the MAX_CALC_ANIM_BUFFER check"
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x085bc900",
+   "name": "g_xanimSlotRing",
+   "type": "struct XAnimSlot[0x1000]",
+   "confidence": "inferred",
+   "evidence": "40-byte slot ring indexed by 0x28 stride from 0x085bc900 in FUN_080bc6c4 and all slot users; slot 0 sentinel"
+  },
+  {
+   "addr": "0x085e4900",
+   "name": "g_xanimEndNotifyHandle",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "handle created by fn_080798e0(\"end\",0,3) in XAnim_InitSlotPool; released in XAnim_ShutdownSlotPool"
+  },
+  {
+   "addr": "0x085e4920",
+   "name": "g_xanimPendingEntries",
+   "type": "struct xanim_pending_s[]",
+   "confidence": "inferred",
+   "evidence": "12-byte sorted entries inserted by XAnim_InsertPendingEntry; capacity not known"
+  },
+  {
+   "addr": "0x085e4f20",
+   "name": "g_xanimPendingCount",
+   "type": "int32",
+   "confidence": "observed",
+   "evidence": "entry count incremented by XAnim_InsertPendingEntry"
+  },
+  {
+   "addr": "0x085e4f24",
+   "name": "g_xanimDebugNames",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "set from (g_081a2174->value_08 != 0); gates debug names in XAnim_AllocNodeTable"
+  },
+  {
+   "addr": "0x085e4f25",
+   "name": "g_085e4f25",
+   "type": "uint8",
+   "confidence": "unknown",
+   "evidence": "set to 1 by XAnim_SetUnnamedFlag25; no other reader in this chunk"
+  },
+  {
+   "addr": "0x081a2174",
+   "name": "g_081a2174",
+   "type": "struct g_081a2174_s *",
+   "confidence": "unknown",
+   "evidence": "pointer global; only field +0x08 (int32) is read here"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "XAnimParts",
+   "size": "0x2c",
+   "evidence": "copied as 11 words by XAnim_CloneHandleTable; entry count +0x0c, handle count +0x0e, handles +0x10, entries +0x1c, handle +0x24, is_fallback +0x28"
+  },
+  {
+   "name": "XAnimNodeTable",
+   "size": "0x0c header + 8*node_count",
+   "evidence": "debug name +0x00, node_count +0x04, node names +0x08; nodes start at +0x0c (XAnim_AllocNodeTable)"
+  },
+  {
+   "name": "XAnimNode",
+   "size": "0x8",
+   "evidence": "child_count +0x00, aux +0x02, union payload at +0x04 (clip, asset, track, or mode/first_child at +0x04/+0x06)"
+  },
+  {
+   "name": "XAnimTree",
+   "size": "0x8 + 2*node_count",
+   "evidence": "node table pointer +0x00, node_count +0x04, slot_of_node[] at +0x08"
+  },
+  {
+   "name": "xanim_clip_s",
+   "size": "0x20",
+   "evidence": "key_count +0x0c, part_count +0x0e, part_ids +0x10, part bitset +0x14, part tracks +0x18, keys +0x1c, length +0x08"
+  },
+  {
+   "name": "xanim_track_s",
+   "size": "0x8 + key table",
+   "evidence": "count +0x00, data +0x04 (inline value when count is 0), key table from +0x08"
+  },
+  {
+   "name": "xanim_part_track_s",
+   "size": "0x8",
+   "evidence": "pos track +0x00 (stride 12), rot track +0x04 (stride 8 or 4)"
+  },
+  {
+   "name": "xanim_keyed_part_s",
+   "size": "0x24",
+   "evidence": "key_count +0x00, wrap flag +0x02, part track pair pointer +0x20"
+  },
+  {
+   "name": "XAnimSlot",
+   "size": "0x28",
+   "evidence": "cached index +0x02, handle +0x04, track count +0x06, list links +0x08/+0x0a, cursor +0x0c..0x17, blend remaining +0x18, target weight +0x1c, weight +0x20, rate +0x24"
+  },
+  {
+   "name": "xanim_window_s",
+   "size": "0x0c",
+   "evidence": "time +0x00, last_time +0x04, index +0x08, last_index +0x0a (cursor and key windows)"
+  },
+  {
+   "name": "xanim_part_state_s",
+   "size": "0x20",
+   "evidence": "rot bytes +0x00, scalar +0x08, time_a +0x0c, pos +0x10, time_b +0x1c"
+  },
+  {
+   "name": "xanim_calc_buffer_s",
+   "size": "0x4020",
+   "evidence": "0x200 part states, written mask +0x4000, skip mask +0x4010 (MAX_CALC_ANIM_BUFFER = 0x200)"
+  },
+  {
+   "name": "xanim_anim_state_s",
+   "size": "0x20+",
+   "evidence": "tree +0x00, node handles +0x0c, link count +0x18, part count +0x19, link pointers from +0x1c"
+  },
+  {
+   "name": "xanim_frame_key_s",
+   "size": "0x10",
+   "evidence": "value +0x00, int scale +0x04, scaled +0x08, int frame +0x0c (frame stored by truncating fistp)"
+  },
+  {
+   "name": "XAnimNotify",
+   "size": "0x8",
+   "evidence": "track index +0x00, time +0x04"
+  },
+  {
+   "name": "xanim_handle_entry_s",
+   "size": "0x8",
+   "evidence": "handle +0x00 with stride 8 in the entry list"
+  },
+  {
+   "name": "xanim_pending_s",
+   "size": "0xc",
+   "evidence": "resource +0x00, count +0x04, key +0x08 in g_085e4920"
+  },
+  {
+   "name": "g_081a2174_s",
+   "size": "0xc+",
+   "evidence": "int32 value at +0x08 read through g_081a2174"
+  }
+ ],
+ "open_questions": [
+  "Cursor field semantics (window.time/last_time/index/last_index and slot +0x02 cached index) are named from observed use; the original may use different roles. Offsets are exact.",
+  "Ghidra returned float types for fn_080c34fe and fn_080c38e6 whose x87 returns may be long double; treated as float here. Confirm return widths in their own chunk.",
+  "The clip head word at +0x00 is used as a 16-bit count in XAnim_EvalNodeParts and as a pointer (fn_0807943c path) in XAnim_BuildPartMap; both reads are translated literally and should be reconciled with the owner chunk.",
+  "XAnim_InsertPendingEntry (FUN_080be4ae) has no capacity check; the capacity of g_085e4920 is unknown.",
+  "Callback parameters use function-pointer types (void *(*)(int) and void (*)(void *, int)); merge lane may map them to a shared allocator typedef.",
+  "Key loops in FUN_080be554 are stepped by one 8-byte key (asm add 0x8) although Ghidra printed a 16-byte step; verified in disassembly, but the iteration bound should be confirmed by a differential test.",
+  "Float expressions follow decompiler operand order; x87 extended-precision intermediates the original may keep in registers are not reproduced bit-for-bit."
+ ]
+}

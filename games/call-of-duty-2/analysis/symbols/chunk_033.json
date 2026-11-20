@@ -1,0 +1,970 @@
+{
+ "chunk": 33,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080c03d8",
+   "name": "XAnim_DumpNodeWeights",
+   "signature": "void XAnim_DumpNodeWeights(struct XAnimTree *tree, int nodeId, int depth)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "format/rodata strings: %s%s: (weight) %.2f -> %.2f, (time) %.2f -> %.2f, (realtimedelta) %.2f, \\'%s\\'\\n; %s%s: (weight) %.2f -> %.2f, (time) %.2f -> %.2f, (realtimedelta) %.2f\\n; called from 0x80c14bc",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c07cc",
+   "name": "XAnim_BlendNode",
+   "signature": "void XAnim_BlendNode(struct XAnimTree *tree, int nodeId, float weight, int accumulate, int normalize, struct XAnimBlendAccum *out)",
+   "subsystem": "anim/blend",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1504, 0x80c15ba",
+   "status": "translated",
+   "notes": "recursive; the first two non-zero children are blended pairwise into a scratch or out"
+  },
+  {
+   "addr": "0x080c0d38",
+   "name": "XAnim_NodeDurationSec",
+   "signature": "long double XAnim_NodeDurationSec(struct XAnimNodeTable *table, int nodeId)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c0d6c, 0x80d72e6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c0d6c",
+   "name": "XAnim_NodeDurationMs",
+   "signature": "int XAnim_NodeDurationMs(struct XAnimNodeTable *table, int nodeId)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "called from 0x80d9d00, 0x80dd120, 0x80dd15a",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c0daa",
+   "name": "XAnim_NodeTime",
+   "signature": "long double XAnim_NodeTime(struct XAnimTree *tree, int nodeId)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "called from 0x80d9d00",
+   "status": "translated",
+   "notes": "returns a float widened to long double (x87 return)"
+  },
+  {
+   "addr": "0x080c0dee",
+   "name": "XAnim_NodeOldWeight",
+   "signature": "long double XAnim_NodeOldWeight(struct XAnimTree *tree, int nodeId)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "called from 0x80d9d00, 0x80da776, 0x810aa50",
+   "status": "translated",
+   "notes": "returns a float widened to long double (x87 return)"
+  },
+  {
+   "addr": "0x080c0e32",
+   "name": "XAnim_NodeFinished",
+   "signature": "int XAnim_NodeFinished(struct XAnimTree *tree, int nodeId)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "no strings; structure and call pattern only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c0ebc",
+   "name": "XAnim_NodeChildCount",
+   "signature": "uint16 XAnim_NodeChildCount(struct XAnimNodeTable *table, int nodeId)",
+   "subsystem": "anim/tree",
+   "confidence": "unknown",
+   "evidence": "called from 0x810aa50",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c0ecc",
+   "name": "XAnim_NodeChildId",
+   "signature": "int XAnim_NodeChildId(struct XAnimNodeTable *table, int nodeId, int index)",
+   "subsystem": "anim/tree",
+   "confidence": "unknown",
+   "evidence": "called from 0x810aa50",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c0ee0",
+   "name": "XAnim_NodeClipName",
+   "signature": "const char *XAnim_NodeClipName(struct XAnimNodeTable *table, int nodeId)",
+   "subsystem": "anim/clip",
+   "confidence": "inferred",
+   "evidence": "called from 0x80d72e6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c0f18",
+   "name": "XAnim_ClipFlag28",
+   "signature": "uint8 XAnim_ClipFlag28(struct XAnimParts *clip)",
+   "subsystem": "anim/clip",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c0f24, 0x80c235e",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c0f24",
+   "name": "XAnim_NodeDisplayName",
+   "signature": "const char *XAnim_NodeDisplayName(struct XAnimNodeTable *table, int nodeId)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "format/rodata strings: ^3%s (missing); called from 0x807d420, 0x8084722, 0x80c03d8, 0x80c235e, 0x810aa50",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c0fe6",
+   "name": "XAnim_LoadU32",
+   "signature": "uint32 XAnim_LoadU32(const void *p)",
+   "subsystem": "anim/util",
+   "confidence": "unknown",
+   "evidence": "called from 0x8084722",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c0ff0",
+   "name": "XAnim_LoadU32At4",
+   "signature": "uint32 XAnim_LoadU32At4(const void *p)",
+   "subsystem": "anim/util",
+   "confidence": "unknown",
+   "evidence": "called from 0x80d72e6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c106c",
+   "name": "XAnim_BindingSetTime",
+   "signature": "void XAnim_BindingSetTime(struct XAnimBinding *binding, float arg)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x80920d0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c114e",
+   "name": "XAnim_BindingSetWeight",
+   "signature": "int XAnim_BindingSetWeight(struct XAnimBinding *binding, float weight, int play)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x809208a",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c124c",
+   "name": "XAnim_BindingInit",
+   "signature": "int XAnim_BindingInit(int *out)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "no strings; structure and call pattern only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1260",
+   "name": "XAnim_BindingRebuild",
+   "signature": "void XAnim_BindingRebuild(struct XAnimBinding *binding, const uint32 *mask)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x8092134",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c14bc",
+   "name": "XAnim_DumpTree",
+   "signature": "void XAnim_DumpTree(struct XAnimBinding *binding)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "format/rodata strings: NO TREE\\n; called from 0x8092210",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1504",
+   "name": "XAnim_BlendRootNode",
+   "signature": "void XAnim_BlendRootNode(struct XAnimTree *tree, int nodeId, float *dst2, float *dst3, uint8 flag)",
+   "subsystem": "anim/blend",
+   "confidence": "inferred",
+   "evidence": "called from 0x8107812",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c15ba",
+   "name": "XAnim_BlendRootAll",
+   "signature": "void XAnim_BlendRootAll(struct XAnimTree *tree, int nodeId, float *dst2, float *dst3)",
+   "subsystem": "anim/blend",
+   "confidence": "inferred",
+   "evidence": "called from 0x810aa50",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1664",
+   "name": "XAnim_NodeBlendSample",
+   "signature": "void XAnim_NodeBlendSample(struct XAnimNodeTable *table, int nodeId, float *dst2, float *dst3, float p5, float p6)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x80d72e6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c177c",
+   "name": "XAnim_NodeBlendSampleB",
+   "signature": "void XAnim_NodeBlendSampleB(struct XAnimNodeTable *table, int nodeId, float *dst2, float *dst3, float p5)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x80dd216, 0x80ddaa4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1886",
+   "name": "XAnim_AllocSlot",
+   "signature": "struct XAnimSlot *XAnim_AllocSlot(struct XAnimTree *tree, int nodeId)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "called from 0x80beeea, 0x80c20de, 0x80c2c18",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c191e",
+   "name": "XAnim_SetSlotTime",
+   "signature": "void XAnim_SetSlotTime(struct XAnimTree *tree, int nodeId, float time)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c19d6, 0x80c1ab4, 0x80d9d00",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c19d6",
+   "name": "XAnim_SetSubtreeTime",
+   "signature": "void XAnim_SetSubtreeTime(struct XAnimTree *tree, int nodeId, float time)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1a5a",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1a5a",
+   "name": "XAnim_SetChildrenTime",
+   "signature": "void XAnim_SetChildrenTime(struct XAnimTree *tree, int nodeId, float time)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "called from 0x810aa50",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1ab4",
+   "name": "XAnim_SetWeightLimit",
+   "signature": "void XAnim_SetWeightLimit(struct XAnimTree *tree, int nodeId, float weight, float scale)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1c04, 0x80c1c84, 0x80c1df6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1c04",
+   "name": "XAnim_BlendStartA",
+   "signature": "void XAnim_BlendStartA(struct XAnimTree *tree, int nodeId, float weight, float scale, float p5, int p6, int p7)",
+   "subsystem": "anim/blend",
+   "confidence": "inferred",
+   "evidence": "no strings; structure and call pattern only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1c84",
+   "name": "XAnim_BlendChain",
+   "signature": "int XAnim_BlendChain(struct XAnimTree *tree, uint32 nodeId, uint32 stopId, float weight, float scale, float p6, int p7, int doStack)",
+   "subsystem": "anim/blend",
+   "confidence": "inferred",
+   "evidence": "called from 0x80d9d00",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1df6",
+   "name": "XAnim_BlendStartB",
+   "signature": "void XAnim_BlendStartB(struct XAnimTree *tree, int nodeId, float weight, float scale, float p5, int p6, int p7)",
+   "subsystem": "anim/blend",
+   "confidence": "inferred",
+   "evidence": "no strings; structure and call pattern only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1ed0",
+   "name": "XAnim_FreeSlots",
+   "signature": "void XAnim_FreeSlots(struct XAnimTree *tree, int nodeId)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1ff6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1f58",
+   "name": "XAnim_FreeAllSlots",
+   "signature": "void XAnim_FreeAllSlots(struct XAnimTree *tree)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1ff6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1ff6",
+   "name": "XAnim_ResetTree",
+   "signature": "void XAnim_ResetTree(struct XAnimTree *tree)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bce0e, 0x80dbeb0, 0x811ee50",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c201c",
+   "name": "XAnim_MaxWeightChild",
+   "signature": "int XAnim_MaxWeightChild(struct XAnimTree *tree, int nodeId)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c20de",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c20de",
+   "name": "XAnim_SetSlotWeight",
+   "signature": "int XAnim_SetSlotWeight(struct XAnimTree *tree, int nodeId, float weight, float scale, float p5, char p6, int p7, short p8)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1c84, 0x80c28b4, 0x80c2930, 0x80c2aa2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2310",
+   "name": "XAnim_SetSlotValue24",
+   "signature": "void XAnim_SetSlotValue24(struct XAnimTree *tree, int nodeId, uint32 raw)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c29c6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2342",
+   "name": "XAnim_VoidLoopLoaded",
+   "signature": "void *XAnim_VoidLoopLoaded(int size)",
+   "subsystem": "anim/clip",
+   "confidence": "inferred",
+   "evidence": "no strings; structure and call pattern only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c235e",
+   "name": "XAnim_SetNodeLoopMode",
+   "signature": "void XAnim_SetNodeLoopMode(struct XAnimNodeTable *table, int nodeId, char mode)",
+   "subsystem": "anim/clip",
+   "confidence": "inferred",
+   "evidence": "format/rodata strings: void_loop; called from 0x80c256a",
+   "status": "translated",
+   "notes": "loop-mode diagnostics name the tree via table->name (word 0 of the node table)"
+  },
+  {
+   "addr": "0x080c256a",
+   "name": "XAnim_ApplyLoopModeRec",
+   "signature": "void XAnim_ApplyLoopModeRec(struct XAnimNodeTable *table, int nodeId)",
+   "subsystem": "anim/clip",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c2648",
+   "status": "translated",
+   "notes": "loop-mode diagnostics name the tree via table->name (word 0 of the node table)"
+  },
+  {
+   "addr": "0x080c2648",
+   "name": "XAnim_ApplyLoopModeRoot",
+   "signature": "void XAnim_ApplyLoopModeRoot(struct XAnimNodeTable *table)",
+   "subsystem": "anim/clip",
+   "confidence": "inferred",
+   "evidence": "called from 0x806dcb0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2664",
+   "name": "XAnim_NodeHasNoClipOrFlag",
+   "signature": "int XAnim_NodeHasNoClipOrFlag(struct XAnimNodeTable *table, int nodeId)",
+   "subsystem": "anim/clip",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c03d8",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c26a6",
+   "name": "XAnim_NodeIsLeaf",
+   "signature": "int XAnim_NodeIsLeaf(struct XAnimNodeTable *table, int nodeId)",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "called from 0x80d72e6, 0x80d9d00",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c26be",
+   "name": "XAnim_ResetSlotTimes",
+   "signature": "void XAnim_ResetSlotTimes(struct XAnimTree *tree, int nodeId, float time)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "called from 0x80d9d00",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2740",
+   "name": "XAnim_UpdateSlotPhase",
+   "signature": "void XAnim_UpdateSlotPhase(struct XAnimTree *tree, struct XAnimSlot *slot, const short *clipRef)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "called from 0x80be3a0, 0x80bf8d4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c27a4",
+   "name": "XAnim_ReleaseNodeSlots",
+   "signature": "void XAnim_ReleaseNodeSlots(struct XAnimTree *tree, uint32 nodeId)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1c84, 0x80c2930, 0x80c2aa2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c28b4",
+   "name": "XAnim_BlendTailChain",
+   "signature": "void XAnim_BlendTailChain(struct XAnimTree *tree, uint32 nodeId, float scale)",
+   "subsystem": "anim/blend",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1c84, 0x80c2930",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2930",
+   "name": "XAnim_BlendStepC",
+   "signature": "int XAnim_BlendStepC(struct XAnimTree *tree, int nodeId, float weight, float scale, float p5, int p6, int p7, int doStack)",
+   "subsystem": "anim/blend",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1df6, 0x810aa50",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c29c6",
+   "name": "XAnim_SetSlotValueAlias",
+   "signature": "void XAnim_SetSlotValueAlias(struct XAnimTree *tree, int nodeId, uint32 raw)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "called from 0x80da42a",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c29e8",
+   "name": "XAnim_NodeLoopFlag",
+   "signature": "uint8 XAnim_NodeLoopFlag(struct XAnimNodeTable *table, int nodeId)",
+   "subsystem": "anim/clip",
+   "confidence": "inferred",
+   "evidence": "called from 0x80d72e6, 0x80d9d00",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2a2a",
+   "name": "XAnim_ClipHasKey",
+   "signature": "int XAnim_ClipHasKey(struct XAnimNodeTable *table, int nodeId, uint32 key)",
+   "subsystem": "anim/clip",
+   "confidence": "inferred",
+   "evidence": "no strings; structure and call pattern only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2aa2",
+   "name": "XAnim_BlendStepRec",
+   "signature": "void XAnim_BlendStepRec(struct XAnimTree *tree, uint32 nodeId, float weight, float scale, float p5, int p6, int p7, int doStack)",
+   "subsystem": "anim/blend",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1c04, 0x80d9d00",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2bb6",
+   "name": "XAnim_CopySlot",
+   "signature": "void XAnim_CopySlot(const struct XAnimSlot *src, struct XAnimSlot *dst)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c2c18",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2c18",
+   "name": "XAnim_CopyTreeSlots",
+   "signature": "void XAnim_CopyTreeSlots(struct XAnimTree *tree, struct XAnimTree *other)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "no strings; structure and call pattern only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2d0a",
+   "name": "XAnim_InitSlotRecord",
+   "signature": "void XAnim_InitSlotRecord(const struct XAnimSlot *src, struct XAnimSlot *dst)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "no strings; structure and call pattern only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2de4",
+   "name": "XAnim_SlotAt",
+   "signature": "struct XAnimSlot *XAnim_SlotAt(int index)",
+   "subsystem": "anim/slot",
+   "confidence": "inferred",
+   "evidence": "no strings; structure and call pattern only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2dfc",
+   "name": "XAnim_SamplePart2",
+   "signature": "void XAnim_SamplePart2(const void *ctx, struct xanim_track_s *part, float weight, float *out)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c2ffa",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2ea2",
+   "name": "XAnim_SamplePart4",
+   "signature": "void XAnim_SamplePart4(const void *ctx, struct xanim_track_s *part, float weight, float *out)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c2ffa",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2f48",
+   "name": "XAnim_SamplePart3",
+   "signature": "void XAnim_SamplePart3(const void *ctx, struct xanim_track_s *part, float weight, float *out)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c2ffa",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2ffa",
+   "name": "XAnim_BlendBoneChannels",
+   "signature": "void XAnim_BlendBoneChannels(uint16 *track, const uint8 *boneIdx, float ctxArg, float weight, uint8 *pose, const uint32 *mask)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bfc04",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3170",
+   "name": "XAnim_SamplePart2B",
+   "signature": "void XAnim_SamplePart2B(const void *ctx, struct xanim_track_s *part, float weight, float *out)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c336e",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3216",
+   "name": "XAnim_SamplePart4B",
+   "signature": "void XAnim_SamplePart4B(const void *ctx, struct xanim_track_s *part, float weight, float *out)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c336e",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c32bc",
+   "name": "XAnim_SamplePart3B",
+   "signature": "void XAnim_SamplePart3B(const void *ctx, struct xanim_track_s *part, float weight, float *out)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c336e",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c336e",
+   "name": "XAnim_BlendBoneChannelsB",
+   "signature": "void XAnim_BlendBoneChannelsB(uint16 *track, const uint8 *boneIdx, float ctxArg, float weight, uint8 *pose, const uint32 *mask)",
+   "subsystem": "anim/pose",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bfc04",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c34e4",
+   "name": "XAnim_Abs",
+   "signature": "long double XAnim_Abs(float v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1ab4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c34fe",
+   "name": "XAnim_RSqrt",
+   "signature": "long double XAnim_RSqrt(float v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bfc04, 0x80c07cc",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3562",
+   "name": "XAnim_Vec2Zero",
+   "signature": "void XAnim_Vec2Zero(float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c07cc, 0x80c1664, 0x80c177c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c357e",
+   "name": "XAnim_Vec2Copy",
+   "signature": "void XAnim_Vec2Copy(const float *src, float *dst)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1504, 0x80c15ba, 0x80c1664, 0x80c177c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c359e",
+   "name": "XAnim_Vec2Scale",
+   "signature": "void XAnim_Vec2Scale(const float *a, float s, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c07cc",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c35c4",
+   "name": "XAnim_Vec2MulAdd",
+   "signature": "void XAnim_Vec2MulAdd(const float *a, float s, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bdf80, 0x80c07cc",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c35fa",
+   "name": "XAnim_Vec2LenSq",
+   "signature": "long double XAnim_Vec2LenSq(const float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c07cc",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c361c",
+   "name": "XAnim_Vec3Zero",
+   "signature": "void XAnim_Vec3Zero(float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bd34e, 0x80bd492, 0x80bd836, 0x80bdc1a, 0x80c07cc, 0x80c1260",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3646",
+   "name": "XAnim_Vec3Copy",
+   "signature": "void XAnim_Vec3Copy(const float *src, float *dst)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bd446, 0x80bd784, 0x80bdb68, 0x80c1504, 0x80c15ba, 0x80c1664",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3676",
+   "name": "XAnim_Vec3Add",
+   "signature": "void XAnim_Vec3Add(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bde02",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c36ba",
+   "name": "XAnim_Vec3Sub",
+   "signature": "void XAnim_Vec3Sub(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bde02",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c36fe",
+   "name": "XAnim_Vec3Lerp",
+   "signature": "void XAnim_Vec3Lerp(const float *a, const float *b, float t, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bd784, 0x80bdb68",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3768",
+   "name": "XAnim_Vec3Scale",
+   "signature": "void XAnim_Vec3Scale(const float *a, float s, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bfc04, 0x80c07cc",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c37a0",
+   "name": "XAnim_Vec3MulAdd",
+   "signature": "void XAnim_Vec3MulAdd(const float *a, float s, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bd1a6, 0x80bde02, 0x80bdf80, 0x80bfc04, 0x80c07cc, 0x80c2f48",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c37f4",
+   "name": "XAnim_Vec4Zero",
+   "signature": "void XAnim_Vec4Zero(float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bd34e",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c382a",
+   "name": "XAnim_Vec4Scale",
+   "signature": "void XAnim_Vec4Scale(const float *a, float s, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bfc04",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3876",
+   "name": "XAnim_Vec4MulAdd",
+   "signature": "void XAnim_Vec4MulAdd(const float *a, float s, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bfc04",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c38e6",
+   "name": "XAnim_Vec4LenSq",
+   "signature": "long double XAnim_Vec4LenSq(const float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bfc04",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c392c",
+   "name": "XAnim_DequantPair",
+   "signature": "void XAnim_DequantPair(const short *a, const short *b, float p, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bd692, 0x80bda76",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3986",
+   "name": "XAnim_LerpPair",
+   "signature": "void XAnim_LerpPair(const float *a, float s, const short *b, const short *c, float p, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c2dfc, 0x80c3170",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c39fe",
+   "name": "XAnim_LerpQuat",
+   "signature": "void XAnim_LerpQuat(const float *a, float s, const short *b, const short *c, float p, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c2ea2, 0x80c3216",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3aea",
+   "name": "XAnim_MulAddShort2",
+   "signature": "void XAnim_MulAddShort2(const float *a, float s, const short *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bd0ee, 0x80c2dfc, 0x80c3170",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3b20",
+   "name": "XAnim_MulAddShort4",
+   "signature": "void XAnim_MulAddShort4(const float *a, float s, const short *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80bd144, 0x80c2ea2, 0x80c3216",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3b90",
+   "name": "XAnim_DequantVec4",
+   "signature": "void XAnim_DequantVec4(const short *a, float s, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "called from 0x80c1260",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x085bc900",
+   "name": "g_xanimSlotRing",
+   "type": "struct XAnimSlot[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x28 indexed by slot index in about 40 functions; element 0 holds the free-list head at +0x0a"
+  },
+  {
+   "addr": "0x085e4920",
+   "name": "g_xanimPendingEntries",
+   "type": "uint8[]",
+   "confidence": "unknown",
+   "evidence": "address stored by XAnim_BindingInit (FUN_080c124c)"
+  },
+  {
+   "addr": "0x085e4f20",
+   "name": "g_xanimPendingCount",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "value returned by XAnim_BindingInit (FUN_080c124c)"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "XAnimSlot",
+   "size": "0x28",
+   "evidence": "pool stride 0x28 at g_085bc900; fields at +0x04 nameIndex, +0x0c curTime, +0x10 prevTime, +0x1c weight, +0x20 oldWeight, +0x24 value24"
+  },
+  {
+   "name": "XAnimPoseBone",
+   "size": "0x20",
+   "evidence": "pose array at pose+0x30 with 0x20 stride; rot[4] at 0, pos[3] at 0x10, timer at 0x1c"
+  },
+  {
+   "name": "XAnimBlendAccum",
+   "size": "0x18",
+   "evidence": "accumulator passed to FUN_080c07cc: xy at 0, weight at 8, xyz at 0x0c (matches the 0x18 frame of FUN_080c1504/FUN_080c15ba)"
+  },
+  {
+   "name": "XAnimChannel",
+   "size": "0x8",
+   "evidence": "FUN_080c2ffa reads local_18[0] and local_18[1] at 8-byte stride"
+  },
+  {
+   "name": "XAnimNodeTable",
+   "size": "header 0x0c, records at 8*id",
+   "evidence": "nodeCount at +0x04 (FUN_080c1f58), names pointer at +0x08 (FUN_080c0f24), name word at +0x00 (FUN_080c235e diagnostics)"
+  },
+  {
+   "name": "XAnimTree",
+   "size": "variable (0x08 + 2*nodeCount*2)",
+   "evidence": "table at +0x00, flag bytes +0x06/+0x07, slot array of uint16 at +0x08, second handle array after nodeCount entries (FUN_080c1f58)"
+  },
+  {
+   "name": "XAnimBinding",
+   "size": "variable (0x1c + 4*partCount)",
+   "evidence": "tree at +0x00, pose buffer at +0x04, partCount byte at +0x18, part pointers from +0x1c"
+  },
+  {
+   "name": "xanim_track_s",
+   "size": "unknown (>= 0x0c)",
+   "evidence": "count at +0x00, leadCount at +0x02, data pointer at +0x04, key area at +0x08 (FUN_080c2dfc, FUN_080c1260)"
+  },
+  {
+   "name": "XAnimParts",
+   "size": "unknown (>= 0x29)",
+   "evidence": "numFrames +0x00, flags +0x02/+0x03, frameRate +0x04, length +0x08, partCount +0x0c, keyTable +0x1c, name +0x24, flag +0x28"
+  },
+  {
+   "name": "XAnimNode",
+   "size": "record stride 0x08 (view 0x14)",
+   "evidence": "childCount +0x0c, parentIndex +0x0e, tagged clip pointer +0x10, firstChild +0x12; fields overlap under stride 8 (see open questions)"
+  }
+ ],
+ "open_questions": [
+  "XAnimNode: the tagged clip pointer at +0x10 and firstChild at +0x12 overlap under the 8-byte record stride. The union reproduces the byte semantics as written; confirm whether the table is really interleaved or the stride is a decoding artefact (objdump of FUN_080c0d38 confirms [edx+eax*8+0xc]).",
+  "XAnimSlot fields +0x02 (unk02), +0x08 (unk08) and the second handle array of the tree are named only by their access pattern.",
+  "Out-of-chunk callee signatures (fn_080bde02, fn_080bdf80, fn_080bfc04, fn_080bf112, fn_080c3be4, fn_080c3cb0) are inferred from call sites only; the merge lane should check them against their own chunks.",
+  "Functions returning long double (XAnim_NodeDurationSec, XAnim_NodeTime, XAnim_Abs, XAnim_RSqrt, XAnim_Vec2LenSq, XAnim_Vec4LenSq) rely on x87 st(0) return; callers must convert identically.",
+  "XAnim_NodeDurationMs assumes FPU round-to-nearest for ROUND (rintl); not checked against the disassembly of FUN_080c0d6c.",
+  "XAnim_RSqrt reproduces the 0x5f3759df bit trick and one Newton step exactly as the disassembly shows (sar, fmul/fsub order); the constant 0x38000100 used for dequantisation is 1/32767.",
+  "Tree and binding names (XAnim_*) are descriptive: no string names the tree subsystem directly; the names follow the format strings \"animation ... cannot be sync\", \"Cannot find xanim/%s\" and \"exceeded maximum number of anim info\"."
+ ]
+}

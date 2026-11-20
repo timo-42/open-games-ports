@@ -1,0 +1,366 @@
+{
+ "functions": [
+  {
+   "addr": "0x0805276e",
+   "old": "CM_Noop_0805276e",
+   "new": "CM_NoOp_BeforeTempBufferReset",
+   "confidence": "descriptive",
+   "evidence": "Body is ret-only (5 bytes); single caller site is CMod_LoadBrushRelated immediately before the temp-buffer reset (chunk_003 comment). Purpose of the stripped call is unknown; name states position only."
+  },
+  {
+   "addr": "0x08052774",
+   "old": "CM_Noop_08052774",
+   "new": "CM_NoOp_BeforeLeafBrushTreeBuild",
+   "confidence": "descriptive",
+   "evidence": "Body is ret-only; called in CMod_BuildLeafBrushTree before the leaf brush kd-tree is built (chunk_003:371)."
+  },
+  {
+   "addr": "0x0805536c",
+   "old": "LittleLong_0805536c",
+   "new": "CMod_LittleLong",
+   "confidence": "descriptive",
+   "evidence": "Identity int->int; ~30 call sites all in CMod_* lump readers (chunk_003 lines 104-943) applied to every BSP lump field; id Tech 3 LittleLong on little-endian host. Distinguished from other TU copies by CMod_ prefix."
+  },
+  {
+   "addr": "0x0805d552",
+   "old": "Float_SelectNonNegative_0805d552",
+   "new": "Sweep_FloatSelect",
+   "confidence": "descriptive",
+   "evidence": "fucompp vs 0: returns arg2 if arg1>=0 else arg3; only callers are Float_Max/Min_0805d5ce/0805d5f2 in the Sweep TU (0x0805..d5xx). Drops address suffix, TU prefix disambiguates from Float_Select_0805fafc."
+  },
+  {
+   "addr": "0x0805d57c",
+   "old": "Float_Abs_0805d57c",
+   "new": "Sweep_FloatAbs",
+   "confidence": "descriptive",
+   "evidence": "fabs on x87 stack; Sweep TU copy (other TU copies exist)."
+  },
+  {
+   "addr": "0x0805d596",
+   "old": "Float_Sqrt_0805d596",
+   "new": "Sweep_FloatSqrt",
+   "confidence": "descriptive",
+   "evidence": "Calls sqrt@plt on widened double and rounds to float; Sweep TU copy."
+  },
+  {
+   "addr": "0x0805d5b6",
+   "old": "Float_IsNonNegative",
+   "new": "Sweep_FloatIsNonNegative",
+   "confidence": "descriptive",
+   "evidence": "setae after compare with 0.0: returns 1 if x>=0 (0 for NaN); TU prefix added for consistency with Sweep_Float* siblings."
+  },
+  {
+   "addr": "0x0805d5ce",
+   "old": "Float_Max_0805d5ce",
+   "new": "Sweep_FloatMax",
+   "confidence": "descriptive",
+   "evidence": "Tail-calls Sweep_FloatSelect(a-b,a,b) = max(a,b)."
+  },
+  {
+   "addr": "0x0805d5f2",
+   "old": "Float_Min_0805d5f2",
+   "new": "Sweep_FloatMin",
+   "confidence": "descriptive",
+   "evidence": "Tail-calls Sweep_FloatSelect(b-a,a,b) = min(a,b)."
+  },
+  {
+   "addr": "0x0805fb58",
+   "old": "Float_Max_0805fb58",
+   "new": "SpatialTree_FloatMax",
+   "confidence": "descriptive",
+   "evidence": "max(a,b) = Float_Select_0805fafc(a-b,a,b); lives in the spatial-tree TU (0x0805ef22-0x0805fc5c) as its own copy."
+  },
+  {
+   "addr": "0x0805fb7c",
+   "old": "Float_Min_0805fb7c",
+   "new": "SpatialTree_FloatMin",
+   "confidence": "descriptive",
+   "evidence": "min(a,b) = Float_Select_0805fafc(b-a,a,b); same TU copy as Float_Max_0805fb58."
+  },
+  {
+   "addr": "0x0805fafc",
+   "old": "Float_Select_0805fafc",
+   "new": "SpatialTree_FloatSelect",
+   "confidence": "descriptive",
+   "evidence": "Selector (x>=0 ? ifNonNegative : ifNegative) used by Float_Max_0805fb58/Float_Min_0805fb7c, spatial-tree TU copy."
+  },
+  {
+   "addr": "0x0805fc5c",
+   "old": "Noop_0805fc5c",
+   "new": "SpatialTree_NoOp_End",
+   "confidence": "descriptive",
+   "evidence": "Empty function (prologue+epilogue only) at the end of the collision code region (last address in collision.md scope 0x0805fc5c); no callers establish a purpose."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188dc4",
+   "old": "g_08188dc4",
+   "new": "g_08188dc4_numStaticModels",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "count loop in cm_load_static_models; error strings 'Static model [%s] has ...' reference it; clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x4"
+  },
+  {
+   "addr": "0x08188dc8",
+   "old": "g_08188dc8",
+   "new": "g_08188dc8_staticModels",
+   "type_hint": "struct cm_static_model_s *",
+   "confidence": "inferred",
+   "evidence": "array allocated with 0x50 stride as CM_CreateStaticModel; clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x8"
+  },
+  {
+   "addr": "0x08188dd0",
+   "old": "g_08188dd0",
+   "new": "g_08188dd0_materials",
+   "type_hint": "dMaterial_t *",
+   "confidence": "inferred",
+   "evidence": "cm.materials, 0x48 stride, +0x40 surfaceFlags read by cm_brush_trace_planes (md note N2); clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x10"
+  },
+  {
+   "addr": "0x08188de0",
+   "old": "g_08188de0",
+   "new": "g_08188de0_nodes",
+   "type_hint": "cnode_t *",
+   "confidence": "inferred",
+   "evidence": "plane-tree nodes, 8-byte stride (md section 1.1); clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x20"
+  },
+  {
+   "addr": "0x08188de8",
+   "old": "g_08188de8",
+   "new": "g_08188de8_leafs",
+   "type_hint": "cLeaf_t *",
+   "confidence": "inferred",
+   "evidence": "leafs, 0x2c stride (md section 1.1); clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x28"
+  },
+  {
+   "addr": "0x08188df0",
+   "old": "g_08188df0",
+   "new": "g_08188df0_brushNodes",
+   "type_hint": "cbrushnode_t *",
+   "confidence": "inferred",
+   "evidence": "per-leaf brush tree 0x14 stride built by CMod_PartionLeafBrushes_r; clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x30"
+  },
+  {
+   "addr": "0x08188e08",
+   "old": "g_08188e08",
+   "new": "g_08188e08_verts",
+   "type_hint": "CollisionVertex *",
+   "confidence": "inferred",
+   "evidence": "12-byte vertices indexed by vertex id in cm_wedge_sphere_sweep (chunk_004:222); CollisionVertex array at cm+0x48; clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x48"
+  },
+  {
+   "addr": "0x08188e10",
+   "old": "g_08188e10",
+   "new": "g_08188e10_edges",
+   "type_hint": "CollisionEdge *",
+   "confidence": "inferred",
+   "evidence": "0x30-stride edge array used in chunk_004:270; CollisionEdge array at cm+0x50; clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x50"
+  },
+  {
+   "addr": "0x08188e30",
+   "old": "g_08188e30",
+   "new": "g_08188e30_aabbTrees",
+   "type_hint": "CollisionAabbTree *",
+   "confidence": "inferred",
+   "evidence": "index*0x20 in CM_TraceLeafItems; clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x70"
+  },
+  {
+   "addr": "0x08188e34",
+   "old": "g_08188e34",
+   "new": "g_08188e34_numSubModels",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "bound check in cm_model_get; clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x74"
+  },
+  {
+   "addr": "0x08188e38",
+   "old": "g_08188e38",
+   "new": "g_08188e38_cmodels",
+   "type_hint": "cmodel_t *",
+   "confidence": "inferred",
+   "evidence": "0x48-stride model table read by cm_model_get; clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x78"
+  },
+  {
+   "addr": "0x08188e3c",
+   "old": "g_08188e3c",
+   "new": "g_08188e3c_numBrushes",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "brush count: bounds check in Sweep_TraceEntityDispatch and item index offset in CM_TraceLeafItems (stored as uint16 at +0x7c per struct; 4-byte reads observed include pad); clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x7c"
+  },
+  {
+   "addr": "0x08188e40",
+   "old": "g_08188e40",
+   "new": "g_08188e40_brushes",
+   "type_hint": "cbrush_t *",
+   "confidence": "inferred",
+   "evidence": "0x30-stride brushes; contents +0x0c, planes +0x20; clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x80"
+  },
+  {
+   "addr": "0x08188e44",
+   "old": "g_08188e44",
+   "new": "g_08188e44_numClusters",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "upper bound in CM_ClusterPVS (chunk_004:1089); clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x84"
+  },
+  {
+   "addr": "0x08188e48",
+   "old": "g_08188e48",
+   "new": "g_08188e48_clusterBytes",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "stride multiplied by index in CM_ClusterPVS; CMod load stores clusterBytes (chunk_003:943); clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x88"
+  },
+  {
+   "addr": "0x08188e4c",
+   "old": "g_08188e4c",
+   "new": "g_08188e4c_visibility",
+   "type_hint": "byte *",
+   "confidence": "inferred",
+   "evidence": "base of table returned by CM_ClusterPVS (also fallback); clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x8c"
+  },
+  {
+   "addr": "0x08188e50",
+   "old": "g_08188e50",
+   "new": "g_08188e50_vised",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "enable flag tested in CM_ClusterPVS; when 0 returns base for any index; clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x90"
+  },
+  {
+   "addr": "0x08188e58",
+   "old": "g_08188e58",
+   "new": "g_08188e58_entityString",
+   "type_hint": "char *",
+   "confidence": "inferred",
+   "evidence": "entity string pointer/cursor parsed by cm_load_static_models; clipMap_t field (collision.structs.json, g_08188dc0_clipmap @0x08188dc0) at offset 0x98"
+  },
+  {
+   "addr": "0x08188eec",
+   "old": "g_08188eec",
+   "new": "g_08188eec_liveWindingCount",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "incremented in AllocWinding, decremented in FreeWinding (chunk_004:515,530)"
+  },
+  {
+   "addr": "0x08188ef0",
+   "old": "g_08188ef0",
+   "new": "g_08188ef0_peakWindingCount",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "AllocWinding: if (peak < live) peak = live (chunk_004:516)"
+  },
+  {
+   "addr": "0x08188ef8",
+   "old": "g_08188ef8",
+   "new": "g_08188ef8_clipWindingScratch",
+   "type_hint": "float",
+   "confidence": "observed",
+   "evidence": "temp for dot-minus-dist and interpolation t in ClipWinding (chunk_100:730-770); written and read only there"
+  },
+  {
+   "addr": "0x08189000",
+   "old": "g_08189000",
+   "new": "g_08189000_areaWorldMins",
+   "type_hint": "float[3]",
+   "confidence": "inferred",
+   "evidence": "world mins copied by Area_LinkEntity/Area_LinkBoxRecord and memset in Area_Init"
+  },
+  {
+   "addr": "0x0818900c",
+   "old": "g_0818900c",
+   "new": "g_0818900c_areaWorldMaxs",
+   "type_hint": "float[3]",
+   "confidence": "inferred",
+   "evidence": "paired with g_08189000, 12 bytes later"
+  },
+  {
+   "addr": "0x08189018",
+   "old": "g_08189018",
+   "new": "g_08189018_areaLinkDisabled",
+   "type_hint": "byte",
+   "confidence": "observed",
+   "evidence": "if nonzero Area_LinkIntoSubtree returns immediately (chunk_005:482)"
+  },
+  {
+   "addr": "0x0818901a",
+   "old": "g_0818901a",
+   "new": "g_0818901a_areaNodeFreeHead",
+   "type_hint": "uint16",
+   "confidence": "observed",
+   "evidence": "free-list head: set to 2 in Area_Init, popped by Area_AllocSplitNode, node pushed back with node->parent chain (chunk_005:300-395)"
+  },
+  {
+   "addr": "0x0818901c",
+   "old": "g_0818901c",
+   "new": "g_0818901c_areaNodes",
+   "type_hint": "cm_area_node_t[1024]",
+   "confidence": "observed",
+   "evidence": "0x18-stride area node table, root is node 1 (Area_Init)"
+  },
+  {
+   "addr": "0x0818f016",
+   "old": "g_0818f016",
+   "new": "g_0818f016_areaNodes3ffParent",
+   "type_hint": "uint16",
+   "confidence": "inferred",
+   "evidence": "md note N19: parent word of area node 0x3ff, cleared by Area_Init"
+  },
+  {
+   "addr": "0x084424a4",
+   "old": "g_084424a4",
+   "new": "g_084424a4_areaEntityLinkRecords",
+   "type_hint": "byte[]",
+   "confidence": "inferred",
+   "evidence": "entity link record table, 0x174 stride, 1-based, used by Area_InsertEntityIntoNode/Area_RelinkAllBoxes"
+  },
+  {
+   "addr": "0x085b7660",
+   "old": "g_085b7660_slots",
+   "new": "g_085b7660_cmTraceSlots",
+   "type_hint": "cm_slot_t[2]",
+   "confidence": "inferred",
+   "evidence": "per-thread 0x18-byte slot records initialised by CM_InitSlotBuffers (indices 0,1) and selected via Sys_SetValue(3, slots + threadIndex*0x18) in chunk_030:1226; holds per-thread trace scratch buffers"
+  }
+ ],
+ "left_unknown": [
+  {
+   "addr": "0x080f7b38",
+   "name": "G_HandleClientEvent",
+   "why": "Game-module function (server/game/client), only mis-tagged; takes entityNum/event, indexes a 0x230-stride client table at 0x08716558; not a collision function, no collision evidence."
+  },
+  {
+   "addr": "0x0805923c",
+   "name": "cm_vec3_dot_b",
+   "why": "Disassembly is a 3-component float dot product, so symbols.json name is right; chunk_004.cpp comment/function 'LittleLong' at this address is a recon mislabel (a conflict for the owner of chunk_004, not renamed here)."
+  },
+  {
+   "addr": "0x08059186",
+   "name": "CM_ClusterPVS",
+   "why": "Already named; behaviour (table base+index*stride, fallback base) matches Q3 CM_ClusterPVS lineage, only confidence tag is stale: could be raised to inferred/observed."
+  },
+  {
+   "addr": "0x0805277a",
+   "name": "CM_HunkAllocTemp",
+   "why": "Existing name fine (wrapper to Hunk_AllocateTempMemoryHigh); no rename needed."
+  },
+  {
+   "addr": "0x08052094",
+   "name": "CM_InitSlotBuffers",
+   "why": "Existing name fine; slot fields buf_04/08/0c/copy_10/14 lack purpose evidence."
+  },
+  {
+   "addr": "0x08188dc0",
+   "name": "g_08188dc0_clipmap",
+   "why": "Already named; the 0xe8..0x10c unknown_0e8 words of clipMap_t remain unknown."
+  },
+  {
+   "addr": "0x08188ca0",
+   "name": "g_08188ca0_sourceFiles",
+   "why": "Precompiler global, not collision."
+  }
+ ]
+}

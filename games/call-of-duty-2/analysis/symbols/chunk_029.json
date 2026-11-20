@@ -1,0 +1,1144 @@
+{
+ "chunk": 29,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080b27d2",
+   "name": "Dvar_DomainString",
+   "signature": "char *Dvar_DomainString(int type, uint32 min, uint32 max, char *buf, int size)",
+   "subsystem": "dvar/domain",
+   "confidence": "inferred",
+   "evidence": "sole worker of the domain-description path; callers print its result with \"  %s\\n\" (Dvar_PrintDomain). Forwards to fn_080b245c with flags 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b281c",
+   "name": "Dvar_DomainStringEx",
+   "signature": "char *Dvar_DomainStringEx(int type, uint32 min, uint32 max, char *buf, int size, int32 *lineCount)",
+   "subsystem": "dvar/domain",
+   "confidence": "inferred",
+   "evidence": "same forwarding as Dvar_DomainString with the caller's flags word.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b2866",
+   "name": "Dvar_PrintDomain",
+   "signature": "void Dvar_PrintDomain(int type, uint32 min, uint32 max)",
+   "subsystem": "dvar/domain",
+   "confidence": "inferred",
+   "evidence": "formats a domain string and prints it with \"  %s\\n\"; called after the \"'%s' is not a valid value for dvar '%s'\" message in the set paths.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b28c0",
+   "name": "Dvar_ValuesEqual",
+   "signature": "uint8 Dvar_ValuesEqual(int type, uint32 a, uint32 b)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "type switch that compares dvar value words per type (bool byte, float, vec2/3/4, int, enum, string via strcmp, colour word). Name from role.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b29f0",
+   "name": "Dvar_SetLatched",
+   "signature": "void Dvar_SetLatched(struct dvar_s *d, uint32 value)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "writes the latched word (+0x0c) with per-type copy rules; the latch message \"will be changed upon restarting\" is set in Dvar_SetVariant.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b2a94",
+   "name": "Dvar_HasPendingLatch",
+   "signature": "uint8 Dvar_HasPendingLatch(struct dvar_s *d)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Returns true when the current value differs from the latched value.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b2ac8",
+   "name": "Dvar_IsAtReset",
+   "signature": "uint8 Dvar_IsAtReset(struct dvar_s *d)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Returns true when the current value equals the reset value.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b2afa",
+   "name": "Dvar_SetVariant",
+   "signature": "void Dvar_SetVariant(struct dvar_s *d, uint32 value, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "format string \"      dvar set %s %s\\n\" in this function, plus \"%s is read only.\", \"%s is write protected.\", \"%s is cheat protected.\", \"%s will be changed upon restarting.\" and the invalid-value message. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Cheat check reads the sv_cheats value word without a null check, as in the binary."
+  },
+  {
+   "addr": "0x080b2e54",
+   "name": "Dvar_FindHashed",
+   "signature": "struct dvar_s *Dvar_FindHashed(const char *name)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Hash lookup: bucket from fn_080b1274(name), chain through hash_next.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b2ed8",
+   "name": "Dvar_Lookup",
+   "signature": "struct dvar_s *Dvar_Lookup(const char *name)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Thin wrapper around Dvar_FindHashed (callers use the returned pointer).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b2eec",
+   "name": "Dvar_ClearModified",
+   "signature": "void Dvar_ClearModified(struct dvar_s *d)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Clears dvar+0x07 (modified flag).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b2ef8",
+   "name": "Dvar_MarkModified",
+   "signature": "void Dvar_MarkModified(struct dvar_s *d)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Sets dvar+0x07 (modified flag).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b2f04",
+   "name": "Dvar_SetEnumList",
+   "signature": "void Dvar_SetEnumList(struct dvar_s *d, const char *const *list)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Enum domain update: count the NULL-terminated string list, store count and list in the domain words, re-resolve the value, and latch it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b2faa",
+   "name": "Dvar_GetBool",
+   "signature": "uint8 Dvar_GetBool(const char *name)",
+   "subsystem": "dvar/access",
+   "confidence": "inferred",
+   "evidence": "Typed accessor: bool. Missing dvar yields 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b2ffc",
+   "name": "Dvar_GetInt",
+   "signature": "int Dvar_GetInt(const char *name)",
+   "subsystem": "dvar/access",
+   "confidence": "inferred",
+   "evidence": "Typed accessor: int. Missing dvar yields 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b3054",
+   "name": "Dvar_GetFloat",
+   "signature": "float Dvar_GetFloat(const char *name)",
+   "subsystem": "dvar/access",
+   "confidence": "inferred",
+   "evidence": "Typed accessor: float. Missing dvar yields 0.0f.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b318a",
+   "name": "Dvar_GetString",
+   "signature": "const char *Dvar_GetString(const char *name)",
+   "subsystem": "dvar/access",
+   "confidence": "inferred",
+   "evidence": "Typed accessor: string. Missing dvar yields \"\". Enum returns its string.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b31d4",
+   "name": "Dvar_GetDisplayString",
+   "signature": "const char *Dvar_GetDisplayString(const char *name)",
+   "subsystem": "dvar/access",
+   "confidence": "inferred",
+   "evidence": "Display string: the value rendered through fn_080b187c under the lock.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b3234",
+   "name": "Dvar_GetColorFloat",
+   "signature": "void Dvar_GetColorFloat(struct dvar_s *d, float *out)",
+   "subsystem": "dvar/access",
+   "confidence": "inferred",
+   "evidence": "Colour dvar to four floats in [0,1]: bytes times 0.003921569f (1/255).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b32de",
+   "name": "Dvar_GetColorOrWhite",
+   "signature": "void Dvar_GetColorOrWhite(const char *name, float *out)",
+   "subsystem": "dvar/access",
+   "confidence": "inferred",
+   "evidence": "Colour accessor; a missing dvar yields opaque white (vec4 1,1,1,1).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b3322",
+   "name": "Dvar_Shutdown",
+   "signature": "void Dvar_Shutdown(void)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Shutdown: release value storage and owned names of every dvar in the name-sorted list, then clear all dvar globals and the hash buckets.",
+   "status": "translated",
+   "notes": "g_085b7654 and g_085b7655 are treated as byte-wide; their store widths are not confirmed."
+  },
+  {
+   "addr": "0x080b3404",
+   "name": "Dvar_ForceStringType",
+   "signature": "void Dvar_ForceStringType(struct dvar_s *d)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Makes the dvar owned-name and string-typed: takes ownership of the name, converts the current value to a heap string, and releases a previous vector buffer.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b34da",
+   "name": "Dvar_ClearFlagsIfNotOwned",
+   "signature": "void Dvar_ClearFlagsIfNotOwned(struct dvar_s *d, uint16 mask)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Clears flag bits on a dvar that does not own its name; converts it to a string when the 0x7000 change bits are then clear. [rename common: Objdump: tests flags&0x4000 (OWNS_NAME) and returns immediately if SET; only clears flags when not owned, then demotes if 0x7000 clear. Name was inverted.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b352c",
+   "name": "Dvar_ClearFlagsGlobal",
+   "signature": "void Dvar_ClearFlagsGlobal(uint32 mask)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Applies Dvar_ClearFlagsIfOwned to every dvar whose flags intersect mask.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b3570",
+   "name": "Dvar_SetReset",
+   "signature": "void Dvar_SetReset(struct dvar_s *d, uint32 value)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Stores the reset (default) value with the per-type copy rules.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b362e",
+   "name": "Dvar_SetCurrentAndLatched",
+   "signature": "void Dvar_SetCurrentAndLatched(struct dvar_s *d, uint32 value)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Stores the current and latched values together with the per-type copy rules.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b3740",
+   "name": "Dvar_Redefine",
+   "signature": "void Dvar_Redefine(struct dvar_s *d, const char *name, uint8 type, uint16 flags, uint32 value_in, uint32 min, uint32 max)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Re-types a dvar: sets type and domain, re-resolves the current value against the new domain (unless the cheat/read-only policy skips it), then stores reset and current/latched values and ORs the flags into the global.",
+   "status": "translated",
+   "notes": "Re-type path: stack-argument frame recovered from the disassembly (out pointer at ebp-0x20/-0x24)."
+  },
+  {
+   "addr": "0x080b38a4",
+   "name": "Dvar_InitOut",
+   "signature": "union DvarValue Dvar_InitOut(struct dvar_s *d, union DvarValue value, uint8 type, uint16 flags, union DvarLimits domain)",
+   "subsystem": "dvar/set",
+   "confidence": "unknown",
+   "evidence": "Stores a word into *out and returns out. The other two arguments are unused.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b38d8",
+   "name": "Dvar_ReplaceOwnedName",
+   "signature": "void Dvar_ReplaceOwnedName(struct dvar_s *d, const char *newname, uint8 type, uint16 flags, uint32 value_in, uint32 min, uint32 max)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Replaces an owned name: stores the current value, converts to string, frees the old name, installs the new name, clears the owned bit and re-defines.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b39cc",
+   "name": "Dvar_UpdateEnumNameAndDomain",
+   "signature": "void Dvar_UpdateEnumNameAndDomain(struct dvar_s *d, const char *name, uint8 type, uint16 flags, uint32 value_in, uint32 min, uint32 max)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Installs a new name and, for enum dvars, the new domain, when the new flags gain the 0x1000 bit that the existing dvar lacks.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b3a40",
+   "name": "Dvar_ApplyLatched",
+   "signature": "void Dvar_ApplyLatched(struct dvar_s *d)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Applies the latched value as a set from the internal source.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b3ab0",
+   "name": "Dvar_Update",
+   "signature": "void Dvar_Update(struct dvar_s *d, const char *name, uint8 type, uint16 flags, uint32 value, uint32 min, uint32 max)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Updates an existing dvar's definition and flags: domain/name refresh when the change bits differ, re-type for owned names, cheat-protected reset, and latch application.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b3c48",
+   "name": "Dvar_Create",
+   "signature": "struct dvar_s *Dvar_Create(const char *name, uint8 type, uint16 flags, uint32 value, uint32 min, uint32 max)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "\"Can't create dvar '%s': %i dvars already exist\" (limit 0x500). Allocates the next pool entry, copies the name when the flags request ownership, stores the per-type value words, inserts into the name-sorted list and the hash bucket. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Above 0x4ff entries the error call is followed by normal creation (no return); writes pool[0x500] past the pool if the call returns."
+  },
+  {
+   "addr": "0x080b3f22",
+   "name": "Dvar_Register",
+   "signature": "struct dvar_s *Dvar_Register(const char *name, uint8 type, uint16 flags, uint32 value, uint32 min, uint32 max)",
+   "subsystem": "dvar/register",
+   "confidence": "inferred",
+   "evidence": "Register-or-update: find by name, then create or update in place.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b3fd2",
+   "name": "Dvar_RegisterBool",
+   "signature": "struct dvar_s *Dvar_RegisterBool(const char *name, int8 value, uint16 flags)",
+   "subsystem": "dvar/register",
+   "confidence": "inferred",
+   "evidence": "Bool registration with zero domain. Returns the dvar (eax passes through). The upper three bytes of the value word are indeterminate in the binary; only the low byte is observable, so the value is zero-extended here.",
+   "status": "translated",
+   "notes": "Ghidra shows void; eax passes through from Dvar_Register and sv_cheats uses it, so modelled as returning the dvar."
+  },
+  {
+   "addr": "0x080b403a",
+   "name": "Dvar_RegisterInt",
+   "signature": "struct dvar_s *Dvar_RegisterInt(const char *name, uint32 value, uint32 min, uint32 max, uint16 flags)",
+   "subsystem": "dvar/register",
+   "confidence": "inferred",
+   "evidence": "Int registration with min/max domain.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b408c",
+   "name": "Dvar_RegisterFloat",
+   "signature": "struct dvar_s *Dvar_RegisterFloat(const char *name, float value, float min, float max, uint16 flags)",
+   "subsystem": "dvar/register",
+   "confidence": "inferred",
+   "evidence": "Float registration; value and domain are raw float words.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4232",
+   "name": "Dvar_RegisterString",
+   "signature": "struct dvar_s *Dvar_RegisterString(const char *name, const char *value, uint16 flags)",
+   "subsystem": "dvar/register",
+   "confidence": "inferred",
+   "evidence": "String registration (zero domain).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4292",
+   "name": "Dvar_RegisterEnum",
+   "signature": "struct dvar_s *Dvar_RegisterEnum(const char *name, const char *const *list, uint32 defval, uint16 flags)",
+   "subsystem": "dvar/register",
+   "confidence": "inferred",
+   "evidence": "Enum registration: domain is (count of list, list); default index as value.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4300",
+   "name": "Dvar_RegisterColor",
+   "signature": "struct dvar_s *Dvar_RegisterColor(const char *name, float r, float g, float b, float a, uint16 flags)",
+   "subsystem": "dvar/register",
+   "confidence": "inferred",
+   "evidence": "Colour registration from four float components, packed to one word.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b443a",
+   "name": "Dvar_SetBoolEx",
+   "signature": "void Dvar_SetBoolEx(struct dvar_s *d, int8 value, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Bool set. For non-bool dvars the value is remapped to 'C' (zero) or 'A'.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b44a8",
+   "name": "Dvar_SetIntEx",
+   "signature": "void Dvar_SetIntEx(struct dvar_s *d, uint32 value, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Int set. For int and enum dvars the raw value is used; otherwise the value is formatted with \"%i\" and the text is parsed by Dvar_SetVariant.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4526",
+   "name": "Dvar_SetFloatEx",
+   "signature": "void Dvar_SetFloatEx(struct dvar_s *d, float value, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Float set. Float dvars take the float bits directly; others format \"%g\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4598",
+   "name": "Dvar_SetVec2Ex",
+   "signature": "void Dvar_SetVec2Ex(struct dvar_s *d, float x, float y, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Two-float set. The vector path is taken when the dvar type is 4 (vec4), as in the binary, which then builds only two floats; otherwise \"%g %g\".",
+   "status": "translated",
+   "notes": "Vector branch tests type 4 (vec4, cmp byte [eax+6],4) but builds a two-float vector; kept as in the binary, likely a defect or mis-typed enum."
+  },
+  {
+   "addr": "0x080b462a",
+   "name": "Dvar_SetVec3Ex",
+   "signature": "void Dvar_SetVec3Ex(struct dvar_s *d, float x, float y, float z, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Three-float set: vec3 path for type 3, otherwise \"%g %g %g\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b46d4",
+   "name": "Dvar_SetVec4Ex",
+   "signature": "void Dvar_SetVec4Ex(struct dvar_s *d, float x, float y, float z, float w, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Four-float set: vec4 path for type 4, otherwise \"%g %g %g %g\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b478c",
+   "name": "Dvar_SetStringEx",
+   "signature": "void Dvar_SetStringEx(struct dvar_s *d, const char *s, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "String set: string dvars copy the text (bounded to 0x400); others parse the text through fn_080b1bae against the dvar's domain words.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4812",
+   "name": "Dvar_SetVec4OrColorEx",
+   "signature": "void Dvar_SetVec4OrColorEx(struct dvar_s *d, float r, float g, float b, float a, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Four-float set: colour dvars pack the components; others format \"%g %g %g %g\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4980",
+   "name": "Dvar_SetBool",
+   "signature": "void Dvar_SetBool(struct dvar_s *d, int8 value)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Bool set from the internal source.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b49aa",
+   "name": "Dvar_SetInt",
+   "signature": "void Dvar_SetInt(struct dvar_s *d, uint32 value)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Int set from the internal source.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b49cc",
+   "name": "Dvar_SetFloat",
+   "signature": "void Dvar_SetFloat(struct dvar_s *d, float value)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Float set from the internal source.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b49ee",
+   "name": "Dvar_SetVec2",
+   "signature": "void Dvar_SetVec2(struct dvar_s *d, float x, float y)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Two-float set from the internal source.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4a18",
+   "name": "Dvar_SetVec3",
+   "signature": "void Dvar_SetVec3(struct dvar_s *d, float x, float y, float z)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Three-float set from the internal source.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4a48",
+   "name": "Dvar_SetVec4",
+   "signature": "void Dvar_SetVec4(struct dvar_s *d, float x, float y, float z, float w)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Four-float set from the internal source.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4a80",
+   "name": "Dvar_SetString",
+   "signature": "void Dvar_SetString(struct dvar_s *d, const char *s)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "String set from the internal source.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4aa2",
+   "name": "Dvar_SetVec4OrColor",
+   "signature": "void Dvar_SetVec4OrColor(struct dvar_s *d, float r, float g, float b, float a)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Four-component colour/vector set from the internal source.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4ada",
+   "name": "Dvar_SetFromStringEx",
+   "signature": "void Dvar_SetFromStringEx(struct dvar_s *d, const char *text, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "\"'%s' is not a valid value for dvar '%s'\" in this function. Parses text against the dvar domain; an enum parse failure (-0x539) reports the error and falls back to the reset value. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4bd4",
+   "name": "Dvar_SetFromString",
+   "signature": "void Dvar_SetFromString(struct dvar_s *d, const char *text)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Text set from the internal source.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4bf6",
+   "name": "Dvar_SetOrCreateBool",
+   "signature": "void Dvar_SetOrCreateBool(const char *name, int8 value)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Bool set by name: creates a string dvar \"0\"/\"1\" (owned name) when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4c5e",
+   "name": "Dvar_SetOrCreateInt",
+   "signature": "void Dvar_SetOrCreateInt(const char *name, uint32 value)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Int set by name: creates a string dvar with \"%i\" text when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4cca",
+   "name": "Dvar_SetOrCreateFloat",
+   "signature": "void Dvar_SetOrCreateFloat(const char *name, float value)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Float set by name: creates a string dvar with \"%g\" text when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4d24",
+   "name": "Dvar_SetOrCreateVec2",
+   "signature": "void Dvar_SetOrCreateVec2(const char *name, float x, float y)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Two-float set by name: creates a string dvar \"%g %g\" when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4d8c",
+   "name": "Dvar_SetOrCreateVec3",
+   "signature": "void Dvar_SetOrCreateVec3(const char *name, float x, float y, float z)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Three-float set by name: creates a string dvar \"%g %g %g\" when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4e86",
+   "name": "Dvar_SetOrCreateString",
+   "signature": "void Dvar_SetOrCreateString(const char *name, const char *s)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "String set by name: creates a string dvar with the text when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4ed0",
+   "name": "Dvar_SetOrCreateColor",
+   "signature": "void Dvar_SetOrCreateColor(const char *name, uint8 r, uint8 g, uint8 b, uint8 a)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Colour set by name. When absent, the text is formatted with \"%g %g %g %g\" from the four byte components passed as ints (as the binary pushes them; this is a varargs/format mismatch present in the original). When present, the bytes are converted to float and set as a vec4-or-colour value.",
+   "status": "translated",
+   "notes": "Creation path passes the four colour bytes to a %g format as ints (movzx pushes); varargs mismatch kept."
+  },
+  {
+   "addr": "0x080b4fa2",
+   "name": "Dvar_SetStringOrCreateEx",
+   "signature": "struct dvar_s *Dvar_SetStringOrCreateEx(const char *name, const char *text, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Text set by name with a source: creates a string dvar when absent, else applies the text. Returns the dvar.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4ffa",
+   "name": "Dvar_SetStringOrCreate",
+   "signature": "struct dvar_s *Dvar_SetStringOrCreate(const char *name, const char *text)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Text set by name from the internal source. Returns the dvar.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b501c",
+   "name": "Dvar_SetFromUserInput",
+   "signature": "void Dvar_SetFromUserInput(const char *name, const char *text)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "User text set: applies with source 1; when the global gate g_085b7655 is set, marks the dvar 0x8000 and copies its value into the reset word.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b507a",
+   "name": "Dvar_OrFlags",
+   "signature": "void Dvar_OrFlags(struct dvar_s *d, uint16 flags)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "ORs flags into dvar+0x04.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5092",
+   "name": "Dvar_ResetToDefault",
+   "signature": "void Dvar_ResetToDefault(struct dvar_s *d, int source)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Sets the dvar to its reset value from the given source.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b50d0",
+   "name": "Dvar_ResetAllCheatProtected",
+   "signature": "void Dvar_ResetAllCheatProtected(void)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "Resets every dvar with the cheat-protect flag to its reset value, walking the name-sorted list from the head.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5138",
+   "name": "Dvar_InitSvCheats",
+   "signature": "void Dvar_InitSvCheats(void)",
+   "subsystem": "dvar/set",
+   "confidence": "inferred",
+   "evidence": "registers the \"sv_cheats\" dvar (flags 0x1018, bool 0), keeps the pointer in g_dvar_sv_cheats and sets g_085b7654. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b516e",
+   "name": "Dvar_ClearUnknownFlag0400",
+   "signature": "void Dvar_ClearUnknownFlag0400(void)",
+   "subsystem": "dvar/core",
+   "confidence": "unknown",
+   "evidence": "Clears flag 0x0400 on every pool entry. The walk starts at pool entry 0 and follows sorted_next from there, not from the list head (kept as in binary).",
+   "status": "translated",
+   "notes": "Walk starts at pool entry 0 and follows sorted_next, not the list head; kept."
+  },
+  {
+   "addr": "0x080b51bc",
+   "name": "Dvar_AnyLatchPending",
+   "signature": "uint32 Dvar_AnyLatchPending(void)",
+   "subsystem": "dvar/core",
+   "confidence": "inferred",
+   "evidence": "Returns 1 when any dvar in the sorted list has a pending latch.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b56c6",
+   "name": "Float_Max_080b56c6",
+   "signature": "float Float_Max_080b56c6(float a, float b)",
+   "subsystem": "math/words",
+   "confidence": "inferred",
+   "evidence": "max(a, b) via Float_SelectNonNegative(a - b, a, b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b56ea",
+   "name": "Float_Min_080b56ea",
+   "signature": "float Float_Min_080b56ea(float a, float b)",
+   "subsystem": "math/words",
+   "confidence": "inferred",
+   "evidence": "min(a, b) via Float_SelectNonNegative(b - a, a, b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b570e",
+   "name": "Float_RoundToInt_080b570e",
+   "signature": "int Float_RoundToInt_080b570e(float v)",
+   "subsystem": "math/words",
+   "confidence": "inferred",
+   "evidence": "Round half up: floor(v + 0.5) converted to int.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5744",
+   "name": "Vec2_Clear_080b5744",
+   "signature": "void Vec2_Clear_080b5744(float *v)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Zeroes a two-float vector.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5760",
+   "name": "Vec2_Set_080b5760",
+   "signature": "void Vec2_Set_080b5760(float *v, float x, float y)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Stores two floats into a vector.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5778",
+   "name": "Vec2_Copy_080b5778",
+   "signature": "void Vec2_Copy_080b5778(const float *src, float *dst)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Copies a two-float vector from src to dst.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5798",
+   "name": "Vec2_Equal",
+   "signature": "uint32 Vec2_Equal(const float *a, const float *b)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Returns 1 when two two-float vectors compare equal.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b57e6",
+   "name": "Vec3_Clear_080b57e6",
+   "signature": "void Vec3_Clear_080b57e6(float *v)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Zeroes a three-float vector.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5810",
+   "name": "Vec3_Set_080b5810",
+   "signature": "void Vec3_Set_080b5810(float *v, float x, float y, float z)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Stores three floats into a vector.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5834",
+   "name": "Vec3_Copy_080b5834",
+   "signature": "void Vec3_Copy_080b5834(const float *src, float *dst)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Copies a three-float vector from src to dst.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5864",
+   "name": "Vec3_Equal_080b5864",
+   "signature": "uint32 Vec3_Equal_080b5864(const float *a, const float *b)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Returns 1 when two three-float vectors compare equal.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b58ce",
+   "name": "Vec4_Clear",
+   "signature": "void Vec4_Clear(float *v)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Zeroes a four-float vector.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5904",
+   "name": "Vec4_Set",
+   "signature": "void Vec4_Set(float *v, float x, float y, float z, float w)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Stores four floats into a vector.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5932",
+   "name": "Vec4_Copy_080b5932",
+   "signature": "void Vec4_Copy_080b5932(const float *src, float *dst)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Copies a four-float vector from src to dst.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5972",
+   "name": "Vec4_Equal",
+   "signature": "uint32 Vec4_Equal(const float *a, const float *b)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Returns 1 when two four-float vectors compare equal.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b59fa",
+   "name": "Word_Copy",
+   "signature": "void Word_Copy(const uint32 *src, uint32 *dst)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Copies one word from src to dst.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5a0a",
+   "name": "Word_Equal",
+   "signature": "bool Word_Equal(const uint32 *a, const uint32 *b)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Compares two words (bool result).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5a20",
+   "name": "Str_NCaseCmpN",
+   "signature": "int Str_NCaseCmpN(const char *s1, const char *s2, int n)",
+   "subsystem": "math/words",
+   "confidence": "inferred",
+   "evidence": "Bounded case-insensitive compare (strncasecmp-like). Equal-length tails compare by raw byte; differing case-folded characters decide the sign.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5ab8",
+   "name": "Float_SelectNonNegative_080b5ab8",
+   "signature": "float Float_SelectNonNegative_080b5ab8(float a, float b, float c)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Returns b when a >= 0 (comparison as in the binary), otherwise c.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5b06",
+   "name": "MsgBuf_Init",
+   "signature": "void MsgBuf_Init(struct msgbuf_s *buf, int32 size, void *data, uint8 warn)",
+   "subsystem": "msg/buffer",
+   "confidence": "inferred",
+   "evidence": "Message buffer init: data, capacity, zero cursor, warn flag, clear overflow.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5b40",
+   "name": "MsgBuf_InitRead",
+   "signature": "void MsgBuf_InitRead(struct msgbuf_s *buf, int32 size, void *data)",
+   "subsystem": "msg/buffer",
+   "confidence": "inferred",
+   "evidence": "Reader init: warn enabled, transfer = MsgBuf_ReadData.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5b74",
+   "name": "MsgBuf_InitWrite",
+   "signature": "void MsgBuf_InitWrite(struct msgbuf_s *buf, int32 size, void *data, uint8 warn)",
+   "subsystem": "msg/buffer",
+   "confidence": "inferred",
+   "evidence": "Writer init: caller-chosen warn flag, transfer = fn_080b5ae4 (writer tag).",
+   "status": "translated",
+   "notes": "Writer transfer tag is fn_080b5ae4 (LAB_080b5ae4 in Ghidra), a code address outside this chunk; signature unknown."
+  },
+  {
+   "addr": "0x080b5bae",
+   "name": "Word_Clear",
+   "signature": "void Word_Clear(void *p)",
+   "subsystem": "math/words",
+   "confidence": "unknown",
+   "evidence": "Zeroes a four-byte field.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5bd2",
+   "name": "MsgBuf_IsReader",
+   "signature": "bool MsgBuf_IsReader(const struct msgbuf_s *buf)",
+   "subsystem": "msg/buffer",
+   "confidence": "inferred",
+   "evidence": "True when the transfer tag is the reader.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5be8",
+   "name": "MsgBuf_IsWriter",
+   "signature": "bool MsgBuf_IsWriter(const struct msgbuf_s *buf)",
+   "subsystem": "msg/buffer",
+   "confidence": "inferred",
+   "evidence": "True when the transfer tag is the writer.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5bfe",
+   "name": "MsgBuf_WriteData",
+   "signature": "void MsgBuf_WriteData(struct msgbuf_s *buf, uint32 len, const void *src)",
+   "subsystem": "msg/buffer",
+   "confidence": "inferred",
+   "evidence": "\"Couldn't write %i bytes to %i-byte buffer (only %i bytes free)\". Appends len bytes; on overflow sets the flag and optionally warns. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Write uses (int)(len + cursor) comparison as in the binary (unsigned len, signed maxsize)."
+  },
+  {
+   "addr": "0x080b5d5e",
+   "name": "MsgBuf_ReadData",
+   "signature": "void MsgBuf_ReadData(struct msgbuf_s *buf, uint32 len, void *dst)",
+   "subsystem": "msg/buffer",
+   "confidence": "inferred",
+   "evidence": "\"Couldn't read %i bytes from %i-byte buffer (only %i bytes left)\". Reads len bytes from the cursor into dst; on overflow sets the flag. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5eb0",
+   "name": "ParseSession_Get",
+   "signature": "struct ComParseState *ParseSession_Get(void)",
+   "subsystem": "parse/session",
+   "confidence": "inferred",
+   "evidence": "Returns the parse-session singleton (g_0817e420).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5eba",
+   "name": "ParseSlot_Init",
+   "signature": "void ParseSlot_Init(struct ParseSession *slot)",
+   "subsystem": "parse/session",
+   "confidence": "inferred",
+   "evidence": "Initialises a parse slot: fixed marker fields and the shared literal pointers.",
+   "status": "translated",
+   "notes": "unknown_40c/unknown_410 point at the \"Already parsing:\" literal (shared string pool entry)."
+  },
+  {
+   "addr": "0x080b5f32",
+   "name": "Com_BeginParseSession",
+   "signature": "void Com_BeginParseSession(const char *name)",
+   "subsystem": "parse/session",
+   "confidence": "observed",
+   "evidence": "\"\\x15Com_BeginParseSession: session overflow trying to parse %s\\n\" (0x0814f600) and the \"Already parsing:\" listing. Pushes a named slot. At 15 active slots it lists them and reports overflow, then pushes anyway (the binary does not return), writing past the struct as the original does.",
+   "status": "translated",
+   "notes": "At depth 15 it reports overflow and then still pushes; slot 16 lies past the singleton."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x085abe00",
+   "name": "g_085abe00",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "head of the name-sorted list: walked by Dvar_Shutdown, Dvar_ClearFlagsGlobal, Dvar_ResetAllCheatProtected; insertion point in Dvar_Create (strcasecmp order)."
+  },
+  {
+   "addr": "0x085abe04",
+   "name": "g_085abe04",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "OR of dvar flags on every set/redefine (Dvar_SetVariant, Dvar_Redefine); zeroed in Dvar_Shutdown."
+  },
+  {
+   "addr": "0x085abe08",
+   "name": "g_085abe08",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "pool count; Dvar_Create refuses above 0x4ff, message \"%i dvars already exist\" (string evidence in Dvar_Create)."
+  },
+  {
+   "addr": "0x085abe10",
+   "name": "g_dvar_sv_cheats",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "pointer assigned from Dvar_RegisterBool(\"sv_cheats\", 0, 0x1018) in Dvar_InitSvCheats; value byte read as the cheat gate."
+  },
+  {
+   "addr": "0x085abe20",
+   "name": "dvar_pool",
+   "type": "struct dvar_s[0x500]",
+   "confidence": "inferred",
+   "evidence": "pool of 0x500 entries of 0x24 bytes (index*0x24 in Dvar_Create; 0x4ff limit). Ends at 0x085b7220, where the hash table begins."
+  },
+  {
+   "addr": "0x085b7220",
+   "name": "dvar_hashTable",
+   "type": "struct dvar_s *[0x100]",
+   "confidence": "inferred",
+   "evidence": "hash buckets: 0x400-byte memset in Dvar_Shutdown; bucket from fn_080b1274(name)."
+  },
+  {
+   "addr": "0x085b7654",
+   "name": "dvar_initialised",
+   "type": "uint8",
+   "confidence": "unknown",
+   "evidence": "set to 1 by Dvar_InitSvCheats, cleared by Dvar_Shutdown; meaning not established."
+  },
+  {
+   "addr": "0x085b7655",
+   "name": "dvar_loadingConfig",
+   "type": "uint8",
+   "confidence": "unknown",
+   "evidence": "gate in Dvar_SetFromUserInput (set -> mark 0x8000 and copy value to reset); meaning not established."
+  },
+  {
+   "addr": "0x0817e420",
+   "name": "g_0817e420",
+   "type": "struct parse_session_s",
+   "confidence": "inferred",
+   "evidence": "singleton returned by ParseSession_Get; depth at +0x45c0, 0x45c-byte slots used by Com_BeginParseSession."
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "dvar_s",
+   "size": "0x24",
+   "evidence": "Pool stride 0x24 (index*0x24 in Dvar_Create); fields at +0x00 name, +0x04 flags, +0x06 type, +0x07 modified, +0x08 value, +0x0c latched, +0x10 reset, +0x14/+0x18 domain, +0x1c sorted link, +0x20 hash link."
+  },
+  {
+   "name": "msgbuf_s",
+   "size": "unobserved (fields through +0x10)",
+   "evidence": "MsgBuf_Init/WriteData/ReadData field offsets; transfer tag at +0x10 selects reader/writer."
+  },
+  {
+   "name": "parse_slot_s",
+   "size": "0x45c",
+   "evidence": "slot stride 0x45c (Com_BeginParseSession index math); name at +0x41c, 64 bytes."
+  },
+  {
+   "name": "parse_session_s",
+   "size": "0x45c4",
+   "evidence": "16 slots then depth at +0x45c0 (Com_BeginParseSession compares depth to 0xf)."
+  }
+ ],
+ "open_questions": [
+  "Dvar_SetVec2Ex (0x080b4598) tests type 4 (vec4) yet builds a two-float vector: intended type 2, or a defect kept from the original?",
+  "Dvar_Create (0x080b3c48) and Com_BeginParseSession (0x080b5f32) continue after their overflow messages. Is fn_08061124 noreturn in practice? If not, the pool and parse writes past the array are real behaviour.",
+  "Dvar_ClearUnknownFlag0400 (0x080b516e) starts from pool entry 0 rather than the sorted list head. Confirm this is the original iteration.",
+  "Type tags 0..8 are inferred from comparisons and conversions (bool, float, vec2-4, int, enum, string, colour); no type-name table was recovered from the binary.",
+  "Flag bits 0x0400, 0x1000, 0x2000 and 0x8000 have no observed message; their names are placeholders.",
+  "Dvar_SetOrCreateColor formats four int-promoted bytes with %g: the binary passes ints to a varargs double format.",
+  "fn_080b5ae4 (writer transfer tag, LAB_080b5ae4 in Ghidra) is outside this chunk; its identity and signature are unknown.",
+  "fn_080b245c return is assumed to be char* (the caller prints the returned pointer); confirm with the chunk that defines it.",
+  "Float compare semantics for dvar equality and the 0.003921569f colour scale were checked against disassembly; struct sizes for msgbuf_s are not observed."
+ ]
+}

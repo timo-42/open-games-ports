@@ -1,0 +1,52 @@
+# Gameplay lane net_clients: more than 4 clients, teams, "server is full", rate/snaps userinfo
+
+Tags: [O] observed on this host, [I] inferred, [U] unknown. Plugin: `tools/oracle/scenarios/net_clients.py`. Reconstruction built privately in `.local/cod2/lanes/net_clients/build`.
+
+## Result
+
+| Case | What it exercises | Original runs: identical / variable items | Recon runs | Mismatches |
+|---|---|---|---|---|
+| `net_clients_tdm8_mp_toujane` | `sv_maxclients 8`, `tdm`, 8 fake clients (4 allies / 4 axis, 8 different weapons) plus a 9th client rejected with `error\nEXE_SERVERISFULL` (server.log `Client 8 connecting`, no slot); team and weapon menus, spawn near team, two `setviewpos` gatherings that put both teams face to face, ADS/stand/crouch/prone/jump/reload/fire, kills, killcam, respawn by use button, `say`, `score`, `kill`, per-client `userinfo` with rate/snaps changes, `rcon status` with 8 slots, disconnects | 323591 / 1 (3 runs) | 5 | 0 |
+| `net_clients_dm20_mp_toujane` | `sv_maxclients 20`, `dm`, 12 fake clients (client numbers 0..11 of 20 slots), same script, 24 s | 411327 / 0 (3 runs) | 3 | 0 |
+| Regression `duel_dm_toujane` (recon, tag `-net_clients`) | existing duel | 84560 | 1 | 0 |
+
+Variable item in tdm8 [O]: `oob:rcon_status_after`. After A's own disconnect the status row of the freed slot is `ZMBI` and its `lastmsg` column is wall-clock (1950 or 2000 ms). It is a timing family (the harness's ping/lastmsg mask only matches rows of connected clients) and is not used for the comparison.
+
+## Scenario design and determinism controls
+
+- Players join staggered 250 ms apart; every decision uses the deciding client's own latest snapshot (server time, its ps, its entities). Team and weapon menu responses (`mr <serverid> <menu> <response>`) use the stock `team_britishgerman` / `weapon_british` / `weapon_german` menus. Weapons come from the weapon menus (allies: thompson, sten, bren, enfield, m1garand; axis: mp40, kar98k, mp44, g43).
+- [O] `sv_floodProtect`: a game command (`mr`, `say`, `score`, `kill`, `setviewpos`) that arrives within about a second of the same client's previous command is silently dropped. The reconstruction, whose frames are slower, lost `mr weapon` exactly 1000 ms after `mr team` whenever a packet crossed a frame boundary. Every client therefore keeps at least 1500 ms between commands (this also made the join deterministic on the original).
+- [O] Direct fire between teams needs a shared arena. Players are teleported (`setviewpos`) to the ground that client 0 walked: allies at its position after 3 s, axis 110 units further along its path; client 0's positions are recorded from its own snapshots more than 3 s before anybody reads them. Teammates stand 22 units apart sideways so shots do not cross them (friendly fire is off).
+- Firefight windows `9000..14500` and `18000..22500` ms after T0: stand up (jump), hold ADS, aim at the nearest `eType 1` entity of the other team found in the client's own snapshot and fire. ADS is deliberate: it exercises the view-motion / ADS spread chain that hip fire does not.
+- Respawn: while the client's `pm_type >= 4` or health 0 it holds the use button.
+- The 9th client ("Z") only receives the OOB reply; its text is stored in `scenario_notes.reject_Z`.
+- [O] `fs_game mods/netclients` (an empty mod directory) is set for both cases. Without it the reconstruction showed an intermittent script defect (see Open items) in 8 of 11 runs; with it, 0 of 8. This is not a fix, only a way to keep the cases comparable.
+- Bots: 8 `addtestclient` bots on top of 12 fake clients (all 20 slots busy) were tried first. They are not deterministic on the original with this many clients (their usercmds consume `rand()` per server iteration), so the final dm20 case has no bots.
+- dm20 is limited to 24 s: in a 30 s run the original and the reconstruction both showed a harness/system timing window (usercmd arrival one frame late for all 12 clients) around T0+28.1 to 28.75 s. It is not a server effect (the server message times of client A show no gap).
+
+## What rate and snaps do (and do not do) on loopback
+
+- [O] `SV_SendMessageToClient` (0x0809aba2) sends a snapshot every frame when the peer's netchan type is 2 or `Sys_IsLANAddress` (0x080d5638) is true; 127.0.0.1 is a LAN address. `rate` and `snaps` therefore cannot delay or thin snapshots on the loopback-only sandbox. Snapshot rate limiting (`SV_RateMsec` 0x0809aad0, `rateDelayed` flag 0x20e2c) is [U] and not covered; it would need a non-LAN source address.
+- [O] `SV_UserinfoChanged` (0x08090...) still stores the clamped rate (below 1000 becomes 1000, above 90000 becomes 90000, missing becomes 5000) and `snapshotMsec = 1000 / clamp(snaps, 1, 30)`. The profiles send rate 500 and 200000 and rate 0 (clients 5, 6, 7), and `rcon status` shows the stored value; the reconstruction matches.
+
+## Fixes (all located by differential traces; addresses are original addresses)
+
+1. `PM_CmdScale` 0x080e1c58 (chunk_041): the stance factors were the double literals 0.15 and 0.65. The original multiplies by the float constants at 0x08154fa0 / 0x08154fa4 (0.15f, 0.65f) at 0x080e1e09..0x080e1ee7. Effect: crouched movement differed by 1 ulp from the first collision (a slope contact, `origin[2]` -1.77407241 vs -1.77407229 at T0+7500 for a crouched client). Located by logging `PM_Friction`, `PM_Accelerate` and `PM_WalkMove` states: the `wishspeed` argument of `PM_Accelerate` differed (0x42f70000 vs 0x42f70001).
+2. `G_AntilagRewindClients` 0x0811fc76 (chunk_052): the reconstruction tested `sessionState == 2 && sessionState == 0` (always false), so lag compensation never moved anybody. The original tests `connected` (+0x26c4) `== 2` and `sessionState` (+0x26a8) `== 0` (0x0811fcf8, 0x0811fd16). This bug is invisible with one stationary opponent and matters as soon as several clients move and shoot with `g_antilag 1`.
+3. `Vec2_RandomDirection` 0x0811fa70 (chunk_052) and `G_ComputeFovViewOffset` 0x0812061a (chunk_053): degrees to radians used the truncated literal 0.017453292; the original multiplies by the double 0.017453292519943295 (0x0815ed50 / 0x0815edc8) in extended precision before the float store (0x0811faa5, 0x08120628). The first one changes the random spread direction of every bullet; the second (smoke/fov weapons) is not exercised by these cases (evidence: disassembly only).
+4. `WeaponView_IntegrateGunKick` 0x080f1a6a (chunk_045): `remaining - 0.005f` must be `remaining - 0.005` (double constant at 0x081558e0, extended subtraction stored to float, 0x0811b82..0x080f1b88). The step stays the float 0x3ba3d70a. Effect: the gun-kick spring state (client +0x2880 / +0x288c) drifted by 2 to 13 ulp every second shot. Found by dumping the gclient view fields at `ClientThink_real` exit.
+5. `WeaponView_ApplyYawBob` 0x080f14aa, `WeaponView_ApplyTimedKickB` 0x080f166c, `WeaponView_ApplyTimedKickA` 0x080f1d52 (chunk_045): the view-motion slots +4, +0x0c, +0x10, +0x24, +0x28 are floats loaded with `fld DWORD` / `fmul DWORD [..]` in the original. The reconstruction's chunk_045 struct declares them int32 and converted them numerically, so a slot holding an int timestamp as float bits (about 4e-41) became 29100 and the ADS view offset was off by 5 degrees (gun yaw 123.2 vs 128.7 at T0+9150). The other lane fixed the same type in chunk_044; chunk_045 has its own copy of `view_motion_s`. Located by logging the ComputeOffset sub-steps (`out` after each of ComputeAdsAimOffset, ComputeIdleSway, ApplyYawBob, TimedKickB, IntegrateGunKick) against the original's call-site return addresses (0x080f1cca..0x080f1d12).
+6. `SV_ClipMoveToEntity_Line` 0x0809cf08 (chunk_023): `tr->surfaceFlags = t.dist` converted the DObj trace record's raw dword (surface flags 0xd00000, a float denormal) to int, giving 0. The original copies the dword (0x0809d20d..0x0809d210). Effect: bullet impacts on map entities with a DObj/xmodel (static props) lost `surfType` (13 in the original). Seen as one impact entity of client 9's mp40 at T0+6050 in dm20.
+
+## Evidence summary
+
+- Join/team/weapon/spawn sequence, 8 players, 20 slots: identical command streams, configstrings, clientState (team), ps and entity streams, game log and rcon replies (0 mismatches over both cases).
+- First mismatch before the fixes (tdm8 dbg case, 12 s): C `origin[2]` at T0+7500 (fix 1), then A's first ADS bullet at T0+9250 (fixes 3, 4, 5; fix 2 applies to every shot but changed no recorded item), then the dm20 impact surface (fix 6).
+
+## Open items
+
+- [O] Resolved (coordinator retest 2026-11-18): the cause was the sign-extended u16 object id in `Scr_AddEntityFieldValue` (0x0811af3c), fixed by lane gt_tdm. 4 recon runs of `net_clients_tdm8_mp_toujane` with `+set fs_game main` against 3 new original runs (captures `-nofsg`) show 0 mismatches. Previous description: intermittent script defect. In 8 of 11 runs without `fs_game` (and 1 of 2 early runs with it) the reconstruction lost a script assignment: `self.pers["team"] = "spectator"` in `Callback_PlayerConnect` read back as undefined for one to three clients (an instrumented overlay printed `DBG;J4;<n>;UNDEF` right after the assignment; the original always printed `spectator`). The affected clients differed from run to run, and the script variable pool state already differed between original and reconstruction at that point (about 1% of pool entries in different hash-chain states). The suspects are `ScrVar_AllocateInSlot` / `ScrVar_UnlinkChild` (chunk_014) hash-chain handling; not located. The final runs (tdm8 x5, dm20 x3, with `fs_game mods/netclients` and 1500 ms command spacing) never showed it, but a root cause was not established.
+- [U] `shotgun_mp` and `kar98k_sniper_mp` were removed from the weapon lists. In an earlier dm20 variant the reconstruction produced no impact entities for two shotgun clients and a different `surfType` for the sniper; fix 6 may have resolved the second. Not retested.
+- [U] Rate and snaps limiting of snapshots (non-LAN peers) is not covered (see above). PVS culling is exercised only through the entity sets of the clients' own snapshots (entities appear and disappear as players move and gather); no explicit PVS test.
+- [U] Test clients (`addtestclient`) mixed with fake clients: not deterministic in a 20-slot run on the original; not covered.
+- The first fix location of the intermittent defect and the timing window near T0+28 s in 30 s dm20 runs are harness or sandbox effects, listed in `done.json`.

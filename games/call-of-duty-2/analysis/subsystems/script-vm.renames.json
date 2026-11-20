@@ -1,0 +1,236 @@
+{
+ "renames": [
+  {
+   "addr": "0x080842a4",
+   "old": "Scr_ClearThreadEntry",
+   "new": "Scr_ResumeTickThreads",
+   "confidence": "inferred",
+   "evidence": "Doc section 10.1: per-tick scheduler finding timeArray[time] and resuming threads; 'clear thread entry' does not describe it."
+  },
+  {
+   "addr": "0x08083d12",
+   "old": "Scr_ShutdownThreads",
+   "new": "Scr_ResumeSavedStacks",
+   "confidence": "inferred",
+   "evidence": "Disassembly: calls Scr_RestoreVarList 0x08082c0a, VM_ExecuteInternal-style resume path and ScrVar_Release; resumes each saved stack, does not shut anything down. Called from tick path, not Shutdown."
+  },
+  {
+   "addr": "0x080855e2",
+   "old": "Scr_BeginNested",
+   "new": "Scr_AdvanceTime",
+   "confidence": "observed",
+   "evidence": "Disassembly: calls 0x0808561a (run threads), 0x0807e69a, then inc DWORD [0x8397518] & 0xffffff (scrVarPub time); only caller G_RunFrame."
+  },
+  {
+   "addr": "0x08085604",
+   "old": "Scr_EndNested",
+   "new": "Scr_RewindTime",
+   "confidence": "observed",
+   "evidence": "Disassembly: dec DWORD [0x8397518]; and 0xffffff; nothing else."
+  },
+  {
+   "addr": "0x0808561a",
+   "old": "Scr_ClearCurrentThread",
+   "new": "Scr_RunCurrentThreads",
+   "confidence": "inferred",
+   "evidence": "Disassembly: thin wrapper that calls 0x080842a4 (tick scheduler)."
+  },
+  {
+   "addr": "0x08083a6e",
+   "old": "Scr_RunNestedCall",
+   "new": "Scr_NotifyNum",
+   "confidence": "inferred",
+   "evidence": "Disassembly: calls 0x080800ec (arg marker setup) and 0x0807e998 (entity var lookup by index/class) then delivers notify via Scr_RunVarListCalls; params are entnum, classnum, string id, count (doc 10.2)."
+  },
+  {
+   "addr": "0x0808359e",
+   "old": "Scr_RunVarListCalls",
+   "new": "Scr_NotifyObject",
+   "confidence": "inferred",
+   "evidence": "Doc 10.2: it is notify delivery (VM_Notify lineage): tests waittill registrations under 0x1fffe, 'w' (waittillmatch) header, wakes threads; chunk 016 comments /* notify */."
+  },
+  {
+   "addr": "0x080844de",
+   "old": "Scr_Init_080844de",
+   "new": "Scr_InitVariableRoots",
+   "confidence": "inferred",
+   "evidence": "Doc 10.4: allocates timeArray, notify array, level, anim roots; address suffix collided with process-level Scr_Init 0x0807ff6e."
+  },
+  {
+   "addr": "0x08084522",
+   "old": "Scr_Shutdown_08084522",
+   "new": "Scr_ShutdownVariableRoots",
+   "confidence": "inferred",
+   "evidence": "Doc 10.4: drains roots at G_ShutdownGame; distinct from process-level Scr_Shutdown 0x08080002."
+  },
+  {
+   "addr": "0x08082a92",
+   "old": "Scr_BuildVarList",
+   "new": "Scr_SaveStack",
+   "confidence": "inferred",
+   "evidence": "Doc 10.5: copies value-stack slice plus local ids into a VAR_STACK buffer for OP_wait/waittill; no variable list involved."
+  },
+  {
+   "addr": "0x08082c0a",
+   "old": "Scr_RestoreVarList",
+   "new": "Scr_RestoreStack",
+   "confidence": "inferred",
+   "evidence": "Doc 10.5; called from 0x08083d12 resume loop (disassembly call at 0x8083d8c)."
+  },
+  {
+   "addr": "0x08082d9c",
+   "old": "Scr_ReleaseVarList",
+   "new": "Scr_FreeSavedStack",
+   "confidence": "inferred",
+   "evidence": "Doc 10.5: frees saved stack buffer."
+  },
+  {
+   "addr": "0x08082f06",
+   "old": "Scr_DetachVarList",
+   "new": "Scr_DetachSavedStack",
+   "confidence": "inferred",
+   "evidence": "Doc 10.5: detaches saved stack buffer from its owner thread."
+  },
+  {
+   "addr": "0x081101b4",
+   "old": "G_ReleaseScriptString",
+   "new": "G_NewScriptString",
+   "confidence": "inferred",
+   "evidence": "Disassembly: tail-calls 0x08079e58 (ScrStr_InternCStringFlag1); used with literals to fill scr_const ids; interns and pins, releases nothing."
+  },
+  {
+   "addr": "0x0811ef90",
+   "old": "G_SendEntityEvent",
+   "new": "G_CallDeleteScript",
+   "confidence": "observed",
+   "evidence": "Disassembly: loads DWORD [0x884e7ac] (codescripts/delete::main offset registered in GScr_LoadScripts), passes entity to 0x0811b284 spawn-thread call; no event is sent."
+  },
+  {
+   "addr": "0x080f9d8a",
+   "old": "Player_ClearWeaponAmmo",
+   "new": "PlayerCmd_takeweapon",
+   "confidence": "observed",
+   "evidence": "Player method table 0x08158a40 (name,handler,flag triples read from ELF) maps handler 0x080f9d8a to string 'takeweapon'; matches PlayerCmd_* convention already used in symbols.json."
+  },
+  {
+   "addr": "0x080f9e64",
+   "old": "Player_ClearAllWeapons",
+   "new": "PlayerCmd_takeallweapons",
+   "confidence": "observed",
+   "evidence": "Player method table 0x08158a40 (name,handler,flag triples read from ELF) maps handler 0x080f9e64 to string 'takeallweapons'; matches PlayerCmd_* convention already used in symbols.json."
+  },
+  {
+   "addr": "0x080f9f6a",
+   "old": "Player_GetWeaponD4Name",
+   "new": "PlayerCmd_getcurrentweapon",
+   "confidence": "observed",
+   "evidence": "Player method table 0x08158a40 (name,handler,flag triples read from ELF) maps handler 0x080f9f6a to string 'getcurrentweapon'; matches PlayerCmd_* convention already used in symbols.json."
+  },
+  {
+   "addr": "0x080fa030",
+   "old": "Player_GetWeaponD0Name",
+   "new": "PlayerCmd_getcurrentoffhand",
+   "confidence": "observed",
+   "evidence": "Player method table 0x08158a40 (name,handler,flag triples read from ELF) maps handler 0x080fa030 to string 'getcurrentoffhand'; matches PlayerCmd_* convention already used in symbols.json."
+  },
+  {
+   "addr": "0x080fa1b6",
+   "old": "Player_SelectOwnedWeapon",
+   "new": "PlayerCmd_switchtoweapon",
+   "confidence": "observed",
+   "evidence": "Player method table 0x08158a40 (name,handler,flag triples read from ELF) maps handler 0x080fa1b6 to string 'switchtoweapon'; matches PlayerCmd_* convention already used in symbols.json."
+  },
+  {
+   "addr": "0x081105c0",
+   "old": "GScr_getclanid",
+   "new": "ScriptEntCmd_getclanid",
+   "confidence": "observed",
+   "evidence": "Entity method table 0x08188720 maps handler 0x081105c0 to 'getclanid' (methods, not builtin functions); matches existing ScriptEntCmd_* convention."
+  },
+  {
+   "addr": "0x081105d4",
+   "old": "GScr_getclanname",
+   "new": "ScriptEntCmd_getclanname",
+   "confidence": "observed",
+   "evidence": "Entity method table 0x08188720 maps handler 0x081105d4 to 'getclanname' (methods, not builtin functions); matches existing ScriptEntCmd_* convention."
+  },
+  {
+   "addr": "0x081105e8",
+   "old": "GScr_getclanmotto",
+   "new": "ScriptEntCmd_getclanmotto",
+   "confidence": "observed",
+   "evidence": "Entity method table 0x08188720 maps handler 0x081105e8 to 'getclanmotto' (methods, not builtin functions); matches existing ScriptEntCmd_* convention."
+  },
+  {
+   "addr": "0x08111e90",
+   "old": "GScr_playrumble",
+   "new": "ScriptEntCmd_playrumble",
+   "confidence": "observed",
+   "evidence": "Entity method table 0x08188720 maps handler 0x08111e90 to 'playrumble' (methods, not builtin functions); matches existing ScriptEntCmd_* convention."
+  },
+  {
+   "addr": "0x08111e96",
+   "old": "GScr_playlooprumble",
+   "new": "ScriptEntCmd_playlooprumble",
+   "confidence": "observed",
+   "evidence": "Entity method table 0x08188720 maps handler 0x08111e96 to 'playlooprumble' (methods, not builtin functions); matches existing ScriptEntCmd_* convention."
+  },
+  {
+   "addr": "0x08111e9c",
+   "old": "GScr_stoprumble",
+   "new": "ScriptEntCmd_stoprumble",
+   "confidence": "observed",
+   "evidence": "Entity method table 0x08188720 maps handler 0x08111e9c to 'stoprumble' (methods, not builtin functions); matches existing ScriptEntCmd_* convention."
+  }
+ ],
+ "rejected": [
+  {
+   "addr": "0x08085164",
+   "old": "Scr_AddIndex",
+   "suggested": "Scr_AddBool",
+   "reason": "Disassembly is byte-identical to Scr_AddInt 0x08085140 (type 6 int). Which source name the second copy had is not provable; Scr_AddBool is a guess. Keep."
+  },
+  {
+   "addr": "0x08103b2e",
+   "old": "HudElem_FieldWrite",
+   "suggested": "HudElem_ScriptGetField",
+   "reason": "Doc 10.12 says read/write are swapped via table slot +0x14/+0x18, but the field table swap evidence needs callers verified per-slot; not re-verified here and rename risks confusion. Left for the hudelem lane."
+  },
+  {
+   "addr": "0x08103ba6",
+   "old": "HudElem_FieldRead",
+   "suggested": "HudElem_ScriptSetField",
+   "reason": "Same as 0x08103b2e; not re-verified."
+  },
+  {
+   "addr": "0x080f7d90",
+   "old": "Player_ReadOnlyField",
+   "suggested": "",
+   "reason": "Already accurate."
+  },
+  {
+   "addr": "0x081182f4",
+   "old": "G_CallLevelScriptA",
+   "suggested": "G_CallGametypeMain",
+   "reason": "Plausible but section 2.3 mapping not re-verified against string offsets; low value."
+  },
+  {
+   "addr": "0x08118322",
+   "old": "G_CallLevelScriptB",
+   "suggested": "G_CallStartGameTypeCallback",
+   "reason": "Same; not re-verified."
+  },
+  {
+   "addr": "0x08118350",
+   "old": "G_CallEntityScriptA",
+   "suggested": "G_CallPlayerConnectCallback",
+   "reason": "Same; not re-verified."
+  },
+  {
+   "addr": "0x08118384",
+   "old": "G_CallEntityScriptB",
+   "suggested": "G_CallPlayerDisconnectCallback",
+   "reason": "Same; not re-verified."
+  }
+ ]
+}

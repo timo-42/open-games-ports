@@ -1,0 +1,916 @@
+{
+ "chunk": 31,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080b8dde",
+   "name": "Orient_VecLocalToWorld",
+   "signature": "void Orient_VecLocalToWorld(const struct Orient *xf, const float *v, float *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "out = sum_i v[i]*axis[i] (rows of the 3x3 at +0x0c); called by plane/orient helpers; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8e7a",
+   "name": "Orient_PlaneLocalToWorld",
+   "signature": "void Orient_PlaneLocalToWorld(const struct Orient *xf, const struct Plane4 *in, struct Plane4 *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "rotates the plane normal with Orient_VecLocalToWorld, then dist += dot(origin, newNormal); descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8ec6",
+   "name": "Orient_PointWorldToLocal",
+   "signature": "void Orient_PointWorldToLocal(const struct Orient *xf, const float *p, float *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "(p - origin) dotted with each axis row; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8f70",
+   "name": "Orient_VecWorldToLocal",
+   "signature": "void Orient_VecWorldToLocal(const struct Orient *xf, const float *v, float *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "out[i] = dot(v, axis[i]); inverse rotation of Orient_VecLocalToWorld; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b900c",
+   "name": "Orient_Concat",
+   "signature": "void Orient_Concat(const struct Orient *in, const struct Orient *xf, struct Orient *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "rotates the three axis rows of 'in' by xf and finishes the origin with fn_080b8d30; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b908a",
+   "name": "Orient_PlaneWorldToLocal",
+   "signature": "void Orient_PlaneWorldToLocal(const struct Orient *xf, const struct Plane4 *in, struct Plane4 *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "inverse-rotates the normal, dist = in.dist - dot(origin, in.normal); descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b90d6",
+   "name": "Orient_PointLocalToWorldScaled",
+   "signature": "void Orient_PointLocalToWorldScaled(const struct Orient *xf, float scale, const float *v, float *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "out = origin + scale * (v transformed by axis columns); descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b9194",
+   "name": "Orient_PlaneLocalToWorldScaled",
+   "signature": "void Orient_PlaneLocalToWorldScaled(const struct Orient *xf, float scale, const struct Plane4 *in, struct Plane4 *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "plane variant of the scaled local->world transform; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b91e6",
+   "name": "Orient_PointWorldToLocalScaled",
+   "signature": "void Orient_PointWorldToLocalScaled(const struct Orient *xf, float scale, const float *p, float *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "inverse of Orient_PointLocalToWorldScaled (divides by scale via 1.0/scale); descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b92a6",
+   "name": "Orient_PlaneWorldToLocalScaled",
+   "signature": "void Orient_PlaneWorldToLocalScaled(const struct Orient *xf, float scale, const struct Plane4 *in, struct Plane4 *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "plane variant of the scaled world->local transform; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b92f6",
+   "name": "Float_Abs",
+   "signature": "float Float_Abs(float x);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "fabs on a float, result rounded to float; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b9310",
+   "name": "Float_Sqrt",
+   "signature": "float Float_Sqrt(float x);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "(float)sqrt((double)x); descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b9330",
+   "name": "Read_FirstDword",
+   "signature": "uint32 Read_FirstDword(const uint32 *p);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "returns the first dword of its argument; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b933a",
+   "name": "Float_Identity",
+   "signature": "float Float_Identity(float x);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "float identity; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b934c",
+   "name": "Vec3_Set_b",
+   "signature": "void Vec3_Set_b(float *v, float x, float y, float z);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "stores three values into a vec3; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b9370",
+   "name": "Vec3_MA_b",
+   "signature": "void Vec3_MA_b(const float *a, float s, const float *b, float *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "out = a + s*b; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b93c4",
+   "name": "Vec3_Dot",
+   "signature": "long double Vec3_Dot(const float *a, const float *b);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "vec3 dot product accumulated in extended precision; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b93f8",
+   "name": "Com_SurfaceTypeFromName",
+   "signature": "int Com_SurfaceTypeFromName(const char *name);",
+   "subsystem": "common/surface",
+   "confidence": "inferred",
+   "evidence": "strcasecmp against \"default\" and the 22-entry surface-type table (bark..asphalt) at 0x08182e00; returns the 1-based type index from flags bits 20..24, 0 for \"default\", -1 if unknown.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b948a",
+   "name": "Com_SurfaceTypeToName",
+   "signature": "const char *Com_SurfaceTypeToName(int index);",
+   "subsystem": "common/surface",
+   "confidence": "inferred",
+   "evidence": "inverse of Com_SurfaceTypeFromName; index 1..22 selects table[index-1].name, otherwise \"default\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b94c0",
+   "name": "DObj_InitGlobals",
+   "signature": "void DObj_InitGlobals(void);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "interns a 17-byte all-zero duplicate-part table (empty mask + terminator) into g_085bc828; same table layout built by DObj_BuildDuplicatePartMap.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b950c",
+   "name": "DObj_ShutdownGlobals",
+   "signature": "void DObj_ShutdownGlobals(void);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "releases the string interned by DObj_InitGlobals and clears g_085bc828.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b953c",
+   "name": "DObj_ClearGlobals",
+   "signature": "void DObj_ClearGlobals(void);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "zeroes g_085bc828 without releasing it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b954c",
+   "name": "DObj_DumpInfo",
+   "signature": "void DObj_DumpInfo(const struct DObj *obj);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "prints \"No Dobj\", \"Models:\", \"Bones:\", \"Part duplicates:\" listings of a DObj (DObjDumpInfo-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b96ec",
+   "name": "DObj_IsModelFlagSet",
+   "signature": "unsigned int DObj_IsModelFlagSet(const struct DObj *obj, uint8 modelIndex);",
+   "subsystem": "game/dobj",
+   "confidence": "unknown",
+   "evidence": "tests bit 'modelIndex' of DObj.modelFlagBits (set from the model definition's third field in DObj_Create); descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b9704",
+   "name": "DObj_GetBoneIndex",
+   "signature": "int DObj_GetBoneIndex(const struct DObj *obj, int boneNameId);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "walks the models calling fn_080c5900 (per-model bone lookup) and adds the preceding models' bone counts (DObjGetBoneIndex-style); returns -1 if absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b9780",
+   "name": "DObj_BuildDuplicatePartMap",
+   "signature": "void DObj_BuildDuplicatePartMap(struct DObj *obj);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "string \"WARNING: Attempting to meld model, but root part '%s' ...\"; builds the duplicate-part table (bitmask + (bone+1, target+1) byte pairs, 0 terminated) and interns it into DObj.dupStringId.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b9998",
+   "name": "DObj_GetHierarchyBits",
+   "signature": "void DObj_GetHierarchyBits(struct DObj *obj, unsigned boneIndex, uint32 *partBits);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "walks a bone up its parent chain (and through duplicate-part aliases) setting every visited bone's bit in partBits (DObjGetHierarchyBits-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b9d6e",
+   "name": "DObj_IsBoneLocked",
+   "signature": "unsigned int DObj_IsBoneLocked(const struct DObj *obj, int boneIndex);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "reads bit 'boneIndex' of the skeleton's locked/evaluated mask (+0x20).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b9d9a",
+   "name": "DObj_AreBonesLocked",
+   "signature": "int DObj_AreBonesLocked(const struct DObj *obj, const uint32 *partBits);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "returns 1 when every bit of partBits is already set in the skeleton's locked mask.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b9dfa",
+   "name": "DObj_CalcSkel",
+   "signature": "void DObj_CalcSkel(struct DObj *obj, const uint32 *partBits);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "evaluates the skeleton bones requested in partBits by composing child quaternions/origins with parents and copying duplicate-part aliases (DObjCalcSkel-style); uses the dup table from DObj_BuildDuplicatePartMap.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ba348",
+   "name": "DObj_BindAnimTree",
+   "signature": "void DObj_BindAnimTree(struct DObj *obj, struct XAnimTree *tree);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "stores the anim tree in the DObj and bumps a per-tree generation byte stored after the 2*numAnims-byte tables; on wrap it becomes 1 and the following numAnims bytes are cleared.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ba3d4",
+   "name": "DObj_ComputeBounds",
+   "signature": "void DObj_ComputeBounds(struct DObj *obj);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "sums each model's bounds (fn_080c5958) into DObj.mins/maxs (adds, not min/max).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ba4d4",
+   "name": "DObj_Create",
+   "signature": "void DObj_Create(struct DObjModelDef *defs, unsigned numDefs, struct XAnimTree *tree, struct DObj *obj, uint16 entnum);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "strings \"WARNING: Part '%s' not found in model '%s' or any of its descendants\" and the 0x7f-bone limit error; fills a DObj from model definitions (DObjCreate-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ba776",
+   "name": "DObj_Free",
+   "signature": "void DObj_Free(struct DObj *obj);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "inverse of DObj_Create/DObj_BuildDuplicatePartMap: clears the anim tree and releases the interned duplicate table unless it is the shared empty one (DObjFree-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ba958",
+   "name": "DObj_GetAllocSkelSize",
+   "signature": "int DObj_GetAllocSkelSize(const struct DObj *obj);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "bytes needed for a DObjSkel: 0x30 header + 0x20 per bone (DObjGetAllocSkelSize-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ba97a",
+   "name": "DObj_SkelExists",
+   "signature": "bool DObj_SkelExists(struct DObj *obj, int time);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "returns whether a skeleton exists for the given time; clears obj->skel when the stored time differs.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ba9b4",
+   "name": "DObj_SkelMatchesTime",
+   "signature": "int DObj_SkelMatchesTime(const struct DObj *obj, int time);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "read-only variant of DObj_SkelExists (does not clear the skeleton).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ba9e2",
+   "name": "DObj_ClearSkel",
+   "signature": "void DObj_ClearSkel(struct DObj *obj);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "clears skeleton pointer and time.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ba9fc",
+   "name": "DObj_CreateSkel",
+   "signature": "void DObj_CreateSkel(struct DObj *obj, struct DObjSkel *skel, int time);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "attaches caller-provided skeleton memory with its time stamp and zeroes the three 128-bit masks (DObjCreateSkel-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080baa5c",
+   "name": "DObj_GetNumModels",
+   "signature": "uint8 DObj_GetNumModels(const struct DObj *obj);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "returns DObj.numModels.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080baa68",
+   "name": "DObj_GetModel",
+   "signature": "struct XModel *DObj_GetModel(const struct DObj *obj, int index);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "returns DObj.models[index].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080baa78",
+   "name": "DObj_GetBounds",
+   "signature": "void DObj_GetBounds(const struct DObj *obj, float *mins, float *maxs);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "copies DObj.mins/maxs out.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080baaaa",
+   "name": "DObj_GetRotTransArray",
+   "signature": "struct DObjBone *DObj_GetRotTransArray(const struct DObj *obj);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "returns the skeleton's bone array (skel+0x30) or 0 (DObjGetRotTransArray-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080baad4",
+   "name": "DObj_GetModelBoneBase",
+   "signature": "uint8 DObj_GetModelBoneBase(const struct DObj *obj, int modelIndex);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "returns the first bone index of the given model (DObj.boneBase[]).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080baae6",
+   "name": "DObj_GetHitBoxes",
+   "signature": "void DObj_GetHitBoxes(const struct DObj *obj, struct XBoneInfo **out);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "fills out[] with the address of every bone's hit box across all models.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bab64",
+   "name": "DObj_SetRotTransIndex",
+   "signature": "int DObj_SetRotTransIndex(struct DObj *obj, const uint32 *partBits, int boneIndex);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "marks bone in the skeleton's setBits when requested in partBits and not yet locked (DObjSetRotTransIndex-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080babee",
+   "name": "DObj_SetControlRotTransIndex",
+   "signature": "int DObj_SetControlRotTransIndex(struct DObj *obj, const uint32 *partBits, int boneIndex);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "like DObj_SetRotTransIndex but also sets controlBits (DObjSetControlRotTransIndex-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bac90",
+   "name": "DObj_GetNumSurfaces",
+   "signature": "int DObj_GetNumSurfaces(const struct DObj *obj, const char *lods);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "totals numSurfs of the selected lod of each model (lods[] signed bytes, negative = skipped); iterates models from last to first.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bad0e",
+   "name": "DObj_GetSurfaceId",
+   "signature": "int DObj_GetSurfaceId(const struct DObj *obj, int modelIndex, int surfaceIndex, int lodIndex);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "returns surfs->surfIds[surfaceIndex] of the model's lod.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bad40",
+   "name": "DObj_GetMaterialName",
+   "signature": "const char *DObj_GetMaterialName(const struct DObj *obj, int modelIndex, int surfaceIndex, int lodIndex);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "string \"DEFAULT\"; material name string id per surface, 0 maps to \"DEFAULT\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bad96",
+   "name": "DObj_GetSurfaces",
+   "signature": "int DObj_GetSurfaces(const struct DObj *obj, int16 *surfInfo, uint32 *partBits, const char *lods);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "strings \"ERROR: models with more than %i total surfaces\", \"Max surfs exceeded - see console for details\"; emits (model,surface) pairs and merges per-model surface bits into partBits (DObjGetSurfaces-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bb0ce",
+   "name": "DObj_GetBoneIndexByName",
+   "signature": "int DObj_GetBoneIndexByName(const struct DObj *obj, int boneNameId);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "thin wrapper over DObj_GetBoneIndex.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bb0ee",
+   "name": "DObj_GetBoneName",
+   "signature": "const char *DObj_GetBoneName(const struct DObj *obj, int boneIndex);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "finds the model owning boneIndex and converts its bone-name string id to text (used by DObj_DumpInfo \"Bone %d\" listing); returns 0 when out of range.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bb18e",
+   "name": "DObj_GetTree",
+   "signature": "struct XAnimTree *DObj_GetTree(const struct DObj *obj);",
+   "subsystem": "game/dobj",
+   "confidence": "unknown",
+   "evidence": "returns the first dword of a DObj, i.e. its anim tree pointer.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bb198",
+   "name": "DObj_AnyModelHasProperty",
+   "signature": "int DObj_AnyModelHasProperty(const struct DObj *obj);",
+   "subsystem": "game/dobj",
+   "confidence": "unknown",
+   "evidence": "true when fn_080c5320 is non-zero for any model (last to first); property meaning of fn_080c5320 unknown.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bb1e4",
+   "name": "DObj_GetNumBones",
+   "signature": "uint8 DObj_GetNumBones(const struct DObj *obj);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "returns DObj.numBones.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bb1f0",
+   "name": "DObj_WorldPointToBoneLocal",
+   "signature": "void DObj_WorldPointToBoneLocal(const float *point, const struct DObjBone *bone, float *out);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "(point - bone.origin) projected on the three rows of the bone's rotation matrix from fn_080ab4a0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bb27e",
+   "name": "DObj_Traceline",
+   "signature": "void DObj_Traceline(struct DObj *obj, const float *start, const float *end, const uint8 *partPriority, struct DObjTraceResult *res);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "segment trace against per-bone hit boxes/spheres filtered by a per-part-group priority table (DObjTraceline-style); writes fraction, normal, hit bone name id and part group.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bbb32",
+   "name": "DObj_GeomTraceline",
+   "signature": "void DObj_GeomTraceline(struct DObj *obj, const void *a, const void *b, const void *c, struct DObjTraceResult *res);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "per-model collision trace via fn_080c59da over the bone array, advancing 0x20 bytes per bone; reports the hit bone's name id (DObjGeomTraceline-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bbcd0",
+   "name": "DObj_HasContents",
+   "signature": "int DObj_HasContents(const struct DObj *obj, unsigned mask);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "true if any model's fn_080c59a6 value intersects the mask (DObjHasContents-style).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bbd20",
+   "name": "DObj_SetBoneTransform",
+   "signature": "void DObj_SetBoneTransform(struct DObj *obj, const float *origin, const float *angles, int boneIndex);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "writes bone quaternion from Euler angles (degrees * pi/360, i.e. half-angle sin/cos), identity when angles==NULL, quatScale=0 and the origin into the bone slot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bbea4",
+   "name": "DObj_SetControlBoneByName",
+   "signature": "int DObj_SetControlBoneByName(struct DObj *obj, const uint32 *partBits, int boneNameId, const float *angles);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "look up bone by name, mark it controlled, set a rotation-only transform at the zero origin g_0814cfc8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bbf22",
+   "name": "DObj_SetBoneByName",
+   "signature": "int DObj_SetBoneByName(struct DObj *obj, const uint32 *partBits, int boneNameId, const float *origin, const float *angles);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "look up bone by name, mark it set (not controlled), apply origin+angles transform.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bbf9e",
+   "name": "DObj_SetBoneByIndex",
+   "signature": "bool DObj_SetBoneByIndex(struct DObj *obj, const uint32 *partBits, int boneIndex, const float *origin, const float *angles);",
+   "subsystem": "game/dobj",
+   "confidence": "inferred",
+   "evidence": "index variant of DObj_SetBoneByName.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bbff6",
+   "name": "DObj_InitFromModelParts",
+   "signature": "void DObj_InitFromModelParts(struct DObj *obj, struct XModel *model);",
+   "subsystem": "game/dobj",
+   "confidence": "unknown",
+   "evidence": "binds a single XModel as models[0] slot field (+0x1c), taking numBones from the first byte of parts and the skeleton pointer from parts+0x14; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc020",
+   "name": "Float_SignOne",
+   "signature": "float Float_SignOne(float x);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "returns +1.0f for x >= 0 and -1.0f otherwise (via Float_SelectBySign); descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc046",
+   "name": "SinCos_Float",
+   "signature": "void SinCos_Float(float angle, float *outSin, float *outCos);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "sin/cos of a float through the double libm entry points; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc074",
+   "name": "Vec2_Copy",
+   "signature": "void Vec2_Copy(const float *src, float *dst);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "copies two dwords; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc094",
+   "name": "Vec2_Dot",
+   "signature": "long double Vec2_Dot(const float *a, const float *b);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "2-component dot product in extended precision; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc0b6",
+   "name": "Vec3_Clear",
+   "signature": "void Vec3_Clear(float *v);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "zeroes three dwords; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc0e0",
+   "name": "Vec3_Set",
+   "signature": "void Vec3_Set(float *v, float x, float y, float z);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "stores three values into a vec3 (same body as the function at 0x080b934c); descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc104",
+   "name": "Vec3_Copy",
+   "signature": "void Vec3_Copy(const float *src, float *dst);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "copies three dwords; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc134",
+   "name": "Vec3_Add",
+   "signature": "void Vec3_Add(const float *a, const float *b, float *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "componentwise vec3 add; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc178",
+   "name": "Vec3_Sub",
+   "signature": "void Vec3_Sub(const float *a, const float *b, float *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "componentwise vec3 subtract a - b; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc1bc",
+   "name": "Vec3_Scale",
+   "signature": "void Vec3_Scale(const float *v, float s, float *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "vec3 scaled by a scalar; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc1f4",
+   "name": "Vec3_MA",
+   "signature": "void Vec3_MA(const float *a, float s, const float *b, float *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "out = a + s*b (same body as the function at 0x080b9370); descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc248",
+   "name": "Vec3_Dot_b",
+   "signature": "long double Vec3_Dot_b(const float *a, const float *b);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "vec3 dot product (same body as the function at 0x080b93c4); descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc27c",
+   "name": "Vec3_LengthSq_080bc27c",
+   "signature": "long double Vec3_LengthSq_080bc27c(const float *v);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body x*x+y*y+z*z; same byte family as Vec3_LengthSq_080c790a. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec3_LengthSq_080c790a, Vec3_LengthSq_080dc516, VectorLengthSquared_080e99b4; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc2b0",
+   "name": "Vec4_Set",
+   "signature": "void Vec4_Set(float *v, float x, float y, float z, float w);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "stores four values into a vec4; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc2de",
+   "name": "Float_SelectNonNegative_080bc2de",
+   "signature": "float Float_SelectNonNegative_080bc2de(float x, float ifNonNeg, float ifNeg);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body returns a when x>=0 else b (fucompp/sahf); same family as Float_SelectNonNegative_080982de. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_select_by_sign, Float_SelectNonNegative_0805d552, Float_Select_0805fafc; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc308",
+   "name": "Vec4_LengthSq",
+   "signature": "long double Vec4_LengthSq(const float *v);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "squared length of a vec4 in extended precision; descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc34e",
+   "name": "Quat_UpdateScale",
+   "signature": "void Quat_UpdateScale(struct DObjBone *bone);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "bone.quatScale = 2/|q|^2 (the factor used to build a rotation matrix from a non-unit quaternion); a zero-length quaternion becomes identity (quat[3]=1) with scale 2.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc39e",
+   "name": "Bone_TransformPointByParent",
+   "signature": "void Bone_TransformPointByParent(float *p, const struct DObjBone *parent);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "rotates a point by the parent bone's quaternion matrix (fn_080ab4a0) and adds the parent bone origin.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bc452",
+   "name": "Quat_MultiplyInPlace",
+   "signature": "void Quat_MultiplyInPlace(float *q1, const float *q2);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Hamilton product q1 = q1 * q2 on (x,y,z,w) quaternions, in place.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x085bc828",
+   "name": "g_dobjEmptyDupPartTable",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "string id of the shared empty duplicate-part table; set by 0x080b94c0, released by 0x080b950c, compared in 0x080ba776"
+  },
+  {
+   "addr": "0x08182e00",
+   "name": "com_surfaceTypeTable",
+   "type": "struct SurfaceTypeEntry[22]",
+   "confidence": "inferred",
+   "evidence": "22 entries stride 0x14 (names bark..asphalt, type index in flags bits 20..24); used by 0x080b93f8/0x080b948a"
+  },
+  {
+   "addr": "0x0814cfc8",
+   "name": "vec3_origin",
+   "type": "const float[4]",
+   "confidence": "inferred",
+   "evidence": "16 zero bytes, used as zero origin by 0x080bbea4"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "DObj",
+   "size": "0x64",
+   "evidence": "offsets 0x00..0x64 used consistently across ba4d4, 9dfa, bb27e etc."
+  },
+  {
+   "name": "DObjSkel",
+   "size": "0x30+0x20*numBones",
+   "evidence": "masks at 0/0x10/0x20, bones at 0x30 (ba958 size formula)"
+  },
+  {
+   "name": "DObjBone",
+   "size": "0x20",
+   "evidence": "quat[4], origin[3] at 0x10, quatScale at 0x1c set by bc34e"
+  },
+  {
+   "name": "XModel",
+   "size": "unknown (name at 0x88)",
+   "evidence": "parts @0, lods @4 stride 0x14, hitBoxes @0x60, name @0x88"
+  },
+  {
+   "name": "XModelParts",
+   "size": "unknown",
+   "evidence": "numBones, numRootBones, hier @4, boneOffsets @0xc, boneGroup @0x10, static skel @0x14"
+  },
+  {
+   "name": "XBoneInfo",
+   "size": "0x28",
+   "evidence": "mins/maxs/offset/radiusSq used in DObj_Traceline"
+  },
+  {
+   "name": "DObjTraceResult",
+   "size": "0x18",
+   "evidence": "fraction, field04, normal[3], partName@0x14, partGroup@0x16"
+  },
+  {
+   "name": "SurfaceTypeEntry",
+   "size": "0x14",
+   "evidence": "table at 0x08182e00"
+  }
+ ],
+ "open_questions": [
+  "Meaning of XModel bytes 0x54..0x87 and XModelLod fields 0x00/0x04/0x0a, and of the unused DObj field at +0x14.",
+  "Semantics of fn_080c5320 (DObj_AnyModelHasProperty) and the boneGroup/partPriority byte values (1 = inherit from parent); DObj_InitFromModelParts caller context is unknown.",
+  "Exact roles of the three skeleton masks (set/control/locked) and of fn_080bc58a vs Quat_MultiplyInPlace operand order are inferred from usage only."
+ ]
+}

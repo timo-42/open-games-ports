@@ -1,0 +1,1222 @@
+{
+ "chunk": 21,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x08092002",
+   "name": "ScrEntity_LockBonesOrCreateSkel",
+   "signature": "int ScrEntity_LockBonesOrCreateSkel(struct gentity_s *ent, int arg)",
+   "subsystem": "server/script-entity",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): If DObj_SkelExists(obj, skel generation g_0849f630) returns DObj_AreBonesLocked(obj, arg); else allocates SV_SkelMemoryAlloc(DObj_GetAllocSkelSize) and DObj_CreateSkel, returns 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809208a",
+   "name": "SV_DObjBindingSetWeight",
+   "signature": "int SV_DObjBindingSetWeight(struct gentity_s *ent, float a, int b)",
+   "subsystem": "server/script-entity",
+   "confidence": "inferred",
+   "evidence": "no string; handle lookup then fn_080c114e [rename game: Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls XAnim_BindingSetWeight (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080920d0",
+   "name": "SV_DObjBindingSetTime",
+   "signature": "void SV_DObjBindingSetTime(int *ref, float a)",
+   "subsystem": "server/script-entity",
+   "confidence": "inferred",
+   "evidence": "no string; handle lookup then fn_080c106c [rename game: Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls XAnim_BindingSetTime (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092102",
+   "name": "SV_DObjGetHierarchyBits",
+   "signature": "void SV_DObjGetHierarchyBits(struct gentity_s *ent, int a, int b)",
+   "subsystem": "server/script-entity",
+   "confidence": "inferred",
+   "evidence": "no string; handle lookup then fn_080b9998 [rename game: Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls DObj_GetHierarchyBits (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092134",
+   "name": "SV_DObjBindingRebuild",
+   "signature": "void SV_DObjBindingRebuild(struct gentity_s *ent, int a)",
+   "subsystem": "server/script-entity",
+   "confidence": "inferred",
+   "evidence": "no string; handle lookup then fn_080c1260 [rename game: Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls XAnim_BindingRebuild (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809215e",
+   "name": "SV_DObjCalcSkel",
+   "signature": "void SV_DObjCalcSkel(struct gentity_s *ent, int a)",
+   "subsystem": "server/script-entity",
+   "confidence": "inferred",
+   "evidence": "no string; handle lookup then fn_080b9dfa [rename game: Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls DObj_CalcSkel (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092188",
+   "name": "SV_DObjGetNumBones",
+   "signature": "void SV_DObjGetNumBones(int *ref)",
+   "subsystem": "server/script-entity",
+   "confidence": "inferred",
+   "evidence": "no string; handle lookup then fn_080bb1e4 [rename game: Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls DObj_GetNumBones (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080921ac",
+   "name": "SV_DObjGetBoneIndexByName",
+   "signature": "int SV_DObjGetBoneIndexByName(struct gentity_s *ent, int a)",
+   "subsystem": "server/script-entity",
+   "confidence": "inferred",
+   "evidence": "no string; handle lookup then fn_080bb0ce, -1 when unresolved [rename game: Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls DObj_GetBoneIndexByName (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080921ec",
+   "name": "ScrEntity_GetRotTransArray",
+   "signature": "int ScrEntity_GetRotTransArray(struct gentity_s *ent)",
+   "subsystem": "server/script-entity",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body: obj = Com_GetServerDObj(*ref); DObj_GetRotTransArray(obj); result unused. Name from the single callee.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092210",
+   "name": "SV_DObjDumpAnimTree",
+   "signature": "void SV_DObjDumpAnimTree(int *ref)",
+   "subsystem": "server/script-entity",
+   "confidence": "inferred",
+   "evidence": "no string; handle lookup then fn_080c14bc [rename game: Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls XAnim_DumpTree (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080922c4",
+   "name": "SV_DObjGetTree",
+   "signature": "int SV_DObjGetTree(struct gentity_s *ent)",
+   "subsystem": "server/script-entity",
+   "confidence": "inferred",
+   "evidence": "no string; handle lookup then fn_080bb18e, 0 when unresolved [rename game: Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls DObj_GetTree (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080922fc",
+   "name": "ScrEntity_Nop",
+   "signature": "void ScrEntity_Nop(void)",
+   "subsystem": "server/script-entity",
+   "confidence": "unknown",
+   "evidence": "empty body (ret only)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092302",
+   "name": "SV_MapFileExists",
+   "signature": "int SV_MapFileExists(const char *mapName)",
+   "subsystem": "server/map",
+   "confidence": "inferred",
+   "evidence": "format string 'maps/mp/%s.%s' in body names the map file path; function name descriptive",
+   "status": "translated",
+   "notes": "returns 1 when the path lookup is non-negative"
+  },
+  {
+   "addr": "0x0809235c",
+   "name": "SV_BeginEntityParse",
+   "signature": "void SV_BeginEntityParse(void)",
+   "subsystem": "server/parse",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Stores CM_EntityString() into g_0849f618 (the entity-string parse cursor). Q3 does sv.entityParsePoint = CM_EntityString() in server spawn.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809236e",
+   "name": "SV_DObjExists",
+   "signature": "int SV_DObjExists(struct gentity_s *ent)",
+   "subsystem": "server/script-entity",
+   "confidence": "inferred",
+   "evidence": "no string; handle lookup non-zero test [rename game: Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls Com_GetServerDObj (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092396",
+   "name": "SV_SetPendingHandleOne",
+   "signature": "void SV_SetPendingHandleOne(void)",
+   "subsystem": "server/map",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body: Com_SetPendingHandle(1). Caller is G_SetupWeaponDef (0x08120d74). Semantics of the handle value not established.",
+   "status": "translated",
+   "notes": "flag meaning not recovered"
+  },
+  {
+   "addr": "0x080923aa",
+   "name": "SV_ClearPendingHandleOne",
+   "signature": "void SV_ClearPendingHandleOne(void)",
+   "subsystem": "server/map",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body: Com_ClearPendingHandle(1) (clears g_081a4f8c if it equals 1 and calls BG_ResetWeaponCount). Called from SV_ClearServerState (0x080924b6).",
+   "status": "translated",
+   "notes": "flag meaning not recovered"
+  },
+  {
+   "addr": "0x080923be",
+   "name": "SV_GetEntityToken",
+   "signature": "int SV_GetEntityToken(char *dst, int size)",
+   "subsystem": "server/parse",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Matches Q3 SV_GetEntityToken exactly: Com_Parse on the cursor, Q_strncpyz(dst, token, size), return 1 if cursor non-null or token non-empty. Companion of SV_BeginEntityParse.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092412",
+   "name": "SV_GetClientGuid",
+   "signature": "int SV_GetClientGuid(int clientNum)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Bounds-checks clientNum against sv_maxclients and returns svs.clients[n].guid (+0xae704). Callers print it in the first %d of the game-log lines \"say;%d;%d;%s;%s\", \"sayteam;...\", \"Weapon;...\", \"Item;...\" (chunk_047:345-350, chunk_048:721-724) and expose it to script via chunk_104:138. SV_IsTempBannedGuid compares g_0844010c[].guid, same field family.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092456",
+   "name": "SV_GetClientPing",
+   "signature": "int SV_GetClientPing(int clientNum)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "field printed as 'ping=%d' in SV_GetClientScoreText (0x08095f64)",
+   "status": "translated",
+   "notes": "no bounds check in the original"
+  },
+  {
+   "addr": "0x08092472",
+   "name": "SV_IsClientAddressLocal",
+   "signature": "int SV_IsClientAddressLocal(int clientNum)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns NET_IsLocalAddress(svs.clients[clientNum].netchan.remoteAddress); chunk 46 assigns the result to client->localClient (0x08092472 tail-calls 0x0806c57a). Old name SV_CheckClientNetAddress and the (void) discard in the recon are wrong about the result being unused.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080924b6",
+   "name": "SV_ClearServerState",
+   "signature": "void SV_ClearServerState(void)",
+   "subsystem": "server/state",
+   "confidence": "inferred",
+   "evidence": "clears sv.state and the demo flag; server-state reset shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080924fa",
+   "name": "SV_ValidateGametype",
+   "signature": "void SV_ValidateGametype(void)",
+   "subsystem": "server/cvars",
+   "confidence": "inferred",
+   "evidence": "string 'g_gametype %s is not a valid gametype, defaulting to dm' in body; the function name is inferred",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080925e6",
+   "name": "SV_InitMapState",
+   "signature": "void SV_InitMapState(int spawnFlag, int param)",
+   "subsystem": "server/map",
+   "confidence": "inferred",
+   "evidence": "no string; per-map client state reset and map-load hooks",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809267e",
+   "name": "SV_RestartGameProgs",
+   "signature": "void SV_RestartGameProgs(int param)",
+   "subsystem": "server/map",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Q3 SV_RestartGameProgs: shut the game down (G_ShutdownGame(0)), then re-init it via SV_InitMapState(1,param) (G_InitGame with restart flag). Sole caller is the fast-restart path of SV_MapRestart_f (0x0808be3e).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080926b0",
+   "name": "SV_InitGameProgs",
+   "signature": "void SV_InitGameProgs(int param)",
+   "subsystem": "server/map",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Q3 SV_InitGameProgs: sets g_083e2f80 then SV_InitMapState(0,param) (G_InitGame, non-restart). Sole caller is SV_SpawnServer (0x08093520).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080926d6",
+   "name": "SV_GameConsoleCommand",
+   "signature": "int SV_GameConsoleCommand(void)",
+   "subsystem": "server/state",
+   "confidence": "inferred",
+   "evidence": "returns fn_0811bf64() only when sv.state == 2 [rename common: Objdump: cmp ds:0x8440200 (sv.state),2 ; if equal tail-calls game console handler (G_ConsoleCommand) else returns 0; caller Cmd_ExecuteString uses it as unknown-command fallback, not a query.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080926fc",
+   "name": "Vec2_Add_080926fc",
+   "signature": "void Vec2_Add_080926fc(const float *a, const float *b, float *out)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "no string; two-component float add",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092728",
+   "name": "Vec2_Scale_08092728",
+   "signature": "void Vec2_Scale_08092728(const float *a, float s, float *out)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "no string; two-component float scale",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809274e",
+   "name": "Vec3_CopyBits_0809274e",
+   "signature": "void Vec3_CopyBits_0809274e(int *src, int *dst)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "no string; three-dword copy",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092780",
+   "name": "SV_SetConfigstring",
+   "signature": "void SV_SetConfigstring(int index, const char *value)",
+   "subsystem": "server/config",
+   "confidence": "observed",
+   "evidence": "string 'SV_SetConfigstring: bad index %i' (0x0814adc0) in body",
+   "status": "translated",
+   "notes": "a first set on an empty slot does nothing (original behaviour)"
+  },
+  {
+   "addr": "0x08092992",
+   "name": "SV_GetConfigstring",
+   "signature": "void SV_GetConfigstring(int index, char *buffer, int bufferSize)",
+   "subsystem": "server/config",
+   "confidence": "observed",
+   "evidence": "string 'SV_GetConfigstring: bad index %i' (0x0814ae40) in body",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092a1c",
+   "name": "SV_GetConfigstringOrEmpty",
+   "signature": "char *SV_GetConfigstringOrEmpty(int index)",
+   "subsystem": "server/config",
+   "confidence": "inferred",
+   "evidence": "no string; empty slot maps to ''",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092a48",
+   "name": "SV_FindConfigstringPairValue",
+   "signature": "char *SV_FindConfigstringPairValue(int start, int count, char *key)",
+   "subsystem": "server/config",
+   "confidence": "inferred",
+   "evidence": "key at start+i, value at start+count+i; reader counterpart of SV_SetConfigValueForKey",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092abe",
+   "name": "SV_SetConfigValueForKey",
+   "signature": "void SV_SetConfigValueForKey(int start, int count, char *key, char *value)",
+   "subsystem": "server/config",
+   "confidence": "observed",
+   "evidence": "string 'SV_SetConfigValueForKey: overflow' (0x0814ae80) in body",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092b5a",
+   "name": "SV_SetUserinfo",
+   "signature": "void SV_SetUserinfo(int clientNum, char *userinfo)",
+   "subsystem": "server/client",
+   "confidence": "observed",
+   "evidence": "string 'SV_SetUserinfo: bad index %i' (0x0814aec0) in body",
+   "status": "translated",
+   "notes": "stores the 'name' value into client name[0x20]"
+  },
+  {
+   "addr": "0x08092c04",
+   "name": "SV_GetUserinfo",
+   "signature": "void SV_GetUserinfo(int clientNum, char *buffer, int bufferSize)",
+   "subsystem": "server/client",
+   "confidence": "observed",
+   "evidence": "strings 'SV_GetUserinfo: bufferSize == %i' and 'bad index %i' in body",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092c86",
+   "name": "SV_ArchiveLinkedEntities",
+   "signature": "void SV_ArchiveLinkedEntities(void)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "no string; copies linked entity heads and origin/angles into sv.archivedEntities",
+   "status": "translated",
+   "notes": "archive count 1024 is inferred from the sv block size"
+  },
+  {
+   "addr": "0x08092d92",
+   "name": "SV_EnsureMaxClients",
+   "signature": "void SV_EnsureMaxClients(int minimum)",
+   "subsystem": "server/cvars",
+   "confidence": "inferred",
+   "evidence": "registers 'sv_maxclients' (0x14, 1..64, flags 0x1025) and raises it to a minimum",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092dfa",
+   "name": "SV_Startup",
+   "signature": "void SV_Startup(void)",
+   "subsystem": "server/startup",
+   "confidence": "observed",
+   "evidence": "strings 'SV_Startup: svs.initialized' and 'SV_Startup: unable to allocate svs.clients' in body",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092eee",
+   "name": "SV_ResizeClients",
+   "signature": "void SV_ResizeClients(void)",
+   "subsystem": "server/startup",
+   "confidence": "inferred",
+   "evidence": "no string; grows the client array to the highest connected slot and migrates client records",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080931a8",
+   "name": "SV_LoadExpectedHunkUsage",
+   "signature": "void SV_LoadExpectedHunkUsage(char *key)",
+   "subsystem": "server/map",
+   "confidence": "inferred",
+   "evidence": "string 'hunkusage.dat' in body; sets com_expectedHunkUsage from the token after the key",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080932b6",
+   "name": "SV_ResetServerState",
+   "signature": "void SV_ResetServerState(void)",
+   "subsystem": "server/state",
+   "confidence": "inferred",
+   "evidence": "no string; frees configstrings and clears the sv block (0x5f534 bytes)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08093312",
+   "name": "SV_AllocServerPools",
+   "signature": "void SV_AllocServerPools(int enable)",
+   "subsystem": "server/memory",
+   "confidence": "inferred",
+   "evidence": "no string; allocates five fixed server buffers when enabled",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809338e",
+   "name": "SV_ClearPoolState",
+   "signature": "void SV_ClearPoolState(void)",
+   "subsystem": "server/memory",
+   "confidence": "inferred",
+   "evidence": "no string; zeroes pool state words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080933d0",
+   "name": "SV_FreeServerPools",
+   "signature": "void SV_FreeServerPools(void)",
+   "subsystem": "server/memory",
+   "confidence": "inferred",
+   "evidence": "no string; frees and clears the five server buffers",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08093478",
+   "name": "SV_ClearAllDvarFlag0400",
+   "signature": "void SV_ClearAllDvarFlag0400(void)",
+   "subsystem": "server/map",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body only calls Dvar_ClearUnknownFlag0400 (clears flag 0x400 on every dvar pool entry). Called by SV_MapRestart_f and SV_SpawnServer. Meaning of the 0x400 flag is not established, so the name states the operation only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08093486",
+   "name": "SV_SetupMapConfigstrings",
+   "signature": "void SV_SetupMapConfigstrings(void)",
+   "subsystem": "server/config",
+   "confidence": "inferred",
+   "evidence": "writes configstrings 1 and 0 under flag word g_085abe04",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08093520",
+   "name": "SV_SpawnServer",
+   "signature": "void SV_SpawnServer(char *mapname)",
+   "subsystem": "server/map",
+   "confidence": "inferred",
+   "evidence": "strings '------ Server Initialization ------', 'Server: %s', 'loadingnewmap' in body [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08093a96",
+   "name": "SV_IsGameRunning",
+   "signature": "int SV_IsGameRunning(void)",
+   "subsystem": "server/state",
+   "confidence": "inferred",
+   "evidence": "returns sv.state == 2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08093aa8",
+   "name": "SV_ApplyPunkbusterCvar",
+   "signature": "void SV_ApplyPunkbusterCvar(char *value)",
+   "subsystem": "server/cvars",
+   "confidence": "inferred",
+   "evidence": "string 'sv_punkbuster' in body; value '0' disables",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08093adc",
+   "name": "SV_AddServerCvars",
+   "signature": "void SV_AddServerCvars(void)",
+   "subsystem": "server/cvars",
+   "confidence": "inferred",
+   "evidence": "registers the server cvars by their observed names (sv_maxclients, sv_hostname, ...)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080941cc",
+   "name": "SV_DropAllClients",
+   "signature": "void SV_DropAllClients(char *reason)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "sends 'e'/'w' reason commands to connected clients then drops them",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080942a6",
+   "name": "SV_DisconnectAllClients",
+   "signature": "void SV_DisconnectAllClients(void)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "string 'EXE_DISCONNECTED' passed to fn_0808f02e for each connected client",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080942f8",
+   "name": "SV_Shutdown",
+   "signature": "void SV_Shutdown(char *reason)",
+   "subsystem": "server/state",
+   "confidence": "inferred",
+   "evidence": "strings '----- Server Shutdown -----' and '---------------------------' in body [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080943ea",
+   "name": "Vec3_CopyBits_080943ea",
+   "signature": "void Vec3_CopyBits_080943ea(int *src, int *dst)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809441c",
+   "name": "SV_EscapeServerText",
+   "signature": "char *SV_EscapeServerText(char *text)",
+   "subsystem": "server/text",
+   "confidence": "inferred",
+   "evidence": "no string; newline becomes '\\\\n', 0x14/0x15 dropped, output in g_0849f7e0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080944aa",
+   "name": "SV_TokenMatch",
+   "signature": "int SV_TokenMatch(char *a, char *b)",
+   "subsystem": "server/text",
+   "confidence": "inferred",
+   "evidence": "no string; equal space-delimited tokens",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08094530",
+   "name": "SV_FindReliableCommand",
+   "signature": "int SV_FindReliableCommand(struct client_s *cl, char *text)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "no string; searches the reliable ring after the cursor for a matching command",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08094660",
+   "name": "SV_CompactReliableCommands",
+   "signature": "void SV_CompactReliableCommands(struct client_s *cl)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "no string; compacts flagged reliable entries before the cursor",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08094750",
+   "name": "SV_QueueReliableCommand",
+   "signature": "void SV_QueueReliableCommand(struct client_s *cl, int flags, char *text)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "overflow path strings '===== pending server commands =====' and 'EXE_SERVERCOMMANDOVERFLOW' in body name the overflow case only",
+   "status": "translated",
+   "notes": "overflow drops the client with 'disconnect'"
+  },
+  {
+   "addr": "0x08094a10",
+   "name": "SV_SendServerCommand",
+   "signature": "void SV_SendServerCommand(struct client_s *cl, int flags, char *fmt, ...)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "vsnprintf into a 0x20000 scratch then queue; 'broadcast: %s' and 'print' strings in body; NULL client broadcasts",
+   "status": "translated",
+   "notes": "variadic"
+  },
+  {
+   "addr": "0x08094b56",
+   "name": "SV_VoiceConnectionlessPacket",
+   "signature": "void SV_VoiceConnectionlessPacket(struct netadr_s from, struct msg_s *msg)",
+   "subsystem": "server/net",
+   "confidence": "inferred",
+   "evidence": "string 'SV_ReadPackets: fixing up a translated port' in body [rename server: objdump: sole caller 0x08095bde sits in SV_ConnectionlessPacket after a Q_stricmp against rodata 0x0814b6e0 which is the string 'v'. Body loops clients (stride 0xb1064), matches address (0x080b..) and qport (+0x6e6dc), prints 'SV_ReadPackets: fixing up a translated port' (0x0814b540) on mismatch, then dispatches to the voice parsers 0x0809c3c6 (state<=3) or 0x0809c2ee (state>3). Name SV_ReadPackets is a Q3-style string leak shared with the real packet event and misleading.]",
+   "status": "translated",
+   "notes": "netadr_s passed by value (5 dwords); see open questions"
+  },
+  {
+   "addr": "0x08094c84",
+   "name": "SV_StatusResponse",
+   "signature": "void SV_StatusResponse(struct netadr_s from)",
+   "subsystem": "server/status",
+   "confidence": "inferred",
+   "evidence": "string 'statusResponse\\n%s\\n%s' in body [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "netadr_s passed by value"
+  },
+  {
+   "addr": "0x080950d0",
+   "name": "SV_GameCompleteStatus",
+   "signature": "void SV_GameCompleteStatus(struct netadr_s from)",
+   "subsystem": "server/status",
+   "confidence": "inferred",
+   "evidence": "string 'gameCompleteStatus\\n%s\\n%s' in body [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "netadr_s passed by value"
+  },
+  {
+   "addr": "0x0809537c",
+   "name": "SV_InfoResponse",
+   "signature": "void SV_InfoResponse(struct netadr_s from)",
+   "subsystem": "server/status",
+   "confidence": "inferred",
+   "evidence": "string 'infoResponse\\n' in body [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "netadr_s passed by value"
+  },
+  {
+   "addr": "0x0809594e",
+   "name": "SV_ConnectionlessPacket",
+   "signature": "void SV_ConnectionlessPacket(struct netadr_s from, struct msg_s *msg)",
+   "subsystem": "server/net",
+   "confidence": "inferred",
+   "evidence": "string 'SV packet %s : %s' in body; commands getstatus, getinfo, getchallenge, connect, ipAuthorize, rcon [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "netadr_s passed by value"
+  },
+  {
+   "addr": "0x08095e3a",
+   "name": "SV_PB_GetMaxClients",
+   "signature": "int SV_PB_GetMaxClients(void)",
+   "subsystem": "server/cvars",
+   "confidence": "inferred",
+   "evidence": "returns sv_maxclients value [rename network: Sole caller 0x0813c479 inside PB_ServerQuery 0x0813c43a (query 0x65 max clients).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08095e48",
+   "name": "SV_PB_GetClientInfo",
+   "signature": "int SV_PB_GetClientInfo(int clientNum, char *out)",
+   "subsystem": "server/status",
+   "confidence": "inferred",
+   "evidence": "no string; fills a 0x68-byte record (name, second string, address) for state >= 4 [rename network: Sole caller 0x0813c4b4 inside PB_ServerQuery 0x0813c43a (query 0x66 client info per symbols.json evidence). Fills 0x68-byte record for PunkBuster; not a generic accessor.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08095f64",
+   "name": "SV_PB_GetClientScoreText",
+   "signature": "int SV_PB_GetClientScoreText(int clientNum, char *out)",
+   "subsystem": "server/status",
+   "confidence": "inferred",
+   "evidence": "format string 'ping=%d score=%d' in body [rename network: Sole caller 0x0813c505 inside PB_ServerQuery 0x0813c43a (query 0x72 client score text).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809602e",
+   "name": "SV_PB_SendOOBToClients",
+   "signature": "void SV_PB_SendOOBToClients(int arg1, int arg2, int clientNum)",
+   "subsystem": "server/net",
+   "confidence": "inferred",
+   "evidence": "no string; forwards to each connected client while svs.initialized == 1 [rename network: Sole caller is 0x0813c59c inside PB callback 0x0813c582 (installed at struct+0x148 at 0x0813c7af); body gated on cmp [0x8423080],1 (server running) then iterates clients (stride 0xb1064) with optional single-client filter [ebp+0x10], sending an OOB packet. Not a general server API.]",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0849f740",
+   "name": "cv_rcon_password",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f744",
+   "name": "cv_sv_privatePassword",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f734",
+   "name": "cv_sv_fps",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f738",
+   "name": "cv_sv_timeout",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f73c",
+   "name": "cv_sv_zombietime",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f748",
+   "name": "cv_sv_allowDownload",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f74c",
+   "name": "cv_sv_maxclients",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f750",
+   "name": "cv_sv_punkbuster",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f754",
+   "name": "cv_sv_privateClients",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f758",
+   "name": "cv_sv_hostname",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f75c",
+   "name": "cv_sv_reconnectlimit",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f760",
+   "name": "cv_sv_padPackets",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f764",
+   "name": "cv_mapname",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f768",
+   "name": "cv_sv_serverid",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f76c",
+   "name": "cv_sv_maxRate",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f770",
+   "name": "cv_sv_minPing",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f774",
+   "name": "cv_sv_maxPing",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f778",
+   "name": "cv_g_gametype",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f77c",
+   "name": "cv_sv_debugRate",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f780",
+   "name": "cv_sv_debugReliableCmds",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f784",
+   "name": "cv_sv_pure",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f788",
+   "name": "cv_sv_floodProtect",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f78c",
+   "name": "cv_sv_cheats",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f790",
+   "name": "cv_sv_allowAnonymous",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f794",
+   "name": "cv_sv_showCommands",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f798",
+   "name": "cv_sv_packet_info",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f79c",
+   "name": "cv_sv_showAverageBPS",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7a0",
+   "name": "cv_sv_mapRotation",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7a4",
+   "name": "cv_sv_mapRotationCurrent",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7a8",
+   "name": "cv_sv_kickBanTime",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7ac",
+   "name": "cv_sv_disableClientConsole",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7b0",
+   "name": "cv_sv_voice",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7b4",
+   "name": "cv_sv_voiceQuality",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7b8",
+   "name": "cv_sv_iwds",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7bc",
+   "name": "cv_sv_iwdNames",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7c0",
+   "name": "cv_sv_referencedIwds",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7c4",
+   "name": "cv_sv_referencedIwdNames",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7c8",
+   "name": "cv_sv_allowedClan1",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7cc",
+   "name": "cv_sv_allowedClan2",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7d0",
+   "name": "cv_sv_wwwDownload",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7d4",
+   "name": "cv_sv_wwwBaseURL",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x0849f7d8",
+   "name": "cv_sv_wwwDlDisconnected",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x081a21a4",
+   "name": "cv_nextmap",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x081a21a8",
+   "name": "cv_com_expectedHunkUsage",
+   "type": "struct cvar_s *",
+   "confidence": "observed",
+   "evidence": "assigned from registration with its own name in SV_AddServerCvars (0x08093adc)"
+  },
+  {
+   "addr": "0x081a21a0",
+   "name": "cv_081a21a0",
+   "type": "struct cvar_s *",
+   "confidence": "unknown",
+   "evidence": "cvar pointer; registration name not recovered in this chunk"
+  },
+  {
+   "addr": "0x081a218c",
+   "name": "cv_081a218c",
+   "type": "struct cvar_s *",
+   "confidence": "unknown",
+   "evidence": "cvar pointer; registration name not recovered in this chunk"
+  },
+  {
+   "addr": "0x084a8780",
+   "name": "cv_084a8780",
+   "type": "struct cvar_s *",
+   "confidence": "unknown",
+   "evidence": "cvar pointer; registration name not recovered in this chunk"
+  },
+  {
+   "addr": "0x08423080",
+   "name": "svs",
+   "type": "struct serverStatic_s",
+   "confidence": "inferred",
+   "evidence": "client stride 0xb1064 at svs+0xc; memset 0x1d10c on shutdown; initialized flag at +0"
+  },
+  {
+   "addr": "0x08440200",
+   "name": "sv",
+   "type": "struct server_s",
+   "confidence": "inferred",
+   "evidence": "state 0/1/2 at +0; configstrings at sv+0x418; sv block cleared as 0x5f534 bytes"
+  },
+  {
+   "addr": "0x08423084",
+   "name": "svs.time",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "svs+4 added to by 100 per map load and written to snapshot records"
+  },
+  {
+   "addr": "0x0849f618",
+   "name": "g_sv_entityParsePoint",
+   "type": "char *",
+   "confidence": "unknown",
+   "evidence": "token cursor passed as char ** to fn_080b6db2"
+  },
+  {
+   "addr": "0x0849f624",
+   "name": "g_numGEntities",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "loop bound over entity numbers in SV_ArchiveLinkedEntities"
+  },
+  {
+   "addr": "0x0849f630",
+   "name": "g_skelMemGeneration",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "frame stamp passed to the skel cache helpers"
+  },
+  {
+   "addr": "0x08440104",
+   "name": "sv_lastAuthorizeServerTime",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "set from svs.time in SV_Startup"
+  },
+  {
+   "addr": "0x083e2f80",
+   "name": "g_083e2f80",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "flag set by SV_RestartMapFlagB and cleared by SV_ClearServerState"
+  },
+  {
+   "addr": "0x0860b420",
+   "name": "g_gameContextPtr",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "cleared at the end of SV_Shutdown"
+  },
+  {
+   "addr": "0x081a21b8",
+   "name": "g_081a21b8",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "copied into sv+0x8 in SV_SpawnServer"
+  },
+  {
+   "addr": "0x081a21c4",
+   "name": "g_081a21c4",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "cleared in SV_RestartMapFlagA"
+  },
+  {
+   "addr": "0x084a4480",
+   "name": "g_084a4480",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "tested as a flag in SV_InfoResponse"
+  },
+  {
+   "addr": "0x085abe04",
+   "name": "g_085abe04",
+   "type": "unsigned int",
+   "confidence": "unknown",
+   "evidence": "flag word masked in SV_SetupMapConfigstrings"
+  },
+  {
+   "addr": "0x08423008",
+   "name": "g_sv_serverIdCounter",
+   "type": "unsigned int",
+   "confidence": "unknown",
+   "evidence": "byte counter stepped by 0x10 in SV_SpawnServer and used as sv_serverid value"
+  },
+  {
+   "addr": "0x0817d838",
+   "name": "g_0817d838",
+   "type": "void *[]",
+   "confidence": "unknown",
+   "evidence": "pointer table; entry 0xdd cleared in SV_AddServerCvars"
+  },
+  {
+   "addr": "0x0849f6f4",
+   "name": "sv_gametypeName",
+   "type": "char[0x40]",
+   "confidence": "inferred",
+   "evidence": "copied from g_gametype in SV_SpawnServer and read by SV_ValidateGametype"
+  },
+  {
+   "addr": "0x0849f7e0",
+   "name": "g_escapedServerTextBuf",
+   "type": "char[0x400]",
+   "confidence": "inferred",
+   "evidence": "output buffer of SV_EscapeServerText"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "client_s",
+   "size": "0xb1064",
+   "evidence": "svs.clients stride 0xb1064 (sizeof(int)*0x2c419); reliable ring at +0x40c (128 x 0x408); name +0x20c48; ping +0x6e6b4; netadr +0x6e6d4 (20 bytes)"
+  },
+  {
+   "name": "serverCommand_s",
+   "size": "0x408",
+   "evidence": "reliable ring element: text 0x400, time +0x400, flags +0x404"
+  },
+  {
+   "name": "server_s",
+   "size": "0x5f534",
+   "evidence": "sv block cleared as 0x5f534 bytes; configstrings at +0x418; archivedEntities at +0x241c"
+  },
+  {
+   "name": "serverStatic_s",
+   "size": "0x1d10c region",
+   "evidence": "svs block cleared as 0x1d10c bytes; clients at +0xc; pools at +0x30..+0x50"
+  },
+  {
+   "name": "archivedEntity_s",
+   "size": "0x174",
+   "evidence": "record stride 0x174 in sv; head dwords 0..0x3b; origin at +0xfc; angles at +0x108"
+  },
+  {
+   "name": "netadr_s",
+   "size": "0x14",
+   "evidence": "five dwords passed by value; port is low 16 bits of word 2 (SV_ReadPackets port fix-up)"
+  },
+  {
+   "name": "msg_s",
+   "size": "unknown",
+   "evidence": "data at +0x4, cursize at +0xc (used by connectionless and netchan paths)"
+  },
+  {
+   "name": "cvar_s",
+   "size": "unknown",
+   "evidence": "value union at +0x8 (integer, boolean, string, float uses)"
+  },
+  {
+   "name": "sharedEntity_s",
+   "size": "unknown",
+   "evidence": "linked flag at +0xf0, origin at +0x120, angles at +0x12c; partial"
+  }
+ ],
+ "open_questions": [
+  "The ScrEntity_* wrapper family (0x08092002..0x080922c4) dispatches on a 16-bit handle table (DAT_081d8200 index, 100-byte records at DAT_081a5080); the record type and the owning subsystem are not recovered here, so the names are placeholders.",
+  "netadr_s is passed by value as five dwords in several signatures; the manifest signatures show struct by value, which is outside the 'struct Name *' form in the brief. The merge lane should decide the spelling; the ABI is unchanged.",
+  "The client_s layout is recovered from offsets used by this chunk only; fields 0x20818..0x20c43, 0x20e2c..0x6e6b0, 0x6e6ec..0xae6ff and 0xae710..0xb1020 are unknown and may hold data used by other chunks.",
+  "The archivedEntities count of 1024 at sv+0x241c is inferred from the 0x5f534 sv block size and the 0x174 stride; not verified against a bound check.",
+  "SV_SpawnServer treats the return of fn_080f8e7a(client, short) as a char * reason string (non-null drops the client); confirm against that function's chunk.",
+  "The meaning of the cvar at DAT_081a218c (used as a boolean that selects dedicated startup) and of DAT_084a8780 (integer cvar gating hunk/skel work) is not recovered; their registration string is outside this chunk.",
+  "SV_SetConfigstring on an empty slot does nothing (strcmp path only runs when the slot already holds a string); reproduced as-is, but a caller that relies on first-time sets needs confirming."
+ ]
+}

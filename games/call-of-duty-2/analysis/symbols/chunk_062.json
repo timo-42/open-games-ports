@@ -1,0 +1,903 @@
+{
+ "chunk": 62,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x08a700f8",
+   "name": "time",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'time': PLT entry 0x0804a134 (chunk_000); Ghidra EXTERNAL placeholder 0x8a700f8; signature was: long time(long *tloc)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a700fc",
+   "name": "pthread_mutexattr_init",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_mutexattr_init': PLT entry 0x0804a144 (chunk_000); Ghidra EXTERNAL placeholder 0x8a700fc; signature was: int pthread_mutexattr_init(void *attr)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70100",
+   "name": "pthread_mutex_lock",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_mutex_lock': PLT entry 0x0804a154 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70100; signature was: int pthread_mutex_lock(void *mutex)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70104",
+   "name": "fputs",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fputs': PLT entry 0x0804a164 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70104; signature was: int fputs(const char *s, void *stream)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70108",
+   "name": "strstr",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strstr': PLT entry 0x0804a174 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70108; signature was: char *strstr(const char *haystack, const char *needle)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7010c",
+   "name": "strlen",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strlen': PLT entry 0x0804a184 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7010c; signature was: unsigned int strlen(const char *s)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70110",
+   "name": "longjmp",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'longjmp': PLT entry 0x0804a194 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70110; signature was: void longjmp(void *env, int val)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70114",
+   "name": "sleep",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sleep': PLT entry 0x0804a1a4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70114; signature was: unsigned int sleep(unsigned int seconds)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70118",
+   "name": "__cxa_end_catch",
+   "signature": "",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__cxa_end_catch': PLT entry 0x0804a1b4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70118; signature was: void __cxa_end_catch(void)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7011c",
+   "name": "qsort",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'qsort': PLT entry 0x0804a1c4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7011c; signature was: void qsort(void *base, unsigned int nmemb, unsigned int size, void *compar)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70120",
+   "name": "atof",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'atof': PLT entry 0x0804a1d4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70120; signature was: double atof(const char *nptr)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70124",
+   "name": "atan2",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'atan2': PLT entry 0x0804a1e4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70124; signature was: double atan2(double y, double x)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70128",
+   "name": "strncmp",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strncmp': PLT entry 0x0804a1f4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70128; signature was: int strncmp(const char *a, const char *b, unsigned int n)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7012c",
+   "name": "inet_addr",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'inet_addr': PLT entry 0x0804a204 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7012c; signature was: uint32 inet_addr(const char *cp)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70130",
+   "name": "floor",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'floor': PLT entry 0x0804a214 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70130; signature was: double floor(double x)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70134",
+   "name": "memcmp",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'memcmp': PLT entry 0x0804a224 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70134; signature was: int memcmp(const void *a, const void *b, unsigned int n)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70138",
+   "name": "__gxx_personality_v0",
+   "signature": "",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__gxx_personality_v0': PLT entry 0x0804a234 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70138; signature was: int __gxx_personality_v0(int version, int actions, uint64 exception_class, void *exception_object, void *context)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7013c",
+   "name": "std::string::erase",
+   "signature": "",
+   "subsystem": "import/libstdc++",
+   "confidence": "inferred",
+   "evidence": "ELF dynamic import '_ZNSs5eraseEjj': PLT entry 0x0804a244 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7013c [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]; signature was: void *_ZNSs5eraseEjj(void *self, unsigned int pos, unsigned int len)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70140",
+   "name": "pthread_self",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_self': PLT entry 0x0804a254 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70140; signature was: unsigned int pthread_self(void)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70144",
+   "name": "std::string::operator+=",
+   "signature": "",
+   "subsystem": "import/libstdc++",
+   "confidence": "inferred",
+   "evidence": "ELF dynamic import '_ZNSspLEc': PLT entry 0x0804a264 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70144 [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]; signature was: void *_ZNSspLEc(void *self, char c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70148",
+   "name": "dlerror",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'dlerror': PLT entry 0x0804a274 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70148; signature was: const char *dlerror(void)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7014c",
+   "name": "__libc_start_main",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__libc_start_main': PLT entry 0x0804a284 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7014c; signature was: int __libc_start_main(void *main, int argc, void *argv, void *init, void *fini, void *rtld_fini, void *stack_end)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70150",
+   "name": "std::string::find",
+   "signature": "",
+   "subsystem": "import/libstdc++",
+   "confidence": "inferred",
+   "evidence": "ELF dynamic import '_ZNKSs4findEPKcj': PLT entry 0x0804a294 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70150 [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]; signature was: unsigned int _ZNKSs4findEPKcj(const void *self, const char *s, unsigned int pos)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70154",
+   "name": "toupper",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'toupper': PLT entry 0x0804a2a4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70154; signature was: int toupper(int c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70158",
+   "name": "sqrtf",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sqrtf': PLT entry 0x0804a2b4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70158; signature was: float sqrtf(float x)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7015c",
+   "name": "realloc",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'realloc': PLT entry 0x0804a2c4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7015c; signature was: void *realloc(void *ptr, unsigned int size)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70160",
+   "name": "strcat",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strcat': PLT entry 0x0804a2d4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70160; signature was: char *strcat(char *dest, const char *src)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70164",
+   "name": "tan",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'tan': PLT entry 0x0804a2e4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70164; signature was: double tan(double x)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70168",
+   "name": "asctime",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'asctime': PLT entry 0x0804a2f4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70168; signature was: char *asctime(const void *tm)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7016c",
+   "name": "printf",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'printf': PLT entry 0x0804a304 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7016c; signature was: int printf(const char *format, ...)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70170",
+   "name": "bind",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'bind': PLT entry 0x0804a314 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70170; signature was: int bind(int fd, const void *addr, unsigned int addrlen)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70174",
+   "name": "getuid",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'getuid': PLT entry 0x0804a324 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70174; signature was: unsigned int getuid(void)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70178",
+   "name": "fcntl",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fcntl': PLT entry 0x0804a334 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70178; signature was: int fcntl(int fd, int cmd, ...)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7017c",
+   "name": "memcpy",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'memcpy': PLT entry 0x0804a344 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7017c; signature was: void *memcpy(void *dest, const void *src, unsigned int n)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70180",
+   "name": "sqrt",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sqrt': PLT entry 0x0804a354 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70180; signature was: double sqrt(double x)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70184",
+   "name": "std::string::string",
+   "signature": "",
+   "subsystem": "import/libstdc++",
+   "confidence": "inferred",
+   "evidence": "ELF dynamic import '_ZNSsC1ERKSs': PLT entry 0x0804a364 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70184 [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]; signature was: void _ZNSsC1ERKSs(void *self, const void *other)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70188",
+   "name": "std::allocator<char>::~allocator",
+   "signature": "",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSaIcED1Ev': PLT entry 0x0804a374 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70188; signature was: void _ZNSaIcED1Ev(void *self)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7018c",
+   "name": "fclose",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fclose': PLT entry 0x0804a384 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7018c; signature was: int fclose(void *stream)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70190",
+   "name": "strrchr",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strrchr': PLT entry 0x0804a394 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70190; signature was: char *strrchr(const char *s, int c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70194",
+   "name": "ctime",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'ctime': PLT entry 0x0804a3a4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70194; signature was: char *ctime(const long *timep)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70198",
+   "name": "isdigit",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'isdigit': PLT entry 0x0804a3b4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70198; signature was: int isdigit(int c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7019c",
+   "name": "rmdir",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'rmdir': PLT entry 0x0804a3c4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7019c; signature was: int rmdir(const char *path)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701a0",
+   "name": "closedir",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'closedir': PLT entry 0x0804a3d4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701a0; signature was: int closedir(void *dirp)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701a4",
+   "name": "gettimeofday",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'gettimeofday': PLT entry 0x0804a3e4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701a4; signature was: int gettimeofday(void *tv, void *tz)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701a8",
+   "name": "srand",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'srand': PLT entry 0x0804a3f4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701a8; signature was: void srand(unsigned int seed)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701ac",
+   "name": "opendir",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'opendir': PLT entry 0x0804a404 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701ac; signature was: void *opendir(const char *name)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701b0",
+   "name": "snprintf",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'snprintf': PLT entry 0x0804a414 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701b0; signature was: int snprintf(char *str, unsigned int size, const char *format, ...)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701b4",
+   "name": "gethostname",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'gethostname': PLT entry 0x0804a424 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701b4; signature was: int gethostname(char *name, unsigned int len)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701b8",
+   "name": "gethostbyname",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'gethostbyname': PLT entry 0x0804a434 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701b8; signature was: void *gethostbyname(const char *name)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701bc",
+   "name": "strcasecmp",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strcasecmp': PLT entry 0x0804a444 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701bc; signature was: int strcasecmp(const char *a, const char *b)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701c0",
+   "name": "dlclose",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'dlclose': PLT entry 0x0804a454 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701c0; signature was: int dlclose(void *handle)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701c4",
+   "name": "exit",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'exit': PLT entry 0x0804a464 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701c4; signature was: void exit(int status)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701c8",
+   "name": "isalpha",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'isalpha': PLT entry 0x0804a474 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701c8; signature was: int isalpha(int c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701cc",
+   "name": "atoi",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'atoi': PLT entry 0x0804a484 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701cc; signature was: int atoi(const char *nptr)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701d0",
+   "name": "calloc",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'calloc': PLT entry 0x0804a494 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701d0; signature was: void *calloc(unsigned int nmemb, unsigned int size)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701d4",
+   "name": "sscanf",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sscanf': PLT entry 0x0804a4a4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701d4; signature was: int sscanf(const char *str, const char *format, ...)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701d8",
+   "name": "free",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'free': PLT entry 0x0804a4b4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701d8; signature was: void free(void *ptr)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701dc",
+   "name": "ioctl",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'ioctl': PLT entry 0x0804a4c4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701dc; signature was: int ioctl(int fd, unsigned long request, ...)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701e0",
+   "name": "htons",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'htons': PLT entry 0x0804a4d4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701e0; signature was: uint16 htons(uint16 hostshort)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701e4",
+   "name": "getcwd",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'getcwd': PLT entry 0x0804a4e4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701e4; signature was: char *getcwd(char *buf, unsigned int size)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701e8",
+   "name": "__cxa_begin_catch",
+   "signature": "",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__cxa_begin_catch': PLT entry 0x0804a4f4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701e8; signature was: void *__cxa_begin_catch(void *exceptionObject)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701ec",
+   "name": "isatty",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'isatty': PLT entry 0x0804a504 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701ec; signature was: int isatty(int fd)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701f0",
+   "name": "acos",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'acos': PLT entry 0x0804a514 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701f0; signature was: double acos(double x)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701f4",
+   "name": "memset",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'memset': PLT entry 0x0804a524 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701f4; signature was: void *memset(void *s, int c, unsigned int n)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701f8",
+   "name": "_exit",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_exit': PLT entry 0x0804a534 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701f8; signature was: void _exit(int status)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a701fc",
+   "name": "strncasecmp",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strncasecmp': PLT entry 0x0804a544 (chunk_000); Ghidra EXTERNAL placeholder 0x8a701fc; signature was: int strncasecmp(const char *a, const char *b, unsigned int n)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70200",
+   "name": "strncpy",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strncpy': PLT entry 0x0804a554 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70200; signature was: char *strncpy(char *dest, const char *src, unsigned int n)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70204",
+   "name": "std::string::operator+=",
+   "signature": "",
+   "subsystem": "import/libstdc++",
+   "confidence": "inferred",
+   "evidence": "ELF dynamic import '_ZNSspLEPKc': PLT entry 0x0804a564 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70204 [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]; signature was: void *_ZNSspLEPKc(void *self, const char *s)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70208",
+   "name": "fopen",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fopen': PLT entry 0x0804a574 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70208; signature was: void *fopen(const char *path, const char *mode)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7020c",
+   "name": "_setjmp",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_setjmp': PLT entry 0x0804a584 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7020c; signature was: int _setjmp(void *env)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70210",
+   "name": "_Unwind_Resume",
+   "signature": "",
+   "subsystem": "import/libgcc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_Unwind_Resume': PLT entry 0x0804a594 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70210; signature was: void _Unwind_Resume(void *exception_object)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70214",
+   "name": "pthread_mutex_unlock",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_mutex_unlock': PLT entry 0x0804a5a4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70214; signature was: int pthread_mutex_unlock(void *mutex)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70218",
+   "name": "operator new[]",
+   "signature": "",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_Znaj': PLT entry 0x0804a5b4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70218; signature was: void *_Znaj(unsigned int size)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7021c",
+   "name": "pthread_mutexattr_destroy",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_mutexattr_destroy': PLT entry 0x0804a5c4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7021c; signature was: int pthread_mutexattr_destroy(void *attr)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70220",
+   "name": "operator delete[]",
+   "signature": "",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZdaPv': PLT entry 0x0804a5d4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70220; signature was: void _ZdaPv(void *p)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70224",
+   "name": "sprintf",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sprintf': PLT entry 0x0804a5e4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70224; signature was: int sprintf(char *str, const char *format, ...)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70228",
+   "name": "fwrite",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fwrite': PLT entry 0x0804a5f4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70228; signature was: unsigned int fwrite(const void *ptr, unsigned int size, unsigned int nmemb, void *stream)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7022c",
+   "name": "sin",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sin': PLT entry 0x0804a604 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7022c; signature was: double sin(double x)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70230",
+   "name": "socket",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'socket': PLT entry 0x0804a614 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70230; signature was: int socket(int domain, int type, int protocol)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70234",
+   "name": "readdir",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'readdir': PLT entry 0x0804a624 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70234; signature was: void *readdir(void *dirp)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7023c",
+   "name": "rand",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'rand': PLT entry 0x0804a634 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7023c; signature was: int rand(void)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70240",
+   "name": "log",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'log': PLT entry 0x0804a644 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70240; signature was: double log(double x)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70244",
+   "name": "tcgetattr",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'tcgetattr': PLT entry 0x0804a654 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70244; signature was: int tcgetattr(int fd, void *termios_p)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70248",
+   "name": "read",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'read': PLT entry 0x0804a664 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70248; signature was: int read(int fd, void *buf, unsigned int n)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7024c",
+   "name": "geteuid",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'geteuid': PLT entry 0x0804a674 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7024c; signature was: unsigned int geteuid(void)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70250",
+   "name": "__gmon_start__",
+   "signature": "",
+   "subsystem": "import/crt-weak",
+   "confidence": "observed",
+   "evidence": "ELF dynamic symbol '__gmon_start__' (weak, GOT 0x0817d120 R_386_GLOB_DAT); Ghidra placeholder 0x8a70250; signature was: void __gmon_start__(void)",
+   "status": "translated",
+   "notes": "weak CRT hook; no PLT entry; called as a weak symbol from _init in chunk_000 (null test); no body emitted Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70254",
+   "name": "ceil",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'ceil': PLT entry 0x0804a684 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70254; signature was: double ceil(double x)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a70258",
+   "name": "dlopen",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'dlopen': PLT entry 0x0804a694 (chunk_000); Ghidra EXTERNAL placeholder 0x8a70258; signature was: void *dlopen(const char *filename, int flags)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  },
+  {
+   "addr": "0x08a7025c",
+   "name": "strcpy",
+   "signature": "",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strcpy': PLT entry 0x0804a6a4 (chunk_000); Ghidra EXTERNAL placeholder 0x8a7025c; signature was: char *strcpy(char *dest, const char *src)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly Import placeholder; the libc/libstdc++ symbol comes from the system headers, so no prototype is generated (signature recorded in evidence only)."
+  }
+ ],
+ "globals": [],
+ "types_proposed": [],
+ "open_questions": [
+  "All 89 entries of chunk 062 are Ghidra EXTERNAL placeholders at 0x08a700f8..0x08a7025c, outside the ELF image (the ELF loads .text up to 0x0813e30f and .rodata, .eh_frame and .got.plt below the placeholder range). They are not program functions. Each maps to a PLT entry already recorded in chunk_000 (0x0804a134..0x0804a6a4). The merge lane should decide whether to rewrite callers of these placeholder addresses to the import names, or to drop this range from the reconstruction corpus.",
+  "Two std::string::operator+= placeholders (0x08a70144 char overload, 0x08a70204 const char * overload) were distinguished by the decompiled parameter type, not by the import table. Confirm the mapping against the callers when they are rewritten. Their PLT entries are 0x0804a264 (_ZNSspLEc) and 0x0804a564 (_ZNSspLEPKc).",
+  "__gmon_start__ (0x08a70250) is a weak symbol with no PLT entry and is referenced only through the GOT (0x0817d120). Its chunk_000 call site is a null-tested weak call, so the merge lane should treat it as a weak CRT hook, not a libc import."
+ ]
+}

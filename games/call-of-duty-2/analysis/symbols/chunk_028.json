@@ -1,0 +1,771 @@
+{
+ "chunk": 28,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080ae900",
+   "name": "snd_refreshVolumeModGroups",
+   "signature": "void snd_refreshVolumeModGroups(void)",
+   "subsystem": "sound/alias",
+   "confidence": "observed",
+   "evidence": "string 'snd_refreshVolumeModGroups' registered as command handler by 0x080ae90c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ae90c",
+   "name": "Com_LoadSoundAliasFile",
+   "signature": "void Com_LoadSoundAliasFile(const char *group, uint32 param2, const char *fileName)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "'soundaliases/%s' path and 'Sound alias file %s' diagnostics; called from 0x080ad0aa",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aec0a",
+   "name": "SndAlias_CompareName",
+   "signature": "int SndAlias_CompareName(struct snd_alias_build_t *a, struct snd_alias_build_t *b)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "compares +0x40 alias name; comparator argument to 0x080aec2a",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aec2a",
+   "name": "SndAlias_MergeSortList",
+   "signature": "struct snd_alias_build_t *SndAlias_MergeSortList(struct snd_alias_build_t *list, int32 *count, int (*cmp)(struct snd_alias_build_t *, struct snd_alias_build_t *), uint32 uniq)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "recursive merge sort over +0x150 links; contains 'duplicate alias' diagnostic",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aee7e",
+   "name": "SndAlias_CompareFileAndType",
+   "signature": "int SndAlias_CompareFileAndType(struct snd_alias_build_t *a, struct snd_alias_build_t *b)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "compares +0xc8 sound file name, then +0x12c load type, then SndAlias_CompareName",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aeef0",
+   "name": "SndAlias_WarnFileTypeMismatch",
+   "signature": "void SndAlias_WarnFileTypeMismatch(struct snd_alias_build_t *a, struct snd_alias_build_t *b)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "'WARNING: sound file ... used as %s in alias' format string",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aefb8",
+   "name": "SndFile_Init",
+   "signature": "void SndFile_Init(struct snd_file_s *file, const char *name, uint32 loadType)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "initializes 16-byte sound file record; called from 0x080af224",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aefd8",
+   "name": "Com_AddSoundAlias",
+   "signature": "void Com_AddSoundAlias(struct snd_alias_build_t *entry, struct snd_alias_t *alias, const char *name, struct snd_file_s *soundFile, const char *subtitle)",
+   "subsystem": "sound/alias",
+   "confidence": "observed",
+   "evidence": "heap allocation tag 'Com_AddSoundAlias' passed inside the function",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080af224",
+   "name": "Com_MakeSoundAliasesPermanent",
+   "signature": "void Com_MakeSoundAliasesPermanent(struct snd_alias_bank_t *aliasSet, struct snd_file_set_s *fileSet)",
+   "subsystem": "sound/alias",
+   "confidence": "observed",
+   "evidence": "allocation tags 'Com_MakeSoundAliasesPermanent:aliases|soundFiles|strings|aliasList'; anchor name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080af770",
+   "name": "Com_ParseSndCurve",
+   "signature": "int Com_ParseSndCurve(char *text, const char *curveName, struct snd_curve_t *curve)",
+   "subsystem": "sound/sndcurve",
+   "confidence": "inferred",
+   "evidence": "'sndcurve parse failure on file' diagnostics; called from 0x080afa80",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080afa80",
+   "name": "Com_LoadSndCurve",
+   "signature": "int Com_LoadSndCurve(const char *curveName, struct snd_curve_t *curve)",
+   "subsystem": "sound/sndcurve",
+   "confidence": "inferred",
+   "evidence": "'soundaliases/%s.vfcurve' path, 'SNDCURVE' header and 'Could not load sndcurve file' diagnostic",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080afcaa",
+   "name": "SndCurve_InitDefault",
+   "signature": "void SndCurve_InitDefault(struct snd_curve_t *curve)",
+   "subsystem": "sound/sndcurve",
+   "confidence": "inferred",
+   "evidence": "writes the default two-knot curve (0,1)-(1,0) that the endpoint warning of 0x080af770 enforces",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080afcee",
+   "name": "SndSubtitle_HasReference",
+   "signature": "int SndSubtitle_HasReference(const char *key)",
+   "subsystem": "sound/subtitle",
+   "confidence": "inferred",
+   "evidence": "'SUBTITLE_' prefix and 'soundaliases/subtitle.st' REFERENCE scan",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080afdf4",
+   "name": "SndSubtitle_FindEnglishText",
+   "signature": "const char *SndSubtitle_FindEnglishText(const char *key)",
+   "subsystem": "sound/subtitle",
+   "confidence": "inferred",
+   "evidence": "'soundaliases/subtitle.st' scan for LANG_ENGLISH text; 'StringEd file %s has bad syntax' message",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aff54",
+   "name": "SndSubtitle_WriteReferenceBlock",
+   "signature": "void SndSubtitle_WriteReferenceBlock(const char *key, const char *text, int handle)",
+   "subsystem": "sound/subtitle",
+   "confidence": "inferred",
+   "evidence": "writes REFERENCE / LANG_ENGLISH block literal strings",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b0020",
+   "name": "SndSubtitle_WriteReference",
+   "signature": "void SndSubtitle_WriteReference(const char *key, const char *text)",
+   "subsystem": "sound/subtitle",
+   "confidence": "inferred",
+   "evidence": "rewrites soundaliases/subtitle.st via soundaliases/temp.st; 'ENDMARKER' terminator",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b0374",
+   "name": "Com_LocalizeSoundAliasFile",
+   "signature": "void Com_LocalizeSoundAliasFile(const char *fileName, const char *zone, char *tmpPath)",
+   "subsystem": "sound/subtitle",
+   "confidence": "inferred",
+   "evidence": "'Processing sound alias file %s..' and 'Localized %i sound alias subtitles' messages",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b0e9e",
+   "name": "COM_WriteFinalStringEdFile",
+   "signature": "void COM_WriteFinalStringEdFile(const char *srcPath, const char *dstPath)",
+   "subsystem": "sound/subtitle",
+   "confidence": "observed",
+   "evidence": "'Short read/write in COM_WriteFinalStringEdFile()' error strings",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b11e8",
+   "name": "Float_Clamp_080b11e8",
+   "signature": "float Float_Clamp_080b11e8(float a, float b, float c)",
+   "subsystem": "util/float",
+   "confidence": "inferred",
+   "evidence": "no string or callee names it; chains two select calls and discards the result (no observable effect) [rename botlib-sound-math: Disassembly: two nested calls to select 0x080b1226 with args (a-c,c,a) and (b-a,b,inner) = clamp(x,lo,hi); returns st0. Same semantics as Float_Clamp 0x080f2954, so suffixed.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1226",
+   "name": "Float_SelectIfNonNegative",
+   "signature": "float Float_SelectIfNonNegative(float test, float ifNonNegative, float ifNegative)",
+   "subsystem": "util/float",
+   "confidence": "inferred",
+   "evidence": "returns second argument when first >= 0 else third",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1250",
+   "name": "Dvar_SetSetterGate",
+   "signature": "void Dvar_SetSetterGate(uint8 value)",
+   "subsystem": "sound/state",
+   "confidence": "inferred",
+   "evidence": "single byte store to g_085b7655; no name evidence [rename botlib-sound-math: Stores byte to 0x085b7655, which is tested only at 0x080b5045 (Dvar set path); nothing sound-related.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1268",
+   "name": "Dvar_GetSvCheatsReady",
+   "signature": "uint8 Dvar_GetSvCheatsReady(void)",
+   "subsystem": "sound/state",
+   "confidence": "inferred",
+   "evidence": "single byte load from g_085b7654 (one byte before the setter target); no name evidence [rename botlib-sound-math: Reads byte 0x085b7654, which is set to 1 at 0x080b513e (Dvar_InitSvCheats per notes).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1274",
+   "name": "generateHashValue",
+   "signature": "uint32 generateHashValue(const char *name)",
+   "subsystem": "util/hash",
+   "confidence": "observed",
+   "evidence": "error string 'null name in generateHashValue' names the function",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b12ea",
+   "name": "Com_IsIdentifierName",
+   "signature": "int Com_IsIdentifierName(const char *s)",
+   "subsystem": "dvar/parse",
+   "confidence": "inferred",
+   "evidence": "character class test: alphanumeric or '_' for every character",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1352",
+   "name": "Dvar_ScratchAlloc",
+   "signature": "float *Dvar_ScratchAlloc(int count)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "12-slot scratch ring used by dvar vector parsing",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1394",
+   "name": "Dvar_AllocValueBlock",
+   "signature": "void Dvar_AllocValueBlock(struct dvar_s *dvar)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "allocates type*12 bytes for three value words, offsets type*4 apart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b13ec",
+   "name": "Dvar_FreeValueBlock",
+   "signature": "void Dvar_FreeValueBlock(struct dvar_s *dvar)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "frees the block at dvar+0x08 via the pool free routine",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1402",
+   "name": "Dvar_InternString",
+   "signature": "const char *Dvar_InternString(const char *s)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "tail call to the string pool allocator",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1416",
+   "name": "Dvar_ReleasePoolString",
+   "signature": "void Dvar_ReleasePoolString(const char *s)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "tail call to the string pool free routine",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b142a",
+   "name": "Dvar_CanonicalString",
+   "signature": "const char *Dvar_CanonicalString(const char *s)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "returns g_emptyString, digit table entries, g_canonicalOff/On or a pool copy",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1502",
+   "name": "Dvar_ReleaseValueString",
+   "signature": "void Dvar_ReleaseValueString(const char *s)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "frees a value string unless canonical (digit, off, on)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1550",
+   "name": "Dvar_ReleaseCurrentValue",
+   "signature": "void Dvar_ReleaseCurrentValue(struct dvar_s *dvar)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "releases dvar+0x08 when not shared with latched or reset",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b158c",
+   "name": "Dvar_ReleaseLatchedValue",
+   "signature": "void Dvar_ReleaseLatchedValue(struct dvar_s *dvar)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "releases dvar+0x0c when not shared with current or reset",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b15c8",
+   "name": "Dvar_ReleaseResetValue",
+   "signature": "void Dvar_ReleaseResetValue(struct dvar_s *dvar)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "releases dvar+0x10 when not shared with current or latched",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1604",
+   "name": "Dvar_SetCurrentString",
+   "signature": "void Dvar_SetCurrentString(struct dvar_s *dvar, const char *s)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "sets current word; prefers latched then reset as shared values",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1698",
+   "name": "Dvar_SetLatchedString",
+   "signature": "void Dvar_SetLatchedString(struct dvar_s *dvar, const char *s)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "sets latched word; prefers current then reset as shared values",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b172c",
+   "name": "Dvar_SetResetString",
+   "signature": "void Dvar_SetResetString(struct dvar_s *dvar, const char *s)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "sets reset word; prefers current then latched as shared values",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b17c0",
+   "name": "Dvar_CurrentEnumString",
+   "signature": "const char *Dvar_CurrentEnumString(const struct dvar_s *dvar)",
+   "subsystem": "dvar/value",
+   "confidence": "inferred",
+   "evidence": "enumNames[current] or empty string when no enum domain",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b17f6",
+   "name": "Dvar_EnumStringFromIndexText",
+   "signature": "const char *Dvar_EnumStringFromIndexText(const struct dvar_s *dvar, const char *text)",
+   "subsystem": "dvar/parse",
+   "confidence": "inferred",
+   "evidence": "decimal index text to enum name; non-digit text yields empty string",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b187c",
+   "name": "Dvar_FormatValue",
+   "signature": "const char *Dvar_FormatValue(const struct dvar_s *dvar, uint32 value)",
+   "subsystem": "dvar/format",
+   "confidence": "inferred",
+   "evidence": "switch on dvar type with '%g', '%i', '%s' display formats",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1a58",
+   "name": "Dvar_ParseBool",
+   "signature": "bool Dvar_ParseBool(const char *s)",
+   "subsystem": "dvar/parse",
+   "confidence": "inferred",
+   "evidence": "atoi(s) != 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1a7e",
+   "name": "Dvar_ParseInt",
+   "signature": "int Dvar_ParseInt(const char *s)",
+   "subsystem": "dvar/parse",
+   "confidence": "inferred",
+   "evidence": "atoi result returned in eax",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1a92",
+   "name": "Dvar_ParseFloat",
+   "signature": "float Dvar_ParseFloat(const char *s)",
+   "subsystem": "dvar/parse",
+   "confidence": "inferred",
+   "evidence": "atof narrowed to float",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1ab2",
+   "name": "Dvar_ParseVec2",
+   "signature": "float *Dvar_ParseVec2(const char *s)",
+   "subsystem": "dvar/parse",
+   "confidence": "inferred",
+   "evidence": "sscanf '%g %g' into scratch storage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1afc",
+   "name": "Dvar_ParseVec3",
+   "signature": "float *Dvar_ParseVec3(const char *s)",
+   "subsystem": "dvar/parse",
+   "confidence": "inferred",
+   "evidence": "sscanf '%g %g %g' into scratch storage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1b50",
+   "name": "Dvar_ParseVec4",
+   "signature": "float *Dvar_ParseVec4(const char *s)",
+   "subsystem": "dvar/parse",
+   "confidence": "inferred",
+   "evidence": "sscanf '%g %g %g %g' into scratch storage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1bae",
+   "name": "Dvar_ParseEnumIndex",
+   "signature": "int Dvar_ParseEnumIndex(const struct DvarLimitsEnum *desc, const char *s)",
+   "subsystem": "dvar/parse",
+   "confidence": "inferred",
+   "evidence": "case-insensitive name match, else decimal index; -1337 on no match",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1cd8",
+   "name": "Dvar_ParseColorRGBA",
+   "signature": "void Dvar_ParseColorRGBA(const char *s, uint8 *rgba)",
+   "subsystem": "dvar/parse",
+   "confidence": "inferred",
+   "evidence": "sscanf four floats, clamp to [0,1], scale to bytes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1e18",
+   "name": "Dvar_ParseValueWord",
+   "signature": "union DvarValue Dvar_ParseValueWord(uint8 type, union DvarLimits domain, const char *text)",
+   "subsystem": "dvar/parse",
+   "confidence": "inferred",
+   "evidence": "switch on type code; type 0 stores one byte",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1f06",
+   "name": "Dvar_FormatCurrentValue",
+   "signature": "const char *Dvar_FormatCurrentValue(const struct dvar_s *dvar)",
+   "subsystem": "dvar/format",
+   "confidence": "inferred",
+   "evidence": "formats dvar+0x08 bracketed by two scratch calls",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1f44",
+   "name": "Dvar_FormatResetValue",
+   "signature": "const char *Dvar_FormatResetValue(const struct dvar_s *dvar)",
+   "subsystem": "dvar/format",
+   "confidence": "inferred",
+   "evidence": "formats dvar+0x10",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1f82",
+   "name": "Dvar_FormatLatchedValue",
+   "signature": "const char *Dvar_FormatLatchedValue(const struct dvar_s *dvar)",
+   "subsystem": "dvar/format",
+   "confidence": "inferred",
+   "evidence": "formats dvar+0x0c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b1fc0",
+   "name": "Dvar_ClampFloatArray",
+   "signature": "void Dvar_ClampFloatArray(float *values, int count, float lo, float hi)",
+   "subsystem": "dvar/domain",
+   "confidence": "inferred",
+   "evidence": "per-element clamp to [lo, hi]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b2042",
+   "name": "Dvar_AllFloatsInRange",
+   "signature": "int Dvar_AllFloatsInRange(const float *values, int count, float lo, float hi)",
+   "subsystem": "dvar/domain",
+   "confidence": "inferred",
+   "evidence": "all elements within [lo, hi]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b20b8",
+   "name": "Dvar_ClampValue",
+   "signature": "union DvarValue Dvar_ClampValue(uint8 type, uint32 value, uint32 fallback, union DvarLimits limits)",
+   "subsystem": "dvar/domain",
+   "confidence": "inferred",
+   "evidence": "type-dependent clamp; type 6 substitutes fallback; types 0,7,8 unchanged",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b21dc",
+   "name": "Dvar_ValueInDomain",
+   "signature": "int Dvar_ValueInDomain(uint8 type, uint32 value, uint32 lo, uint32 hi)",
+   "subsystem": "dvar/domain",
+   "confidence": "inferred",
+   "evidence": "type-dependent in-domain test",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b235c",
+   "name": "Dvar_DomainVectorText",
+   "signature": "void Dvar_DomainVectorText(int dims, float lo, float hi, char *buf, size_t size)",
+   "subsystem": "dvar/domain",
+   "confidence": "inferred",
+   "evidence": "'Domain is any %iD vector' strings with +/-FLT_MAX sentinels",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b245c",
+   "name": "Dvar_DomainText",
+   "signature": "char *Dvar_DomainText(uint8 type, uint32 lo, uint32 hi, char *buf, size_t size, int32 *lineCount)",
+   "subsystem": "dvar/domain",
+   "confidence": "inferred",
+   "evidence": "'Domain is ...' description strings per dvar type; int sentinels INT_MIN/INT_MAX for type 5",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x085ab160",
+   "name": "g_sndAliasListHead",
+   "type": "struct snd_alias_entry_s *",
+   "confidence": "inferred",
+   "evidence": "head of global sound alias parse list used by 0x080af224"
+  },
+  {
+   "addr": "0x085ab164",
+   "name": "g_sndAliasListCount",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "count of entries in g_sndAliasListHead"
+  },
+  {
+   "addr": "0x085ab168",
+   "name": "g_volumeModGroups",
+   "type": "uint8[]",
+   "confidence": "unknown",
+   "evidence": "address passed to fn_080ae5d0 by 0x080ae90c"
+  },
+  {
+   "addr": "0x085ab9e8",
+   "name": "g_sndVolModGroupsDirty",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "cleared by snd_refreshVolumeModGroups, set after load"
+  },
+  {
+   "addr": "0x085ab9e9",
+   "name": "g_sndVolModCmdRegistered",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "guards one-time command registration in 0x080ae90c"
+  },
+  {
+   "addr": "0x085aba00",
+   "name": "g_sndReferenceNameBuf",
+   "type": "char[]",
+   "confidence": "inferred",
+   "evidence": "destination of strcpy in SndSubtitle_FindEnglishText"
+  },
+  {
+   "addr": "0x0817e340",
+   "name": "g_sndAliasColumnNames",
+   "type": "const char *[24]",
+   "confidence": "observed",
+   "evidence": "column name table: 1 'name', 2 'sequence', 3 'file', 4 'subtitle', 5 'vol_min' ... 23 'lfe percentage'"
+  },
+  {
+   "addr": "0x0817e3cc",
+   "name": "g_canonicalOff",
+   "type": "const char *",
+   "confidence": "observed",
+   "evidence": "pointer value is the string 'off' (rodata 0x0814ee00)"
+  },
+  {
+   "addr": "0x0817e3d0",
+   "name": "g_canonicalOn",
+   "type": "const char *",
+   "confidence": "observed",
+   "evidence": "pointer value is the string 'on' (rodata 0x0814ee04)"
+  },
+  {
+   "addr": "0x0814f3ec",
+   "name": "g_digitStringTable",
+   "type": "const char[]",
+   "confidence": "observed",
+   "evidence": "table of 2-byte stride one-character strings indexed by char code (digits)"
+  },
+  {
+   "addr": "0x0814e8d7",
+   "name": "g_sndEmptyString",
+   "type": "const char[]",
+   "confidence": "observed",
+   "evidence": "empty string used as default curve name"
+  },
+  {
+   "addr": "0x0814ee40",
+   "name": "g_emptyString",
+   "type": "const char[]",
+   "confidence": "observed",
+   "evidence": "empty string returned for empty or non-enum values"
+  },
+  {
+   "addr": "0x085b7620",
+   "name": "g_dvarScratch",
+   "type": "float[12]",
+   "confidence": "inferred",
+   "evidence": "scratch ring used by Dvar_ScratchAlloc"
+  },
+  {
+   "addr": "0x085b7650",
+   "name": "g_dvarScratchIndex",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "ring index for g_dvarScratch"
+  },
+  {
+   "addr": "0x085b7654",
+   "name": "dvar_initialised",
+   "type": "uint8",
+   "confidence": "unknown",
+   "evidence": "byte read by Snd_GetFlagByte"
+  },
+  {
+   "addr": "0x085b7655",
+   "name": "dvar_loadingConfig",
+   "type": "uint8",
+   "confidence": "unknown",
+   "evidence": "byte written by Snd_SetFlagByte (one past g_085b7654)"
+  },
+  {
+   "addr": "0x0849fd48",
+   "name": "g_0849fd48",
+   "type": "uint8 *",
+   "confidence": "unknown",
+   "evidence": "pointer global; field at +0x08 used as FS base argument to fn_0809eab0"
+  },
+  {
+   "addr": "0x0849fc40",
+   "name": "g_0849fc40",
+   "type": "uint8[]",
+   "confidence": "unknown",
+   "evidence": "root tag passed to fn_0809eab0"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "snd_alias_entry_s",
+   "size": "0x154",
+   "evidence": "fields at 0x000 sourceFile, 0x040 name, 0x080 secondaryAliasName, 0x0c0 subtitle, 0x0c4 sequence, 0x0c8 soundFileName, 0x108 soundFile, 0x10c..0x140 numeric, 0x144..0x148 flags, 0x14c dupOf, 0x150 next; column order from g_sndAliasColumnNames"
+  },
+  {
+   "name": "snd_alias_s",
+   "size": "0x44",
+   "evidence": "runtime alias written by Com_AddSoundAlias: 17 words, packed bits 0-4 flags, 5-6 load type, 7-10 channel"
+  },
+  {
+   "name": "snd_file_s",
+   "size": "0x10",
+   "evidence": "SndFile_Init writes +0 name, +4 zero, +0xc load type"
+  },
+  {
+   "name": "snd_alias_list_s",
+   "size": "0x10",
+   "evidence": "alias-list node: name, first alias pointer, count; allocated in Com_MakeSoundAliasesPermanent"
+  },
+  {
+   "name": "snd_alias_set_s",
+   "size": "unknown (>= 0xc)",
+   "evidence": "param_1 of Com_MakeSoundAliasesPermanent: +0x04 aliases, +0x08 count"
+  },
+  {
+   "name": "snd_file_set_s",
+   "size": "0x08",
+   "evidence": "param_2 of Com_MakeSoundAliasesPermanent: +0 count, +4 files"
+  },
+  {
+   "name": "snd_curve_s",
+   "size": "0x48",
+   "evidence": "sndcurve: name at 0, knot count at 4, knots at 8 + 8*i (x then y), maxKnots 8"
+  },
+  {
+   "name": "dvar_s",
+   "size": "unknown (>= 0x1c)",
+   "evidence": "type byte at 0x06; value words at 0x08 current, 0x0c latched, 0x10 reset; enum count 0x14, names 0x18"
+  },
+  {
+   "name": "dvar_enum_desc_s",
+   "size": "0x08",
+   "evidence": "(count, names) pair passed by address to the enum parser"
+  }
+ ],
+ "open_questions": [
+  "Entry fields 0x134 (loadspec), 0x138 (masterslave), 0x13c (falloff), 0x140 (startdelay) and flag bits 0x144..0x148 are placed by runtime copy order and column-name order, not by a direct column-to-offset observation; confirm against the column setter at 0x080adcc8 (outside this chunk).",
+  "Snd_SetFlagByte writes g_085b7655 while Snd_GetFlagByte reads g_085b7654 (adjacent but different). Preserved as observed; confirm whether this is a binary bug or two distinct fields.",
+  "Com_MakeSoundAliasesPermanent increments listNode->aliasCount without an explicit zero store; it relies on fn_080ad4c8 returning zero-filled memory (Z_Malloc-like). Confirm the allocator.",
+  "SndAlias_MergeSortList with count 0 recurses without a base case (the binary does the same); the caller guards count != 0. Confirm no caller passes an empty list.",
+  "All fn_08xxxxxx placeholder signatures in chunk_028_types.h are provisional, taken from call sites. In particular fn_080b7bf8 is used as strcmp on entry source/file/name fields, fn_080ad622/fn_080adcc8 context types, fn_080b7d56 return type, and fn_080d6842/fn_080d6864 (scratch-slot bracketing) are unnamed.",
+  "Dvar_ClampValue, Dvar_ValueInDomain and Dvar_DomainText receive value words that are float bit patterns for some types and ints or pointers for others; the chunk keeps them as uint32 words and reinterprets by type, matching the binary.",
+  "dvar_color_channel computes 255*x in double before narrowing to float; the binary uses long double then narrows. Results agree for float inputs since the product is exact in double.",
+  "Dvar_ParseEnumIndex, Dvar_DomainText type 5 and SndSubtitle_WriteReference rely on integer sentinels (INT_MIN 0x80000000, INT_MAX 0x7fffffff) on raw words; those are preserved, not normalised."
+ ]
+}

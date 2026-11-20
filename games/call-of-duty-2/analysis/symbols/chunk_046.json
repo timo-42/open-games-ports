@@ -1,0 +1,667 @@
+{
+ "chunk": 46,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080f56f8",
+   "name": "G_PlayerStateToEntityState",
+   "signature": "void G_PlayerStateToEntityState(struct playerState_s *ps, struct gentity_s *ent, int trTime, int snapOrigin)",
+   "subsystem": "server/game/entity-state",
+   "confidence": "inferred",
+   "evidence": "called as (ps, ent, ps->commandTime, 1) from ClientThink_real/ClientEndFrame; copies origin/velocity/viewangles/eFlags/event ring ps->es; Q3 BG_PlayerStateToEntityState structure",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f5c34",
+   "name": "G_SpawnMantleBlocker",
+   "signature": "void G_SpawnMantleBlocker(const float *origin, int time, struct pmove_s *pm)",
+   "subsystem": "server/game/pmove",
+   "confidence": "inferred",
+   "evidence": "spawns a temp entity (eType 5, contents/clipmask 0x10000) for pm->ps->clientNum when pmove sets spawnEvent; semantics of the entity not identified [rename pmove: Function lies in the g_mantleBlockTimeBuffer user (string 'g_mantleBlockTimeBuffer' present in binary; chunk_048 line 1551); spawns a short-lived temp entity owned by the player when pm.spawnEvent (mantle) is set, expiry level.time + buffer. Behaviour per pmove.md 2.5 item 6.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f5d2e",
+   "name": "ClientThink_real",
+   "signature": "void ClientThink_real(struct gentity_s *ent, struct usercmd_s *ucmd)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "clamps cmd time to level.time+200/-1000, msec<=200, dispatches sessionState 3/2, runs Pmove (fn_080e9464), PlayerStateToEntityState and link; matches Q3 ClientThink_real",
+   "status": "translated",
+   "notes": "Stack-passed viewCalcA/B contexts and pmove_t layout recovered from offsets only; callee semantics (fn_080f24c8, fn_080f1c60, fn_080f2524) unknown."
+  },
+  {
+   "addr": "0x080f65f8",
+   "name": "ClientThink",
+   "signature": "void ClientThink(int clientNum)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "copies cmd to oldcmd, fetches usercmd, calls ClientThink_real unless dvar g_087a2440 defers; Q3 ClientThink",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f66c8",
+   "name": "G_ClientRunFrame",
+   "signature": "void G_ClientRunFrame(struct gentity_s *ent)",
+   "subsystem": "server/game/client",
+   "confidence": "unknown",
+   "evidence": "per-frame client step called from fn_08109f5c; may call ClientThink_real and steps pm_type 1/7 or respawn placement",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f6818",
+   "name": "ClientEndFrame_Intermission",
+   "signature": "void ClientEndFrame_Intermission(struct gentity_s *ent)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "dispatched from ClientEndFrame when sessionState==3; sets pm_type 5 and configstrings 5/6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f6916",
+   "name": "ClientEndFrame_Spectator",
+   "signature": "void ClientEndFrame_Spectator(struct gentity_s *ent)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "dispatched from ClientEndFrame when sessionState==2; follows spectatorClient via fn_0809a0b6 archived ps",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f6dd0",
+   "name": "Client_SpectateBitClear",
+   "signature": "int Client_SpectateBitClear(struct gclient_s *client, unsigned char bit)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "tests bit of client+0x2740; script method table has allowspectateteam",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f6dea",
+   "name": "G_CopyClientPlayerState",
+   "signature": "int G_CopyClientPlayerState(int clientNum, struct playerState_s *out)",
+   "subsystem": "server/game/client",
+   "confidence": "unknown",
+   "evidence": "copies 0x26a8-byte ps of clientNum when pm_flags&0x800000, zeroes ps+0x7a8..0x2728",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f6e9e",
+   "name": "G_PlayerCollisionPush",
+   "signature": "int G_PlayerCollisionPush(struct gentity_s *ent)",
+   "subsystem": "server/game/client",
+   "confidence": "unknown",
+   "evidence": "pushes overlapping player entities apart in 2D with pm_time=300, pm_flags|=0x200",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f72f8",
+   "name": "G_UpdateClientAttachments",
+   "signature": "int G_UpdateClientAttachments(struct gentity_s *ent)",
+   "subsystem": "server/game/client",
+   "confidence": "unknown",
+   "evidence": "mirrors ent model + 6 attachment model/tag names into clientInfo block, returns changed",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7516",
+   "name": "ClientEndFrame",
+   "signature": "void ClientEndFrame(struct gentity_s *ent)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "dispatch on sessionState 3/2/playing; ClientSpawn call for non-owned ps; Q3 ClientEndFrame structure",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7b38",
+   "name": "G_HandleClientEvent",
+   "signature": "void G_HandleClientEvent(int entityNum, int event)",
+   "subsystem": "server/game/client",
+   "confidence": "unknown",
+   "evidence": "called per pending ps event from G_PlayerStateToEntityState; acts on event ids 0x9e..0xa0, 0xaf",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7b94",
+   "name": "Vec2Subtract",
+   "signature": "void Vec2Subtract(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out.xy=a.xy-b.xy",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7bc0",
+   "name": "Vec2Scale",
+   "signature": "void Vec2Scale(const float *in, float scale, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out.xy=scale*in.xy",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7be6",
+   "name": "Vec2LengthSq",
+   "signature": "double Vec2LengthSq(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "x*x+y*y returned in st0",
+   "status": "translated",
+   "notes": "Original returns x87 extended in st0; reconstruction returns double."
+  },
+  {
+   "addr": "0x080f7c08",
+   "name": "Vec2Length",
+   "signature": "float Vec2Length(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "sqrt(x*x+y*y)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7c34",
+   "name": "VectorClear",
+   "signature": "void VectorClear(float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "zeroes 3 floats",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7c5e",
+   "name": "VectorSet",
+   "signature": "void VectorSet(float *v, float x, float y, float z)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "stores 3 values",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7c82",
+   "name": "VectorCopy",
+   "signature": "void VectorCopy(const float *src, float *dst)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "copies 3 words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7cb2",
+   "name": "VectorAdd",
+   "signature": "void VectorAdd(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "3-component add",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7cf6",
+   "name": "VectorSubtract",
+   "signature": "void VectorSubtract(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "3-component subtract",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7d3a",
+   "name": "DotProduct_080f7d3a",
+   "signature": "double DotProduct_080f7d3a(const float *a, const float *b)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "3-component dot product returned in st0",
+   "status": "translated",
+   "notes": "Original returns x87 extended in st0; reconstruction returns double."
+  },
+  {
+   "addr": "0x080f7d6e",
+   "name": "Sqrt_float",
+   "signature": "float Sqrt_float(float x)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "(float)sqrt((double)x)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f84be",
+   "name": "Scr_RegisterPlayerFields",
+   "signature": "void Scr_RegisterPlayerFields(void)",
+   "subsystem": "script/player",
+   "confidence": "inferred",
+   "evidence": "iterates table at 0x08157ce0 (names name/sessionteam/...), registers via fn_0807e846 with id 0xc000|index",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8514",
+   "name": "Scr_SetPlayerField",
+   "signature": "void Scr_SetPlayerField(struct gclient_s *client, int fieldIndex)",
+   "subsystem": "script/player",
+   "confidence": "inferred",
+   "evidence": "dispatches table entry setter (+0xc) or generic fn_0811ad7e",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8576",
+   "name": "Scr_GetPlayerField",
+   "signature": "void Scr_GetPlayerField(struct gclient_s *client, int fieldIndex)",
+   "subsystem": "script/player",
+   "confidence": "inferred",
+   "evidence": "dispatches table entry getter (+0x10) or generic fn_0811af3c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f85d8",
+   "name": "SetClientViewAngle",
+   "signature": "void SetClientViewAngle(struct gentity_s *ent, const float *angle)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "sets delta_angles from view angle minus cmd angles; copies to currentAngles/viewangles; Q3 SetClientViewAngle structure",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8916",
+   "name": "G_GetPlayerViewOrigin",
+   "signature": "void G_GetPlayerViewOrigin(struct gentity_s *ent, float *out)",
+   "subsystem": "server/game/client",
+   "confidence": "observed",
+   "evidence": "string \"G_GetPlayerViewOrigin: Couldn't find [tag_player] on turret\" at 0x8157e20",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8af8",
+   "name": "G_GetPlayerViewAxis",
+   "signature": "void G_GetPlayerViewAxis(struct gentity_s *ent, float *forward, float *right, float *up)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "AngleVectors(ps->viewangles,...) via fn_080a5226",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8b2c",
+   "name": "ClientCleanName",
+   "signature": "void ClientCleanName(const char *in, char *out, int outSize)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "string \"UnnamedPlayer\" fallback; Q3 ClientCleanName [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8c5e",
+   "name": "ClientUserinfoChanged",
+   "signature": "void ClientUserinfoChanged(int clientNum)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "reads userinfo keys cg_predictItems/name, fallback name badinfo",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8e7a",
+   "name": "ClientConnect",
+   "signature": "const char *ClientConnect(int clientNum, unsigned short pers)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "returns string GAME_INVALIDPASSWORD on password key mismatch; reads userinfo key password [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f90ae",
+   "name": "ClientBegin",
+   "signature": "void ClientBegin(int clientNum)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "sets connected=2, pm_type=4; follows ClientConnect",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f910e",
+   "name": "ClientSpawn",
+   "signature": "void ClientSpawn(struct gentity_s *ent, const float *origin, const float *angles)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "memset client 0x28a4 preserving sess block, spawnCount+1, SetClientViewAngle, ClientEndFrame, ClientThink_real",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f94ce",
+   "name": "ClientDisconnect",
+   "signature": "void ClientDisconnect(int clientNum)",
+   "subsystem": "server/game/client",
+   "confidence": "inferred",
+   "evidence": "string \"disconnect\" passed to script notify; clears connected and 0x2748..0x27a4 [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f962a",
+   "name": "G_FindTargetPlayerEncoded",
+   "signature": "unsigned int G_FindTargetPlayerEncoded(struct gentity_s *ent, const float *origin, int startIndex)",
+   "subsystem": "server/game/client",
+   "confidence": "unknown",
+   "evidence": "scans 64 entities for visible same-team clients; packed yaw/x/y/entnum result stored in ps->targetInfo",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f9976",
+   "name": "G_SayToEligibleClients",
+   "signature": "void G_SayToEligibleClients(struct gentity_s *ent, struct voicepacket_s *pkt)",
+   "subsystem": "server/game/chat",
+   "confidence": "inferred",
+   "evidence": "recipient loop shape of Q3 G_Say; sets lastSayTime",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f9ada",
+   "name": "Vec2Subtract_080f9ada",
+   "signature": "void Vec2Subtract_080f9ada(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "duplicate Vec2Subtract",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f9b06",
+   "name": "VectorCopy_080f9b06",
+   "signature": "void VectorCopy_080f9b06(const float *src, float *dst)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "duplicate VectorCopy",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f9b36",
+   "name": "VectorMA_080f9b36",
+   "signature": "void VectorMA_080f9b36(const float *a, float scale, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out=a+scale*b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f9f4e",
+   "name": "G_ClientIsPlaying",
+   "signature": "bool G_ClientIsPlaying(struct gentity_s *ent)",
+   "subsystem": "server/game/client",
+   "confidence": "unknown",
+   "evidence": "sessionState==0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fcc48",
+   "name": "G_SetEntityBodyContents",
+   "signature": "void G_SetEntityBodyContents(struct gentity_s *ent)",
+   "subsystem": "server/game/entity",
+   "confidence": "unknown",
+   "evidence": "clears eFlags 0x80000, contents=0x4000000, svFlags=0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fddac",
+   "name": "Scr_FindPlayerMethod",
+   "signature": "void *Scr_FindPlayerMethod(const char **name)",
+   "subsystem": "script/player",
+   "confidence": "inferred",
+   "evidence": "59-entry table at 0x08158a40 of player script methods (giveweapon..getguid)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fde30",
+   "name": "VectorClear_080fde30",
+   "signature": "void VectorClear_080fde30(float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "duplicate VectorClear",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fde5a",
+   "name": "VectorCopy_080fde5a",
+   "signature": "void VectorCopy_080fde5a(const float *src, float *dst)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "duplicate VectorCopy",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fde8a",
+   "name": "VectorAdd_080fde8a",
+   "signature": "void VectorAdd_080fde8a(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "duplicate VectorAdd",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fdece",
+   "name": "VectorScale_080fdece",
+   "signature": "void VectorScale_080fdece(const float *in, float scale, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out=scale*in",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fdf08",
+   "name": "ScoreboardMessage",
+   "signature": "void ScoreboardMessage(struct gentity_s *ent)",
+   "subsystem": "server/game/scores",
+   "confidence": "inferred",
+   "evidence": "formats with 5 ints per client and command char 'b'; Q3 DeathmatchScoreboardMessage structure",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fe0ee",
+   "name": "Cmd_Score_f",
+   "signature": "void Cmd_Score_f(struct gentity_s *ent)",
+   "subsystem": "server/game/commands",
+   "confidence": "inferred",
+   "evidence": "wrapper calling ScoreboardMessage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fe102",
+   "name": "CheatsOk",
+   "signature": "int CheatsOk(struct gentity_s *ent)",
+   "subsystem": "server/game/commands",
+   "confidence": "inferred",
+   "evidence": "strings GAME_CHEATSNOTENABLED, GAME_MUSTBEALIVECOMMAND [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fe1b0",
+   "name": "ConcatArgs",
+   "signature": "char *ConcatArgs(int start)",
+   "subsystem": "server/game/commands",
+   "confidence": "inferred",
+   "evidence": "joins Cmd_Argv from start with spaces into static buffer 0x08628ae0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fe276",
+   "name": "SanitizeString",
+   "signature": "void SanitizeString(const char *in, char *out)",
+   "subsystem": "server/game/commands",
+   "confidence": "inferred",
+   "evidence": "lowercases skipping 0x1b pairs and control chars",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fe2ce",
+   "name": "ClientNumberFromString",
+   "signature": "int ClientNumberFromString(struct gentity_s *ent, const char *s)",
+   "subsystem": "server/game/commands",
+   "confidence": "inferred",
+   "evidence": "strings GAME_BADCLIENTSLOT, GAME_CLIENTNOTACTIVE, GAME_USERNOTONSERVER [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fe4bc",
+   "name": "G_ParseConfigstring12Bounds",
+   "signature": "void G_ParseConfigstring12Bounds(const char *text)",
+   "subsystem": "server/game/level",
+   "confidence": "unknown",
+   "evidence": "sets configstring 12, sscanf of 7 floats, sets two float globals",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fe588",
+   "name": "Cmd_Give_f",
+   "signature": "void Cmd_Give_f(struct gentity_s *ent)",
+   "subsystem": "server/game/commands",
+   "confidence": "inferred",
+   "evidence": "strings health, weapons, ammo, allammo [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08716400",
+   "name": "g_entities",
+   "type": "gentity_t[64]",
+   "confidence": "inferred",
+   "evidence": "stride 0x230, client ptr at +0x158"
+  },
+  {
+   "addr": "0x087035bc",
+   "name": "g_clientInfos",
+   "type": "clientInfo_t[64]",
+   "confidence": "inferred",
+   "evidence": "stride 0x4b8, name/model strings"
+  },
+  {
+   "addr": "0x0864c380",
+   "name": "level",
+   "type": "level_locals_t",
+   "confidence": "inferred",
+   "evidence": "clients ptr +0, gentities ptr +4, maxclients +0x1e4, time +0x1ec"
+  },
+  {
+   "addr": "0x08157ce0",
+   "name": "g_playerFields",
+   "type": "playerFieldDef_t[13]",
+   "confidence": "observed",
+   "evidence": "names name/sessionteam/sessionstate/... script field table"
+  },
+  {
+   "addr": "0x08158a40",
+   "name": "g_playerMethods",
+   "type": "playerMethodDef_t[59]",
+   "confidence": "observed",
+   "evidence": "names giveweapon..getguid"
+  },
+  {
+   "addr": "0x08628ae0",
+   "name": "g_08628ae0",
+   "type": "char[1024]",
+   "confidence": "inferred",
+   "evidence": "ConcatArgs static buffer"
+  },
+  {
+   "addr": "0x0864e158",
+   "name": "g_0864e158",
+   "type": "float",
+   "confidence": "unknown",
+   "evidence": "set in G_ParseConfigstring12Bounds"
+  },
+  {
+   "addr": "0x0864e15c",
+   "name": "g_0864e15c",
+   "type": "float",
+   "confidence": "unknown",
+   "evidence": "square of g_0864e158"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "playerState_s",
+   "size": "0x26a8",
+   "evidence": "memcpy size in ClientEndFrame_Spectator/G_CopyClientPlayerState; field offsets from many functions"
+  },
+  {
+   "name": "gclient_s",
+   "size": "0x28a4",
+   "evidence": "client stride (clientNum*0x28a4 + level.clients) in ClientConnect/ClientDisconnect"
+  },
+  {
+   "name": "gentity_s",
+   "size": "0x230",
+   "evidence": "entity stride 0x230 from g_entities indexing and pointer difference division"
+  },
+  {
+   "name": "clientInfo_s",
+   "size": "0x4b8",
+   "evidence": "stride 0x4b8 at 0x087035bc, memset size in ClientConnect"
+  },
+  {
+   "name": "usercmd_s",
+   "size": "0x1c",
+   "evidence": "7-word copies of cmd->oldcmd and pmove cmd"
+  },
+  {
+   "name": "pmove_s",
+   "size": "0xf8",
+   "evidence": "memset(&pm,0,0xf8) in ClientThink_real"
+  },
+  {
+   "name": "level_locals_s",
+   "size": "0x31c",
+   "evidence": "fields used at 0x0864c380.. up to sortedClients[64]; real size unknown"
+  }
+ ],
+ "open_questions": [
+  "Names of the many field_XXXX members of playerState_s/gclient_s/gentity_s are unknown; only offsets are established.",
+  "What fn_080f24c8, fn_080f1c60 and fn_080f2524 (view/weapon sway calculators in ClientThink_real) compute, and the weapon-def fields at +0x278/+0x300.",
+  "Meaning of the float globals g_0864e158/g_0864e15c and consumers of the packed result of G_FindTargetPlayerEncoded (ps->targetInfo).",
+  "level_locals_s.field_1c (give guard) and field_20 (spawn-in-progress) roles unconfirmed; x87 extended-precision returns approximated with double/float."
+ ]
+}

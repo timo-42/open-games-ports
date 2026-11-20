@@ -1,0 +1,1017 @@
+{
+ "chunk": 51,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x08118260",
+   "name": "G_FindGametypeDescriptionByName",
+   "signature": "byte *G_FindGametypeDescriptionByName(const char *name)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Q_stricmp linear search over g_0884d72c (gametype list, count g_0884d728, filled by GScr_LoadGametypeList); returns the +0x40 payload (description). chunk_050.cpp.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081182ca",
+   "name": "G_IsGametypeListed",
+   "signature": "bool G_IsGametypeListed(const char *name)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Boolean wrapper of G_FindGametypeDescriptionByName over the same gametype list.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081182f4",
+   "name": "G_CallGametypeMain",
+   "signature": "void G_CallGametypeMain(void)",
+   "subsystem": "game/script",
+   "confidence": "observed",
+   "evidence": "Calls the script function whose code offset is stored at 0x0884d708 (no args) and releases the returned thread handle; caller 0x08109096 also calls the 0x0884d70c variant. [rename game: chunk_050 lines 752-755: GScr_GetFunctionOffset(path,\"main\") stored at 0x0884d708; objdump 0x081182f4 loads ds:0x884d708 and calls the script-call helper with 0 args.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118322",
+   "name": "G_CallStartGameType",
+   "signature": "void G_CallStartGameType(void)",
+   "subsystem": "game/script",
+   "confidence": "observed",
+   "evidence": "Same as G_CallLevelScriptA for the offset at 0x0884d70c. [rename game: 0x0884d70c is set from GScr_GetFunctionOffset(\"maps/mp/gametypes/_callbacksetup\",\"CodeCallback_StartGameType\") (chunk_050 line 753); objdump 0x08118330 loads ds:0x884d70c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118350",
+   "name": "G_CallPlayerConnect",
+   "signature": "void G_CallPlayerConnect(struct gentity_s *ent)",
+   "subsystem": "game/script",
+   "confidence": "observed",
+   "evidence": "Calls the entity-method script at offset 0x0884d710 with no args on ent (sibling of the PlayerDamage/Killed callbacks) and releases the handle. [rename game: 0x0884d710 = CodeCallback_PlayerConnect (chunk_050 line 754); objdump 0x08118363 passes ds:0x884d710 with ent to the entity-call helper.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118384",
+   "name": "G_CallPlayerDisconnect",
+   "signature": "void G_CallPlayerDisconnect(struct gentity_s *ent)",
+   "subsystem": "game/script",
+   "confidence": "observed",
+   "evidence": "Same as G_CallEntityScriptA for the offset at 0x0884d714. [rename game: 0x0884d714 = CodeCallback_PlayerDisconnect (chunk_050 line 755); objdump 0x08118397 loads ds:0x884d714.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081183b8",
+   "name": "G_CallPlayerDamageCallback",
+   "signature": "void G_CallPlayerDamageCallback(struct gentity_s *self, struct gentity_s *inflictor, struct gentity_s *attacker, int damage, int dflags, uint32 meansOfDeath, int weapon, const float *point, const float *dir, int hitLocation, int timeOffset)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Pushes the 10 arguments of the Callback_PlayerDamage-style script callback (inflictor, attacker, damage, dflags, MOD string, weapon name, point, dir, hit location, time offset) in reverse and calls offset 0x0884d718; \"badMOD\" string observed.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118492",
+   "name": "G_CallPlayerKilledCallback",
+   "signature": "void G_CallPlayerKilledCallback(struct gentity_s *self, struct gentity_s *inflictor, struct gentity_s *attacker, int damage, uint32 meansOfDeath, int weapon, const float *dir, int hitLocation, int timeOffset, int deathAnimDuration)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Pushes the 9 arguments of the Callback_PlayerKilled-style script callback (inflictor, attacker, damage, MOD string, weapon name, dir, hit location, time offset, death anim duration) and calls offset 0x0884d71c.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118562",
+   "name": "Scr_NotifyEntityCallVote",
+   "signature": "void Scr_NotifyEntityCallVote(struct gentity_s *ent, const char *s1, const char *s2, const char *s3)",
+   "subsystem": "game/spawn",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Pushes 3 strings and notifies ent with script string id g_0885329e, interned from the literal \"call_vote\" in G_InitScriptStrings.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081185aa",
+   "name": "Scr_NotifyEntityVote",
+   "signature": "void Scr_NotifyEntityVote(struct gentity_s *ent, const char *s1)",
+   "subsystem": "game/spawn",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Pushes 1 string and notifies ent with script string id g_088532a0, interned from the literal \"vote\" in G_InitScriptStrings.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081185dc",
+   "name": "Stub_ReturnZero",
+   "signature": "int Stub_ReturnZero(void)",
+   "subsystem": "game/script",
+   "confidence": "unknown",
+   "evidence": "Returns 0 (unreferenced stub in the original).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081185e6",
+   "name": "Float_RoundHalfUp",
+   "signature": "int Float_RoundHalfUp(float x)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "(int)floor(x + 0.5), truncating cast (x87 control word forced to round-to-zero: fldcw with 0xc00). Name from behaviour.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811861c",
+   "name": "Float_SinCos",
+   "signature": "void Float_SinCos(float angle, float *outSin, float *outCos)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "sin/cos of one angle into two floats (double libm calls, narrowed to float).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811864a",
+   "name": "Vec3_Clear",
+   "signature": "void Vec3_Clear(float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "Zero a vec3 (VectorClear counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118674",
+   "name": "Vec3_Set",
+   "signature": "void Vec3_Set(uint32 *v, uint32 x, uint32 y, uint32 z)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "Set a vec3 from three components (VectorSet counterpart); components copied as raw dwords.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118698",
+   "name": "Vec3_Copy",
+   "signature": "void Vec3_Copy(const uint32 *src, uint32 *dst)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "Copy vec3 src -> dst (VectorCopy counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081186c8",
+   "name": "Vec3_Add",
+   "signature": "void Vec3_Add(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "out = a + b (VectorAdd counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811870c",
+   "name": "Vec3_Sub",
+   "signature": "void Vec3_Sub(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "out = a - b (VectorSubtract counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118750",
+   "name": "Vec3_Scale",
+   "signature": "void Vec3_Scale(const float *a, float scale, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "out = a * scale (VectorScale counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118788",
+   "name": "Vec3_Dot",
+   "signature": "float Vec3_Dot(const float *a, const float *b)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "Dot product (DotProduct counterpart). The original leaves the x87 sum unrounded in st0; float return here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081187bc",
+   "name": "Vec3_LengthSquared",
+   "signature": "float Vec3_LengthSquared(const float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "Squared length. The original returns the unrounded x87 sum; float return here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081187f0",
+   "name": "Vec3_Length",
+   "signature": "float Vec3_Length(const float *v); float Float_Sqrt(float x); float Vec3_Length(const float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "Vector length via Float_Sqrt of the float-precision squared length (result discarded by the original ABI use: returns st0 of Float_Sqrt).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811882e",
+   "name": "Float_Sqrt",
+   "signature": "float Float_Sqrt(float x)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "(float)sqrt((double)x), spilled through a float stack slot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118850",
+   "name": "G_ScriptMover_NextPhase",
+   "signature": "int G_ScriptMover_NextPhase(struct trajectory_s *tr, void *unusedCurrent, float speed, float cruiseTime, float decelTime, const float *accelEnd, const float *cruiseEnd, const float *dest)",
+   "subsystem": "game/mover",
+   "confidence": "inferred",
+   "evidence": "Advances a scripted-mover trajectory to its next phase: accelerate(7) -> linear-stop(3) -> decelerate(8) -> stationary(0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118a30",
+   "name": "G_ScriptMover_Think",
+   "signature": "void G_ScriptMover_Think(struct gentity_s *ent)",
+   "subsystem": "game/mover",
+   "confidence": "inferred",
+   "evidence": "Per-frame update of a script mover: when the position (then the angle) trajectory phase has expired, advance it, re-evaluate",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118c4a",
+   "name": "G_ScriptMover_PlanMove",
+   "signature": "void G_ScriptMover_PlanMove(struct trajectory_s *tr, const float *dest, float totalTime, float accelTime, float decelTime, float *curPos, float *outSpeed, float *outCruiseTime, float *outDecelTime, float *outAccelEnd, float *outCruiseEnd, float *outDest)",
+   "subsystem": "game/mover",
+   "confidence": "inferred",
+   "evidence": "Plans a move of a script mover to dest over totalTime with optional accel/decel times (moveto): fills the trajectory for the",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08118ffe",
+   "name": "G_ScriptMover_PlanRotate",
+   "signature": "void G_ScriptMover_PlanRotate(struct trajectory_s *tr, const float *angVel, float totalTime, float accelTime, float decelTime, float *curAngles, float *outSpeed, float *outCruiseTime, float *outDecelTime, float *outAccelEnd, float *outCruiseEnd, float *outDest)",
+   "subsystem": "game/mover",
+   "confidence": "inferred",
+   "evidence": "Rotation counterpart of G_ScriptMover_PlanMove: the \"dest\" vector is the angular velocity (delta) itself, so no speed",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081193a8",
+   "name": "G_ScriptMover_StartMove",
+   "signature": "void G_ScriptMover_StartMove(struct gentity_s *ent, const float *dest, float totalTime, float accelTime, float decelTime)",
+   "subsystem": "game/mover",
+   "confidence": "inferred",
+   "evidence": "Starts a position move on the entity (pos trajectory, origin at +0x138) and relinks it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811943a",
+   "name": "G_ScriptMover_StartGravity",
+   "signature": "void G_ScriptMover_StartGravity(struct gentity_s *ent, const float *velocity, float seconds)",
+   "subsystem": "game/mover",
+   "confidence": "inferred",
+   "evidence": "Starts a gravity (trType 5) position trajectory with the given initial velocity and duration in seconds (movegravity).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081194e0",
+   "name": "G_ScriptMover_StartRotateTo",
+   "signature": "void G_ScriptMover_StartRotateTo(struct gentity_s *ent, const float *destAngles, float totalTime, float accelTime, float decelTime)",
+   "subsystem": "game/mover",
+   "confidence": "inferred",
+   "evidence": "Angle counterpart of G_ScriptMover_StartMove (apos trajectory, angles at +0x144) using the move planner (rotateto).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119572",
+   "name": "G_ScriptMover_StartRotateVelocity",
+   "signature": "void G_ScriptMover_StartRotateVelocity(struct gentity_s *ent, const float *angVel, float totalTime, float accelTime, float decelTime)",
+   "subsystem": "game/mover",
+   "confidence": "inferred",
+   "evidence": "Angle trajectory started with the velocity-style rotate planner (G_ScriptMover_PlanRotate); no direct caller in this chunk.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119604",
+   "name": "SP_script_mover_common",
+   "signature": "void SP_script_mover_common(struct gentity_s *ent)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Common setup for script_brushmodel / script_model / script_origin spawns: while parsing spawn vars it reads \"light\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081197a6",
+   "name": "SP_script_brushmodel",
+   "signature": "void SP_script_brushmodel(struct gentity_s *ent)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Spawn function for classname \"script_brushmodel\" (spawn table 0x08188a00 entry): brush model setup (fn_08091858), common [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081197dc",
+   "name": "SP_script_model",
+   "signature": "void SP_script_model(struct gentity_s *ent)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Spawn function for classname \"script_model\" (spawn table entry): model setup (fn_0811d69e), common setup, svFlags |= 4, [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119886",
+   "name": "Scr_GetMoverTimeParams",
+   "signature": "void Scr_GetMoverTimeParams(float *total, float *accel, float *decel)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Reads the mover time parameters from script params 1..3 (total, optional accel, optional decel) with validation errors",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119b36",
+   "name": "GScr_MoveAxis",
+   "signature": "void GScr_MoveAxis(uint32 self, int axis)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Script method body for movex/movey/movez (axis 0/1/2): resolves self to a script mover entity (error strings observed),",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119c3c",
+   "name": "GScr_MoveX",
+   "signature": "void GScr_MoveX(uint32 self)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Script entity method \"movex\" (method table 0x0815e3a0 entry points here). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119dc8",
+   "name": "GScr_RotateAxis",
+   "signature": "void GScr_RotateAxis(uint32 self, int axis)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Same as GScr_MoveAxis but adds to currentAngles[axis] and starts a rotate-to.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119ece",
+   "name": "GScr_RotatePitch",
+   "signature": "void GScr_RotatePitch(uint32 self)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Script entity method \"rotatepitch\" (method table entry). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a1fa",
+   "name": "GScr_FindEntityMethod",
+   "signature": "void *GScr_FindEntityMethod(const char **name)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Looks up a script entity method by name in the 12-entry table at 0x0815e3a0 (strcmp); on a hit rewrites *name to the",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a27e",
+   "name": "G_VecCopy",
+   "signature": "void G_VecCopy(const float *src, float *dst)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "vec3 copy (second translation unit's VectorCopy).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a2ae",
+   "name": "G_VecSub",
+   "signature": "void G_VecSub(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "out = a - b.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a2f2",
+   "name": "G_VecScale",
+   "signature": "void G_VecScale(const float *a, float scale, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "out = scale * a.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a32a",
+   "name": "G_VecMA",
+   "signature": "void G_VecMA(const float *a, float scale, const float *dir, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "out = a + scale * dir (VectorMA counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a37e",
+   "name": "G_VecLength",
+   "signature": "float G_VecLength(const float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "Vector length (VectorLength counterpart). Original leaves the result in st0 although declared void by the decompiler.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a3bc",
+   "name": "G_Sqrt",
+   "signature": "float G_Sqrt(float x)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "(float)sqrt((double)x).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a3dc",
+   "name": "G_SpawnString",
+   "signature": "int G_SpawnString(const char *key, const char *def, const char **out)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "G_SpawnString counterpart: fetches spawn variable key (or def) from the spawn-var parser state at 0x0864d6c8 into *out.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a406",
+   "name": "G_SpawnFloat",
+   "signature": "int G_SpawnFloat(const char *key, const char *def, float *out)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "G_SpawnFloat counterpart: spawn string -> atof -> float; returns the G_SpawnString result.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a442",
+   "name": "G_SpawnInt",
+   "signature": "int G_SpawnInt(const char *key, const char *def, int *out)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "G_SpawnInt counterpart: spawn string -> atoi.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a47c",
+   "name": "G_SpawnVector",
+   "signature": "int G_SpawnVector(const char *key, const char *def, float *out)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "G_SpawnVector counterpart: zero the vec3, then sscanf \"%f %f %f\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a4dc",
+   "name": "Scr_ReadOnlyEntityField",
+   "signature": "void Scr_ReadOnlyEntityField(void)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Field setter used for read-only entity fields (classname, model, spawnflags): raises the script error. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a4f0",
+   "name": "G_ParseScrFieldValue",
+   "signature": "int G_ParseScrFieldValue(const char *key, const char *value)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Looks up a script field by name; if it exists, pushes the value text parsed according to the field's script type",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a5d8",
+   "name": "G_SetScrFieldFromString",
+   "signature": "void G_SetScrFieldFromString(const char *key, const char *value, struct gentity_s *ent)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Sets a script-defined field on ent from a spawn key/value string pair.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a610",
+   "name": "G_ParseField",
+   "signature": "void G_ParseField(const char *key, const char *value, struct gentity_s *ent)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "G_ParseField counterpart: applies a spawn key/value to ent via the field table at 0x0815e820 (Q_stricmp on name): types 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a7b0",
+   "name": "G_ParseSpawnVarsToEntity",
+   "signature": "void G_ParseSpawnVarsToEntity(struct gentity_s *ent)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Applies all parsed spawn vars (count at 0x0864d6cc, pairs at 0x0864d6d0) to the entity, then fn_0811f3c6 / fn_0811f426 on its origin / angles",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a828",
+   "name": "G_SpawnScriptStructFromSpawnVars",
+   "signature": "void G_SpawnScriptStructFromSpawnVars(void)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Spawns a script object (script_struct) from the current spawn vars: starts the script at 0x0884e7b4, takes the resulting",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a8ac",
+   "name": "G_CopyEntityFields",
+   "signature": "void G_CopyEntityFields(struct gentity_s *dst, struct gentity_s *src)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Copies every table-described field (types 0/1 as dword, 3 script string with refcount, 4 vec3, 8 byte) from src to dst",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a9ba",
+   "name": "G_FindItemForClassname",
+   "signature": "struct gitem_s *G_FindItemForClassname(const char *classname)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Item lookup by classname: \"weapon_<name>\" resolves the weapon index (fn_08120dd0) and returns its item (fn_080df20a);",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811aa7a",
+   "name": "G_CallSpawn",
+   "signature": "void G_CallSpawn(void)",
+   "subsystem": "game/spawn",
+   "confidence": "observed",
+   "evidence": "G_CallSpawn (string \"G_CallSpawn: NULL classname\\n\"): reads \"classname\" from the spawn vars; item classnames spawn an item,",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ab62",
+   "name": "G_CallSpawnEntity",
+   "signature": "int G_CallSpawnEntity(struct gentity_s *ent)",
+   "subsystem": "game/spawn",
+   "confidence": "observed",
+   "evidence": "G_CallSpawnEntity (string \"G_CallSpawnEntity: NULL classname\\n\"): spawns using ent's classname handle; returns 1 on success,",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ac48",
+   "name": "G_RegisterEntityScriptFields",
+   "signature": "void G_RegisterEntityScriptFields(void)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Registers every entity field-table name as a class-0 script field (index = table slot) then calls fn_080f84be (further field registration).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ac96",
+   "name": "G_LoadRadiantFieldFiles",
+   "signature": "void G_LoadRadiantFieldFiles(void)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Loads the \"radiant\" field description files with extension \"txt\". [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811acb2",
+   "name": "Scr_SetEntityField",
+   "signature": "int Scr_SetEntityField(int entNum, uint32 fieldIndex)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Script \"set entity field\" for class 0: indices with both top field bits (0xc000) go to the entity's class-1 object",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ad7e",
+   "name": "Scr_SetEntityFieldGeneric",
+   "signature": "void Scr_SetEntityFieldGeneric(void *obj, int type, int ofs)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Stores script param 0 into the entity field at byte offset ofs according to the field type: 0 int, 1 float, 3 script",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ae62",
+   "name": "Scr_SetObjectField",
+   "signature": "int Scr_SetObjectField(int classnum, int entNum, uint32 fieldIndex)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Dispatch of \"set field\": class 0 = entity fields, class 1 = fn_08103ba6 (always reports success).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811aeb2",
+   "name": "Scr_GetEntityField",
+   "signature": "void Scr_GetEntityField(int entNum, uint32 fieldIndex)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Pushes entity field fieldIndex on the script stack: 0xc000-tagged indices go to the class-1 object (fn_080f8576),",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811af3c",
+   "name": "Scr_AddEntityFieldValue",
+   "signature": "void Scr_AddEntityFieldValue(void *obj, int type, int ofs)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Pushes the entity field at byte offset ofs by type: 0 int, 1 float bits, 2 inline string, 3 string id (if nonzero),",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b05c",
+   "name": "Scr_GetObjectField",
+   "signature": "void Scr_GetObjectField(int classnum, int entNum, uint32 fieldIndex)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Dispatch of \"get field\": class 0 -> Scr_GetEntityField, class 1 -> fn_08103b2e.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b09e",
+   "name": "G_FreeEntityFields",
+   "signature": "void G_FreeEntityFields(struct gentity_s *ent)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Releases script-string fields of the entity: every type-3 table field is reassigned 0, then the 7 byte/uint16 slot pairs",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b128",
+   "name": "G_FreeScriptEntity",
+   "signature": "void G_FreeScriptEntity(struct gentity_s *ent)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Frees the entity's script fields and queues its script object (class 0) for release.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b150",
+   "name": "Scr_AddEntityParam",
+   "signature": "void Scr_AddEntityParam(struct gentity_s *ent)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Pushes the entity's script object (class 0) on the stack.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b16e",
+   "name": "Scr_GetEntityParam",
+   "signature": "struct gentity_s *Scr_GetEntityParam(uint32 param)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Reads script param as an entity reference; high half nonzero -> error \"not an entity\" and NULL, else the entity from the array at 0x08716400. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b1ca",
+   "name": "HudElem_FreeScriptObject",
+   "signature": "void HudElem_FreeScriptObject(void *obj)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Releases the class-1 script object whose address is in the 0x8c-stride array at 0x08628f80 (hudelem pool, game.md section 8) after HudElem_ReleaseStringFields.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b1fe",
+   "name": "Scr_AddHudElemObject",
+   "signature": "void Scr_AddHudElemObject(void *obj)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Pushes script object handle of class 1 computed from the 0x8c-stride hudelem pool index (0x08628f80).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b284",
+   "name": "Scr_CallEntityMethod",
+   "signature": "uint16 Scr_CallEntityMethod(struct gentity_s *ent, int codeOffset, int argc)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Scr_CallMethod on the entity's number with nameId 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b2b2",
+   "name": "Scr_SpawnEntityMethodThread",
+   "signature": "void Scr_SpawnEntityMethodThread(struct gentity_s *ent, int codeOffset, int argc)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Scr_SpawnMethodThread on the entity's number with nameId 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b2de",
+   "name": "Scr_NotifyEntity",
+   "signature": "void Scr_NotifyEntity(struct gentity_s *ent, uint16 stringId, int argc)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Scr_RunNestedCall-style notify on the entity's number (nameId 0), with the given notify string id and argument count.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b546",
+   "name": "Scr_SetObjectFieldValue",
+   "signature": "void Scr_SetObjectFieldValue(struct gentity_s *ent, int fieldId)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Scr_FinishCallForObject on the entity's number with object class 0 and the given field id.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b56a",
+   "name": "SP_worldspawn",
+   "signature": "void SP_worldspawn(void)",
+   "subsystem": "game/spawn",
+   "confidence": "observed",
+   "evidence": "SP_worldspawn (string \"SP_worldspawn: The first entity isn't 'worldspawn'\"): validates classname, then sets configstrings",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b770",
+   "name": "G_SpawnEntitiesFromString",
+   "signature": "void G_SpawnEntitiesFromString(void)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "G_SpawnEntitiesFromString counterpart (string \"SpawnEntities: no entities\"): requires a first entity, spawns worldspawn, then",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b7ba",
+   "name": "G_SpawnScriptStructs",
+   "signature": "void G_SpawnScriptStructs(void)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "First pass over the entity string: runs the level script at 0x0884e7b0, then spawns script objects for every \"script_struct\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b838",
+   "name": "G_VecClear",
+   "signature": "void G_VecClear(float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "Zero a vec3.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b862",
+   "name": "G_VecCopy2",
+   "signature": "void G_VecCopy2(const float *src, float *dst)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "vec3 copy (src, dst) -- a further duplicate of VectorCopy used by the field copier.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b894",
+   "name": "StringToFilter",
+   "signature": "int StringToFilter(const char *s, struct ipFilter_s *filter)",
+   "subsystem": "server/ipfilter",
+   "confidence": "inferred",
+   "evidence": "StringToFilter counterpart: parses \"a.b.c.d\" (shorter forms allowed) into mask/compare bytes; a zero component leaves its mask",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b9fe",
+   "name": "UpdateIPBans",
+   "signature": "void UpdateIPBans(void)",
+   "subsystem": "server/ipfilter",
+   "confidence": "inferred",
+   "evidence": "UpdateIPBans counterpart: rebuilds the \"a.b.c.d \" list of all used filters (compare != -1) from the compare words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811bad2",
+   "name": "AddIP",
+   "signature": "void AddIP(const char *str)",
+   "subsystem": "server/ipfilter",
+   "confidence": "inferred",
+   "evidence": "AddIP: reuses the first free filter slot (compare == -1) or appends (max 0x400, \"IP filter list is full\\n\"), parses the [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811bb60",
+   "name": "G_ProcessIPBans",
+   "signature": "void G_ProcessIPBans(void)",
+   "subsystem": "server/ipfilter",
+   "confidence": "inferred",
+   "evidence": "G_ProcessIPBans counterpart: reloads the filters from the g_banIPs dvar string (space-separated, a token is only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811bc02",
+   "name": "Svcmd_AddIP_f",
+   "signature": "void Svcmd_AddIP_f(void)",
+   "subsystem": "server/ipfilter",
+   "confidence": "inferred",
+   "evidence": "Svcmd_AddIP_f (\"Usage:  addip <ip-mask>\\n\"): takes console arg 1. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811bc52",
+   "name": "Svcmd_RemoveIP_f",
+   "signature": "void Svcmd_RemoveIP_f(void)",
+   "subsystem": "server/ipfilter",
+   "confidence": "inferred",
+   "evidence": "Svcmd_RemoveIP_f (\"Usage:  sv removeip <ip-mask>\\n\", \"Removed.\\n\", \"Didn't find %s.\\n\"): frees the exact mask/compare match and republishes g_banIPs. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811bd22",
+   "name": "Svcmd_EntityList_f",
+   "signature": "void Svcmd_EntityList_f(void)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "Svcmd_EntityList_f (strings \"ET_GENERAL\", \"ET_PLAYER\", ...): lists all in-use entities from index 1 with their type name [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811be44",
+   "name": "ClientForString",
+   "signature": "struct gclient_s *ClientForString(const char *s)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "ClientForString counterpart over the server client array (stride 0x28a4): a leading digit selects a slot (validated against",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811bf64",
+   "name": "G_ConsoleCommand",
+   "signature": "int G_ConsoleCommand(void)",
+   "subsystem": "game/spawn",
+   "confidence": "inferred",
+   "evidence": "ConsoleCommand (strings \"entitylist\", \"addip\", ...): dispatches entitylist / addip / removeip / listip (runs \"g_banIPs\\n\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0864c56c",
+   "name": "g_0864c56c",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "level.time: assigned to trTime in mover code"
+  },
+  {
+   "addr": "0x08716400",
+   "name": "g_gentities",
+   "type": "gentity_t[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x230 entity array, inuse byte at +0xfc"
+  },
+  {
+   "addr": "0x0815e820",
+   "name": "g_entityScriptFieldTable",
+   "type": "entityFieldDef_t[]",
+   "confidence": "observed",
+   "evidence": "field table: classname/origin/model/spawnflags/..."
+  },
+  {
+   "addr": "0x0815e3a0",
+   "name": "g_scriptMoverMethodTable",
+   "type": "entityMethodDef_t[12]",
+   "confidence": "observed",
+   "evidence": "moveto/movex/.../notsolid method table"
+  },
+  {
+   "addr": "0x08188a00",
+   "name": "g_spawnFuncTable",
+   "type": "spawnDef_t[]",
+   "confidence": "observed",
+   "evidence": "classname->spawn function table"
+  },
+  {
+   "addr": "0x0864d6c8",
+   "name": "g_spawnVars",
+   "type": "spawnVarState_t",
+   "confidence": "inferred",
+   "evidence": "spawn var parser state: parsing flag, count at +4, pairs at +8"
+  },
+  {
+   "addr": "0x08850e00",
+   "name": "ipFilters",
+   "type": "ipFilter_t[1024]",
+   "confidence": "inferred",
+   "evidence": "IP ban filters, count at 0x08852e00"
+  },
+  {
+   "addr": "0x08187c40",
+   "name": "g_08187c40",
+   "type": "const char *[15]",
+   "confidence": "observed",
+   "evidence": "MOD_* name table"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "gentity_t",
+   "size": "0x230",
+   "evidence": "array stride 0x230 at 0x08716400; offsets asserted in chunk_051_types.h"
+  },
+  {
+   "name": "trajectory_t",
+   "size": "0x24",
+   "evidence": "pos at +0xc and apos at +0x30; Q3-style layout"
+  },
+  {
+   "name": "client_t",
+   "size": "0x28a4",
+   "evidence": "svs.clients stride; only state(+0x26c4) and name(+0x2784) known"
+  },
+  {
+   "name": "entityFieldDef_t",
+   "size": "0x10",
+   "evidence": "table at 0x0815e820"
+  },
+  {
+   "name": "ipFilter_t",
+   "size": "8",
+   "evidence": "table at 0x08850e00"
+  }
+ ],
+ "open_questions": [
+  "Entity field +0x158 pointer (clientData) and 0x8c-stride object array at 0x08628f80: class-1 script object identity (gclient vs script struct) unconfirmed.",
+  "Names of the six script callback offsets at 0x0884d708..0x0884d71c (damage/killed inferred by argument shape; the others unknown).",
+  "Scr_* merged prototypes use uint32 for pointer params (Scr_AddVector, Scr_GetVector); this chunk declares them with pointer types; merge lane should reconcile.",
+  "x87 extended-precision intermediates (vec length/dot, speed calc) are approximated with float arithmetic; last-ulp differences possible."
+ ]
+}

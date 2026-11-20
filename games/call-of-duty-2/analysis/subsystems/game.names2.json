@@ -1,0 +1,1645 @@
+{
+ "functions": [
+  {
+   "addr": "0x08117cb2",
+   "old": "Scr_GetFunction_08117cb2",
+   "new": "GScr_GetBuiltinFunction",
+   "confidence": "inferred",
+   "evidence": "Looks up a game builtin by strcmp in the 0x91-entry name/handler table at 0x08188040 and returns handler plus developer flag; sibling of Scr_GetEntityMethod/Scr_GetMethod (same script-name lookup shape). Name Scr_GetFunction is already used at 0x08084dd0."
+  },
+  {
+   "addr": "0x08118260",
+   "old": "NamedEntryTable_Find",
+   "new": "G_FindGametypeDescriptionByName",
+   "confidence": "inferred",
+   "evidence": "Q_stricmp linear search over g_0884d72c (gametype list, count g_0884d728, filled by GScr_LoadGametypeList); returns the +0x40 payload (description). chunk_050.cpp."
+  },
+  {
+   "addr": "0x081182ca",
+   "old": "NamedEntryTable_Has",
+   "new": "G_IsGametypeListed",
+   "confidence": "inferred",
+   "evidence": "Boolean wrapper of G_FindGametypeDescriptionByName over the same gametype list."
+  },
+  {
+   "addr": "0x08118562",
+   "old": "Scr_NotifyEntity3Strings",
+   "new": "Scr_NotifyEntityCallVote",
+   "confidence": "observed",
+   "evidence": "Pushes 3 strings and notifies ent with script string id g_0885329e, interned from the literal \"call_vote\" in G_InitScriptStrings."
+  },
+  {
+   "addr": "0x081185aa",
+   "old": "Scr_NotifyEntity1String",
+   "new": "Scr_NotifyEntityVote",
+   "confidence": "observed",
+   "evidence": "Pushes 1 string and notifies ent with script string id g_088532a0, interned from the literal \"vote\" in G_InitScriptStrings."
+  },
+  {
+   "addr": "0x0811b1ca",
+   "old": "G_FreeClassObject1",
+   "new": "HudElem_FreeScriptObject",
+   "confidence": "inferred",
+   "evidence": "Releases the class-1 script object whose address is in the 0x8c-stride array at 0x08628f80 (hudelem pool, game.md section 8) after HudElem_ReleaseStringFields."
+  },
+  {
+   "addr": "0x0811b1fe",
+   "old": "Scr_AddClassObject1",
+   "new": "Scr_AddHudElemObject",
+   "confidence": "inferred",
+   "evidence": "Pushes script object handle of class 1 computed from the 0x8c-stride hudelem pool index (0x08628f80)."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08853220",
+   "old": "g_08853220",
+   "new": "scrStr_emptyString",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:876) interns the literal \"\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853222",
+   "old": "g_08853222",
+   "new": "scrStr_allies",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:877) interns the literal \"allies\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853224",
+   "old": "g_08853224",
+   "new": "scrStr_axis",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:878) interns the literal \"axis\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853226",
+   "old": "g_08853226",
+   "new": "scrStr_current",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:879) interns the literal \"current\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853228",
+   "old": "g_08853228",
+   "new": "scrStr_damage",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:880) interns the literal \"damage\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885322a",
+   "old": "g_0885322a",
+   "new": "scrStr_death",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:881) interns the literal \"death\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885322c",
+   "old": "g_0885322c",
+   "new": "scrStr_dlight",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:882) interns the literal \"dlight\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885322e",
+   "old": "g_0885322e",
+   "new": "scrStr_done",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:883) interns the literal \"done\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853230",
+   "old": "g_08853230",
+   "new": "scrStr_empty",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:884) interns the literal \"empty\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853232",
+   "old": "g_08853232",
+   "new": "scrStr_entity",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:885) interns the literal \"entity\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853234",
+   "old": "g_08853234",
+   "new": "scrStr_failed",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:886) interns the literal \"failed\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853236",
+   "old": "g_08853236",
+   "new": "scrStr_fraction",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:887) interns the literal \"fraction\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853238",
+   "old": "g_08853238",
+   "new": "scrStr_goal",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:888) interns the literal \"goal\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885323a",
+   "old": "g_0885323a",
+   "new": "scrStr_grenade",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:889) interns the literal \"grenade\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885323c",
+   "old": "g_0885323c",
+   "new": "scrStr_info_notnull",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:890) interns the literal \"info_notnull\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885323e",
+   "old": "g_0885323e",
+   "new": "scrStr_invisible",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:891) interns the literal \"invisible\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853240",
+   "old": "g_08853240",
+   "new": "scrStr_key1",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:892) interns the literal \"key1\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853242",
+   "old": "g_08853242",
+   "new": "scrStr_key2",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:893) interns the literal \"key2\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853244",
+   "old": "g_08853244",
+   "new": "scrStr_killanimscript",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:894) interns the literal \"killanimscript\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853246",
+   "old": "g_08853246",
+   "new": "scrStr_left",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:895) interns the literal \"left\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853248",
+   "old": "g_08853248",
+   "new": "scrStr_movedone",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:896) interns the literal \"movedone\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885324a",
+   "old": "g_0885324a",
+   "new": "scrStr_noclass",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:897) interns the literal \"noclass\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885324c",
+   "old": "g_0885324c",
+   "new": "scrStr_normal",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:898) interns the literal \"normal\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885324e",
+   "old": "g_0885324e",
+   "new": "scrStr_pistol",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:899) interns the literal \"pistol\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853250",
+   "old": "g_08853250",
+   "new": "scrStr_plane_waypoint",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:900) interns the literal \"plane_waypoint\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853252",
+   "old": "g_08853252",
+   "new": "scrStr_player",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:901) interns the literal \"player\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853254",
+   "old": "g_08853254",
+   "new": "scrStr_position",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:902) interns the literal \"position\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853256",
+   "old": "g_08853256",
+   "new": "scrStr_primary",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:903) interns the literal \"primary\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853258",
+   "old": "g_08853258",
+   "new": "scrStr_primaryb",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:904) interns the literal \"primaryb\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885325a",
+   "old": "g_0885325a",
+   "new": "scrStr_prone",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:905) interns the literal \"prone\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885325c",
+   "old": "g_0885325c",
+   "new": "scrStr_right",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:906) interns the literal \"right\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885325e",
+   "old": "g_0885325e",
+   "new": "scrStr_rocket",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:907) interns the literal \"rocket\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853260",
+   "old": "g_08853260",
+   "new": "scrStr_rotatedone",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:908) interns the literal \"rotatedone\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853262",
+   "old": "g_08853262",
+   "new": "scrStr_script_brushmodel",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:909) interns the literal \"script_brushmodel\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853264",
+   "old": "g_08853264",
+   "new": "scrStr_script_model",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:910) interns the literal \"script_model\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853266",
+   "old": "g_08853266",
+   "new": "scrStr_script_origin",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:911) interns the literal \"script_origin\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853268",
+   "old": "g_08853268",
+   "new": "scrStr_spectator",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:912) interns the literal \"spectator\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885326a",
+   "old": "g_0885326a",
+   "new": "scrStr_stand",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:913) interns the literal \"stand\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885326c",
+   "old": "g_0885326c",
+   "new": "scrStr_surfacetype",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:914) interns the literal \"surfacetype\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885326e",
+   "old": "g_0885326e",
+   "new": "scrStr_target_script_trigger",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:915) interns the literal \"target_script_trigger\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853270",
+   "old": "g_08853270",
+   "new": "scrStr_tempEntity",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:916) interns the literal \"tempEntity\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853272",
+   "old": "g_08853272",
+   "new": "scrStr_touch",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:917) interns the literal \"touch\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853274",
+   "old": "g_08853274",
+   "new": "scrStr_trigger",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:918) interns the literal \"trigger\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853276",
+   "old": "g_08853276",
+   "new": "scrStr_trigger_use",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:919) interns the literal \"trigger_use\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853278",
+   "old": "g_08853278",
+   "new": "scrStr_trigger_use_touch",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:920) interns the literal \"trigger_use_touch\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885327a",
+   "old": "g_0885327a",
+   "new": "scrStr_trigger_damage",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:921) interns the literal \"trigger_damage\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885327c",
+   "old": "g_0885327c",
+   "new": "scrStr_trigger_lookat",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:922) interns the literal \"trigger_lookat\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885327e",
+   "old": "g_0885327e",
+   "new": "scrStr_truck_cam",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:923) interns the literal \"truck_cam\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853280",
+   "old": "g_08853280",
+   "new": "scrStr_worldspawn",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:924) interns the literal \"worldspawn\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853282",
+   "old": "g_08853282",
+   "new": "scrStr_binocular_enter",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:925) interns the literal \"binocular_enter\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853284",
+   "old": "g_08853284",
+   "new": "scrStr_binocular_exit",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:926) interns the literal \"binocular_exit\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853286",
+   "old": "g_08853286",
+   "new": "scrStr_binocular_fire",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:927) interns the literal \"binocular_fire\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853288",
+   "old": "g_08853288",
+   "new": "scrStr_binocular_release",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:928) interns the literal \"binocular_release\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885328a",
+   "old": "g_0885328a",
+   "new": "scrStr_binocular_drop",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:929) interns the literal \"binocular_drop\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885328c",
+   "old": "g_0885328c",
+   "new": "scrStr_begin",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:930) interns the literal \"begin\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885328e",
+   "old": "g_0885328e",
+   "new": "scrStr_intermission",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:931) interns the literal \"intermission\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853290",
+   "old": "g_08853290",
+   "new": "scrStr_menuresponse",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:932) interns the literal \"menuresponse\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853292",
+   "old": "g_08853292",
+   "new": "scrStr_playing",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:933) interns the literal \"playing\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853294",
+   "old": "g_08853294",
+   "new": "scrStr_none",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:934) interns the literal \"none\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853296",
+   "old": "g_08853296",
+   "new": "scrStr_dead",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:935) interns the literal \"dead\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x08853298",
+   "old": "g_08853298",
+   "new": "scrStr_auto_change",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:936) interns the literal \"auto_change\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885329a",
+   "old": "g_0885329a",
+   "new": "scrStr_manual_change",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:937) interns the literal \"manual_change\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885329c",
+   "old": "g_0885329c",
+   "new": "scrStr_freelook",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:938) interns the literal \"freelook\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x0885329e",
+   "old": "g_0885329e",
+   "new": "scrStr_call_vote",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:939) interns the literal \"call_vote\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532a0",
+   "old": "g_088532a0",
+   "new": "scrStr_vote",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:940) interns the literal \"vote\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532a2",
+   "old": "g_088532a2",
+   "new": "scrStr_snd_enveffectsprio_level",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:941) interns the literal \"snd_enveffectsprio_level\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532a4",
+   "old": "g_088532a4",
+   "new": "scrStr_snd_enveffectsprio_shellshock",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:942) interns the literal \"snd_enveffectsprio_shellshock\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532a6",
+   "old": "g_088532a6",
+   "new": "scrStr_snd_channelvolprio_holdbreath",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:943) interns the literal \"snd_channelvolprio_holdbreath\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532a8",
+   "old": "g_088532a8",
+   "new": "scrStr_snd_channelvolprio_pain",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:944) interns the literal \"snd_channelvolprio_pain\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532aa",
+   "old": "g_088532aa",
+   "new": "scrStr_snd_channelvolprio_shellshock",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:945) interns the literal \"snd_channelvolprio_shellshock\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532ac",
+   "old": "g_088532ac",
+   "new": "scrStr_tag_flash",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:946) interns the literal \"tag_flash\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532ae",
+   "old": "g_088532ae",
+   "new": "scrStr_tag_flash_11",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:947) interns the literal \"tag_flash_11\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532b0",
+   "old": "g_088532b0",
+   "new": "scrStr_tag_flash_2",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:948) interns the literal \"tag_flash_2\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532b2",
+   "old": "g_088532b2",
+   "new": "scrStr_tag_flash_22",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:949) interns the literal \"tag_flash_22\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532b4",
+   "old": "g_088532b4",
+   "new": "scrStr_tag_brass",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:950) interns the literal \"tag_brass\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532b6",
+   "old": "g_088532b6",
+   "new": "scrStr_j_head",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:951) interns the literal \"j_head\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532b8",
+   "old": "g_088532b8",
+   "new": "scrStr_tag_weapon",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:952) interns the literal \"tag_weapon\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532ba",
+   "old": "g_088532ba",
+   "new": "scrStr_tag_player",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:953) interns the literal \"tag_player\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532bc",
+   "old": "g_088532bc",
+   "new": "scrStr_tag_camera",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:954) interns the literal \"tag_camera\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532be",
+   "old": "g_088532be",
+   "new": "scrStr_tag_aim",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:955) interns the literal \"tag_aim\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532c0",
+   "old": "g_088532c0",
+   "new": "scrStr_tag_aim_animated",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:956) interns the literal \"tag_aim_animated\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532c2",
+   "old": "g_088532c2",
+   "new": "scrStr_tag_origin",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:957) interns the literal \"tag_origin\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532c4",
+   "old": "g_088532c4",
+   "new": "scrStr_tag_butt",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:958) interns the literal \"tag_butt\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532c6",
+   "old": "g_088532c6",
+   "new": "scrStr_tag_weapon_right",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:959) interns the literal \"tag_weapon_right\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532c8",
+   "old": "g_088532c8",
+   "new": "scrStr_back_low",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:960) interns the literal \"back_low\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532ca",
+   "old": "g_088532ca",
+   "new": "scrStr_back_mid",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:961) interns the literal \"back_mid\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532cc",
+   "old": "g_088532cc",
+   "new": "scrStr_back_up",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:962) interns the literal \"back_up\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532ce",
+   "old": "g_088532ce",
+   "new": "scrStr_neck",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:963) interns the literal \"neck\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532d0",
+   "old": "g_088532d0",
+   "new": "scrStr_head",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:964) interns the literal \"head\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x088532d2",
+   "old": "g_088532d2",
+   "new": "scrStr_pelvis",
+   "type_hint": "unsigned short (script string id)",
+   "confidence": "observed",
+   "evidence": "G_InitScriptStrings (0x0811.. chunk_053.cpp:965) interns the literal \"pelvis\" into this slot; no other writer."
+  },
+  {
+   "addr": "0x087a24d0",
+   "old": "g_087a24d0",
+   "new": "dvar_g_oldVoting",
+   "type_hint": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "G_RegisterDvars registers Dvar_RegisterBool(\"g_oldVoting\") into dvar_voteMode; game.md section 23 ties address 0x087a24d0 to it and G_RunFrame gates G_CheckVote on it."
+  },
+  {
+   "addr": "0x0814cfc8",
+   "old": "g_0814cfc8",
+   "new": "vec3_origin",
+   "type_hint": "const float[3]",
+   "confidence": "inferred",
+   "evidence": "rodata zero vector; Q3 vec3_origin counterpart; G_TracePointEx/G_TraceIsClearPoint/G_TraceAccumulateHit copy it into zero mins/maxs for point traces (chunk_049.cpp:657-690)."
+  },
+  {
+   "addr": "0x08159ee0",
+   "old": "g_08159ee0",
+   "new": "g_hudelemFieldTable",
+   "type_hint": "struct hudelem_field_s[]",
+   "confidence": "observed",
+   "evidence": "stride 0x1c table walked to name==NULL by HudElem_FieldRead/FieldWrite/RegisterScriptFields (symbols.json evidence; game.md hudelem fields)."
+  },
+  {
+   "addr": "0x0815a180",
+   "old": "g_0815a180",
+   "new": "g_hudelemMethodTable",
+   "type_hint": "struct hudelem_method_s[18]",
+   "confidence": "inferred",
+   "evidence": "searched by name in HudElem_LookupMethod."
+  },
+  {
+   "addr": "0x0815e3a0",
+   "old": "g_0815e3a0",
+   "new": "g_scriptMoverMethodTable",
+   "type_hint": "entityMethodDef_t[12]",
+   "confidence": "observed",
+   "evidence": "method table (moveto/movex/.../notsolid) searched by GScr_FindEntityMethod; symbols.json evidence."
+  },
+  {
+   "addr": "0x0815e820",
+   "old": "g_0815e820",
+   "new": "g_entityScriptFieldTable",
+   "type_hint": "entityFieldDef_t[]",
+   "confidence": "observed",
+   "evidence": "field table (classname/origin/model/spawnflags/...) used by G_CopyEntityFields/G_FreeEntityFields/GScr_GetEnt; game.md 10 entries."
+  },
+  {
+   "addr": "0x08184860",
+   "old": "g_08184860",
+   "new": "g_animScriptFileName",
+   "type_hint": "const char *",
+   "confidence": "observed",
+   "evidence": "initialised to \"mp/playeranim.script\", cleared at end of BG_AnimParseAnimScript."
+  },
+  {
+   "addr": "0x08184880",
+   "old": "g_08184880",
+   "new": "g_animStateNames",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "strings RELAXED QUERY ALERT COMBAT, read by BG_AnimParseAnimScript."
+  },
+  {
+   "addr": "0x081848c0",
+   "old": "g_081848c0",
+   "new": "g_animMoveTypeNames",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "move type names starting \"** UNUSED **\", IDLE, IDLECR..."
+  },
+  {
+   "addr": "0x08184a20",
+   "old": "g_08184a20",
+   "new": "g_animEventNames",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "event names PAIN DEATH FIREWEAPON JUMP ..."
+  },
+  {
+   "addr": "0x08184ac0",
+   "old": "g_08184ac0",
+   "new": "g_animBodyPartNames",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "LEGS TORSO BOTH body-part table used by BG_ParseCommands."
+  },
+  {
+   "addr": "0x08184c00",
+   "old": "g_08184c00",
+   "new": "g_animConditionNames",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "condition names PLAYERANIMTYPE WEAPONCLASS MOUNTED MOVETYPE ..."
+  },
+  {
+   "addr": "0x08184c60",
+   "old": "g_08184c60",
+   "new": "g_animConditionDefs",
+   "type_hint": "struct animConditionDef_t[]",
+   "confidence": "inferred",
+   "evidence": "per-condition {type, string table}, used by BG_ParseConditions/EvaluateConditions."
+  },
+  {
+   "addr": "0x08184cc0",
+   "old": "g_08184cc0",
+   "new": "g_animScriptKeywords",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "script section keywords defines/animations/canned_animations."
+  },
+  {
+   "addr": "0x081850c0",
+   "old": "g_081850c0",
+   "new": "bg_itemList",
+   "type_hint": "struct gitem_s[]",
+   "confidence": "inferred",
+   "evidence": "item table stride 0x2c, 0x81 entries (game.md); Q3 bg_itemlist counterpart; read by BG_FindItemByName/BG_GetItemByIndex/BG_CanItemBeGrabbed."
+  },
+  {
+   "addr": "0x081869e0",
+   "old": "g_081869e0",
+   "new": "bg_weaponTypeNames",
+   "type_hint": "const char *const[]",
+   "confidence": "observed",
+   "evidence": "read dump: bullet, grenade, projectile, binoculars, ..."
+  },
+  {
+   "addr": "0x081869f0",
+   "old": "g_081869f0",
+   "new": "bg_weaponSlotNames",
+   "type_hint": "const char *const[3]",
+   "confidence": "observed",
+   "evidence": "read dump: none, primary, primaryb."
+  },
+  {
+   "addr": "0x081869fc",
+   "old": "g_081869fc",
+   "new": "bg_projExplosionNames",
+   "type_hint": "const char *const[3]",
+   "confidence": "observed",
+   "evidence": "read dump: grenade, rocket, none; used by WeaponDef_ParseEnumField."
+  },
+  {
+   "addr": "0x08186a08",
+   "old": "g_08186a08",
+   "new": "bg_overlayReticleNames",
+   "type_hint": "const char *const[5]",
+   "confidence": "observed",
+   "evidence": "read dump: none, crosshair, FG42, Springfield, binoculars."
+  },
+  {
+   "addr": "0x08186a20",
+   "old": "g_08186a20",
+   "new": "bg_weaponClassNames",
+   "type_hint": "const char *const[10]",
+   "confidence": "observed",
+   "evidence": "read dump: rifle, mg, smg, spread, pistol, grenade, rocketlauncher, turret, non-player, item."
+  },
+  {
+   "addr": "0x08186a48",
+   "old": "g_08186a48",
+   "new": "bg_weaponStanceNames",
+   "type_hint": "const char *const[3]",
+   "confidence": "observed",
+   "evidence": "read dump: stand, duck, prone."
+  },
+  {
+   "addr": "0x08186a54",
+   "old": "g_08186a54",
+   "new": "bg_offhandClassNames",
+   "type_hint": "const char *const[3]",
+   "confidence": "observed",
+   "evidence": "read dump: None, Frag Grenade, Smoke Grenade."
+  },
+  {
+   "addr": "0x08186a60",
+   "old": "g_08186a60",
+   "new": "bg_weaponFieldTable",
+   "type_hint": "struct weapon_field_desc_s[366]",
+   "confidence": "observed",
+   "evidence": "weapon field table (name strings + offsets) used by BG_LoadWeaponFile/WeaponDef_SetDefaults."
+  },
+  {
+   "addr": "0x08187b88",
+   "old": "g_08187b88",
+   "new": "bg_accuracyFolderNames",
+   "type_hint": "const char *const[]",
+   "confidence": "observed",
+   "evidence": "aivsai, aivsplayer; WeaponDef_LoadAccuracyGraphs."
+  },
+  {
+   "addr": "0x08187ba0",
+   "old": "g_08187ba0",
+   "new": "g_spawnTraceMins",
+   "type_hint": "const float[3]",
+   "confidence": "observed",
+   "evidence": "(-15,-15,0) in .data; GScr_positionwouldtelefrag/G_PlaceSpawnPoint trace box."
+  },
+  {
+   "addr": "0x08187bac",
+   "old": "g_08187bac",
+   "new": "g_spawnTraceMaxs",
+   "type_hint": "const float[3]",
+   "confidence": "observed",
+   "evidence": "(15,15,70) in .data; same users."
+  },
+  {
+   "addr": "0x08187c80",
+   "old": "g_08187c80",
+   "new": "g_hudFontEnumNames",
+   "type_hint": "const char *[3]",
+   "confidence": "observed",
+   "evidence": "read dump: default, bigfixed, smallfixed."
+  },
+  {
+   "addr": "0x08187c8c",
+   "old": "g_08187c8c",
+   "new": "g_hudAlignXEnumNames",
+   "type_hint": "const char *[3]",
+   "confidence": "observed",
+   "evidence": "read dump: left, center, right."
+  },
+  {
+   "addr": "0x08187c98",
+   "old": "g_08187c98",
+   "new": "g_hudAlignYEnumNames",
+   "type_hint": "const char *[3]",
+   "confidence": "observed",
+   "evidence": "read dump: top, middle, bottom."
+  },
+  {
+   "addr": "0x08187cc0",
+   "old": "g_08187cc0",
+   "new": "g_hudHorzAlignEnumNames",
+   "type_hint": "const char *[8]",
+   "confidence": "observed",
+   "evidence": "read dump starts subleft, left, center."
+  },
+  {
+   "addr": "0x08187ce0",
+   "old": "g_08187ce0",
+   "new": "g_hudVertAlignEnumNames",
+   "type_hint": "const char *[8]",
+   "confidence": "observed",
+   "evidence": "read dump starts subtop, top, middle."
+  },
+  {
+   "addr": "0x08187d00",
+   "old": "g_08187d00",
+   "new": "g_entityHandlerTable",
+   "type_hint": "struct entity_handler_s[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x28 table, think fn at +0, used by G_RunThink/G_RunMissile/G_RunMover; game.md \"entity class table\"."
+  },
+  {
+   "addr": "0x08188020",
+   "old": "g_08188020",
+   "new": "g_cursorHintNames",
+   "type_hint": "const char *[6]",
+   "confidence": "observed",
+   "evidence": "read dump: \"\", HINT_NONE, HINT_ACTIVATE, HINT_HEALTH, HINT_FRIENDLY."
+  },
+  {
+   "addr": "0x08188040",
+   "old": "g_08188040",
+   "new": "g_scrBuiltinFunctionTable",
+   "type_hint": "struct cod2_scrfunc_s[0x91]",
+   "confidence": "observed",
+   "evidence": "12-byte entries {name,handler,developer} searched by strcmp in Scr_GetFunction_08117cb2."
+  },
+  {
+   "addr": "0x08188720",
+   "old": "g_08188720",
+   "new": "g_scrEntityMethodTable",
+   "type_hint": "struct cod2_scrfunc_s[0x3b]",
+   "confidence": "observed",
+   "evidence": "entity method table (attach..releaseclaimedtrigger) used by Scr_GetEntityMethod."
+  },
+  {
+   "addr": "0x08188a00",
+   "old": "g_08188a00",
+   "new": "g_spawnFuncTable",
+   "type_hint": "spawnDef_t[]",
+   "confidence": "observed",
+   "evidence": "classname -> spawn function table used by G_CallSpawn/G_CallSpawnEntity (Q3 spawns[] counterpart)."
+  },
+  {
+   "addr": "0x0860b420",
+   "old": "g_0860b420",
+   "new": "g_gameContextPtr",
+   "type_hint": "uint8 *",
+   "confidence": "observed",
+   "evidence": "set to &g_0864f9c0 in G_InitGame/G_RunFrame, cleared at end of frame and in G_ShutdownGame."
+  },
+  {
+   "addr": "0x0860b424",
+   "old": "g_0860b424",
+   "new": "g_curAnimScriptData",
+   "type_hint": "struct animScriptData_t *",
+   "confidence": "inferred",
+   "evidence": "parse/lookup target set by BG_AnimParseAnimScript(param_1), read by BG_AnimScriptAnimation/Event."
+  },
+  {
+   "addr": "0x0860b440",
+   "old": "g_0860b440",
+   "new": "g_animDefineCounts",
+   "type_hint": "int[9]",
+   "confidence": "inferred",
+   "evidence": "defines per condition type, memset 0x24 in BG_AnimParseAnimScript."
+  },
+  {
+   "addr": "0x0860b480",
+   "old": "g_0860b480",
+   "new": "g_animDefineStringBuf",
+   "type_hint": "char[10000]",
+   "confidence": "inferred",
+   "evidence": "define string storage."
+  },
+  {
+   "addr": "0x0860db90",
+   "old": "g_0860db90",
+   "new": "g_animDefineStringBufUsed",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "bytes used in g_animDefineStringBuf."
+  },
+  {
+   "addr": "0x0860dba0",
+   "old": "g_0860dba0",
+   "new": "g_animConditionDefineStrings",
+   "type_hint": "struct animStringItem_t[9][16]",
+   "confidence": "inferred",
+   "evidence": "script-defined define strings, memset 0x480."
+  },
+  {
+   "addr": "0x0860e020",
+   "old": "g_0860e020",
+   "new": "g_animConditionDefineBits",
+   "type_hint": "unsigned int[9][16][2]",
+   "confidence": "inferred",
+   "evidence": "64-bit values of script-defined conditions."
+  },
+  {
+   "addr": "0x0860e4a0",
+   "old": "g_0860e4a0",
+   "new": "g_animParseMoveType",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "move type of the animations section being parsed."
+  },
+  {
+   "addr": "0x0860e4a4",
+   "old": "g_0860e4a4",
+   "new": "g_animParseEventIndex",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "event index while parsing events section, -1 otherwise."
+  },
+  {
+   "addr": "0x0860e4a8",
+   "old": "g_0860e4a8",
+   "new": "g_animNameTable",
+   "type_hint": "struct animNameEntry_t *",
+   "confidence": "inferred",
+   "evidence": "optional animation name table (stride 0x48) set by the parse."
+  },
+  {
+   "addr": "0x0860e4ac",
+   "old": "g_0860e4ac",
+   "new": "g_animNameTableCount",
+   "type_hint": "int *",
+   "confidence": "inferred",
+   "evidence": "entry count pointer for g_animNameTable."
+  },
+  {
+   "addr": "0x0860e4c0",
+   "old": "g_0860e4c0",
+   "new": "g_animScriptText",
+   "type_hint": "char[100000]",
+   "confidence": "inferred",
+   "evidence": "mp/playeranim.script text buffer (max 0x1869e)."
+  },
+  {
+   "addr": "0x08626b60",
+   "old": "g_08626b60",
+   "new": "g_animScriptTextLoaded",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "script text loaded flag."
+  },
+  {
+   "addr": "0x08626b80",
+   "old": "g_08626b80",
+   "new": "g_playerAnimTypeNameTable",
+   "type_hint": "struct animStringItem_t[128]",
+   "confidence": "inferred",
+   "evidence": "PLAYERANIMTYPE names, BG_SetPlayerAnimTypeName/BG_ClearPlayerAnimTypeNames."
+  },
+  {
+   "addr": "0x08627940",
+   "old": "g_08627940",
+   "new": "bg_noWeaponDef",
+   "type_hint": "struct weaponDef_s",
+   "confidence": "inferred",
+   "evidence": "\"none\" weapon definition returned by BG_GetNoWeaponDef."
+  },
+  {
+   "addr": "0x0864bf80",
+   "old": "g_0864bf80",
+   "new": "g_itemRegisteredFlags",
+   "type_hint": "int[256]",
+   "confidence": "inferred",
+   "evidence": "item registration flags used by ItemRegistry_Register/IsRegistered/BuildBitmask."
+  },
+  {
+   "addr": "0x0864c380",
+   "old": "g_0864c380",
+   "new": "level_clients",
+   "type_hint": "struct gclient_s *",
+   "confidence": "observed",
+   "evidence": "assigned &g_087a2500 in G_InitGame (game.md step 8: level.clients)."
+  },
+  {
+   "addr": "0x0864c384",
+   "old": "g_0864c384",
+   "new": "level_gentities",
+   "type_hint": "struct gentity_s *",
+   "confidence": "observed",
+   "evidence": "assigned &g_08716400 in G_InitGame (level.gentities)."
+  },
+  {
+   "addr": "0x0864c38c",
+   "old": "g_0864c38c",
+   "new": "level_numEntities",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "set to 0x48 in G_InitGame; loop bound over gentities (Q3 level.num_entities)."
+  },
+  {
+   "addr": "0x0864c390",
+   "old": "g_0864c390",
+   "new": "level_freeEntityHead",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "free-list head in G_Spawn/G_FreeEntity."
+  },
+  {
+   "addr": "0x0864c394",
+   "old": "g_0864c394",
+   "new": "level_freeEntityTail",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "free-list tail updated in G_FreeEntity."
+  },
+  {
+   "addr": "0x0864c398",
+   "old": "g_0864c398",
+   "new": "level_logFile",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "FSH_FOpenFile(g_log filename,&this) in G_InitGame; closed in G_ShutdownGame; written by G_LogPrintf (chunk_049.cpp:136-213, 347-357)."
+  },
+  {
+   "addr": "0x0864c39c",
+   "old": "g_0864c39c",
+   "new": "level_initializing",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "1 at G_InitGame start, 0 at end (chunk_049.cpp:116,197); gates precache not-precached errors."
+  },
+  {
+   "addr": "0x0864c3a4",
+   "old": "g_0864c3a4",
+   "new": "level_objectives",
+   "type_hint": "struct objective_s[16]",
+   "confidence": "observed",
+   "evidence": "indexed by GScr_objective_* builtins with stride 0x1c (chunk_105.cpp:630-773); G_ClearObjective loop in chunk_050.cpp:1076."
+  },
+  {
+   "addr": "0x0864c568",
+   "old": "g_0864c568",
+   "new": "level_frameNum",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "incremented in G_RunFrame (game.md section 5)."
+  },
+  {
+   "addr": "0x0864c56c",
+   "old": "g_0864c56c",
+   "new": "level_time",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "level time in ms; time = levelTime in G_RunFrame; Q3 level.time."
+  },
+  {
+   "addr": "0x0864c570",
+   "old": "g_0864c570",
+   "new": "level_previousTime",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "previous server time set in G_RunFrame."
+  },
+  {
+   "addr": "0x0864c574",
+   "old": "g_0864c574",
+   "new": "level_frameTime",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "frame delta ms set in G_RunFrame; used by G_RunMover."
+  },
+  {
+   "addr": "0x0864c578",
+   "old": "g_0864c578",
+   "new": "level_startTime",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "returned by GScr_getstarttime, set in G_InitGame."
+  },
+  {
+   "addr": "0x0864c580",
+   "old": "g_0864c580",
+   "new": "level_teamScoreAxis",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "GScr_SetTeamScore stores axis value here, allies in 0x0864c584; sent as server command \"G %i\" (chunk_106.cpp:439-477,829-830)."
+  },
+  {
+   "addr": "0x0864c584",
+   "old": "g_0864c584",
+   "new": "level_teamScoreAllies",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "allies slot written by GScr_SetTeamScore; sent as \"H %i\" (chunk_106.cpp:829)."
+  },
+  {
+   "addr": "0x0864c58c",
+   "old": "g_0864c58c",
+   "new": "level_lastAimRefreshTime",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "throttle for Client_UpdateAllCrosshairTargets."
+  },
+  {
+   "addr": "0x0864c59c",
+   "old": "g_0864c59c",
+   "new": "level_sortedClientIndices",
+   "type_hint": "int[1024]",
+   "confidence": "observed",
+   "evidence": "qsort target in G_CalculateRanks (formerly G_BuildEntityOrder)."
+  },
+  {
+   "addr": "0x0864c69c",
+   "old": "g_0864c69c",
+   "new": "level_voteCommandBuf",
+   "type_hint": "char[1024]",
+   "confidence": "observed",
+   "evidence": "\"%s\\n\" source for the vote command executed in G_CheckVote."
+  },
+  {
+   "addr": "0x0864d6c8",
+   "old": "g_0864d6c8",
+   "new": "g_spawnVars",
+   "type_hint": "spawnVarState_t",
+   "confidence": "inferred",
+   "evidence": "spawn var parser state (parsing flag, count at +4, pairs) used by G_ParseSpawnVarsToEntity/G_SpawnEntitiesFromString (Q3 level.spawnVars)."
+  },
+  {
+   "addr": "0x0864e0d4",
+   "old": "g_0864e0d4",
+   "new": "g_mapChangeKeepStateArg",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "stored from Scr_GetInt(0) in map_restart and Scr_GetInt(1) in exitlevel (chunk_106.cpp:849-905); read by G_ShutdownGame to decide SV_RefreshClientRandomIds / Scr_ShutdownVariableRoots arg (chunk_049.cpp:219-222)."
+  },
+  {
+   "addr": "0x0864e0d8",
+   "old": "g_0864e0d8",
+   "new": "g_droppedWeapons",
+   "type_hint": "struct gentity_s *[]",
+   "confidence": "inferred",
+   "evidence": "dropped weapon list sized by g_maxDroppedWeapons; DroppedWeapon_FindSlot."
+  },
+  {
+   "addr": "0x0864e164",
+   "old": "g_0864e164",
+   "new": "g_tempEntityRingIndex",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "ring index 0..7 wrapped in G_AllocTempEntity."
+  },
+  {
+   "addr": "0x0864e168",
+   "old": "g_0864e168",
+   "new": "g_entityPairQueue",
+   "type_hint": "game_pair_queue_s[0x100]",
+   "confidence": "observed",
+   "evidence": "12-byte entries written by G_QueueEntityPairEvent, drained in G_RunFrame."
+  },
+  {
+   "addr": "0x0864f968",
+   "old": "g_0864f968",
+   "new": "g_entityPairQueueCount",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "compared to 0x100 in G_QueueEntityPairEvent."
+  },
+  {
+   "addr": "0x0864f970",
+   "old": "g_0864f970",
+   "new": "g_mapChangeCallState",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "0 none, 1 map_restart, 2 exitlevel: GScr map_restart/exitlevel error \"already called\" paths (chunk_106.cpp:840-878)."
+  },
+  {
+   "addr": "0x0864f974",
+   "old": "g_0864f974",
+   "new": "g_radiusDamageActiveSource",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "copied from g_0864f978 around G_RadiusDamage call in the radius-damage builtin (chunk_106.cpp:71-73); tested in G_RadiusDamage (chunk_047.cpp:1145)."
+  },
+  {
+   "addr": "0x0864f978",
+   "old": "g_0864f978",
+   "new": "g_radiusDamageSourceSelector",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "set from Scr_GetInt(0) by the builtin at chunk_106.cpp:77-80; copied into g_0864f974."
+  },
+  {
+   "addr": "0x0864f984",
+   "old": "g_0864f984",
+   "new": "g_currentThinkEntNum",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "entity index being thought in G_RunFrame; ScriptEntCmd_delete refuses on match (game.md section 5)."
+  },
+  {
+   "addr": "0x0864f988",
+   "old": "g_0864f988",
+   "new": "g_scrFileHandles",
+   "type_hint": "int[]",
+   "confidence": "observed",
+   "evidence": "-1 sentinel slots, FS_FCloseFile in G_ShutdownGame; used by script file builtins (chunk_106.cpp:1127-1252)."
+  },
+  {
+   "addr": "0x0864f990",
+   "old": "g_0864f990",
+   "new": "g_scrParseSaveRecords",
+   "type_hint": "int[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x14 per-slot ParseSave records (chunk_106.cpp:1285,1339)."
+  },
+  {
+   "addr": "0x0864f9c0",
+   "old": "g_0864f9c0",
+   "new": "g_levelBlock",
+   "type_hint": "uint8[0xb3bc8]",
+   "confidence": "observed",
+   "evidence": "memset 0xb3bc8 in G_InitGame; g_gameContextPtr points to it."
+  },
+  {
+   "addr": "0x08703574",
+   "old": "g_08703574",
+   "new": "g_turretAnimTableHandle",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "cast to XAnimNodeTable* in Turret_PositionUser (chunk_049.cpp:780)."
+  },
+  {
+   "addr": "0x08716400",
+   "old": "g_08716400",
+   "new": "g_gentities",
+   "type_hint": "struct gentity_s[1024]",
+   "confidence": "observed",
+   "evidence": "static array memset 0x8c000 in G_InitGame; level.gentities points here."
+  },
+  {
+   "addr": "0x087a2500",
+   "old": "g_087a2500",
+   "new": "g_gclients",
+   "type_hint": "struct gclient_s[64]",
+   "confidence": "observed",
+   "evidence": "static array memset 0xa2900 in G_InitGame; level.clients points here."
+  },
+  {
+   "addr": "0x08844e00",
+   "old": "g_08844e00",
+   "new": "g_turrets",
+   "type_hint": "struct turret_s[32]",
+   "confidence": "observed",
+   "evidence": "stride 0x44 slots allocated by G_SpawnTurret, cleared by G_ClearTurretSlots."
+  },
+  {
+   "addr": "0x08845680",
+   "old": "g_08845680",
+   "new": "g_pushedStack",
+   "type_hint": "pushed_t[]",
+   "confidence": "inferred",
+   "evidence": "mover push undo stack base (G_MoverPush/G_RunMover)."
+  },
+  {
+   "addr": "0x0884d680",
+   "old": "g_0884d680",
+   "new": "g_pushedStackTop",
+   "type_hint": "pushed_t *",
+   "confidence": "inferred",
+   "evidence": "push stack top pointer."
+  },
+  {
+   "addr": "0x0884d700",
+   "old": "g_0884d700",
+   "new": "g_levelMainScriptOffset",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "set in GScr_LoadLevelScript, called by GScr_RunLevelMain."
+  },
+  {
+   "addr": "0x0884d708",
+   "old": "g_0884d708",
+   "new": "g_gametypeMainScriptOffset",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "set in GScr_LoadGametypeScript, called by G_CallGametypeMain (game.md section 3)."
+  },
+  {
+   "addr": "0x0884d728",
+   "old": "g_0884d728",
+   "new": "g_gametypeCount",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "count for g_gametypeList; GScr_LoadGametypeList."
+  },
+  {
+   "addr": "0x0884d72c",
+   "old": "g_0884d72c",
+   "new": "g_gametypeList",
+   "type_hint": "struct cod2_gametype_s[0x20]",
+   "confidence": "inferred",
+   "evidence": "0x84-stride list, memset 0x1080 in GScr_LoadGametypeList."
+  },
+  {
+   "addr": "0x0884e7ac",
+   "old": "g_0884e7ac",
+   "new": "g_deleteScriptMainOffset",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "GScr_GetFunctionOffset(\"codescripts/delete\",\"main\",1) stores here (chunk_050.cpp:794); called by G_CallDeleteScript (chunk_052.cpp:1279)."
+  },
+  {
+   "addr": "0x0884e7b8",
+   "old": "g_0884e7b8",
+   "new": "g_trackedEntitySlots",
+   "type_hint": "struct ent_ext_s[8]",
+   "confidence": "inferred",
+   "evidence": "8 x 0x4c8 records (corpse/tracked slots) used by G_FindTrackedSlot/G_PickTrackedSlot/G_UpdateCorpseSlot."
+  },
+  {
+   "addr": "0x08852e20",
+   "old": "g_08852e20",
+   "new": "g_modelHandles",
+   "type_hint": "int32[0x100]",
+   "confidence": "observed",
+   "evidence": "indexed by model index; written by G_ModelIndex/G_SetModelHandle, read by G_GetModelHandle."
+  }
+ ],
+ "left_unknown": [
+  {
+   "addr": "0x080d6c32",
+   "name": "Noop_080d6c32",
+   "why": "Empty animscript stub group (080d6c32-080d6cd4); no data-table or direct reference found in .rodata/.data scan, so role as callbacks is unproven."
+  },
+  {
+   "addr": "0x08101604",
+   "name": "NoOp_08101604",
+   "why": "Empty function, no references found in data tables."
+  },
+  {
+   "addr": "0x0810a6ba",
+   "name": "G_NoopCallback",
+   "why": "Empty function, no data-table references found."
+  },
+  {
+   "addr": "0x0810fe4a",
+   "name": "Nop_0810fe4a",
+   "why": "Empty function; only data ref at 0x08187fe0 sits inside the cursor-hint/entity table area and not otherwise identified."
+  },
+  {
+   "addr": "0x081185dc",
+   "name": "Stub_ReturnZero_081185dc",
+   "why": "Returns zero, no references identified."
+  },
+  {
+   "addr": "0x0811069a",
+   "name": "Scr_RaiseError6",
+   "why": "Com_Error(6,msg); error-code meaning of 6 not established."
+  },
+  {
+   "addr": "0x0811c53e",
+   "name": "Ent_AddFlagIfCondition",
+   "why": "Spawn-var key strings at 0x0815eae0/1 are 1-byte symbols and spawnflags semantics unconfirmed."
+  },
+  {
+   "addr": "0x0811c596",
+   "name": "Ent_UpdateContentsFromFlags",
+   "why": "Spawnflag-to-contents mapping seen, but owning entity class (trigger variant) not established."
+  },
+  {
+   "addr": "0x0811ca92",
+   "name": "Ent_ToggleKind",
+   "why": "handler toggles 2/3; meaning of kinds unknown."
+  },
+  {
+   "addr": "0x0811cb7e",
+   "name": "Ent_CanTriggerKind",
+   "why": "Kind numbers and spawnflag bits have no binary string naming them."
+  },
+  {
+   "addr": "0x0811ccb6",
+   "name": "Ent_TryConsumeCharge",
+   "why": "Fields u.trigger.* semantics unconfirmed."
+  },
+  {
+   "addr": "0x08120e0a",
+   "name": "G_SendCharIndexA",
+   "why": "Server command letter \"a\" only visible as a format char; client meaning not in this binary."
+  },
+  {
+   "addr": "0x08120e44",
+   "name": "G_SendCharIndexC",
+   "why": "Same for letter \"C\"."
+  },
+  {
+   "addr": "0x080f4aa4",
+   "name": "Entity_ClearField84",
+   "why": "Object type and field +0x84 role not established."
+  },
+  {
+   "addr": "0x08107812",
+   "name": "Ext_ReadSlotHandle",
+   "why": "Only calls XAnim_BlendRootNode; handle meaning unproven."
+  },
+  {
+   "addr": "0x080f2de8",
+   "name": "g_080f2de8 (global)",
+   "why": "customTypes table label lies in .text, contents undecoded."
+  },
+  {
+   "addr": "0x0864f97c",
+   "name": "g_0864f97c (global)",
+   "why": "Set to 1 by G_PrecacheWeapon, cleared in ItemRegistry_BuildNameList; purpose not established."
+  },
+  {
+   "addr": "0x0864f980",
+   "name": "g_0864f980 (global)",
+   "why": "Same, second flag."
+  },
+  {
+   "addr": "0x081850dc",
+   "name": "g_081850dc (global)",
+   "why": "Lies inside bg_itemList at non-stride offset; likely a member reference, not a standalone object."
+  },
+  {
+   "addr": "0x0864f98c",
+   "name": "g_0864f98c (global)",
+   "why": "Per-slot buffer pointers freed by Com_Free_A; owner script builtin not confirmed."
+  }
+ ]
+}

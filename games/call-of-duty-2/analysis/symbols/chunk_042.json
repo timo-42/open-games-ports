@@ -1,0 +1,557 @@
+{
+ "chunk": 42,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080e4644",
+   "name": "PM_CheckDuck",
+   "signature": "void PM_CheckDuck(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "Q3 PM_CheckDuck counterpart; sets pm mins/maxs from ps, trace-tests stand/crouch/prone changes, sets ps->stance; called from PM_SingleStep",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e5402",
+   "name": "PM_FootstepEvent",
+   "signature": "void PM_FootstepEvent(struct pmove_s *pm, struct pml_s *pml, char oldBobCycle, char newBobCycle, int doEvent)",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "bob-cycle ((old+64)^(new+64))&128 footstep trigger as in Q3 PM_Footsteps; calls footstep event helper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e55ca",
+   "name": "PM_FootstepSpeedOk",
+   "signature": "bool PM_FootstepSpeedOk(struct pmove_s *pm)",
+   "subsystem": "game/pmove",
+   "confidence": "unknown",
+   "evidence": "descriptive: xyspeed >= dvar 0x0862703c when not prone/crouched and flag 0x100 clear",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e5672",
+   "name": "PM_YawQuadrantAnim",
+   "signature": "int PM_YawQuadrantAnim(float yawDelta)",
+   "subsystem": "game/pmove",
+   "confidence": "unknown",
+   "evidence": "descriptive: yaw quadrant to anim index 0x1f..0x22",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e572c",
+   "name": "PM_Footsteps",
+   "signature": "void PM_Footsteps(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "string 'turn anim end time is %i, time is %i\\n' at 0x81550a0 printed from it; Q3 PM_Footsteps counterpart (anim + bobCycle)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e6784",
+   "name": "PM_CheckMoveBump",
+   "signature": "void PM_CheckMoveBump(struct pmove_s *pm)",
+   "subsystem": "game/pmove",
+   "confidence": "unknown",
+   "evidence": "descriptive: speed-scaled periodic in-place box trace emitting event 0x8b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e6936",
+   "name": "PM_DropTimers",
+   "signature": "void PM_DropTimers(struct playerState_s *ps, struct pml_s *pml)",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "Q3 PM_DropTimers counterpart (pm_time countdown clearing flags)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e69f4",
+   "name": "PM_UpdateLean",
+   "signature": "void PM_UpdateLean(struct playerState_s *ps, float msec, struct usercmd_s *cmd, void (*trace)(struct trace_s *, const float *, const float *, const float *, const float *, int, int))",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "moves ps->leanf by buttons 0x40/0x80 and clamps by trace; name from ps->leanf behaviour",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e6dac",
+   "name": "PM_CheckBodyYawClear",
+   "signature": "int PM_CheckBodyYawClear(struct playerState_s *ps, float yaw, char clipType)",
+   "subsystem": "game/pmove",
+   "confidence": "unknown",
+   "evidence": "descriptive: wraps fn_080e0e58 with yaw-interpolated probe yaw/distance; returns its result",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e6eb8",
+   "name": "PM_UpdateViewAngles",
+   "signature": "void PM_UpdateViewAngles(struct playerState_s *ps, float msec, struct usercmd_s *cmd, byte clipType)",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "Q3 PM_UpdateViewAngles counterpart (cmd angles + delta_angles, pitch clamp by dvars)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e7c00",
+   "name": "PM_SmoothBodyAngles",
+   "signature": "void PM_SmoothBodyAngles(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "game/pmove",
+   "confidence": "unknown",
+   "evidence": "descriptive: prone-only smoothing of ps->field_588/58c toward ground slope angle at 70 deg/s",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e7f44",
+   "name": "PM_Flags_SetBit11IfBit0",
+   "signature": "void PM_Flags_SetBit11IfBit0(struct playerState_s *ps)",
+   "subsystem": "game/pmove",
+   "confidence": "unknown",
+   "evidence": "descriptive: if pm_flags&1 then |=0x800",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e7f68",
+   "name": "PM_UpdateAdsSlowMoveFlag",
+   "signature": "void PM_UpdateAdsSlowMoveFlag(struct pmove_s *pm)",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Sets pm_flags 0x100 while button 0x1000 held, pm_type<6, not prone, ADS flag 0x40 set and weaponstate not in 5..9; PM_CmdScale applies x0.4 for 0x100 (pmove.md 2.2).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e8012",
+   "name": "PM_Flags_SetLadder",
+   "signature": "void PM_Flags_SetLadder(struct playerState_s *ps)",
+   "subsystem": "game/pmove",
+   "confidence": "unknown",
+   "evidence": "descriptive: pm_flags |= 0x20 (ladder flag per PM_CheckLadder use)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e8026",
+   "name": "PM_Flags_EndLadder",
+   "signature": "void PM_Flags_EndLadder(struct playerState_s *ps)",
+   "subsystem": "game/pmove",
+   "confidence": "unknown",
+   "evidence": "descriptive: clears 0x20, setting 0x40000 if it was set",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e805a",
+   "name": "PM_CheckLadder",
+   "signature": "void PM_CheckLadder(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "Q3 PM_CheckLadder counterpart: forward trace, surface flag 8, stores normal in ps->ladderNormal",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e847e",
+   "name": "PM_LadderMove",
+   "signature": "void PM_LadderMove(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "called when pm_flags&0x20; climbs along ladderNormal; behaviour-based name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e8934",
+   "name": "PM_SingleStep",
+   "signature": "void PM_SingleStep(struct pmove_s *pm)",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "Q3 PmoveSingle counterpart: pml setup, pm_type switch dispatch; called from PM_Pmove",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9464",
+   "name": "PM_Pmove",
+   "signature": "void PM_Pmove(struct pmove_s *pm)",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "Q3 Pmove counterpart: steps commandTime to cmd.serverTime in <=66ms chunks calling PM_SingleStep",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9528",
+   "name": "PM_GetMoveSpeed",
+   "signature": "float PM_GetMoveSpeed(struct playerState_s *ps, int time)",
+   "subsystem": "game/pmove",
+   "confidence": "unknown",
+   "evidence": "descriptive: Vec2 velocity length, or ladder climb speed",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9576",
+   "name": "Float_Abs_080e9576",
+   "signature": "float Float_Abs_080e9576(float x)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "ABS(float)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9590",
+   "name": "Float_Sqrt_080e9590",
+   "signature": "float Float_Sqrt_080e9590(float x)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "sqrt((double)x) narrowed to float",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e95b0",
+   "name": "Float_Max_080e95b0",
+   "signature": "float Float_Max_080e95b0(float a, float b)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "fn_080e9a26 is fsel (x>=0?a:b); x=a-b => max",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e95d4",
+   "name": "Float_Min_080e95d4",
+   "signature": "float Float_Min_080e95d4(float a, float b)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "fsel with x=b-a => min",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e95f8",
+   "name": "Int_SelectClamp",
+   "signature": "int Int_SelectClamp(int a, int b, int c)",
+   "subsystem": "math/int",
+   "confidence": "unknown",
+   "evidence": "two chained integer selects via fn_080e9a50",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e963a",
+   "name": "Float_Square",
+   "signature": "float Float_Square(float x)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "x*x",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9646",
+   "name": "Float_Sign",
+   "signature": "int Float_Sign(float x)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "1 - 2*signbit(x)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e966c",
+   "name": "Vec2_Copy",
+   "signature": "void Vec2_Copy(const float *in, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "two-word copy",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e968c",
+   "name": "Vec2_Add_080e968c",
+   "signature": "void Vec2_Add_080e968c(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "2D add",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e96b8",
+   "name": "Vec2_Sub_Dup",
+   "signature": "void Vec2_Sub_Dup(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "2D sub; duplicate of Vec2_Sub 0x080ab010",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e96e4",
+   "name": "Vec2_Scale",
+   "signature": "void Vec2_Scale(const float *in, float s, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "2D scale",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e970a",
+   "name": "Vec2_MA",
+   "signature": "void Vec2_MA(const float *base, float s, const float *dir, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "2D multiply-add",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9740",
+   "name": "Vec2_Dot_Dup",
+   "signature": "float Vec2_Dot_Dup(const float *a, const float *b)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "2D dot; duplicate of Vec2_Dot 0x080ab03c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9762",
+   "name": "Vec2_LengthSq",
+   "signature": "float Vec2_LengthSq(const float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "2D squared length",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9784",
+   "name": "Vec2_Length_Dup",
+   "signature": "float Vec2_Length_Dup(const float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "2D length; duplicate of Vec2_Length 0x080ab05e",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e97b0",
+   "name": "Vec3_Clear_Dup",
+   "signature": "void Vec3_Clear_Dup(float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "zero 3 words; duplicate of Vec3_Clear 0x080ab08a",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e97da",
+   "name": "Vec3_Set_Dup",
+   "signature": "void Vec3_Set_Dup(float *v, float x, float y, float z)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "set 3 words; duplicate of Vec3_Set 0x080ab0b4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e97fe",
+   "name": "Vec3_Copy_Dup",
+   "signature": "void Vec3_Copy_Dup(const float *in, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "copy 3 words; duplicate of Vec3_Copy 0x080ab0d8",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0860b420",
+   "name": "g_gameContextPtr",
+   "type": "struct gameLocals_s *",
+   "confidence": "inferred",
+   "evidence": "pointer; +0xb3bdc is a time int, +0xb3bfc a 0x4b8-stride per-client animation array"
+  },
+  {
+   "addr": "0x081869c0",
+   "name": "g_pmTraceDispatch",
+   "type": "struct traceFnEntry_s[]",
+   "confidence": "inferred",
+   "evidence": "12-byte entries; word 0 is the trace function selected by pm->clipType"
+  },
+  {
+   "addr": "0x08626fb4",
+   "name": "g_08626fb4",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08626fb8",
+   "name": "g_08626fb8",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08626fbc",
+   "name": "g_08626fbc",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08626fc0",
+   "name": "g_08626fc0",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08626fc4",
+   "name": "g_08626fc4",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08626fc8",
+   "name": "g_08626fc8",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08626fcc",
+   "name": "g_08626fcc",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08626fd0",
+   "name": "g_08626fd0",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08626fd4",
+   "name": "g_08626fd4",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08627038",
+   "name": "g_08627038",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x0862703c",
+   "name": "g_0862703c",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08627040",
+   "name": "g_08627040",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08627044",
+   "name": "g_08627044",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x0862704c",
+   "name": "g_0862704c",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x0862705c",
+   "name": "g_0862705c",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  },
+  {
+   "addr": "0x08627060",
+   "name": "g_08627060",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "read as dvar pointer with value at +8 (disassembly)"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "playerState_s",
+   "size": "unknown (partial, up to +0x5b0)",
+   "evidence": "offsets consistent across PM_* functions in this chunk"
+  },
+  {
+   "name": "pmove_s",
+   "size": "unknown (>=0xe5)",
+   "evidence": "ps@0, cmd@4, oldcmd@0x20 (9464 copy of 7 words), tracemask@0x3c, mins@0xc4, maxs@0xd0, xyspeed@0xdc, clipType@0xe4"
+  },
+  {
+   "name": "pml_s",
+   "size": "0x7c",
+   "evidence": "memset(,0,0x7c) in PM_SingleStep"
+  },
+  {
+   "name": "usercmd_s",
+   "size": "0x1c",
+   "evidence": "cmd->oldcmd copy of 7 words"
+  },
+  {
+   "name": "trace_s",
+   "size": "0x28 (inferred, 0x24..0x28)",
+   "evidence": "groundTrace at pml+0x38 and previous_origin at pml+0x60; allsolid +0x22, startsolid +0x23"
+  },
+  {
+   "name": "clientAnimCtrl_s",
+   "size": "0x4b8",
+   "evidence": "indexed by clientNum*0x4b8 from level+0xb3bfc"
+  },
+  {
+   "name": "gameLocals_s",
+   "size": "unknown",
+   "evidence": "pointer at 0x0860b420"
+  }
+ ],
+ "open_questions": [
+  "fn_080aaa30 (merged as AnglesToForward_ProjectedNormalized(const float*, const float*)) is called here with a float yaw value as arg 1; its merged signature looks wrong.",
+  "Exact trace_s size and meaning of allsolid (+0x22) vs startsolid (+0x23); inferred from Q3 layout and use sites only.",
+  "Meaning of ps->field_44/70/88/90/94/98, dvars 0x08626fb4..0x08627060 and stance codes (0x0b prone, 0x28 crouch, 0x3c stand); not named by any string.",
+  "pml->field_34 (+0x34) and pm->field_40 (+0x40) purpose unknown."
+ ]
+}

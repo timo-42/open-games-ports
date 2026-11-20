@@ -1,0 +1,800 @@
+{
+ "chunk": 2,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0804e618",
+   "name": "PC_Directive_elif",
+   "signature": "int PC_Directive_elif(struct source_s *source)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: string \"misplaced #elif\"; indent-stack pop/push around a #elif condition (id Tech 3 l_precomp PC_Directive_elif counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804e7e0",
+   "name": "PC_UnreadSignToken",
+   "signature": "void PC_UnreadSignToken(struct source_s *source)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: pushes back a synthetic \"-\" punctuation token (subtype 30) located at the current script position (PC_UnreadSignToken counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804e858",
+   "name": "PC_Directive_evalint",
+   "signature": "int PC_Directive_evalint(struct source_s *source)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: evaluates an integer expression and pushes back its decimal text (\"%d\", abs value, then a sign token if negative); PC_Directive_evalint counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804e948",
+   "name": "PC_Directive_evalfloat",
+   "signature": "int PC_Directive_evalfloat(struct source_s *source)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: float variant of the above: \"%1.2f\" of Float_Abs(value), float subtype, sign token pushed for negatives (PC_Directive_evalfloat counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ea2e",
+   "name": "PC_ReadDirective",
+   "signature": "int PC_ReadDirective(struct source_s *source)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: strings \"found # without name\", \"unknown precompiler directive %s\", \"found # at end of line\"; dispatch through the name/handler table at 0x0817d3c0 (PC_ReadDirective counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804eb4a",
+   "name": "PC_DollarDirective_evalint",
+   "signature": "int PC_DollarDirective_evalint(struct source_s *source)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: '$' directive table entry \"evalint\" (0x0817d460 table); same shape as PC_Directive_evalint but with PC_DollarEvaluate and intvalue/floatvalue filled in.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ec46",
+   "name": "PC_DollarDirective_evalfloat",
+   "signature": "int PC_DollarDirective_evalfloat(struct source_s *source)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: '$' directive float variant; intvalue = (int)(long long)value truncated via fistp with truncating control word.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ed6e",
+   "name": "PC_ReadDollarDirective",
+   "signature": "int PC_ReadDollarDirective(struct source_s *source)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: strings \"found $ without name\", \"unknown precompiler directive %s\", \"found $ at end of line\"; table at 0x0817d460 starting with \"evalint\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804eea0",
+   "name": "PC_ReadToken",
+   "signature": "int PC_ReadToken(struct source_s *source, struct token_s *token)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: string \"string longer than MAX_TOKEN %d\\n\"; handles '#'/'$' directives, adjacent string concatenation and define expansion (PC_ReadToken counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f464",
+   "name": "PC_CheckTokenString",
+   "signature": "int PC_CheckTokenString(struct source_s *source, char *string)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: reads a token, returns 1 if it equals the given string, otherwise unreads it (PC_CheckTokenString counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f4de",
+   "name": "PC_CheckTokenType",
+   "signature": "int PC_CheckTokenType(struct source_s *source, int type, unsigned int subtype, struct token_s *token)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: reads a token; if type matches and subtype contains the requested bits copies it out, otherwise unreads (PC_CheckTokenType counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f5ec",
+   "name": "PC_UnreadToken",
+   "signature": "void PC_UnreadToken(struct source_s *source, struct token_s *token)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: thin wrapper over the source-level unread (PC_UnreadToken counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f606",
+   "name": "PC_SetIncludePath",
+   "signature": "void PC_SetIncludePath(struct source_s *source, char *path)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: copies up to 64 chars into source->includepath and appends '/' unless it already ends in '\\\\' or '/' (PC_SetIncludePath counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f676",
+   "name": "PC_SetPunctuations",
+   "signature": "void PC_SetPunctuations(struct source_s *source, struct punctuation_s *p)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: stores a punctuation table pointer at source+0x80 (PC_SetPunctuations counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f688",
+   "name": "LoadSourceFile",
+   "signature": "struct source_s *LoadSourceFile(char *filename)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: loads a script file, allocates a 0x4c8-byte source, adds global defines (LoadSourceFile counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f866",
+   "name": "FreeSource",
+   "signature": "void FreeSource(struct source_s *source)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: frees script stack, pending tokens, 1024 define hash chains, indent stack, hash table and the source itself (FreeSource counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f9e6",
+   "name": "PC_LoadSourceHandle",
+   "signature": "int PC_LoadSourceHandle(char *filename)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: finds a free slot in the 64-entry source handle table (index 0 unused) and stores LoadSourceFile's result (PC_LoadSourceHandle counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804fc42",
+   "name": "PC_SourceFileAndLine",
+   "signature": "int PC_SourceFileAndLine(int handle, char *filename, int *line)",
+   "subsystem": "botlib/precompiler",
+   "confidence": "inferred",
+   "evidence": "Name evidence: handle range check 1..63, copies the top script's filename and line, or the source filename and line 0 (PC_SourceFileAndLine counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804fd28",
+   "name": "Float_Abs",
+   "signature": "float Float_Abs(float value)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "Name evidence: single-precision absolute value (Q_fabs counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804fd44",
+   "name": "PS_CreatePunctuationTable",
+   "signature": "void PS_CreatePunctuationTable(struct script_s *script, struct punctuation_s *punctuations)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: builds a 256-entry first-character table of punctuation chains sorted by descending length (PS_CreatePunctuationTable counterpart); the table index is a signed char.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804fe9a",
+   "name": "PunctuationFromNum",
+   "signature": "char *PunctuationFromNum(struct script_s *script, int num)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: string \"unkown punctuation\" (sic) returned when no entry has the requested number (PunctuationFromNum counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ff16",
+   "name": "ScriptError",
+   "signature": "void ScriptError(struct script_s *script, const char *fmt, ...)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: string \"^1Error: file %s, line %d: %s\\n\", suppressed by flag bit 0 (ScriptError counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ff88",
+   "name": "ScriptWarning",
+   "signature": "void ScriptWarning(struct script_s *script, const char *fmt, ...)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: string \"^3Warning: file %s, line %d: %s\\n\", suppressed by flag bit 1 (ScriptWarning counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804fffa",
+   "name": "SetScriptPunctuations",
+   "signature": "void SetScriptPunctuations(struct script_s *script, struct punctuation_s *p)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: builds the punctuation table from the given array, or from the default table at 0x0817d500 when NULL (SetScriptPunctuations counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08050042",
+   "name": "PS_ReadWhiteSpace",
+   "signature": "int PS_ReadWhiteSpace(struct script_s *script)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: skips bytes < '!' (signed char compare), // and /* */ comments, counting newlines (PS_ReadWhiteSpace counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08050192",
+   "name": "PS_ReadEscapeCharacter",
+   "signature": "int PS_ReadEscapeCharacter(struct script_s *script, char *ch)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: strings \"unknown escape char\", \"too large value in escape character\"; \\x accepts any ASCII letter as a digit (quirk kept) (PS_ReadEscapeCharacter counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080503aa",
+   "name": "PS_ReadString",
+   "signature": "int PS_ReadString(struct script_s *script, struct token_s *token, int quote)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: strings \"string longer than MAX_TOKEN = %d\", \"missing trailing quote\", \"newline inside string %s\" (PS_ReadString counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080505ce",
+   "name": "PS_ReadName",
+   "signature": "int PS_ReadName(struct script_s *script, struct token_s *token)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: string \"name longer than MAX_TOKEN = %d\"; reads [A-Za-z0-9_] identifier (PS_ReadName counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805068e",
+   "name": "NumberValue",
+   "signature": "void NumberValue(char *string, int subtype, unsigned int *intvalue, long double *floatvalue)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: converts the number text to intvalue/floatvalue by subtype flag (float, decimal, hex, octal, binary) (NumberValue counterpart). Constant 10.0L at 0x0813f2a0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08050946",
+   "name": "PS_ReadNumber",
+   "signature": "int PS_ReadNumber(struct script_s *script, struct token_s *token)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: strings \"hexadecimal/binary number longer than MAX_TOKEN = %d\", \"number longer than MAX_TOKEN = %d\"; hex branch accepts only 'A' as an uppercase digit (quirk, confirmed in disassembly) (PS_ReadNumber counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08050d78",
+   "name": "PS_ReadLiteral",
+   "signature": "int PS_ReadLiteral(struct script_s *script, struct token_s *token)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: strings \"end of file before trailing '\", \"too many characters in literal, ignored\" (PS_ReadLiteral counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08050e96",
+   "name": "PS_ReadPunctuation",
+   "signature": "int PS_ReadPunctuation(struct script_s *script, struct token_s *token)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: longest-first lookup in the punctuation table keyed by the signed first char; strncpy of 1024 bytes into token->string (PS_ReadPunctuation counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08050f74",
+   "name": "PS_ReadPrimitive",
+   "signature": "int PS_ReadPrimitive(struct script_s *script, struct token_s *token)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: string \"primitive token longer than MAX_TOKEN = %d\"; reads bytes > ' ' up to ';' (signed compare) and stores the token as script->token (PS_ReadPrimitive counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805101c",
+   "name": "PS_ReadToken",
+   "signature": "int PS_ReadToken(struct script_s *script, struct token_s *token)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: string \"can't read token\"; unread-token replay, whitespace/line bookkeeping and dispatch to string/literal/number/primitive/punctuation/name readers (PS_ReadToken counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080512ba",
+   "name": "PS_ExpectTokenString",
+   "signature": "int PS_ExpectTokenString(struct script_s *script, char *string)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: strings \"couldn't find expected %s\", \"expected %s, found %s\" (PS_ExpectTokenString counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805135e",
+   "name": "PS_ExpectTokenType",
+   "signature": "int PS_ExpectTokenType(struct script_s *script, int type, int subtype, struct token_s *token)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: strings \"couldn't read expected token\", \"decimal\", \"hex\", \"BUG: wrong punctuation subtype\" (PS_ExpectTokenType counterpart). Quirk kept: the punctuation mismatch error passes the whole punctuation_t (p, n, next) plus the token as varargs, so \"%s\" for the second slot receives the integer n.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051688",
+   "name": "PS_ExpectAnyToken",
+   "signature": "int PS_ExpectAnyToken(struct script_s *script, struct token_s *token)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: string \"couldn't read expected token\" after a failed read (PS_ExpectAnyToken counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080516cc",
+   "name": "PS_CheckTokenString",
+   "signature": "int PS_CheckTokenString(struct script_s *script, char *string)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: reads a token, matches the string, otherwise rewinds script_p to lastscript_p (PS_CheckTokenString counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051822",
+   "name": "PS_UnreadLastToken",
+   "signature": "void PS_UnreadLastToken(struct script_s *script)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: sets tokenavailable (PS_UnreadLastToken counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051832",
+   "name": "PS_UnreadToken",
+   "signature": "void PS_UnreadToken(struct script_s *script, struct token_s *token)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: stores the token as script->token and sets tokenavailable (PS_UnreadToken counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051862",
+   "name": "PS_NextWhiteSpaceChar",
+   "signature": "int PS_NextWhiteSpaceChar(struct script_s *script)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: returns the next whitespace byte between whitespace_p and endwhitespace_p, 0 when exhausted (PS_NextWhiteSpaceChar counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051894",
+   "name": "StripDoubleQuotes",
+   "signature": "void StripDoubleQuotes(char *string)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: removes a leading and a trailing '\"' (StripDoubleQuotes counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080518de",
+   "name": "StripSingleQuotes",
+   "signature": "void StripSingleQuotes(char *string)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: removes a leading and a trailing '\\'' (StripSingleQuotes counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051aa8",
+   "name": "SetScriptFlags",
+   "signature": "void SetScriptFlags(struct script_s *script, int flags)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: stores script flags at +0x68 (SetScriptFlags counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051ab6",
+   "name": "GetScriptFlags",
+   "signature": "int GetScriptFlags(struct script_s *script)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: reads script flags at +0x68 (GetScriptFlags counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051ac2",
+   "name": "ResetScript",
+   "signature": "void ResetScript(struct script_s *script)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: rewinds script_p to the buffer start, clears whitespace pointers, line=1, clears the cached token (ResetScript counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051b32",
+   "name": "EndOfScript",
+   "signature": "int EndOfScript(struct script_s *script)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: unsigned compare script_p >= end_p (EndOfScript counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051b4a",
+   "name": "NumLinesCrossed",
+   "signature": "int NumLinesCrossed(struct script_s *script)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: line - lastline (NumLinesCrossed counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051b5e",
+   "name": "ScriptSkipTo",
+   "signature": "int ScriptSkipTo(struct script_s *script, char *string)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: advances through whitespace and characters until the given string is found (ScriptSkipTo counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051bd8",
+   "name": "LoadScriptFile",
+   "signature": "struct script_s *LoadScriptFile(char *filename)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: opens a file by name, allocates 0x4a5+length bytes, sets buffer after the 0x4a4-byte header, installs default punctuations (LoadScriptFile counterpart). strcpy of the filename into the 64-byte field is unbounded (kept).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051d20",
+   "name": "LoadScriptMemory",
+   "signature": "struct script_s *LoadScriptMemory(const void *ptr, int length, const char *name)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: same layout as LoadScriptFile but copies from a memory block (LoadScriptMemory counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051dee",
+   "name": "FreeScript",
+   "signature": "void FreeScript(struct script_s *script)",
+   "subsystem": "botlib/script",
+   "confidence": "inferred",
+   "evidence": "Name evidence: frees the punctuation table (if any) then the script (FreeScript counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051e18",
+   "name": "Com_FormatBuildVersion",
+   "signature": "char *Com_FormatBuildVersion(void)",
+   "subsystem": "common/version",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): sprintf \"%s %s\" of \"pc_1.3_1_1\" and \"Mon May 01 2006 05:05:43PM\" into g_08a6f440 (observed strings).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051e4c",
+   "name": "Com_IsBspLoaded",
+   "signature": "int Com_IsBspLoaded(void)",
+   "subsystem": "common/bsp",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns whether the BSP image pointer (0x08188da8) is non-NULL; IW/CoD4 lineage Com_IsBspLoaded. Callers BspFile_FreeIfLoaded.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051e5e",
+   "name": "Com_GetBspHeader",
+   "signature": "int *Com_GetBspHeader(int *length, int *checksum)",
+   "subsystem": "common/bsp",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns BSP image pointer and optional length/checksum out-params; counterpart of IW Com_GetBsp* accessors (CoD4 lineage, name not verified in binary).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051e88",
+   "name": "Com_LoadBsp",
+   "signature": "void Com_LoadBsp(char *name)",
+   "subsystem": "common/bsp",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Reads map via FS_OpenFileRead, errors \"EXE_ERR_COULDNT_LOAD\" / \"EXE_ERR_WRONG_MAP_VERSION_NUM\", checks magic 0x50534249 \"IBSP\" version 4, byte-swaps 39 lump entries; IW Com_LoadBsp counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08052054",
+   "name": "Com_UnloadBsp",
+   "signature": "void Com_UnloadBsp(void)",
+   "subsystem": "common/bsp",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Frees BSP image via Com_Free_A and clears pointer 0x08188da8; paired with Com_LoadBsp.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08052074",
+   "name": "Com_UnloadBspIfLoaded",
+   "signature": "void Com_UnloadBspIfLoaded(void)",
+   "subsystem": "common/bsp",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Calls unload only when BspFile_IsLoaded(); called from Com_ErrorRecover.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805208a",
+   "name": "LittleLong",
+   "signature": "int LittleLong(int value)",
+   "subsystem": "common/endian",
+   "confidence": "inferred",
+   "evidence": "Name evidence: identity function applied to every BSP header/lump field, i.e. a little-endian host LittleLong.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08052094",
+   "name": "CM_InitSlotBuffers",
+   "signature": "void CM_InitSlotBuffers(int index)",
+   "subsystem": "common/clipmap",
+   "confidence": "unknown",
+   "evidence": "Name evidence: none; resets one 0x18-byte slot at 0x085b7660 and allocates its buffers (sized from globals 0x08188e24/e0c/e04) plus copies of 0x30 and 0x48 bytes from 0x08188e5c / 0x08188e60.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08052162",
+   "name": "CM_InitAllSlotBuffers",
+   "signature": "void CM_InitAllSlotBuffers(void)",
+   "subsystem": "common/clipmap",
+   "confidence": "unknown",
+   "evidence": "Name evidence: none; initialises both slot buffer sets (indices 0 and 1).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08052182",
+   "name": "CM_LoadMapData",
+   "signature": "void CM_LoadMapData(char *name)",
+   "subsystem": "common/clipmap",
+   "confidence": "unknown",
+   "evidence": "Name evidence: none; helper used by CM_LoadMap: calls fn_08054d70(name, 1) then fn_080585fe().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080521a2",
+   "name": "CM_LoadMap",
+   "signature": "void CM_LoadMap(char *name, int *checksum)",
+   "subsystem": "common/clipmap",
+   "confidence": "observed",
+   "evidence": "Name evidence: string \"\\x15CM_LoadMap: NULL name\" passed to the error function (fn_08061124) when name is NULL or empty.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805220a",
+   "name": "CM_ClearMap",
+   "signature": "void CM_ClearMap(void)",
+   "subsystem": "common/clipmap",
+   "confidence": "inferred",
+   "evidence": "Name evidence: clears the 0x110-byte clipmap record at 0x08188dc0 (CM_ClearMap counterpart).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805222e",
+   "name": "CM_TransformIntArray",
+   "signature": "void CM_TransformIntArray(int *array, int count)",
+   "subsystem": "common/clipmap",
+   "confidence": "unknown",
+   "evidence": "Name evidence: none; replaces each int of the array by fn_080527da(value).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080526e4",
+   "name": "CM_NumSubModels",
+   "signature": "int CM_NumSubModels(void)",
+   "subsystem": "common/clipmap",
+   "confidence": "inferred",
+   "evidence": "Name evidence: none; returns global 0x08188e34. [rename collision: asm: returns dword at 0x8188e34 = cm+0x74 which collision.md section 9 N8 reconciles as numSubModels; current name embeds an address only]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080526ee",
+   "name": "CM_EntityString",
+   "signature": "int CM_EntityString(void)",
+   "subsystem": "common/clipmap",
+   "confidence": "inferred",
+   "evidence": "Name evidence: none; returns global 0x08188e58. [rename collision: asm: returns dword at 0x8188e58 = cm+0x98, the entity-string pointer per N8 (set by CMod_LoadEntityString); Q3 CM_EntityString; the 'GetCount' name is wrong since it returns a pointer]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080526f8",
+   "name": "CM_LeafCluster",
+   "signature": "int CM_LeafCluster(int index)",
+   "subsystem": "common/clipmap",
+   "confidence": "inferred",
+   "evidence": "Name evidence: none; returns the sign-extended 16-bit field at +0x28 of the 0x2c-byte record with the given index (base pointer at 0x08188de8). [rename collision: asm 0x80526f8: leaf index*0x2c into cm.leafs (0x8188de8), movsx word at +0x28 = cluster; callers (chunks 020/022/023) feed it to the PVS lookup; matches Q3 CM_LeafCluster]",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188ca0",
+   "name": "g_08188ca0_sourceFiles",
+   "type": "source_t *[64]",
+   "confidence": "inferred",
+   "evidence": "indexed 1..63 by PC_LoadSourceHandle/PC_SourceFileAndLine; matches Q3 sourceFiles[MAX_SOURCEFILES]"
+  },
+  {
+   "addr": "0x0817d3c0",
+   "name": "g_0817d3c0_directives",
+   "type": "directive_t[]",
+   "confidence": "inferred",
+   "evidence": "name/handler pairs dispatched by PC_ReadDirective, null-name terminated"
+  },
+  {
+   "addr": "0x0817d460",
+   "name": "g_0817d460_dollardirectives",
+   "type": "directive_t[]",
+   "confidence": "inferred",
+   "evidence": "name/handler pairs dispatched by PC_ReadDollarDirective, first entry 'evalint'"
+  },
+  {
+   "addr": "0x0817d500",
+   "name": "g_0817d500_default_punctuations",
+   "type": "punctuation_t[]",
+   "confidence": "inferred",
+   "evidence": "default punctuation table passed to PS_CreatePunctuationTable"
+  },
+  {
+   "addr": "0x08a6f440",
+   "name": "com_buildVersionString",
+   "type": "char[]",
+   "confidence": "unknown",
+   "evidence": "version string buffer filled by FUN_08051e18"
+  },
+  {
+   "addr": "0x08188da8",
+   "name": "com_bspData",
+   "type": "int *",
+   "confidence": "inferred",
+   "evidence": "IBSP v4 file image loaded by FUN_08051e88"
+  },
+  {
+   "addr": "0x08188dac",
+   "name": "com_bspLength",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "file length"
+  },
+  {
+   "addr": "0x08188db0",
+   "name": "com_bspChecksum",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "fn_08067b02 result"
+  },
+  {
+   "addr": "0x08188dc0",
+   "name": "g_08188dc0_clipmap",
+   "type": "struct cm_map_s",
+   "confidence": "inferred",
+   "evidence": "0x110-byte record cleared by CM_ClearMap; first field is the map name pointer compared in CM_LoadMap"
+  },
+  {
+   "addr": "0x085b7660",
+   "name": "g_085b7660_cmTraceSlots",
+   "type": "cm_slot_t[2]",
+   "confidence": "unknown",
+   "evidence": "0x18-byte slot records initialised by FUN_08052094"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "token_t",
+   "size": "0x42c",
+   "evidence": "memcpy size 0x42c and consistent offsets 0x400..0x428"
+  },
+  {
+   "name": "script_t",
+   "size": "0x4a4",
+   "evidence": "allocation 0x4a5+length, buffer at +0x4a4"
+  },
+  {
+   "name": "source_t",
+   "size": "0x4c8",
+   "evidence": "GetMemory(0x4c8)/memset in LoadSourceFile"
+  },
+  {
+   "name": "punctuation_t",
+   "size": "0xc",
+   "evidence": "table stride 0xc"
+  },
+  {
+   "name": "define_t",
+   "size": "0x20",
+   "evidence": "hashnext at +0x1c (partial, other chunks own the rest)"
+  },
+  {
+   "name": "indent_t",
+   "size": "0x10",
+   "evidence": "next at +0xc (partial)"
+  },
+  {
+   "name": "cm_slot_t",
+   "size": "0x18",
+   "evidence": "stride 0x18 at 0x085b7660"
+  }
+ ],
+ "open_questions": [
+  "FUN_08051bd8 calls fn_080b650e(buffer) and stores the result as script->length; its exact filtering semantics are unresolved (chunk-external).",
+  "Slot buffers at 0x085b7660 (FUN_08052094) and globals 0x08188e04/e0c/e24/e34/e58 belong to the clipmap loader; their meaning is unknown from this chunk alone.",
+  "PS_ExpectTokenType punctuation-mismatch error passes (p, n, next, token) as varargs for a two-%s format: kept as observed in disassembly; confirm whether original build crashes there."
+ ]
+}

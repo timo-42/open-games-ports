@@ -1,0 +1,499 @@
+{
+ "functions": [
+  {
+   "addr": "0x080c527a",
+   "old": "Read_Short",
+   "new": "ByteCursor_ReadInt16",
+   "confidence": "descriptive",
+   "evidence": "memcpy 2 bytes from *cursor, advance 2 (chunk body). Generic cursor reader; name states width/signedness."
+  },
+  {
+   "addr": "0x080c52b0",
+   "old": "Read_UShort",
+   "new": "ByteCursor_ReadUInt16",
+   "confidence": "descriptive",
+   "evidence": "memcpy 2 bytes from *cursor as uint16, advance 2."
+  },
+  {
+   "addr": "0x080c52e6",
+   "old": "Read_Float",
+   "new": "ByteCursor_ReadFloat32",
+   "confidence": "descriptive",
+   "evidence": "memcpy 4 bytes as float from *cursor, advance 4."
+  },
+  {
+   "addr": "0x080c79bc",
+   "old": "Read_Int",
+   "new": "ByteCursor_ReadUInt32",
+   "confidence": "descriptive",
+   "evidence": "memcpy 4 bytes as uint32 from *cursor, advance 4; body returns uint32."
+  },
+  {
+   "addr": "0x081383ee",
+   "old": "Loc_CallA",
+   "new": "Loc_CreateStringTable",
+   "confidence": "descriptive",
+   "evidence": "13-byte tail wrapper to LocTable_Create 0x0813a768 (filesystem.md section 1 step 4: allocates the global localized string table, followed by Loc_InitLanguages)."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188ae0",
+   "old": "g_08188ae0",
+   "new": "loc_languageTable",
+   "type_hint": "struct cod2_lang_entry_s[15]",
+   "confidence": "observed",
+   "evidence": "15 {name,available} pairs, entry 0 -> \"english\"; indexed by LocLanguage_Name/LocLanguage_Find (chunk 59/60); filesystem.md globals table."
+  },
+  {
+   "addr": "0x0849fc20",
+   "old": "g_0849fc20",
+   "new": "fs_openFileReadCalled",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Only store: FS_OpenFileRead sets 1 (chunk 24 line 635); no reader found; name per filesystem.md section 238, role unknown."
+  },
+  {
+   "addr": "0x0849fd70",
+   "old": "g_0849fd70",
+   "new": "fs_unpureFileToken",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "rand()+1 on non-localized loose file with restricted extension opened (chunk 24); zeroed by FS_PureServerSetLoadedIwds and appended via va(\"%i \") to referenced-pure checksum string (chunk 7)."
+  },
+  {
+   "addr": "0x084a64a0",
+   "old": "g_084a64a0",
+   "new": "fs_numReferencedIwds",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Count written by FS_SetServerReferencedIwds (0x08065f94), loop bound in FS_BuildMissingIwdList and the list clearers."
+  },
+  {
+   "addr": "0x084a64c0",
+   "old": "g_084a64c0",
+   "new": "fs_referencedIwdSums",
+   "type_hint": "int32[1024]",
+   "confidence": "inferred",
+   "evidence": "atoi(Cmd_Argv(i)) stored; compared to iwd->checksum and formatted as '%s.%08x.iwd' in FS_BuildMissingIwdList."
+  },
+  {
+   "addr": "0x084a74c0",
+   "old": "g_084a74c0",
+   "new": "fs_referencedIwdNames",
+   "type_hint": "char *[1024]",
+   "confidence": "observed",
+   "evidence": "CopyString(Cmd_Argv(i)) pointers read as C strings in FS_BuildMissingIwdList and freed by FS_ClearListB (filesystem.md N13)."
+  },
+  {
+   "addr": "0x084a86e0",
+   "old": "g_084a86e0",
+   "new": "fs_languageNameBuf",
+   "type_hint": "char[2][64]",
+   "confidence": "inferred",
+   "evidence": "Two 64-byte buffers alternately returned by FS_GetLocalizedLanguage (chunk 24 lines 1535-1547)."
+  },
+  {
+   "addr": "0x084a8760",
+   "old": "g_084a8760",
+   "new": "fs_languageNameBufIndex",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "XOR-1 toggled in FS_GetLocalizedLanguage to select a fs_languageNameBuf half."
+  },
+  {
+   "addr": "0x084a8764",
+   "old": "g_084a8764",
+   "new": "fs_supportedLanguagesPrinted",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Set to 1 once after the 'Supported languages are:' message has been printed (chunk 24 line 1648-1653)."
+  },
+  {
+   "addr": "0x08a6f180",
+   "old": "g_08a6f180",
+   "new": "loc_strFileCount",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Incremented per matching .str file in FS_CollectFilesRecursive, reset by FS_CollectLocalizedFiles (chunk 60)."
+  },
+  {
+   "addr": "0x08a6f1a0",
+   "old": "g_08a6f1a0",
+   "new": "loc_currentTable",
+   "type_hint": "struct cod2_loc_table_s *",
+   "confidence": "inferred",
+   "evidence": "Set by LocTable_Create, cleared by LocTable_Destroy, used by LocTable_LoadFile/Lookup/LoadAll."
+  },
+  {
+   "addr": "0x08a6f1c0",
+   "old": "g_08a6f1c0",
+   "new": "loc_pathDirBuf",
+   "type_hint": "char[64]",
+   "confidence": "inferred",
+   "evidence": "Return buffer of LocPath_GetDirectory (copy, cut at last / or \\)."
+  },
+  {
+   "addr": "0x08a6f200",
+   "old": "g_08a6f200",
+   "new": "loc_pathStemBuf",
+   "type_hint": "char[64]",
+   "confidence": "inferred",
+   "evidence": "Return buffer of LocPath_StripExtension."
+  },
+  {
+   "addr": "0x08a6f240",
+   "old": "g_08a6f240",
+   "new": "loc_pathBaseNameBuf",
+   "type_hint": "char[64]",
+   "confidence": "inferred",
+   "evidence": "Return buffer of LocPath_GetBaseName."
+  },
+  {
+   "addr": "0x08a6f280",
+   "old": "g_08a6f280",
+   "new": "loc_listEntryBuf",
+   "type_hint": "char[64]",
+   "confidence": "inferred",
+   "evidence": "Return buffer of LocList_NextEntry (';'-terminated entry, max 63 chars)."
+  },
+  {
+   "addr": "0x0849fc04",
+   "old": "g_0849fc04",
+   "new": "com_quitOnErrorFlag",
+   "type_hint": "char",
+   "confidence": "inferred",
+   "evidence": "Set in Com_UpdateQuitOnErrorFlag from dvar/arg \"QuitOnError\" or r_vc_compile==2; returned by Com_GetQuitOnErrorFlag (chunk 23). Read by Com_ErrorRecover; not FS despite address neighbourhood."
+  },
+  {
+   "addr": "0x08150b9c",
+   "old": "g_08150b9c",
+   "new": "zlib_inflate_mark",
+   "type_hint": "byte[4]",
+   "confidence": "inferred",
+   "evidence": "Bytes 00 00 ff ff (objdump); compared in inflateSync (chunk 36:593); zlib 1.1.4 inflate.c 'mark'."
+  },
+  {
+   "addr": "0x08150be0",
+   "old": "g_08150be0",
+   "new": "zlib_cplens",
+   "type_hint": "uint32[31]",
+   "confidence": "inferred",
+   "evidence": "First values 3,4,5,... (objdump); passed as literal/length base to huft_build with 257 (chunk 36:831); zlib inftrees cplens."
+  },
+  {
+   "addr": "0x08150c60",
+   "old": "g_08150c60",
+   "new": "zlib_cplext",
+   "type_hint": "uint32[31]",
+   "confidence": "inferred",
+   "evidence": "Literal/length extra-bits table paired with cplens in huft_build call (chunk 36:831); zlib cplext."
+  },
+  {
+   "addr": "0x08150ce0",
+   "old": "g_08150ce0",
+   "new": "zlib_cpdist",
+   "type_hint": "uint32[30]",
+   "confidence": "inferred",
+   "evidence": "Distance base table passed to huft_build for the distance tree (chunk 36:843); zlib cpdist."
+  },
+  {
+   "addr": "0x08150d60",
+   "old": "g_08150d60",
+   "new": "zlib_cpdext",
+   "type_hint": "uint32[30]",
+   "confidence": "inferred",
+   "evidence": "Distance extra-bits table paired with cpdist (chunk 36:843); zlib cpdext."
+  },
+  {
+   "addr": "0x08183240",
+   "old": "g_08183240",
+   "new": "zlib_fixed_bl",
+   "type_hint": "uint32",
+   "confidence": "inferred",
+   "evidence": "Value 9 (objdump); assigned to *bl in inflate_trees_fixed (chunk 36:866); zlib fixed_bl=9."
+  },
+  {
+   "addr": "0x08183244",
+   "old": "g_08183244",
+   "new": "zlib_fixed_bd",
+   "type_hint": "uint32",
+   "confidence": "inferred",
+   "evidence": "Value 5 (objdump); assigned to *bd in inflate_trees_fixed (chunk 36:867); zlib fixed_bd=5."
+  },
+  {
+   "addr": "0x08183260",
+   "old": "g_08183260",
+   "new": "zlib_fixed_tl",
+   "type_hint": "struct inflate_huft[]",
+   "confidence": "inferred",
+   "evidence": "Assigned to *tl in inflate_trees_fixed (chunk 36:868); zlib fixed_tl."
+  },
+  {
+   "addr": "0x08184260",
+   "old": "g_08184260",
+   "new": "zlib_fixed_td",
+   "type_hint": "struct inflate_huft[]",
+   "confidence": "inferred",
+   "evidence": "Assigned to *td in inflate_trees_fixed (chunk 36:869); zlib fixed_td."
+  },
+  {
+   "addr": "0x081843a4",
+   "old": "g_081843a4",
+   "new": "zlib_static_l_desc",
+   "type_hint": "struct static_tree_desc",
+   "confidence": "inferred",
+   "evidence": "Stored in s->l_desc.stat_desc (chunk 36:948); zlib trees.c static_l_desc."
+  },
+  {
+   "addr": "0x081843b8",
+   "old": "g_081843b8",
+   "new": "zlib_static_d_desc",
+   "type_hint": "struct static_tree_desc",
+   "confidence": "inferred",
+   "evidence": "Stored in s->d_desc.stat_desc (chunk 36:951); zlib static_d_desc."
+  },
+  {
+   "addr": "0x081843cc",
+   "old": "g_081843cc",
+   "new": "zlib_static_bl_desc",
+   "type_hint": "struct static_tree_desc",
+   "confidence": "inferred",
+   "evidence": "Stored in s->bl_desc.stat_desc (chunk 36:954); zlib static_bl_desc."
+  },
+  {
+   "addr": "0x08150f40",
+   "old": "g_08150f40",
+   "new": "zlib_extra_lbits",
+   "type_hint": "int[29]",
+   "confidence": "inferred",
+   "evidence": "Extra length bits per code in compress_block (chunk 37:246); data starts 0s as zlib extra_lbits."
+  },
+  {
+   "addr": "0x08150fc0",
+   "old": "g_08150fc0",
+   "new": "zlib_extra_dbits",
+   "type_hint": "int[30]",
+   "confidence": "inferred",
+   "evidence": "Extra distance bits per code in compress_block (chunk 37:253); zlib extra_dbits."
+  },
+  {
+   "addr": "0x0815108c",
+   "old": "g_0815108c",
+   "new": "zlib_bl_order",
+   "type_hint": "unsigned char[19]",
+   "confidence": "inferred",
+   "evidence": "Bytes 10 11 12 00 08 07 09 06 0a 05 0b 04 0c 03 0d 02 0e 01 0f (objdump) = zlib bl_order; used in build_bl_tree/send_all_trees."
+  },
+  {
+   "addr": "0x081510a0",
+   "old": "g_081510a0",
+   "new": "zlib_static_ltree",
+   "type_hint": "struct ct_data[288]",
+   "confidence": "inferred",
+   "evidence": "Passed as literal tree to compress_block in tr_flush_block (chunk 37:193); zlib static_ltree."
+  },
+  {
+   "addr": "0x08151520",
+   "old": "g_08151520",
+   "new": "zlib_static_dtree",
+   "type_hint": "struct ct_data[30]",
+   "confidence": "inferred",
+   "evidence": "Passed as distance tree to compress_block (chunk 37:193); zlib static_dtree."
+  },
+  {
+   "addr": "0x0815159f",
+   "old": "g_0815159f",
+   "new": "zlib_dist_code_low",
+   "type_hint": "unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "Indexed with unmodified distance for dist<=256 (chunk 37:56); this is zlib _dist_code offset by one byte (see symbols evidence)."
+  },
+  {
+   "addr": "0x081516a0",
+   "old": "g_081516a0",
+   "new": "zlib_dist_code_high",
+   "type_hint": "unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "Indexed by (dist-1)>>7 for larger distances (chunk 37:58); zlib _dist_code high half."
+  },
+  {
+   "addr": "0x081518a0",
+   "old": "g_081518a0",
+   "new": "zlib_base_length",
+   "type_hint": "int[29]",
+   "confidence": "inferred",
+   "evidence": "Subtracted from lc before sending extra bits in compress_block (chunk 37:248); zlib base_length."
+  },
+  {
+   "addr": "0x08151920",
+   "old": "g_08151920",
+   "new": "zlib_base_dist",
+   "type_hint": "int[30]",
+   "confidence": "inferred",
+   "evidence": "Subtracted from dist before sending extra bits (chunk 37:255); zlib base_dist."
+  }
+ ],
+ "left_unknown": [
+  {
+   "addr": "0x0849fd98",
+   "name": "g_0849fd98",
+   "why": "Interior field (base 0x0849fd80 + 0x18) of the stride-0x11c fs handle table; not a standalone global, naming should be a struct field (fsh[].field18) instead."
+  },
+  {
+   "addr": "0x080d661e",
+   "name": "Sys_DefaultBasePath",
+   "why": "Body identical to Sys_DefaultInstallPath 0x080d65d4; no string distinguishes role."
+  },
+  {
+   "addr": "0x080a3748",
+   "name": "Int_Identity",
+   "why": "Returns argument; no string/caller evidence of intent."
+  },
+  {
+   "addr": "0x0809f626",
+   "name": "FS_ShiftedKeyProbe",
+   "why": "Strstr of byte-shifted key with discarded result; purpose not evidenced (existing descriptive name retained)."
+  },
+  {
+   "addr": "0x080d4754",
+   "name": "Sys_NoOp_080d4754",
+   "why": "Empty body, no strings."
+  },
+  {
+   "addr": "0x080d675a",
+   "name": "Sys_NoOp_080d675a",
+   "why": "Empty body, no strings."
+  },
+  {
+   "addr": "0x080d6746",
+   "name": "Sys_ReturnZero_080d6746",
+   "why": "Constant 0, no strings."
+  },
+  {
+   "addr": "0x080d6750",
+   "name": "Sys_ReturnZero_080d6750",
+   "why": "Constant 0, no strings."
+  },
+  {
+   "addr": "0x0809e632",
+   "name": "FS_Nop",
+   "why": "Empty body; existing name already descriptive."
+  },
+  {
+   "addr": "0x080a0d54",
+   "name": "FS_ReturnZeroStub",
+   "why": "Existing descriptive name adequate; stub write path (filesystem.md N5)."
+  },
+  {
+   "addr": "0x0809e638",
+   "name": "FS_ChecksumAllowed",
+   "why": "Existing descriptive name adequate (md line 337); no better evidence."
+  },
+  {
+   "addr": "0x0809e6a0",
+   "name": "FS_SearchPathAllowed",
+   "why": "Existing name adequate; policy dvar and fn_08138154 gate not fully identified."
+  },
+  {
+   "addr": "0x0809e6f6",
+   "name": "FS_HasLoadedPakWithId",
+   "why": "Existing name adequate."
+  },
+  {
+   "addr": "0x08060b32",
+   "name": "Com_Fopen",
+   "why": "Plain fopen wrapper; existing name adequate."
+  },
+  {
+   "addr": "0x08060fa2",
+   "name": "Com_ErrorRecover",
+   "why": "Not filesystem; name well supported by strings."
+  },
+  {
+   "addr": "0x08051e88",
+   "name": "BspFile_Load",
+   "why": "Name evidence strong (IBSP/EXE_ERR strings); no change."
+  },
+  {
+   "addr": "0x0805222e",
+   "name": "CM_TransformIntArray",
+   "why": "Existing name; md N4 notes boundary issue only."
+  },
+  {
+   "addr": "0x0805228e",
+   "name": "CM_ReplaceBspLump",
+   "why": "Existing name; no change."
+  },
+  {
+   "addr": "0x081386e4",
+   "name": "Loc_TranslateMarkedSegments",
+   "why": "Strongly evidenced, no change."
+  },
+  {
+   "addr": "0x0809ef3e",
+   "name": "FS_OpenOSFileHandle",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x0809f718",
+   "name": "FS_IsParentPathPrefix",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x0809f75e",
+   "name": "FS_IsPathSeparator",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x0809f7a0",
+   "name": "FS_SanitizeQpath",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x0809f8a4",
+   "name": "FS_HasTextAssetExtension",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x080a02e6",
+   "name": "FS_LooseFileGamePath",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x080a0458",
+   "name": "FS_SetOwnerReadBit",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x080a0b7a",
+   "name": "FS_ResetLoadStack",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x080a0c32",
+   "name": "FS_LocateLooseFile",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x080a12a6",
+   "name": "FS_SplitDirectory",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x080a19fc",
+   "name": "FS_ListFilesByGameMask",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x080a1b94",
+   "name": "FS_ListFilesFilteredByGame",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  },
+  {
+   "addr": "0x080b734c",
+   "name": "FS_JoinPathChecked",
+   "why": "Existing descriptive name (FS path/list helper) matches body; no stronger evidence available, no rename proposed."
+  }
+ ]
+}

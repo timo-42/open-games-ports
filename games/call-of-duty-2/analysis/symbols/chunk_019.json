@@ -1,0 +1,931 @@
+{
+ "chunk": 19,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x80892d8",
+   "name": "Lex_StoreIdentifier",
+   "signature": "void Lex_StoreIdentifier(const char *text, int length);",
+   "subsystem": "script/lexer",
+   "confidence": "unknown",
+   "evidence": "Stores the matched identifier text via fn_0807943c(kind 0xd) into the lexer value slot; name is descriptive.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x8089308",
+   "name": "Lex_StoreEscapedString",
+   "signature": "int Lex_StoreEscapedString(const char *text, int length);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "String \"max string length exceeded: \\\"%s\\\"\" is printed here; backslash escapes n/r/t decoded, other escapes pass the char. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x8089445",
+   "name": "Lex_ParseInt",
+   "signature": "void Lex_ParseInt(const char *text);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "sscanf \"%d\" into the lexer value (integer literal rule).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x8089468",
+   "name": "Lex_ParseFloat",
+   "signature": "void Lex_ParseFloat(const char *text);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "sscanf \"%f\" into the lexer value (float literal rule).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808948b",
+   "name": "yylex",
+   "signature": "int yylex(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex-generated yylex(): strings 'fatal flex scanner internal error--no action found', DFA tables yy_accept/ec/meta/base/def/nxt/chk. Token numbers are the parser's numeric token codes (names not recovered).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808a925",
+   "name": "yy_get_next_buffer",
+   "signature": "int yy_get_next_buffer(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yy_get_next_buffer(); strings 'fatal flex scanner internal error--end of buffer missed' and 'fatal error - scanner input buffer overflow'. Returns 0 continue scan, 1 end of file, 2 last match. The refill loop only iterates while the free-space count is exactly zero (as compiled).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808ac7c",
+   "name": "yy_get_previous_state",
+   "signature": "int yy_get_previous_state(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yy_get_previous_state(): re-runs the DFA over the already matched text (NUL byte maps to class 1).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808ad54",
+   "name": "yy_try_NUL_trans",
+   "signature": "int yy_try_NUL_trans(int current_state);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yy_try_NUL_trans(): one DFA step on class 1; returns 0 when the next state is 0xff (jam).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808ae10",
+   "name": "yyunput",
+   "signature": "void yyunput(byte c, byte *yy_bp);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyunput(c, yy_bp); string 'flex scanner push-back overflow'.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808af78",
+   "name": "yyinput",
+   "signature": "int yyinput(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex input(): returns the next byte or -1 at end of input.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b085",
+   "name": "yyrestart",
+   "signature": "void yyrestart(FILE *input_file);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyrestart(input_file).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b11d",
+   "name": "yy_switch_to_buffer",
+   "signature": "void yy_switch_to_buffer(struct yy_buffer_state *new_buffer);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yy_switch_to_buffer(new_buffer).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b1eb",
+   "name": "yy_load_buffer_state",
+   "signature": "void yy_load_buffer_state(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yy_load_buffer_state().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b255",
+   "name": "yy_create_buffer",
+   "signature": "struct yy_buffer_state *yy_create_buffer(FILE *file, int size);",
+   "subsystem": "script/lexer",
+   "confidence": "observed",
+   "evidence": "String 'out of dynamic memory in yy_create_buffer()'.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b2d7",
+   "name": "yy_delete_buffer",
+   "signature": "void yy_delete_buffer(struct yy_buffer_state *b);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yy_delete_buffer(b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b34c",
+   "name": "yy_init_buffer",
+   "signature": "void yy_init_buffer(struct yy_buffer_state *b, FILE *file);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yy_init_buffer(b, file); preserves errno across isatty().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b402",
+   "name": "yy_flush_buffer",
+   "signature": "void yy_flush_buffer(struct yy_buffer_state *b);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yy_flush_buffer(b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b47f",
+   "name": "yypush_buffer_state",
+   "signature": "void yypush_buffer_state(struct yy_buffer_state *new_buffer);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yypush_buffer_state(new_buffer).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b54b",
+   "name": "yypop_buffer_state",
+   "signature": "void yypop_buffer_state(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yypop_buffer_state().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b606",
+   "name": "yyensure_buffer_stack",
+   "signature": "void yyensure_buffer_stack(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyensure_buffer_stack(): allocates 1 slot, then grows by 8 slots when the top reaches max-1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b6d1",
+   "name": "yy_scan_buffer",
+   "signature": "struct yy_buffer_state *yy_scan_buffer(byte *base, unsigned int size);",
+   "subsystem": "script/lexer",
+   "confidence": "observed",
+   "evidence": "String 'out of dynamic memory in yy_scan_buffer()'. Requires two trailing NUL bytes.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b79e",
+   "name": "yy_scan_string",
+   "signature": "void yy_scan_string(const char *str);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yy_scan_string(str) -> yy_scan_bytes(str, strlen(str)); return value discarded.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b7c0",
+   "name": "yy_scan_bytes",
+   "signature": "struct yy_buffer_state *yy_scan_bytes(const char *bytes, int len);",
+   "subsystem": "script/lexer",
+   "confidence": "observed",
+   "evidence": "Strings 'out of dynamic memory in yy_scan_bytes()' and 'bad buffer in yy_scan_bytes()'.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b865",
+   "name": "yy_fatal_error",
+   "signature": "void yy_fatal_error(const char *msg);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yy_fatal_error(msg): fprintf(stderr, \"%s\\n\", msg); exit(2).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b89d",
+   "name": "yyget_in",
+   "signature": "FILE *yyget_in(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyget_in().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b8a7",
+   "name": "yyget_out",
+   "signature": "FILE *yyget_out(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyget_out().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b8b1",
+   "name": "yyget_leng",
+   "signature": "int yyget_leng(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyget_leng().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b8bb",
+   "name": "yyget_text",
+   "signature": "byte *yyget_text(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyget_text().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b8c5",
+   "name": "yyset_lineno",
+   "signature": "void yyset_lineno(int line_number);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyset_lineno(n): stores to the global at 0x0817d9c4.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b8d2",
+   "name": "yyset_in",
+   "signature": "void yyset_in(FILE *in_str);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyset_in().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b8df",
+   "name": "yyset_out",
+   "signature": "void yyset_out(FILE *out_str);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyset_out().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b8ec",
+   "name": "yyget_debug",
+   "signature": "int yyget_debug(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyget_debug().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b8f6",
+   "name": "yyset_debug",
+   "signature": "void yyset_debug(int bdebug);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyset_debug().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b903",
+   "name": "yylex_destroy",
+   "signature": "int yylex_destroy(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yylex_destroy(): pops/deletes every buffer, frees the stack, returns 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b99d",
+   "name": "yyalloc",
+   "signature": "void *yyalloc(size_t size);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyalloc() = malloc (result discarded by the decompiler; the original returns it in eax).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b9b0",
+   "name": "yyrealloc",
+   "signature": "void *yyrealloc(void *ptr, size_t size);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyrealloc() = realloc.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b9ca",
+   "name": "yyfree",
+   "signature": "void yyfree(void *ptr);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yyfree() = free.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808b9dd",
+   "name": "yyerror",
+   "signature": "int yyerror(const char *msg);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "Strings 'unexpected end of file found' and 'bad syntax'; token 0x102 is the lexer's error token. Always returns 0. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred] [rename script-compiler: objdump: ignores arg; if token state 0x8a6f4d4==0 reports string 0x814932b else if !=0x102 reports 0x8149348 via ScrCompile_ErrorInFile: bison yyerror hook]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808ba2b",
+   "name": "Lex_RunParser",
+   "signature": "void Lex_RunParser(int *out_result, char param);",
+   "subsystem": "script/lexer",
+   "confidence": "unknown",
+   "evidence": "Resets lexer counters, installs a stack-allocated yy_buffer_state (ch_buf = g_lex_char_buf, size 0x4000, not heap-owned), starts in start-condition 3, runs the parser fn_08085932 and returns its result in *out_result. Descriptive name. The stack buffer stays referenced by the buffer stack after return (as in the original).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808baed",
+   "name": "yywrap",
+   "signature": "int yywrap(void);",
+   "subsystem": "script/lexer",
+   "confidence": "inferred",
+   "evidence": "flex yywrap(): always 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808baf8",
+   "name": "SV_GetPlayerByName",
+   "signature": "struct client_s *SV_GetPlayerByName(void);",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "Q3 SV_GetPlayerByHandle counterpart; strings 'No player specified.\\n', 'Player %s is not on the server\\n'. Matches Argv(1) against each active client's name, then against the colour-stripped name.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808bc10",
+   "name": "SV_GetPlayerByNum",
+   "signature": "struct client_s *SV_GetPlayerByNum(void);",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "Client lookup by slot number; strings 'Bad slot number: %s\\n', 'Bad client slot: %i\\n', 'Client %i is not active\\n'.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808bd32",
+   "name": "SV_MapNameFromPath",
+   "signature": "char *SV_MapNameFromPath(char *arg)",
+   "subsystem": "server/map",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body is a single tail call to MapNameFromPath (0x080660a2); callers SV_Map_f (0x0808bd46) and SV_MapFileExists (0x08092302) use it to normalise the map argument. Old name embedded a different address (0x080660a2) than the function itself.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808be3e",
+   "name": "SV_MapRestart_f",
+   "signature": "void SV_MapRestart_f(int fast_restart);",
+   "subsystem": "server/map",
+   "confidence": "observed",
+   "evidence": "String 'SV_MapRestart_f: dropped client %i - denied!\\n'. fast_restart != 0 for the fast path; otherwise (or if the maxclients dvar was modified / the gametype changed) performs a full map load of the current \"mapname\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808c0a8",
+   "name": "SV_MapRestart_cmd",
+   "signature": "void SV_MapRestart_cmd(void);",
+   "subsystem": "server/map",
+   "confidence": "inferred",
+   "evidence": "\"map_restart\" command callback (registered in SV_AddOperatorCommands): SV_MapRestart_f(0). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808c0bc",
+   "name": "SV_FastRestart_cmd",
+   "signature": "void SV_FastRestart_cmd(void);",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "\"fast_restart\" command callback: SV_MapRestart_f(1). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808c0d0",
+   "name": "SV_MapRotation_NextToken",
+   "signature": "char *SV_MapRotation_NextToken(void);",
+   "subsystem": "server/map",
+   "confidence": "inferred",
+   "evidence": "Pops the next whitespace token off sv_mapRotationCurrent (fn_080b6db2 advances the text pointer); writes the remainder (or \"\" at the end) back to the dvar and returns the token or NULL.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808c132",
+   "name": "SV_MapRotate_f",
+   "signature": "void SV_MapRotate_f(void);",
+   "subsystem": "server/map",
+   "confidence": "inferred",
+   "evidence": "Strings 'map_rotate...' and the sv_mapRotation / sv_mapRotationCurrent dumps; command \"map_rotate\". [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808c316",
+   "name": "SV_KickClient",
+   "signature": "int SV_KickClient(struct client_s *cl, char *out_name, int out_size);",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "Kicks one client (strings 'EXE_PLAYERKICKED', 'EXE_CANNOTKICKHOSTPLAYER'); optionally copies the cleaned name to out_name. Returns the client's field at +0xae704 (0 when the host/loopback client refuses the kick).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808c3bc",
+   "name": "SV_Kick_f",
+   "signature": "int SV_Kick_f(char *out_name, int out_size);",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "Kick-by-name handler body; strings 'Usage: %s <player name>\\n%s all = kick everyone\\n', 'Server is not running.\\n'. \"all\" kicks every active client (the by-name lookup still prints its not-on-server message first, as compiled).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808c4d0",
+   "name": "SV_KickNum_f",
+   "signature": "int SV_KickNum_f(char *out_name, int out_size);",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "Kick-by-slot handler body (command \"clientkick\"); string 'Usage: %s <client number>\\n'.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808cb98",
+   "name": "SV_Heartbeat_f",
+   "signature": "void SV_Heartbeat_f(void);",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "\"heartbeat\" command callback: forces the next master heartbeat by writing INT_MIN to the heartbeat time.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808cca6",
+   "name": "SV_AddOperatorCommands",
+   "signature": "void SV_AddOperatorCommands(void);",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "Registers the server operator commands once (guard flag at 0x083e2f08). Handlers at 0x0808c55e..0x0808cc98 were not split into functions by the decompile and are referenced through fn_ placeholders.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808cec6",
+   "name": "SV_ShutdownStub",
+   "signature": "void SV_ShutdownStub(void);",
+   "subsystem": "server/commands",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Single ret instruction; sole caller is SV_Shutdown (0x080942f8).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x808cecc",
+   "name": "SV_AddSayTellCommands",
+   "signature": "void SV_AddSayTellCommands(void);",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "Registers the \"say\" and \"tell\" commands (strings 'say', 'tell', '%s: %s\\n' follow in rodata).",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0817d9c0",
+   "name": "g_yy_init",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x0817d9c4",
+   "name": "g_yylineno",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deea0",
+   "name": "g_yyin",
+   "type": "FILE *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deea4",
+   "name": "g_yyout",
+   "type": "FILE *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deea8",
+   "name": "g_yy_flex_debug",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deeac",
+   "name": "g_yy_buffer_stack_top",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deeb0",
+   "name": "g_yy_buffer_stack_max",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deeb4",
+   "name": "g_yy_buffer_stack",
+   "type": "struct yy_buffer_state **",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deeb8",
+   "name": "g_yy_c_buf_p",
+   "type": "byte *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deebc",
+   "name": "g_yy_start",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deec0",
+   "name": "g_parse_result",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deec4",
+   "name": "g_lex_column",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deec8",
+   "name": "g_lex_error_pos",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deecc",
+   "name": "g_lex_param",
+   "type": "byte",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deed0",
+   "name": "g_lex_reserved",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deed4",
+   "name": "g_yy_hold_char",
+   "type": "byte",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deed8",
+   "name": "g_yy_n_chars",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deedc",
+   "name": "g_yy_did_buffer_switch_on_eof",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deee0",
+   "name": "g_yy_last_accepting_state",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083deee4",
+   "name": "g_yy_last_accepting_cpos",
+   "type": "byte *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083def00",
+   "name": "g_lex_char_buf",
+   "type": "byte",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08a6f4c0",
+   "name": "g_yytext",
+   "type": "byte *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08a6f4c8",
+   "name": "g_yyleng",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08a6f4cc",
+   "name": "g_yylval",
+   "type": "union lex_value_u",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08a6f4d0",
+   "name": "g_lex_token_pos",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08a6f4d4",
+   "name": "g_parse_last_token",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08147cc0",
+   "name": "g_yy_accept",
+   "type": "short",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08147ec0",
+   "name": "g_yy_ec",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x081482c0",
+   "name": "g_yy_meta",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x081483c0",
+   "name": "g_yy_base",
+   "type": "short",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x081485e0",
+   "name": "g_yy_def",
+   "type": "short",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08148800",
+   "name": "g_yy_nxt",
+   "type": "short",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08148be0",
+   "name": "g_yy_chk",
+   "type": "short",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x081a218c",
+   "name": "g_dvar_sv_running",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x0849f74c",
+   "name": "g_dvar_sv_maxclients",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x0849f768",
+   "name": "g_dvar_0849f768",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x0849f778",
+   "name": "g_dvar_g_gametype",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x0849f7a0",
+   "name": "g_dvar_sv_mapRotation",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x0849f7a4",
+   "name": "g_dvar_sv_mapRotationCurrent",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x084a8780",
+   "name": "g_dvar_084a8780",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x0842308c",
+   "name": "g_svs_clients",
+   "type": "struct client_s *",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08423084",
+   "name": "g_svs_time",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08423088",
+   "name": "g_svs_snapFlags",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08423008",
+   "name": "g_sv_serverIdCounter",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x081a21b8",
+   "name": "g_081a21b8",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08440208",
+   "name": "g_sv_restartTime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08440200",
+   "name": "g_sv_state",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x08440204",
+   "name": "g_sv_restarting",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x084230d4",
+   "name": "g_svs_nextHeartbeatTime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  },
+  {
+   "addr": "0x083e2f08",
+   "name": "g_server_commands_registered",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "address referenced by flex/server code in chunk 19; name from role (flex template or dvar usage)"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "yy_buffer_state",
+   "size": "0x30",
+   "evidence": "flex 2.5.35 buffer layout from yy_create_buffer/yy_scan_buffer field stores"
+  },
+  {
+   "name": "client_s",
+   "size": "0xb1064",
+   "evidence": "stride in SV_GetPlayerByNum (slot*0xb1064); only 7 fields recovered, rest padding"
+  },
+  {
+   "name": "dvar_s",
+   "size": "0xc",
+   "evidence": "value union at +8, modified byte at +7 used for sv_maxclients"
+  }
+ ],
+ "open_questions": [
+  "Command handlers at 0x0808bd46, 0x0808c55e..0x0808cc98 (map, kick, ban, status, say/tell etc.) lie in this range but were not split into functions by Ghidra; not translated here.",
+  "yy_accept table is read at 0x08147cc0 but its extent overlaps what looks like yy_ec at 0x08147ec0; tables are declared unsized, true yy_accept start/size unverified.",
+  "Meaning of fn_0807943c/fn_080798e0 (string/identifier pool, kind 0xd) and the parser token numbers 0x102..0x157 are unrecovered.",
+  "client_s fields at +0xae704 (returned by kick) and +0xae708 (short passed to the connect-deny check) are unnamed."
+ ]
+}

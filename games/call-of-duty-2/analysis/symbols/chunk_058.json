@@ -1,0 +1,949 @@
+{
+ "chunk": 58,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x08132064",
+   "name": "ConfigAttr_FreeValues",
+   "signature": "void ConfigAttr_FreeValues(struct ConfigAttr *attr);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Frees every node of the value list hanging off a ConfigAttr (+0x10); same shape as ConfigValue list walkers.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081320a2",
+   "name": "ConfigAttr_Copy",
+   "signature": "struct ConfigAttr *ConfigAttr_Copy(struct ConfigAttr *src, struct Fx_StringPage **poolRef);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Deep-copies a ConfigAttr (name + all values), duplicating strings into the pool when one is given.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081321c6",
+   "name": "ConfigAttr_HasMultipleValues",
+   "signature": "char ConfigAttr_HasMultipleValues(struct ConfigAttr *attr);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "True when the attribute has more than one value (first value has a successor).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081321fc",
+   "name": "ConfigAttr_GetFirstValue",
+   "signature": "char *ConfigAttr_GetFirstValue(struct ConfigAttr *attr);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Returns the text of the first value or 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813222a",
+   "name": "ConfigAttr_AddValue",
+   "signature": "void ConfigAttr_AddValue(struct ConfigAttr *attr, const char *text, struct Fx_StringPage **poolRef);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Appends a value to the attribute's singly linked list; the head caches the tail in its +8 slot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813230a",
+   "name": "ConfigAttr_ParseList",
+   "signature": "char ConfigAttr_ParseList(struct ConfigAttr *attr, struct TokenStream *ts, struct Fx_StringPage **poolRef);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Reads tokens until \"]\" (case-insensitive), adding each as a value; returns 0 on end of stream.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081323aa",
+   "name": "ConfigAttr_Write",
+   "signature": "char ConfigAttr_Write(struct ConfigAttr *attr, struct Fx_StringPage **out, int depth);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Writes one attribute as text: single value on one line, several values as a \"[ ... ]\" list. Quirk: the value writer is invoked with the first value node as 'self' for every item.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813263e",
+   "name": "ConfigBlock_Init2",
+   "signature": "void ConfigBlock_Init2(struct ParseNode *b, const char *name, int expectUnclosed);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "ParseNode constructor (variant 1; identical body to 0x081326a4).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081326a4",
+   "name": "ConfigBlock_Init",
+   "signature": "void ConfigBlock_Init(struct ParseNode *b, const char *name, int expectUnclosed);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "ParseNode constructor (variant 2).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813270a",
+   "name": "ConfigBlock_Destroy1",
+   "signature": "void ConfigBlock_Destroy1(struct ParseNode *b);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "ParseNode destructor variant (calls ConfigBlock_Clear).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813271e",
+   "name": "ConfigBlock_Destroy2",
+   "signature": "void ConfigBlock_Destroy2(struct ParseNode *b);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "ParseNode destructor variant (calls ConfigBlock_Clear).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08132732",
+   "name": "ConfigBlock_CountChildren",
+   "signature": "int ConfigBlock_CountChildren(struct ParseNode *b);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Counts child blocks with a do/while: an empty list dereferences null (original behaviour).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08132766",
+   "name": "ConfigBlock_CountAttrs",
+   "signature": "int ConfigBlock_CountAttrs(struct ParseNode *b);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Counts attributes with a do/while: an empty list dereferences null (original behaviour).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813279a",
+   "name": "ConfigBlock_Clear",
+   "signature": "void ConfigBlock_Clear(struct ParseNode *b);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Frees all attributes and child blocks and resets the block's fields.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813289a",
+   "name": "ConfigBlock_Copy",
+   "signature": "struct ParseNode *ConfigBlock_Copy(struct ParseNode *src, struct Fx_StringPage **poolRef);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Deep-copies a block with its children and attributes. The recursive call in the original passes a stale third argument which the callee ignores.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081329a2",
+   "name": "ConfigBlock_InsertNode",
+   "signature": "void ConfigBlock_InsertNode(void *unused, struct ConfigLink *node, struct ConfigLink **first, struct ConfigLink **sortedHead, struct ConfigLink **last);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Appends a node to an insertion-ordered list (first/last) and inserts it into the case-insensitive sorted list (head), for both attributes and child blocks.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08132a9a",
+   "name": "ConfigBlock_AddAttrNew",
+   "signature": "struct ConfigAttr *ConfigBlock_AddAttrNew(struct ParseNode *b, const char *name, const char *value, struct Fx_StringPage **poolRef);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Creates an attribute (optionally with one value), adds it to the block and returns it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08132b6e",
+   "name": "ConfigBlock_AddAttr",
+   "signature": "void ConfigBlock_AddAttr(struct ParseNode *b, struct ConfigAttr *a);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Adds an attribute node to the block's attribute lists (+0x10/+0x14/+0x18).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08132ba6",
+   "name": "ConfigBlock_AddChildNew",
+   "signature": "struct ParseNode *ConfigBlock_AddChildNew(struct ParseNode *b, const char *name, struct Fx_StringPage **poolRef);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Creates a child block, adds it to the block and returns it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08132c1c",
+   "name": "ConfigBlock_AddChild",
+   "signature": "void ConfigBlock_AddChild(struct ParseNode *b, struct ParseNode *c);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Adds a child block node to the block's child lists (+0x1c/+0x20/+0x24).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08132c54",
+   "name": "ConfigBlock_FindChild",
+   "signature": "struct ParseNode *ConfigBlock_FindChild(struct ParseNode *b, const char *name);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Finds a child block by case-insensitive name.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08132cae",
+   "name": "ConfigBlock_Parse",
+   "signature": "char ConfigBlock_Parse(struct ParseNode *b, struct TokenStream *ts, struct Fx_StringPage **poolRef);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Recursive token parser: \"name {\" opens a child block, \"name [\" a value list, otherwise \"name value\" is an attribute; \"}\" ends the block. Fails when the stream ends while expectUnclosed is nonzero.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08132e82",
+   "name": "ConfigBlock_Write",
+   "signature": "int ConfigBlock_Write(struct ParseNode *b, struct Fx_StringPage **out, int depth);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Writes a block as text (\"name\\r\\n{\\r\\n ... }\\r\\n\"); depth<0 writes only the contents (root).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133052",
+   "name": "ConfigBlock_FindAttr",
+   "signature": "struct ConfigAttr *ConfigBlock_FindAttr(struct ParseNode *b, const char *name);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Finds an attribute by case-insensitive name.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081330ae",
+   "name": "ConfigBlock_GetString",
+   "signature": "const char *ConfigBlock_GetString(struct ParseNode *b, const char *name, const char *defaultValue);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Returns the first value of the named attribute, or the default.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081330ea",
+   "name": "ConfigTree_Init1",
+   "signature": "void ConfigTree_Init1(struct ConfigTree *t);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "ConfigTree constructor (variant 1): root block named \"Top Level\" (string at 0x08160640). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813311e",
+   "name": "ConfigTree_Init2",
+   "signature": "void ConfigTree_Init2(struct ConfigTree *t);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "ConfigTree constructor (variant 2). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133152",
+   "name": "ConfigTree_Destroy1",
+   "signature": "void ConfigTree_Destroy1(struct ConfigTree *t);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "ConfigTree destructor variant 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133196",
+   "name": "ConfigTree_Destroy2",
+   "signature": "void ConfigTree_Destroy2(struct ConfigTree *t);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "ConfigTree destructor variant 2.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081331da",
+   "name": "ConfigTree_Parse",
+   "signature": "char ConfigTree_Parse(struct ConfigTree *t, struct TokenStream *ts, char clearFirst, byte flag);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Parses a token stream into the tree, optionally clearing it first; creates the 0x2800 string pool on demand.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081332b6",
+   "name": "ConfigTree_Clear",
+   "signature": "void ConfigTree_Clear(struct ConfigTree *t);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Clears the root block and releases the string pool.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133308",
+   "name": "ConfigLink_GetNext",
+   "signature": "struct ConfigLink *ConfigLink_GetNext(struct ConfigLink *l);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Returns link->next.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133314",
+   "name": "ConfigLink_SetNextAlt",
+   "signature": "void ConfigLink_SetNextAlt(struct ConfigLink *l, struct ConfigLink *n);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Sets link->next (same body as ConfigLink_SetNext at 0x0813334a).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133322",
+   "name": "ConfigPool_Alloc",
+   "signature": "void *ConfigPool_Alloc(int size);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Allocation wrapper (checked malloc) used for the string pool object.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133336",
+   "name": "ConfigPool_Free",
+   "signature": "void ConfigPool_Free(void *p);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Free wrapper for pool segments.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813334a",
+   "name": "ConfigLink_SetNext",
+   "signature": "void ConfigLink_SetNext(struct ConfigLink *l, struct ConfigLink *n);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Sets link->next.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133358",
+   "name": "ConfigLink_GetSortNext",
+   "signature": "struct ConfigLink *ConfigLink_GetSortNext(struct ConfigLink *l);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Returns link->sortNext (+8), which is the tail slot for value-list heads.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133364",
+   "name": "ConfigLink_SetSortNext",
+   "signature": "void ConfigLink_SetSortNext(struct ConfigLink *l, struct ConfigLink *n);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Sets link->sortNext (+8).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133372",
+   "name": "ConfigLink_SetSortPrev",
+   "signature": "void ConfigLink_SetSortPrev(struct ConfigLink *l, struct ConfigLink *p);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Sets link->sortPrev (+0xc).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133380",
+   "name": "ConfigLink_Alloc",
+   "signature": "void *ConfigLink_Alloc(int size);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Allocation wrapper (checked malloc) for config nodes.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133394",
+   "name": "ConfigLink_Free",
+   "signature": "void ConfigLink_Free(void *p);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Free wrapper for config nodes.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081333a8",
+   "name": "ConfigBlock_SetFlag",
+   "signature": "void ConfigBlock_SetFlag(struct ParseNode *b, byte v);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Sets ParseNode::flag (+0x2c).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081333c0",
+   "name": "ConfigTree_SetFlag",
+   "signature": "void ConfigTree_SetFlag(struct ConfigTree *t, byte v);",
+   "subsystem": "config/tree",
+   "confidence": "inferred",
+   "evidence": "Sets ConfigTree::flag (+0x34).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081333d8",
+   "name": "FX_AddOriginRef",
+   "signature": "int FX_AddOriginRef(const float *origin);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Finds an origin-ref entry within 131072.0 of the given point (bumping its refcount) or appends a new entry with refcount 1; returns the table index.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813348a",
+   "name": "FX_ReleaseOriginRef",
+   "signature": "void FX_ReleaseOriginRef(int index);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Drops one reference of an origin-ref entry; when it reaches zero the last entry is moved into the slot and all effects that referenced the last index are re-pointed.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081335c2",
+   "name": "FX_Noop",
+   "signature": "void FX_Noop(void);",
+   "subsystem": "fx/effects",
+   "confidence": "unknown",
+   "evidence": "Empty function (no callers inside the chunk).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081335c8",
+   "name": "FX_ClearEffects",
+   "signature": "void FX_ClearEffects(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Destroys every effect in both lists (virtual deleting dtor) and zeroes the counters.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081336c2",
+   "name": "FX_ShutdownSystem",
+   "signature": "void FX_ShutdownSystem(char final);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Clears all effects; with final!=0 the scheduler is also torn down and unregistered from its context slot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813372c",
+   "name": "FX_Reset",
+   "signature": "void FX_Reset(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Clears all effects and resets the scheduler (no null check on the scheduler).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133756",
+   "name": "FX_GetBoneOrientation",
+   "signature": "int FX_GetBoneOrientation(int *bolt, struct FxPlacement *placement)",
+   "subsystem": "fx/effects",
+   "confidence": "observed",
+   "evidence": "Stub: prints \"FX_GetBoneOrientation called!\" and returns 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133770",
+   "name": "FX_ResetBlockers",
+   "signature": "void FX_ResetBlockers(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Resets the blocker count.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133780",
+   "name": "FX_Init",
+   "signature": "int FX_Init(byte flag);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Initialises the FX system for the current context: first-time counters, shuts down any old state, stores the flag, creates the scheduler (0xc bytes) and registers it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133872",
+   "name": "FxEffect_Retire",
+   "signature": "void FxEffect_Retire(struct Effect *e, char release);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Releases an effect through its vtable (+8) when requested and drops the flagged-effect counter.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081338b0",
+   "name": "FX_RemoveFromListA",
+   "signature": "void FX_RemoveFromListA(int index, char release);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Removes effect 'index' from list A: shrinks the live end, moves it out via fn_081373c6, retires it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133900",
+   "name": "FX_RemoveFromListB",
+   "signature": "void FX_RemoveFromListB(int index, char release);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Same as FX_RemoveFromListA for list B.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133950",
+   "name": "FX_ListFull",
+   "signature": "void FX_ListFull(void);",
+   "subsystem": "fx/effects",
+   "confidence": "unknown",
+   "evidence": "Empty function called when the effect list is full.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133956",
+   "name": "FX_ReserveListA",
+   "signature": "struct Effect **FX_ReserveListA(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Reserves a slot at the end of list A (max 0x708 effects total); returns its address or 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081339a2",
+   "name": "FX_ReserveListB",
+   "signature": "struct Effect **FX_ReserveListB(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Same as FX_ReserveListA for list B.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133b50",
+   "name": "FX_UpdateFlagged",
+   "signature": "void FX_UpdateFlagged(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Resets the blocker count then runs UpdateFlagged (vtbl +0x1c) on flagged (0x1000) effects of lists B then A.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133c18",
+   "name": "FX_GetAttenuation",
+   "signature": "float FX_GetAttenuation(const float *from, const float *to);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Returns the product of blocker attenuations along the segment from 'from' to 'to' (1.0 when there are no blockers or the segment is shorter than the cvar threshold).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133d6e",
+   "name": "FX_FreeRemovedListA",
+   "signature": "void FX_FreeRemovedListA(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Frees the list A effects between the live end and the old count (those removed during the update).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133e0c",
+   "name": "FX_FreeRemovedListB",
+   "signature": "void FX_FreeRemovedListB(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Same as FX_FreeRemovedListA for list B.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133fa0",
+   "name": "FxEffect_Write",
+   "signature": "void FxEffect_Write(struct Effect *e, struct FxMsg *msg);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Serialises an effect into a message: type byte, end time, then the effect's own data.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081340ee",
+   "name": "FxPtrTable_Get",
+   "signature": "void *FxPtrTable_Get(struct FxEffectTemplate *table, int index);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Bounds-checked table lookup (count at +4, entries at +8).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08134120",
+   "name": "FX_ReadEffects",
+   "signature": "void FX_ReadEffects(void *source);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Reads serialised effects from a message and adds them to the lists (type 1,2,3,4,5,7,9,11,12 create different effect classes; other ids are skipped). A zero type byte ends the stream.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813461e",
+   "name": "FX_CompareDrawEntries",
+   "signature": "int FX_CompareDrawEntries(const void *pa, const void *pb);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "qsort comparator for draw entries: sortKey, then origin-ref rank, then sortKey2, then farther first.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08134700",
+   "name": "FX_CompareByDistance",
+   "signature": "int FX_CompareByDistance(const void *pa, const void *pb);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "qsort comparator on (index, distance) pairs: larger distance first.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813473c",
+   "name": "FX_SortDrawList",
+   "signature": "void FX_SortDrawList(struct FxDrawEntry *list, size_t count);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Sorts the draw list: first ranks the origin-ref entries by distance to the view origin (farther = lower rank), publishes the ranks in g_08a53cac, then qsorts the draw entries.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813482e",
+   "name": "FX_UpdateListA",
+   "signature": "void FX_UpdateListA(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Per-frame update of list A: effects past their end time (flagged 0x400) or whose Update returns 0 are removed; finally frees the removed ones.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081348ee",
+   "name": "FX_UpdateListB",
+   "signature": "void FX_UpdateListB(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Same as FX_UpdateListA for list B.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081349ae",
+   "name": "FX_UpdateListAFrom",
+   "signature": "void FX_UpdateListAFrom(int start);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Updates list A from index 'start' only (no free pass; old count taken from the live end).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08134a64",
+   "name": "FX_CollectDrawListA",
+   "signature": "void FX_CollectDrawListA(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Appends list A effects that are not hidden to draw list A with their view distance.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08134b10",
+   "name": "FX_UpdateListBFrom",
+   "signature": "void FX_UpdateListBFrom(int start);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Updates list B from index 'start' only (no free pass).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08134bc6",
+   "name": "FX_CollectDrawListB",
+   "signature": "void FX_CollectDrawListB(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Appends list B effects that are not hidden to draw list B (only when g_08a53818 is set).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08134c80",
+   "name": "FX_DrawEffects",
+   "signature": "void FX_DrawEffects(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Builds the final draw list (B entries then A entries), optionally sorts it, draws every entry (vtbl +0x14) and prints the \"Active/Drawn/Scheduled FX\" counters when the debug cvar is set.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08134d90",
+   "name": "FxSpawner_ComputeOrigin",
+   "signature": "void FxSpawner_ComputeOrigin(struct FxSpawner *spawner, float *outOrigin, const float *base, float *axis);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Computes the spawn origin of an effect element: local offset (randomised ranges, rotated by the axis unless flags2 bit 0x40), plus spherical (flag 1) or cone/disc (flag 4) random spread, optionally rebuilding the axis from the spread direction (flag 2); the result is copied or transformed to outOrigin. axis points at three consecutive vec3 (forward/right/up) that may be rewritten.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08135296",
+   "name": "FxSpawner_ComputeTraceOrigin",
+   "signature": "void FxSpawner_ComputeTraceOrigin(struct fx_primitive_s *def, const float *start, float *out, const float *base, float *axis);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Origin for a traced element: without flags2 bit 8 it is a random offset (rotated by axis unless 0x80) added to base; with bit 8 a 16384-unit ray along axis from 'start' is traced, the hit position is stored in 'out' and, with bit 0x10, the scheduler is notified.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08135568",
+   "name": "FxSpawner_ApplyElapsed",
+   "signature": "void FxSpawner_ApplyElapsed(struct fx_primitive_s *def, struct Effect *e, float *pos, int msec);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Advances a position by the effect's velocity for 'msec' milliseconds (only when msec > 0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081355be",
+   "name": "FxSpawner_Setup",
+   "signature": "char FxSpawner_Setup(struct FxSpawner *s, struct Effect *e, const float *origin);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Registers a freshly created effect: reserves a list slot (A when the spawner handle is set, else B), adds an origin ref, and fills the effect from the definition (time range, ids, flags, handles). Returns 0 (after leaking the origin ref) when the lists are full.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08135790",
+   "name": "FxEffect_ResetSortKey",
+   "signature": "void FxEffect_ResetSortKey(struct Effect *e);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Resets sortKey to 0, or -1 when the effect's id40 is flagged by the FX system.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081357d6",
+   "name": "FxSpawner_SetupSequence",
+   "signature": "void FxSpawner_SetupSequence(struct fx_primitive_s *def, struct Effect *e, int count, int index);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Sets the animation sequence of an effect: frame chosen by def->frameMode (0 fixed, 1 random, 2 caller-supplied) and rate by def->rateMode (0 ms value, 1 frames over duration).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08135956",
+   "name": "FxSpawner_Randomize",
+   "signature": "void FxSpawner_Randomize(struct FxSpawner *s, struct Effect *e, float *a, const float *b, float *axis);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Randomises an effect from its definition: per-flag random values in [0,1), ranges, spawn origin (FxSpawner_ComputeOrigin) and axis. The sixth argument is passed by the caller but unused.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08135c3a",
+   "name": "FxSpawner_Spawn",
+   "signature": "void FxSpawner_Spawn(struct FxSpawner *s, float *axis, const float *origin, int msec, int index);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Spawns one effect (class with vtable 0x24c bytes): setup, randomise, sequence, elapsed-time advance. The object is deleted through its vtable if setup fails.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188ab4",
+   "name": "g_fxOriginRefs",
+   "type": "struct FxOriginRef *",
+   "confidence": "inferred",
+   "evidence": "pointer to origin-ref table indexed by effect+0xac"
+  },
+  {
+   "addr": "0x08188ab8",
+   "name": "g_fxEffectListA",
+   "type": "struct Effect **",
+   "confidence": "inferred",
+   "evidence": "effect list A array; count g_08a5c9a0"
+  },
+  {
+   "addr": "0x08188abc",
+   "name": "g_fxEffectListB",
+   "type": "struct Effect **",
+   "confidence": "inferred",
+   "evidence": "effect list B array; count g_08a5c9a4"
+  },
+  {
+   "addr": "0x08188ac0",
+   "name": "g_fxSystem",
+   "type": "struct FxSystem *",
+   "confidence": "inferred",
+   "evidence": "time at +4, view origin at +0x14"
+  },
+  {
+   "addr": "0x08a53804",
+   "name": "g_fxScheduler",
+   "type": "struct FxScheduler *",
+   "confidence": "inferred",
+   "evidence": "scheduler created in FX_Init, pending count at +8"
+  },
+  {
+   "addr": "0x08a53ca8",
+   "name": "g_fxOriginRefCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "origin-ref count"
+  },
+  {
+   "addr": "0x08a53cb0",
+   "name": "g_fxBlockerCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "blocker count; array g_08a53d00 stride 0x14"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "ConfigLink",
+   "size": "0x10",
+   "evidence": "list link shared by attr/block nodes"
+  },
+  {
+   "name": "ConfigValue",
+   "size": "0x10",
+   "evidence": "ctor fn_08131eb6; list head caches tail at +8"
+  },
+  {
+   "name": "ConfigAttr",
+   "size": "0x14",
+   "evidence": "alloc size 0x14 in ConfigAttr_Copy"
+  },
+  {
+   "name": "ParseNode",
+   "size": "0x30",
+   "evidence": "alloc size 0x30; ctor sets +0x10..+0x2c"
+  },
+  {
+   "name": "ConfigTree",
+   "size": "0x38",
+   "evidence": "ConfigTree_Init sets pool +0x30 and flag +0x34"
+  },
+  {
+   "name": "FxOriginRef",
+   "size": "0x10",
+   "evidence": "stride 0x10 in FX_AddOriginRef"
+  },
+  {
+   "name": "FxBlocker",
+   "size": "0x14",
+   "evidence": "stride 0x14 in FX_GetAttenuation"
+  },
+  {
+   "name": "FxDrawEntry",
+   "size": "0x8",
+   "evidence": "qsort element size 8"
+  },
+  {
+   "name": "Effect",
+   "size": "0xfc..0x29c",
+   "evidence": "per-class sizes in FX_ReadEffects; common prefix to 0xc4"
+  },
+  {
+   "name": "FxSpawner",
+   "size": "0xc",
+   "evidence": "id/def/handle used by FxSpawner_Setup"
+  },
+  {
+   "name": "fx_primitive_s",
+   "size": "0x2a0+",
+   "evidence": "field offsets only"
+  }
+ ],
+ "open_questions": [
+  "Real class/engine names of the config tree (ParseNode/Attr) and the FX effect classes are unknown; no RTTI strings were seen in this range.",
+  "Meaning of fx_primitive_s flag bits (0x1000, 0x2000.., flags2 0x1..0x80) and of effect type ids 1,2,3,4,5,7,9,11,12 is not established.",
+  "fn_080a4116 (distance, squared or not) and the effect-list A/B split (handle set vs not) are inferred only."
+ ]
+}

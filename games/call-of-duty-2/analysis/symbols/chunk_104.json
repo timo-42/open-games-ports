@@ -1,0 +1,1148 @@
+{
+ "chunk": 104,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080fda40",
+   "name": "PlayerCmd_sayall",
+   "signature": "void PlayerCmd_sayall(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"sayall\" -> 0x080fda40 (script string at .rodata); body sends the chat",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fdb10",
+   "name": "PlayerCmd_sayteam",
+   "signature": "void PlayerCmd_sayteam(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"sayteam\" -> 0x080fdb10; identical body to sayall with mode 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fdbe0",
+   "name": "PlayerCmd_allowspectateteam",
+   "signature": "void PlayerCmd_allowspectateteam(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"allowspectateteam\" -> 0x080fdbe0; team names in the error string",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fdd20",
+   "name": "PlayerCmd_getguid",
+   "signature": "void PlayerCmd_getguid(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getguid\" -> 0x080fdd20; string \"USAGE: self getGuid()\\n\" referenced here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fe56c",
+   "name": "Cmd_ParseConfigstring12Bounds_f",
+   "signature": "void Cmd_ParseConfigstring12Bounds_f(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "unknown",
+   "evidence": "no string or table entry references this function; name is descriptive of the body",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08102a76",
+   "name": "Debug_DrawOrientedBox",
+   "signature": "void Debug_DrawOrientedBox(uint32 p1, const float *mins, const float *maxs, float yawDeg, uint32 p5, uint32 p6, uint32 p7)",
+   "subsystem": "debug/draw",
+   "confidence": "unknown",
+   "evidence": "descriptive. Draws the 12 edges of an oriented box: 8 corners from mins/maxs, rotated about",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08102c6e",
+   "name": "Aim_SetupFrame",
+   "signature": "void Aim_SetupFrame(uint32 p1, uint32 p2, uint32 p3, uint32 p4, int p5, uint32 p6)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "descriptive. Builds a 6-float frame from the level's reference point (level+0x14, z offset",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103660",
+   "name": "HudElem_SetMaterialField",
+   "signature": "void HudElem_SetMaterialField(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "unknown",
+   "evidence": "descriptive. Hud field setter: stores the handle of the named material (script string via",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081036aa",
+   "name": "HudElem_SetIntField",
+   "signature": "void HudElem_SetIntField(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "unknown",
+   "evidence": "descriptive. Hud field setter: stores Scr_GetInt(0) at the record's byte offset.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081036ec",
+   "name": "HudElem_SetColorFromVector",
+   "signature": "void HudElem_SetColorFromVector(struct game_hudelem_s *he)",
+   "subsystem": "game/hud",
+   "confidence": "unknown",
+   "evidence": "descriptive. Reads an RGB vector, clamps each channel to [0,1], stores bytes at color[0..2].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081037be",
+   "name": "HudElem_GetColorVector",
+   "signature": "void HudElem_GetColorVector(struct game_hudelem_s *he)",
+   "subsystem": "game/hud",
+   "confidence": "unknown",
+   "evidence": "descriptive. Pushes the RGB bytes as a vector in [0,1] (byte / 255).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103820",
+   "name": "HudElem_SetAlpha",
+   "signature": "void HudElem_SetAlpha(struct game_hudelem_s *he)",
+   "subsystem": "game/hud",
+   "confidence": "unknown",
+   "evidence": "descriptive. Alpha setter: clamps Scr_GetFloat(0) to [0,1] and stores it as a byte at color[3].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103878",
+   "name": "HudElem_GetAlpha",
+   "signature": "void HudElem_GetAlpha(struct game_hudelem_s *he)",
+   "subsystem": "game/hud",
+   "confidence": "unknown",
+   "evidence": "descriptive. Alpha getter: pushes color[3] / 255 as a float.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081038a0",
+   "name": "HudElem_SetFontScale",
+   "signature": "void HudElem_SetFontScale(struct game_hudelem_s *he)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "table record \"fontscale\" (offset 0x10, setter 0x081038a0). Message \"font scale was %g; should be > 0\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081038ea",
+   "name": "HudElem_SetFontEnum",
+   "signature": "void HudElem_SetFontEnum(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "table record \"font\" (setter pair 0x081038ea/0x08103924); enum names at .rodata 0x08187c80, count 3.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103924",
+   "name": "HudElem_SetFontEnumAlt",
+   "signature": "void HudElem_SetFontEnumAlt(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "alternate setter of the \"font\" record; same names and count, via the second dispatcher.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810395e",
+   "name": "HudElem_SetAlignXEnum",
+   "signature": "void HudElem_SetAlignXEnum(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "table record \"alignx\" (setter 0x0810395e); enum names at .rodata 0x08187c8c, count 3.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103998",
+   "name": "HudElem_SetAlignXEnumAlt",
+   "signature": "void HudElem_SetAlignXEnumAlt(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "alternate setter of the \"alignx\" record.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081039d2",
+   "name": "HudElem_SetAlignYEnum",
+   "signature": "void HudElem_SetAlignYEnum(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "table record \"aligny\" (setter 0x081039d2); enum names at .rodata 0x08187c98, count 3.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103a0c",
+   "name": "HudElem_SetAlignYEnumAlt",
+   "signature": "void HudElem_SetAlignYEnumAlt(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "alternate setter of the \"aligny\" record.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103a46",
+   "name": "HudElem_SetHorzAlignEnum",
+   "signature": "void HudElem_SetHorzAlignEnum(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "table record \"horzalign\" (setter 0x08103a46); enum names at .rodata 0x08187cc0 (\"subleft\"), count 8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103a80",
+   "name": "HudElem_SetHorzAlignEnumAlt",
+   "signature": "void HudElem_SetHorzAlignEnumAlt(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "alternate setter of the \"horzalign\" record.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103aba",
+   "name": "HudElem_SetVertAlignEnum",
+   "signature": "void HudElem_SetVertAlignEnum(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "vertical alignment record; enum names at .rodata 0x08187ce0 (\"subtop\"), count 8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103af4",
+   "name": "HudElem_SetVertAlignEnumAlt",
+   "signature": "void HudElem_SetVertAlignEnumAlt(struct game_hudelem_s *he, int field)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "alternate setter of the vertical alignment record.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103c62",
+   "name": "GScr_newhudelem",
+   "signature": "void GScr_newhudelem(void)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"newhudelem\" -> 0x08103c62; string \"out of hudelems\" referenced here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103c9e",
+   "name": "GScr_newclienthudelem",
+   "signature": "void GScr_newclienthudelem(void)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"newclienthudelem\" -> 0x08103c9e; string \"not a client\" referenced here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103d0a",
+   "name": "GScr_newteamhudelem",
+   "signature": "void GScr_newteamhudelem(void)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"newteamhudelem\" -> 0x08103d0a; message \"team \\\"%s\\\" should be ...\" here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103e52",
+   "name": "HudElem_SetText",
+   "signature": "void HudElem_SetText(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"settext\" -> 0x08103e52.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103ea2",
+   "name": "HudElem_SetPlayerNameString",
+   "signature": "void HudElem_SetPlayerNameString(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"setplayernamestring\" -> 0x08103ea2; message text references it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103f14",
+   "name": "HudElem_SetGametypeString",
+   "signature": "void HudElem_SetGametypeString(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"setgametypestring\" -> 0x08103f14.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103fa4",
+   "name": "HudElem_SetMapnameString",
+   "signature": "void HudElem_SetMapnameString(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"setmapnamestring\" -> 0x08103fa4.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104022",
+   "name": "HudElem_SetShader",
+   "signature": "void HudElem_SetShader(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"setshader\" -> 0x08104022.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081043ca",
+   "name": "HudElem_SetTimerUp",
+   "signature": "void HudElem_SetTimerUp(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "literal \"setTimerUp\" is passed by this function (method name, script-visible). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081043ee",
+   "name": "HudElem_SetTenthsTimer",
+   "signature": "void HudElem_SetTenthsTimer(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "literal \"setTenthsTimer\" is passed by this function. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104412",
+   "name": "HudElem_SetTenthsTimerUp",
+   "signature": "void HudElem_SetTenthsTimerUp(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "literal \"setTenthsTimerUp\" is passed by this function. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104436",
+   "name": "HudElem_SetClock",
+   "signature": "void HudElem_SetClock(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "literal \"setClock\" is passed by this function. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810445a",
+   "name": "HudElem_SetClockUp",
+   "signature": "void HudElem_SetClockUp(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "literal \"setClockUp\" is passed by this function. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810447e",
+   "name": "HudElem_SetValue",
+   "signature": "void HudElem_SetValue(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"setvalue\" -> 0x0810447e.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081044c0",
+   "name": "HudElem_SetWaypoint",
+   "signature": "void HudElem_SetWaypoint(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"setwaypoint\" -> 0x081044c0. Note: no ClearFields in this path.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081044f8",
+   "name": "HudElem_FadeOverTime",
+   "signature": "void HudElem_FadeOverTime(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"fadeovertime\" -> 0x081044f8; messages \"fade time %g <= 0\" / \"> 60\" here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081045bc",
+   "name": "HudElem_ScaleOverTime",
+   "signature": "void HudElem_ScaleOverTime(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"scaleovertime\" -> 0x081045bc; usage text \"hudelem scaleOverTime(...)\" here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081046d2",
+   "name": "HudElem_MoveOverTime",
+   "signature": "void HudElem_MoveOverTime(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"moveovertime\" -> 0x081046d2; messages \"move time %g <= 0\" / \"> 60\" here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081047ba",
+   "name": "HudElem_Reset",
+   "signature": "void HudElem_Reset(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"reset\" -> 0x081047ba.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081047dc",
+   "name": "HudElem_Destroy",
+   "signature": "void HudElem_Destroy(uint32 entref)",
+   "subsystem": "game/hud",
+   "confidence": "inferred",
+   "evidence": "method table entry \"destroy\" -> 0x081047dc.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08105c80",
+   "name": "Turret_SetPendingAndCall",
+   "signature": "void Turret_SetPendingAndCall(struct gentity_s *ent, uint32 a, uint32 b)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "descriptive. Sets the turret pending flag (gentity+0x162) and forwards to 0x08105cac.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08106a90",
+   "name": "FinishSpawningItem",
+   "signature": "void FinishSpawningItem(struct gentity_s *ent)",
+   "subsystem": "game/items-weapons",
+   "confidence": "observed",
+   "evidence": "string \"FinishSpawningItem: %s startsolid at %s\\n\" is referenced by this function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08107216",
+   "name": "G_PrecacheWeapon",
+   "signature": "void G_PrecacheWeapon(int weapon)",
+   "subsystem": "game/items-weapons",
+   "confidence": "inferred",
+   "evidence": "descriptive for the body (precaches a weapon's hint strings and xmodels). The Com_Error",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108f0c",
+   "name": "G_ServerDObjCreate",
+   "signature": "void G_ServerDObjCreate(void *models, uint16 numModels, void *tree, int handle)",
+   "subsystem": "server/dobj",
+   "confidence": "inferred",
+   "evidence": "forwards to the server dobj creator (Com_ServerDObjCreate); name follows that callee.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a6d4",
+   "name": "SP_info_notnull",
+   "signature": "void SP_info_notnull(struct gentity_s *ent)",
+   "subsystem": "game/spawn-callbacks",
+   "confidence": "inferred",
+   "evidence": "classname table entry \"info_notnull\" -> 0x0810a6d4 (spawn callback); sets origin from currentOrigin.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a6f4",
+   "name": "SP_light",
+   "signature": "void SP_light(struct gentity_s *ent)",
+   "subsystem": "game/spawn-callbacks",
+   "confidence": "inferred",
+   "evidence": "classname table entry \"light\" -> 0x0810a6f4 (spawn callback); body frees the entity via 0x0811ee50.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a7ec",
+   "name": "SP_misc_model",
+   "signature": "void SP_misc_model(struct gentity_s *ent)",
+   "subsystem": "game/spawn-callbacks",
+   "confidence": "inferred",
+   "evidence": "classname table entry \"misc_model\" -> 0x0810a7ec; same body as SP_light.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a800",
+   "name": "Entity_SetLinkState",
+   "signature": "void Entity_SetLinkState(struct gentity_s *ent)",
+   "subsystem": "game/entity",
+   "confidence": "unknown",
+   "evidence": "descriptive. Link state update: unlinks when gentity+0xf0 is set, else clears the pending",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a836",
+   "name": "SP_corona",
+   "signature": "void SP_corona(struct gentity_s *ent)",
+   "subsystem": "game/spawn-callbacks",
+   "confidence": "inferred",
+   "evidence": "classname table entry \"corona\" -> 0x0810a836 (spawn callback); same body as SP_light.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810be6e",
+   "name": "Turret_Refresh",
+   "signature": "void Turret_Refresh(struct gentity_s *ent)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "descriptive. Turret refresh: schedules the next think 50 ms ahead, runs the driver path when",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810bf00",
+   "name": "Turret_FindAimOffset",
+   "signature": "void Turret_FindAimOffset(struct gentity_s *ent)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "descriptive. Searches up to 31 yaw steps (-3 degrees each) for a clear aim point between two",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810c10e",
+   "name": "Turret_SetControlBones",
+   "signature": "void Turret_SetControlBones(struct gentity_s *ent, const uint32 *partBits)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "descriptive. Applies the turret control angles (ctrl[0..1], then ctrl[2]) to three named",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810c3de",
+   "name": "Turret_Occupy",
+   "signature": "void Turret_Occupy(struct gentity_s *ent, struct gentity_s *other)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "descriptive. Seats a player (other) on a turret (ent): sets occupant state on both entities and",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810d970",
+   "name": "Turret_Setup",
+   "signature": "void Turret_Setup(struct gentity_s *ent)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "descriptive. Turret setup at spawn: uses the weapon-def fields, the truncated trajectory",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811003e",
+   "name": "SP_trigger_use_spawn",
+   "signature": "void SP_trigger_use_spawn(struct cod2_gentity_s *ent)",
+   "subsystem": "game/spawn-callbacks",
+   "confidence": "inferred",
+   "evidence": "classname table entry \"trigger_use\" -> 0x0811003e; forwards to SP_trigger_use.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110052",
+   "name": "SP_trigger_use_touch_spawn",
+   "signature": "void SP_trigger_use_touch_spawn(struct cod2_gentity_s *ent)",
+   "subsystem": "game/spawn-callbacks",
+   "confidence": "inferred",
+   "evidence": "classname table entry \"trigger_use_touch\" -> 0x08110052; forwards to SP_trigger_use.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081105fc",
+   "name": "GScr_getclandescription",
+   "signature": "void GScr_getclandescription(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getclandescription\" -> 0x081105fc; pushes the empty string.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110610",
+   "name": "GScr_getclanurl",
+   "signature": "void GScr_getclanurl(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getclanurl\" -> 0x08110610; pushes the empty string.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110ad2",
+   "name": "GScr_iprintln",
+   "signature": "void GScr_iprintln(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"iprintln\" -> 0x08110ad2; message type byte 'f' (0x66) via format \"%c\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110afe",
+   "name": "GScr_iprintlnbold",
+   "signature": "void GScr_iprintlnbold(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"iprintlnbold\" -> 0x08110afe; message type byte 'g' (0x67).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110b2a",
+   "name": "GScr_print3d",
+   "signature": "void GScr_print3d(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"print3d\" -> 0x08110b2a. Argument shape: (origin, [rgb], [alpha], [scale], text).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110c08",
+   "name": "GScr_assert",
+   "signature": "void GScr_assert(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"assert\" -> 0x08110c08; message \"assert fail\" referenced here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110c2e",
+   "name": "GScr_assertex",
+   "signature": "void GScr_assertex(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"assertex\" -> 0x08110c2e; message \"assert fail: %s\" referenced here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110c6c",
+   "name": "GScr_assertmsg",
+   "signature": "void GScr_assertmsg(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"assertmsg\" -> 0x08110c6c; unconditional failure with a message.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110c98",
+   "name": "GScr_isdefined",
+   "signature": "void GScr_isdefined(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"isdefined\" -> 0x08110c98.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110cfe",
+   "name": "GScr_isstring",
+   "signature": "void GScr_isstring(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"isstring\" -> 0x08110cfe.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110d24",
+   "name": "GScr_isalive",
+   "signature": "void GScr_isalive(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"isalive\" -> 0x08110d24.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110da0",
+   "name": "GScr_getcvar",
+   "signature": "void GScr_getcvar(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getcvar\" -> 0x08110da0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110dd0",
+   "name": "GScr_getcvarint",
+   "signature": "void GScr_getcvarint(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getcvarint\" -> 0x08110dd0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110e08",
+   "name": "GScr_getcvarfloat",
+   "signature": "void GScr_getcvarfloat(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getcvarfloat\" -> 0x08110e08.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110e46",
+   "name": "GScr_setcvar",
+   "signature": "void GScr_setcvar(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"setcvar\" -> 0x08110e46. Value is an array of parts when the second",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111012",
+   "name": "GScr_gettime",
+   "signature": "void GScr_gettime(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"gettime\" -> 0x08111012; pushes level time (ms).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111028",
+   "name": "GScr_getentbynum",
+   "signature": "void GScr_getentbynum(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getentbynum\" -> 0x08111028.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111078",
+   "name": "GScr_getweaponmodel",
+   "signature": "void GScr_getweaponmodel(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getweaponmodel\" -> 0x08111078; message \"unknown weapon '%s' in getWeaponModel\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111104",
+   "name": "GScr_getammocount",
+   "signature": "void GScr_getammocount(uint32 entref)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getammocount\" -> 0x08111104.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811116c",
+   "name": "GScr_getanimlength",
+   "signature": "void GScr_getanimlength(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getanimlength\" -> 0x0811116c; message \"non-primitive animation has no concept of length\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081111ee",
+   "name": "GScr_animhasnotetrack",
+   "signature": "void GScr_animhasnotetrack(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"animhasnotetrack\" -> 0x081111ee.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811125c",
+   "name": "GScr_getbrushmodelcenter",
+   "signature": "void GScr_getbrushmodelcenter(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getbrushmodelcenter\" -> 0x0811125c; center = (vec120 + vec12c) * 0.5.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081112bc",
+   "name": "GScr_spawn",
+   "signature": "void GScr_spawn(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"spawn\" -> 0x081112bc; message \"unable to spawn \\\"%s\\\" entity\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811138c",
+   "name": "GScr_spawnturret",
+   "signature": "void GScr_spawnturret(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"spawnturret\" -> 0x0811138c.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811141a",
+   "name": "GScr_precacheturret",
+   "signature": "void GScr_precacheturret(void)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"precacheturret\" -> 0x0811141a; message names the wait-statement rule.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111452",
+   "name": "GScr_attach",
+   "signature": "void GScr_attach(uint32 entref)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"attach\" -> 0x08111452.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111542",
+   "name": "GScr_detach",
+   "signature": "void GScr_detach(uint32 entref)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"detach\" -> 0x08111542; message \"failed to detach model ...\" here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811166c",
+   "name": "GScr_detachall",
+   "signature": "void GScr_detachall(uint32 entref)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"detachall\" -> 0x0811166c.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811168e",
+   "name": "GScr_getattachsize",
+   "signature": "void GScr_getattachsize(uint32 entref)",
+   "subsystem": "game/script-methods",
+   "confidence": "inferred",
+   "evidence": "method table entry \"getattachsize\" -> 0x0811168e; counts occupied attach slots (max 7).",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08853220",
+   "name": "scr_str_emptystring",
+   "type": "uint16",
+   "confidence": "unknown",
+   "evidence": "u16 script handle compared against tag argument default (attach/detach); value assigned at runtime"
+  },
+  {
+   "addr": "0x08853222",
+   "name": "scr_str_allies",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "team handle: compared with the \"allies\" branch of GScr_newteamhudelem (id 2) and the allowspectateteam error order axis, allies, none, freelook"
+  },
+  {
+   "addr": "0x08853224",
+   "name": "scr_str_axis",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "team handle: \"axis\" branch of GScr_newteamhudelem (id 1)"
+  },
+  {
+   "addr": "0x08853268",
+   "name": "scr_str_spectator",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "team handle: \"spectator\" branch of GScr_newteamhudelem (id 3)"
+  },
+  {
+   "addr": "0x08853294",
+   "name": "scr_str_none",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "team handle \"none\" (bit 1) in PlayerCmd_allowspectateteam"
+  },
+  {
+   "addr": "0x0885329c",
+   "name": "scr_str_freelook",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "team handle \"freelook\" (bit 0x10) in PlayerCmd_allowspectateteam"
+  },
+  {
+   "addr": "0x088532ac",
+   "name": "scrStr_tag_flash",
+   "type": "uint32",
+   "confidence": "unknown",
+   "evidence": "bone-name id passed to DObj_SetControlBoneByName in Turret_SetControlBones"
+  },
+  {
+   "addr": "0x088532be",
+   "name": "scrStr_tag_aim",
+   "type": "uint32",
+   "confidence": "unknown",
+   "evidence": "bone-name id used by turret control and aim (Turret_SetControlBones, Turret_FindAimOffset)"
+  },
+  {
+   "addr": "0x088532c0",
+   "name": "scrStr_tag_aim_animated",
+   "type": "uint32",
+   "confidence": "unknown",
+   "evidence": "bone-name id used by Turret_SetControlBones"
+  },
+  {
+   "addr": "0x088532c4",
+   "name": "scrStr_tag_butt",
+   "type": "uint32",
+   "confidence": "unknown",
+   "evidence": "bone-name id used by Turret_FindAimOffset"
+  },
+  {
+   "addr": "0x0864c39c",
+   "name": "level_initializing",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "gate checked by GScr_precacheturret: must be nonzero once a wait statement has run"
+  },
+  {
+   "addr": "0x0864bf80",
+   "name": "g_itemRegisteredFlags",
+   "type": "int[]",
+   "confidence": "inferred",
+   "evidence": "per-weapon precache flag array written by G_PrecacheWeapon (stride 4)"
+  },
+  {
+   "addr": "0x0864f97c",
+   "name": "g_0864f97c",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "set to 1 by G_PrecacheWeapon"
+  },
+  {
+   "addr": "0x0864f980",
+   "name": "g_0864f980",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "set to 1 by G_PrecacheWeapon"
+  },
+  {
+   "addr": "0x08159ee0",
+   "name": "g_hudelemFieldTable",
+   "type": "struct hudfield104_s[]",
+   "confidence": "inferred",
+   "evidence": "hud field table stride 0x1c: name, offset, kind, mask, shift, setter, alt setter (names x, y, z, fontscale, font, alignx, aligny, horzalign, vertalign)"
+  },
+  {
+   "addr": "0x08187c80",
+   "name": "g_hudFontEnumNames",
+   "type": "const char *[]",
+   "confidence": "inferred",
+   "evidence": "enum names (default, ...) for font setter, count 3"
+  },
+  {
+   "addr": "0x08187c8c",
+   "name": "g_hudAlignXEnumNames",
+   "type": "const char *[]",
+   "confidence": "inferred",
+   "evidence": "enum names for alignx setter, count 3"
+  },
+  {
+   "addr": "0x08187c98",
+   "name": "g_hudAlignYEnumNames",
+   "type": "const char *[]",
+   "confidence": "inferred",
+   "evidence": "enum names for aligny setter, count 3"
+  },
+  {
+   "addr": "0x08187cc0",
+   "name": "g_hudHorzAlignEnumNames",
+   "type": "const char *[]",
+   "confidence": "inferred",
+   "evidence": "enum names starting \"subleft\", count 8"
+  },
+  {
+   "addr": "0x08187ce0",
+   "name": "g_hudVertAlignEnumNames",
+   "type": "const char *[]",
+   "confidence": "inferred",
+   "evidence": "enum names starting \"subtop\", count 8"
+  },
+  {
+   "addr": "0x08187d00",
+   "name": "g_entityHandlerTable",
+   "type": "uint8[]",
+   "confidence": "inferred",
+   "evidence": "turret class table stride 0x28; callback pointer at +0x24 (0x08187d24) used by Turret_Setup"
+  },
+  {
+   "addr": "0x08187c0c",
+   "name": "g_08187c0c",
+   "type": "uint8[]",
+   "confidence": "unknown",
+   "evidence": "extra argument table for the trace in Turret_FindAimOffset"
+  },
+  {
+   "addr": "0x0815b06e",
+   "name": "g_0815b06e",
+   "type": "const char[]",
+   "confidence": "observed",
+   "evidence": "empty string pushed by getclandescription/getclanurl/getweaponmodel"
+  },
+  {
+   "addr": "0x0815b381",
+   "name": "g_0815b381",
+   "type": "const char[]",
+   "confidence": "observed",
+   "evidence": "\"none\" compared in GScr_getweaponmodel"
+  },
+  {
+   "addr": "0x0814cfc8",
+   "name": "vec3_origin",
+   "type": "const float[3]",
+   "confidence": "observed",
+   "evidence": "zero vector used as mins/maxs in Turret_Setup"
+  },
+  {
+   "addr": "0x081850c0",
+   "name": "g_081850c0",
+   "type": "uint8[] (stride 0x2c)",
+   "confidence": "inferred",
+   "evidence": "merged name from symbols.json; item type dword at +0x1c read by FinishSpawningItem and Turret_Setup"
+  },
+  {
+   "addr": "0x0864c56c",
+   "name": "g_0864c56c",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "merged name: level time (ms)"
+  },
+  {
+   "addr": "0x08716400",
+   "name": "g_gentities",
+   "type": "gentity_s[0x400]",
+   "confidence": "inferred",
+   "evidence": "merged name; stride 0x230; client pointer at +0x158, inUse at +0xfc"
+  },
+  {
+   "addr": "0x0864c380",
+   "name": "level_clients",
+   "type": "level_locals_t",
+   "confidence": "inferred",
+   "evidence": "merged name; accessed by offset here: +0x14 and +0xf8 (Aim_SetupFrame)"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "gentity_s",
+   "size": "0x230",
+   "evidence": "offsets read from pseudocode of chunks 104 and 103/049; client 0x158, inUse 0xfc, currentOrigin 0x138, classname 0x168, attach arrays 0x210/0x218"
+  },
+  {
+   "name": "gclient_s",
+   "size": "partial (full 0x28a4 per chunk 049)",
+   "evidence": "turret fields 0xa0/0xe8/0xec, aim limits 0x10c..0x118, occupant 0x590/0x594, allowSpectateTeams 0x2740"
+  },
+  {
+   "name": "turret_s",
+   "size": "partial",
+   "evidence": "flags04, arc0c/arc10/off14/off18, aimOffset 0x1c, mode 0x20, aimType 0x24, origin 0x2c"
+  },
+  {
+   "name": "hudelem_s",
+   "size": "0x8c",
+   "evidence": "same size and offsets as chunk_048 (width 0x34, shader 0x3c); fields 0x04..0x74 named here"
+  },
+  {
+   "name": "hudfield104_s",
+   "size": "0x1c",
+   "evidence": "record of the hud field table at 0x08159ee0: hudelem_field_s (0x14) plus setter pointers at 0x14/0x18"
+  },
+  {
+   "name": "trace104_s",
+   "size": "0x24",
+   "evidence": "stack offsets of the trace in FinishSpawningItem and Turret_Setup: fraction 0x00, normal 0x04, surface flags 0x10, entity 0x1c, startsolid 0x23; candidate for merge with trace_s"
+  },
+  {
+   "name": "trajectory104_t",
+   "size": "0x24",
+   "evidence": "same layout as trajectory_t (cod2_types.h)"
+  }
+ ],
+ "open_questions": [
+  "symbols.json has 0x08084bb2 as Scr_ReleaseAnyValue (void) and 0x08084d24 as Scr_ReleaseLocalizedString (void). The binary returns a script string (both call ScrStr_TextFromHandle; 0x08084bb2 calls Scr_GetAny). Chunk 104 uses fn_08084bb2/fn_08084d24 placeholders with const char * results; the merge lane should correct the merged signatures.",
+  "Several hud-field wrappers (0x081038ea..0x08103af4) pass record indices and names arrays through HudElem_SetEnumField (0x081034de, merged). The alternate dispatcher 0x08103618 is out of chunk and its name is a placeholder; its signature is assumed identical to HudElem_SetEnumField.",
+  "Trace layout (fraction, normal, surface flags, entity, startsolid) is inferred from stack offsets in 0x0810a528 callers, not from the callee body; confirm when 0x0810a528 is reconstructed.",
+  "GScr_setcvar: the quote-normalised copy is written but the raw value is passed to Dvar_SetStringOrCreate (preserved). The original loop bound (0x2000 characters) exceeds the 0x400-byte buffer; this translation bounds the copy at 0x3ff, which removes a stack overflow the binary has.",
+  "Gclient offsets 0xe8, 0xec, 0x10c..0x118, 0x590, 0x594 and 0x2740 are read from pseudocode only; not yet confirmed against the disassembly of every user.",
+  "Naming: 67 functions are inferred from the script method table at .rodata (name pointer at fn-4); only the five setTimerUp-family and FinishSpawningItem carry literal evidence in their own bodies. Turret_*, Entity_*, Debug_*, Aim_* and Cmd_ParseConfigstring12Bounds_f are descriptive (unknown).",
+  "Turret_Setup, Turret_Occupy and Turret_FindAimOffset depend on unmerged helpers (0x0811f3c6, 0x081022a0, 0x0810ccf2, 0x08105cac) whose semantics are not yet known; their fn_ placeholders keep the observed argument shapes.",
+  "FinishSpawningItem: the item type checks use itemIndex (0x1ac) for the start-solid branch and kindIndex (0x8c) for the roll adjustment, as in the binary."
+ ]
+}

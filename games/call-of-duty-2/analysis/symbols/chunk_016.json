@@ -1,0 +1,380 @@
+{
+ "chunk": 16,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0807fd44",
+   "name": "Scr_GetClassnumForCharId",
+   "signature": "int Scr_GetClassnumForCharId(char charId)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "searches 4-entry table at 0x0817d924 (ids e,h,p,v with names entity/hudelem/pathnode/vehiclenode); matches CoD4 function of that name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807fd92",
+   "name": "Scr_AllocArray",
+   "signature": "unsigned int Scr_AllocArray(void)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "wrapper of 0x0807bca8 which tags a new variable with type 0x16 (array)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807fe46",
+   "name": "Q_fabs",
+   "signature": "float Q_fabs(float value)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "single fabs; caller 0x0807dac0 is a comparison operator",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807fe60",
+   "name": "Scr_ClearErrorMessage",
+   "signature": "void Scr_ClearErrorMessage(void)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "zeroes error_message, dialog_error_message and error_index (CoD4 trio)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807fe84",
+   "name": "VM_Init",
+   "signature": "void VM_Init(void)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "initialises scrVmPub (frames at 0x083d8aa0, stack at 0x083d8da0, localVars=&starttime) and allocates tempVariable",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807ff46",
+   "name": "VM_Shutdown",
+   "signature": "void VM_Shutdown(void)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "frees tempVariable allocated by VM_Init; called from Scr_Shutdown",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807ff6e",
+   "name": "Scr_Init",
+   "signature": "void Scr_Init(void)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "guarded by inited byte 0x08397538; calls variable/compiler init and VM_Init",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807ffd8",
+   "name": "Scr_Settings",
+   "signature": "void Scr_Settings(int developer, int developer_script, int abort_on_error)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "stores three booleans; abort_on_error used by OP_jumpback, developer by Scr_ErrorInternal",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08080002",
+   "name": "Scr_Shutdown",
+   "signature": "void Scr_Shutdown(void)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "inverse of Scr_Init, clears inited byte first",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808002c",
+   "name": "Scr_ClearInitState",
+   "signature": "void Scr_ClearInitState(void)",
+   "subsystem": "script/vm",
+   "confidence": "unknown",
+   "evidence": "only writes timeArrayId=0 and inited=0; descriptive name",
+   "status": "translated",
+   "notes": "real purpose unknown"
+  },
+  {
+   "addr": "0x08080042",
+   "name": "Scr_SetLoading",
+   "signature": "void Scr_SetLoading(int loading)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "sets flag read by Scr_ErrorInternal (developer && loading => terminal_error) and OP_jumpback",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08080050",
+   "name": "Scr_ErrorInternal",
+   "signature": "void Scr_ErrorInternal(void)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "longjmp to g_script_error[level] when function_count||debugCode, else Com_Error(1,\"%s\",error_message); structure equals CoD4 Scr_ErrorInternal",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080800e2",
+   "name": "Stub_ReturnZero",
+   "signature": "int Stub_ReturnZero(void)",
+   "subsystem": "script/vm",
+   "confidence": "unknown",
+   "evidence": "returns 0; no resolved callers",
+   "status": "translated",
+   "notes": "descriptive name only"
+  },
+  {
+   "addr": "0x080800ec",
+   "name": "Scr_ClearInParams",
+   "signature": "void Scr_ClearInParams(void)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "releases inparamcount stack values and lowers scrVmPub.top; same loop as CoD4 Scr_ClearOutParams",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808011c",
+   "name": "Scr_ClearTempAndGetObject",
+   "signature": "unsigned int Scr_ClearTempAndGetObject(void)",
+   "subsystem": "script/vm",
+   "confidence": "unknown",
+   "evidence": "clears tempVariable value then returns its object; used only in VM error recovery",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808013e",
+   "name": "Scr_ClearTempAndGetId",
+   "signature": "unsigned int Scr_ClearTempAndGetId(void)",
+   "subsystem": "script/vm",
+   "confidence": "unknown",
+   "evidence": "clears tempVariable value and returns the id; used only in VM error recovery",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08080158",
+   "name": "VM_ExecuteInternal",
+   "signature": "unsigned int VM_ExecuteInternal(const char *codepos, unsigned int localId, int localVarCount, VariableValue *top, VariableValue *startTop)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "jump table 0x0814530c over opcodes 0..0x86, setjmp/longjmp error repair, strings 'script stack overflow...', '%s is not an object', 'negative wait is not allowed'; opcode order matches CoD4 VM_ExecuteInternal",
+   "status": "translated",
+   "notes": "opcode names follow CoD4 order; OP_Binary66..75 and waittill77/78 names are positional only; callee semantics (fn_08xxxxxx) are role guesses"
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x083d8a80",
+   "name": "scrVmPub",
+   "type": "struct scrVmPub_t",
+   "confidence": "inferred",
+   "evidence": "init in 0x0807fe84; fields localVars/maxstack/function_count/function_frame/top/flags/param counts, 32 frames of 0x18 at +0x20"
+  },
+  {
+   "addr": "0x083d8da0",
+   "name": "scrVmStack",
+   "type": "struct VariableValue[2048]",
+   "confidence": "inferred",
+   "evidence": "top initialised to it, maxstack=+0x3ff8, [0].type=7 (codepos)"
+  },
+  {
+   "addr": "0x083d7620",
+   "name": "g_script_error",
+   "type": "jmp_buf[]",
+   "confidence": "inferred",
+   "evidence": "setjmp/longjmp index*0x9c in VM_ExecuteInternal and Scr_ErrorInternal"
+  },
+  {
+   "addr": "0x083d8a3c",
+   "name": "g_script_error_level",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "incremented on VM entry, decremented on exit"
+  },
+  {
+   "addr": "0x08205cb8",
+   "name": "scrBuiltinTable",
+   "type": "void (*[])(void)",
+   "confidence": "inferred",
+   "evidence": "indexed by 16-bit operand of OP_CallBuiltin*/Method*"
+  },
+  {
+   "addr": "0x0817d920",
+   "name": "scrClassMap",
+   "type": "struct ScrClassMapEntry[4]",
+   "confidence": "inferred",
+   "evidence": "stride 12, ids e/h/p/v with name strings"
+  },
+  {
+   "addr": "0x0817d960",
+   "name": "var_typename",
+   "type": "const char *[]",
+   "confidence": "observed",
+   "evidence": "strings undefined,object,string,localized string,vector,float,int,codepos,precodepos,function,stack,animation used in '%s is not ...' errors"
+  },
+  {
+   "addr": "0x0839750a",
+   "name": "scrVarPub_developer",
+   "type": "byte",
+   "confidence": "inferred",
+   "evidence": "set by Scr_Settings arg 1"
+  },
+  {
+   "addr": "0x0839750b",
+   "name": "scrVarPub_developer_script",
+   "type": "byte",
+   "confidence": "inferred",
+   "evidence": "set by Scr_Settings arg 2"
+  },
+  {
+   "addr": "0x0839750c",
+   "name": "scrVarPub_evaluate",
+   "type": "byte",
+   "confidence": "inferred",
+   "evidence": "first condition in Scr_ErrorInternal; cleared by VM_Init"
+  },
+  {
+   "addr": "0x08397510",
+   "name": "scrVarPub_error_message",
+   "type": "const char *",
+   "confidence": "inferred",
+   "evidence": "set by Scr_Error, printed by Com_Error in Scr_ErrorInternal"
+  },
+  {
+   "addr": "0x08397514",
+   "name": "scrVarPub_error_index",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "argument index set before Scr_Error, adjusted per opcode in error recovery"
+  },
+  {
+   "addr": "0x08397518",
+   "name": "scrVarPub_time",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "added to wait ticks and masked 0xffffff in OP_wait"
+  },
+  {
+   "addr": "0x0839751c",
+   "name": "scrVarPub_timeArrayId",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "parent of per-time variables in OP_wait/OP_waittillFrameEnd"
+  },
+  {
+   "addr": "0x08397520",
+   "name": "scrVarPub_notifyArrayId",
+   "type": "unsigned int",
+   "confidence": "unknown",
+   "evidence": "parent array keyed by thread self in waittill/endon registration; role name is a guess"
+  },
+  {
+   "addr": "0x08397524",
+   "name": "scrVarPub_levelId",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "OP_GetLevel/OP_GetLevelObject"
+  },
+  {
+   "addr": "0x08397528",
+   "name": "scrVarPub_gameId",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "OP_GetGame/OP_GetGameRef"
+  },
+  {
+   "addr": "0x0839752c",
+   "name": "scrVarPub_animId",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "OP_GetAnim/OP_GetAnimObject"
+  },
+  {
+   "addr": "0x08397530",
+   "name": "scrVarPub_freeEntList",
+   "type": "unsigned int",
+   "confidence": "unknown",
+   "evidence": "zeroed by VM_Init only"
+  },
+  {
+   "addr": "0x08397534",
+   "name": "scrVarPub_tempVariable",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "allocated in VM_Init, freed in VM_Shutdown, used as scratch by field ops"
+  },
+  {
+   "addr": "0x08397538",
+   "name": "scrVarPub_inited",
+   "type": "byte",
+   "confidence": "inferred",
+   "evidence": "guard in Scr_Init/Scr_Shutdown"
+  },
+  {
+   "addr": "0x083dce90",
+   "name": "scrVmGlob_dialog_error_message",
+   "type": "const char *",
+   "confidence": "inferred",
+   "evidence": "cleared with error message; 4th arg to error printer 0x080788d2"
+  },
+  {
+   "addr": "0x083dce94",
+   "name": "scrVmGlob_loading",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "set by Scr_SetLoading; gates terminal_error and jumpback warning"
+  },
+  {
+   "addr": "0x083dce9c",
+   "name": "scrVmGlob_starttime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "written by 0x08085628 with Sys_Milliseconds; localVars initial pointer; OP_jumpback 2500 ms check"
+  },
+  {
+   "addr": "0x08205ca4",
+   "name": "scrCompilePub_developer_statement",
+   "type": "byte",
+   "confidence": "unknown",
+   "evidence": "second condition of Scr_ErrorInternal; cleared by Scr_Init"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "VariableValue",
+   "size": "0x8",
+   "evidence": "{u,type} entries on the VM value stack; type names table"
+  },
+  {
+   "name": "ScrVmFrame",
+   "size": "0x18",
+   "evidence": "function_frame_start stride 0x18"
+  },
+  {
+   "name": "scrVmPub_t",
+   "size": "0x320",
+   "evidence": "fields 0x00..0x1c plus 32 frames"
+  },
+  {
+   "name": "ScrClassMapEntry",
+   "size": "0xc",
+   "evidence": "class table stride 12"
+  }
+ ],
+ "open_questions": [
+  "Semantics of fn_0807b840/fn_0807b8ae (thread parent id / kill) and the notify/endon bookkeeping callees (0x0807c6f8,0x0807c740,0x0807c76a,0x0807c794,0x0807b5fc,0x08082a92) are inferred from CoD4 only.",
+  "Opcodes 0x66..0x75 are labelled positionally; 0x77/0x78 share one handler (waittill vs waittillmatch unresolved).",
+  "Roles of scrVarPub_notifyArrayId (0x08397520), scrVarPub_freeEntList (0x08397530) and the unnamed counters cleared in Scr_Init (0x08205640,0x08205a58,0x08205c88..0x08205c94) are unknown."
+ ]
+}

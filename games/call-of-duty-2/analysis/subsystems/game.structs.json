@@ -1,0 +1,2040 @@
+[
+ {
+  "name": "gentity_t",
+  "size": "0x230",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "int",
+    "name": "number",
+    "evidence": "046/047/049/052/053 agree; derived from address (e-0x08716400)/0x230 in G_InitEntityRecord 0x0811e85c [observed]"
+   },
+   {
+    "offset": "0x004",
+    "type": "int",
+    "name": "eType",
+    "evidence": "040/046/047/049/051/052/053; values 0,2 corpse,3 item,4 missile,5,6 mover,9 turret [observed numeric]"
+   },
+   {
+    "offset": "0x008",
+    "type": "uint32",
+    "name": "eFlags",
+    "evidence": "046/049/052; 0x10000 freed by G_RunEntityState, 0x20 toggled from spawn flag 0x800 [observed]"
+   },
+   {
+    "offset": "0x00c",
+    "type": "trajectory_t",
+    "name": "pos",
+    "evidence": "049/050/051/052; trType 0xc, trTime 0x10, trDuration 0x14, trBase 0x18, trDelta 0x24; trajectory_t size 0x24 in 040/049/050/051/104 [observed]"
+   },
+   {
+    "offset": "0x030",
+    "type": "trajectory_t",
+    "name": "apos",
+    "evidence": "046(aposType 0x30,aposBase 0x3c)/049(aTrType..aTrDelta 0x48)/050/051/052 [observed]"
+   },
+   {
+    "offset": "0x054",
+    "type": "byte[4]",
+    "name": "pad_054",
+    "evidence": "unknown; 049 field058 at 0x58 (compared with level.time for eFlags==0x10000 free) [inferred]"
+   },
+   {
+    "offset": "0x058",
+    "type": "int",
+    "name": "freeTime058",
+    "evidence": "049 G_RunEntityState only [inferred]"
+   },
+   {
+    "offset": "0x068",
+    "type": "float[2]",
+    "name": "aimAngles",
+    "evidence": "049 only (turret) [inferred]"
+   },
+   {
+    "offset": "0x074",
+    "type": "int",
+    "name": "attackerOrTurretEnt",
+    "evidence": "046/047(player_die indexes g_entities[+0x74], eType==9)/050/052(srcEntNum)/103(attackerNum) [inferred]"
+   },
+   {
+    "offset": "0x07c",
+    "type": "int",
+    "name": "groundEntityNum",
+    "evidence": "046 ClientSpawn writes 0x3ff; 050 compares with pusher number; 103 cloneplayer writes 0x3ff; 052 calls it targetNum, 048 targetClient [inferred, name conflict]"
+   },
+   {
+    "offset": "0x080",
+    "type": "int",
+    "name": "packedLight",
+    "evidence": "051 only [unknown]"
+   },
+   {
+    "offset": "0x084",
+    "type": "int",
+    "name": "field_84",
+    "evidence": "046/047/049(turretOutput84); player_die zeroes it; Entity_ClearField84 0x080f4aa4 [unknown]"
+   },
+   {
+    "offset": "0x08c",
+    "type": "int",
+    "name": "modelIndex/itemIndex",
+    "evidence": "040/048(itemIndex)/051(modelIndex)/052(modelCopy for types 0/6/9) [inferred]"
+   },
+   {
+    "offset": "0x090",
+    "type": "int",
+    "name": "ownerClient/turretSlot",
+    "evidence": "040 ownerClient, 046 clientNum, 048 ownerNum, 049 turretSlot (index into g_clientInfos); cloneplayer writes client number here [inferred]"
+   },
+   {
+    "offset": "0x094",
+    "type": "int",
+    "name": "headIconIndex",
+    "evidence": "102 only (Player_SetHeadIcon) [inferred]"
+   },
+   {
+    "offset": "0x098",
+    "type": "int",
+    "name": "headIconTeam",
+    "evidence": "102 only [inferred]"
+   },
+   {
+    "offset": "0x0a0",
+    "type": "int",
+    "name": "eventParm/event",
+    "evidence": "046(event)/050(eventParm)/052(rnd_a0)/103 [inferred]"
+   },
+   {
+    "offset": "0x0a4",
+    "type": "int",
+    "name": "eventSequence",
+    "evidence": "046/052 [observed]"
+   },
+   {
+    "offset": "0x0a8",
+    "type": "int[4]",
+    "name": "events",
+    "evidence": "046/052 [observed]"
+   },
+   {
+    "offset": "0x0b8",
+    "type": "int[4]",
+    "name": "eventParms",
+    "evidence": "046/052 [observed]"
+   },
+   {
+    "offset": "0x0c8",
+    "type": "int",
+    "name": "weaponIndex",
+    "evidence": "047(inflictor->field_c8 used as weapon in G_DamageClient)/049/050/053 [observed]"
+   },
+   {
+    "offset": "0x0f0",
+    "type": "byte",
+    "name": "linked",
+    "evidence": "023/046/049; 020 calls it inUse [observed use in SV_LinkEntity chunk 023]"
+   },
+   {
+    "offset": "0x0f1",
+    "type": "byte",
+    "name": "useBoundsFlag",
+    "evidence": "047 G_RadiusDamage: when set uses AABB distance [observed, name inferred]"
+   },
+   {
+    "offset": "0x0f2",
+    "type": "byte",
+    "name": "svFlags",
+    "evidence": "020/023/046/051/103; ClientSpawn ORs 1 [observed]"
+   },
+   {
+    "offset": "0x0fc",
+    "type": "byte",
+    "name": "inuse",
+    "evidence": "046/048/049/051/052/103 agree [observed]"
+   },
+   {
+    "offset": "0x104",
+    "type": "float[3]",
+    "name": "mins",
+    "evidence": "023/046/048/050/052/103 [observed]"
+   },
+   {
+    "offset": "0x110",
+    "type": "float[3]",
+    "name": "maxs",
+    "evidence": "same [observed]"
+   },
+   {
+    "offset": "0x11c",
+    "type": "int",
+    "name": "contents",
+    "evidence": "005/023/045/046/047/049/050/051/052/053/103 [observed]"
+   },
+   {
+    "offset": "0x120",
+    "type": "float[3]",
+    "name": "absmin",
+    "evidence": "005/023/046/047/050/053 [observed]"
+   },
+   {
+    "offset": "0x12c",
+    "type": "float[3]",
+    "name": "absmax",
+    "evidence": "same [observed]"
+   },
+   {
+    "offset": "0x138",
+    "type": "float[3]",
+    "name": "currentOrigin",
+    "evidence": "023/046/047/049/050/051/052/053/103 [observed]"
+   },
+   {
+    "offset": "0x144",
+    "type": "float[3]",
+    "name": "currentAngles",
+    "evidence": "same [observed]"
+   },
+   {
+    "offset": "0x150",
+    "type": "int",
+    "name": "ownerNum",
+    "evidence": "023/046/047/050 ownerNum (pass entity for G_TraceBox); 052 parentNum; 049 aimTarget [inferred]"
+   },
+   {
+    "offset": "0x154",
+    "type": "int",
+    "name": "eventTime154",
+    "evidence": "046 writes level.time when eventSequence changes; 052 time154 [inferred]"
+   },
+   {
+    "offset": "0x158",
+    "type": "gclient_t *",
+    "name": "client",
+    "evidence": "every chunk agrees [observed]"
+   },
+   {
+    "offset": "0x15c",
+    "type": "void *",
+    "name": "turretOrPtr15c",
+    "evidence": "049 turret_s pointer; 052 ptr15c freed via fn_0810c2ec in G_FreeEntity [inferred]"
+   },
+   {
+    "offset": "0x160",
+    "type": "byte",
+    "name": "occupied",
+    "evidence": "049/103(field160); 053 isPlayer [unknown]"
+   },
+   {
+    "offset": "0x161",
+    "type": "byte",
+    "name": "takedamage",
+    "evidence": "047 G_Damage; 052 takeDamage; ClientSpawn clears; player_die sets 1; 049 turretAi, 053 isPlayer conflict [inferred]"
+   },
+   {
+    "offset": "0x162",
+    "type": "byte",
+    "name": "useState/touchPending",
+    "evidence": "048 touchPending(Item_TouchPickup)/053 useState/052 flag162/049 turretPending [unknown, 4 names]"
+   },
+   {
+    "offset": "0x164",
+    "type": "byte",
+    "name": "modelIndex",
+    "evidence": "052 modelIndex; script field model->0x164 type 8 (table 0x0815e820) [observed]"
+   },
+   {
+    "offset": "0x165",
+    "type": "byte",
+    "name": "attachFlags",
+    "evidence": "046/052 [inferred]"
+   },
+   {
+    "offset": "0x166",
+    "type": "byte",
+    "name": "entClass",
+    "evidence": "index into table 0x08187d00; 045/047/049/050/052/053/103 agree on role [observed]"
+   },
+   {
+    "offset": "0x167",
+    "type": "byte",
+    "name": "teamNum",
+    "evidence": "053 only [inferred]"
+   },
+   {
+    "offset": "0x168",
+    "type": "uint16",
+    "name": "classname",
+    "evidence": "script-string handle; field table classname->0x168; 050/051/053 classname; 049 modelIndex wrong [observed]"
+   },
+   {
+    "offset": "0x16a",
+    "type": "uint16",
+    "name": "target",
+    "evidence": "field table target->0x16a [observed]"
+   },
+   {
+    "offset": "0x16c",
+    "type": "uint16",
+    "name": "targetname",
+    "evidence": "field table targetname->0x16c [observed]"
+   },
+   {
+    "offset": "0x170",
+    "type": "int",
+    "name": "spawnflags",
+    "evidence": "field table spawnflags->0x170 [observed]; 052 effectFlags"
+   },
+   {
+    "offset": "0x174",
+    "type": "int",
+    "name": "flags",
+    "evidence": "047 G_Damage flags&1 god, &2 demigod; 049 spawnFlags (bits 0x800,0x2000); 103 spawnFlags [inferred, name conflict]"
+   },
+   {
+    "offset": "0x178",
+    "type": "int",
+    "name": "time178",
+    "evidence": "G_FreeEntity sets level.time; 046 sets level.time when eventSequence changes; 049 compares > 300 [observed]"
+   },
+   {
+    "offset": "0x17c",
+    "type": "int",
+    "name": "freeAfterEvent",
+    "evidence": "049 (frees when set and >300ms); 052 active17c [inferred]"
+   },
+   {
+    "offset": "0x180",
+    "type": "int",
+    "name": "unlinkAfterEvent",
+    "evidence": "049 field180 [inferred]"
+   },
+   {
+    "offset": "0x184",
+    "type": "int",
+    "name": "clipmask",
+    "evidence": "046 clipmask; 048 traceMask default 0x491; 050 clipMask [observed]"
+   },
+   {
+    "offset": "0x188",
+    "type": "int",
+    "name": "lastFrame",
+    "evidence": "049 (compared with level.frameNum) [observed]"
+   },
+   {
+    "offset": "0x18c",
+    "type": "gentity_t *",
+    "name": "lockedBy/parent",
+    "evidence": "046 field_18c; 050 parent; 052 lockedBy [inferred]"
+   },
+   {
+    "offset": "0x190",
+    "type": "int",
+    "name": "nextThink",
+    "evidence": "048/049/103 nextThink; 050 expireTime [observed in G_RunThink]"
+   },
+   {
+    "offset": "0x194",
+    "type": "int",
+    "name": "health",
+    "evidence": "046/047/048/051/053 (useSlotCount conflict)/102/103 [observed]"
+   },
+   {
+    "offset": "0x19c",
+    "type": "int",
+    "name": "dmg",
+    "evidence": "field table dmg->0x19c [observed]"
+   },
+   {
+    "offset": "0x1a0",
+    "type": "int",
+    "name": "count",
+    "evidence": "field table count->0x1a0; item union: 048 clipAmmo [observed]"
+   },
+   {
+    "offset": "0x1a8",
+    "type": "int",
+    "name": "reserveAmmo/moveDecelTime",
+    "evidence": "048 (items) vs 051 (script_mover) overlap: union by entClass [inferred]"
+   },
+   {
+    "offset": "0x1ac",
+    "type": "int",
+    "name": "weaponDefIndex/rotDecelTime",
+    "evidence": "same union [inferred]"
+   },
+   {
+    "offset": "0x1b0..0x207",
+    "type": "union",
+    "name": "mover/item/turret scratch",
+    "evidence": "051 mover fields 0x1b0..0x208; 049/053 other uses [unknown]"
+   },
+   {
+    "offset": "0x208",
+    "type": "game_attach_node_s *",
+    "name": "attachLink",
+    "evidence": "052 node pointer (owner at +0); 049 driverRef [observed]"
+   },
+   {
+    "offset": "0x20c",
+    "type": "gentity_t *",
+    "name": "attachChildren",
+    "evidence": "052 [observed]"
+   },
+   {
+    "offset": "0x210",
+    "type": "byte[7]",
+    "name": "attachModel",
+    "evidence": "052 7 slots, 046 6 slots [observed offset, count conflict]"
+   },
+   {
+    "offset": "0x218",
+    "type": "uint16[7]",
+    "name": "attachName",
+    "evidence": "052; 046 attachTags uint16[6] [observed]"
+   },
+   {
+    "offset": "0x228",
+    "type": "int",
+    "name": "generation",
+    "evidence": "052/049(spawnSerial)/pair queue [observed]"
+   },
+   {
+    "offset": "0x22c",
+    "type": "gentity_t *",
+    "name": "freeNext",
+    "evidence": "052 G_Spawn/G_FreeEntity [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_046_types.h",
+   "chunk_047_types.h",
+   "chunk_048_types.h",
+   "chunk_049_types.h",
+   "chunk_050_types.h",
+   "chunk_051_types.h",
+   "chunk_052_types.h",
+   "chunk_053_types.h",
+   "chunk_102_types.h",
+   "chunk_103_types.h",
+   "chunk_045_types.h",
+   "chunk_020_types.h(partial)",
+   "chunk_023_types.h(partial)"
+  ],
+  "conflicts": "Size 0x230 is consistent in 045-053,102,103 (observed: stride in G_Spawn, memset in G_FreeEntity/G_InitGame 0x8c000 = 1024 x 0x230). Chunk 023 declares gentity_s with size 0x274 (server-side shared view; contradicts all game chunks; unresolved). Name conflicts: +0x7c groundEntityNum/targetNum/targetClient; +0x150 ownerNum/parentNum/aimTarget; +0x161 takedamage/turretAi/isPlayer; +0x168 classname vs modelIndex; +0x174 flags vs spawnFlags; +0x208 attachLink vs driverRef; attachModel counts 6 vs 7. Chunk 020 names +0xf0 inUse while the game's inuse byte is +0xfc. Items (048) and script_mover (051) reuse +0x1a0..+0x208 with different meanings (union keyed by entClass). The static world entity at 0x087a1fa0 uses the same layout (number 0x3fe).",
+  "confidence": "high for size and offsets listed as observed; medium for names"
+ },
+ {
+  "name": "gclient_t",
+  "size": "0x28a4",
+  "fields": [
+   {
+    "offset": "0x0000",
+    "type": "playerState_t",
+    "name": "ps",
+    "evidence": "046 (first member), 047/048/049/050/052/053/103 offsets inside it match playerState_t [observed]"
+   },
+   {
+    "offset": "0x26a8",
+    "type": "int",
+    "name": "sessionState",
+    "evidence": "046/047 sessionState; script field sessionstate; Player_SetSessionState 0x080f7efc writes 0 playing,1 dead,2 spectator,3 intermission [observed]"
+   },
+   {
+    "offset": "0x26ac",
+    "type": "int",
+    "name": "spectatorClient",
+    "evidence": "046/047; script field spectatorclient->0x26ac [observed]"
+   },
+   {
+    "offset": "0x26b0",
+    "type": "int",
+    "name": "field_26b0",
+    "evidence": "046 [unknown]"
+   },
+   {
+    "offset": "0x26b4",
+    "type": "float",
+    "name": "archiveTime",
+    "evidence": "046 archiveTime int; script field archivetime->0x26b4 type float; 048 Client_Get/SetUnk26b4; 047 field_26b4 [observed offset, type conflict int/float]"
+   },
+   {
+    "offset": "0x26b8",
+    "type": "int",
+    "name": "score",
+    "evidence": "046/049; script field score->0x26b8 [observed]"
+   },
+   {
+    "offset": "0x26bc",
+    "type": "int",
+    "name": "deaths",
+    "evidence": "046; 049 secondaryScore (sort key); script field deaths->0x26bc [observed]"
+   },
+   {
+    "offset": "0x26c0",
+    "type": "uint16",
+    "name": "pers",
+    "evidence": "046; script field pers->0x26c0 type 7; ClientConnect writes [observed]"
+   },
+   {
+    "offset": "0x26c4",
+    "type": "int",
+    "name": "connected",
+    "evidence": "046/047/048: 0 free,1 connecting,2 connected [observed]; 049 sortState, 052 sessionState, 103 field26c4 [name conflict]"
+   },
+   {
+    "offset": "0x26c8",
+    "type": "usercmd_t",
+    "name": "cmd",
+    "evidence": "046 (0x1c) [observed]"
+   },
+   {
+    "offset": "0x26e4",
+    "type": "usercmd_t",
+    "name": "oldcmd",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x2700",
+    "type": "int",
+    "name": "isBot",
+    "evidence": "046 ClientUserinfoChanged [observed]"
+   },
+   {
+    "offset": "0x2704",
+    "type": "int",
+    "name": "predictItems",
+    "evidence": "046/048 unk_2704 (Item_TouchPickup chooses event forwarding) [observed]"
+   },
+   {
+    "offset": "0x2708",
+    "type": "char[32]",
+    "name": "name",
+    "evidence": "046 name [observed]; script-visible name is +0x2784"
+   },
+   {
+    "offset": "0x2728",
+    "type": "int",
+    "name": "maxHealthSetting",
+    "evidence": "046; script field maxhealth->0x2728; 045 ammo_max_sample [observed]"
+   },
+   {
+    "offset": "0x272c",
+    "type": "int",
+    "name": "enterTime",
+    "evidence": "103 enterTime (setentertime) [inferred]"
+   },
+   {
+    "offset": "0x2734",
+    "type": "int",
+    "name": "voteCount",
+    "evidence": "047 [unknown]"
+   },
+   {
+    "offset": "0x273c",
+    "type": "int",
+    "name": "viewModelIndex",
+    "evidence": "103 [inferred]; 046 field_273c"
+   },
+   {
+    "offset": "0x2740",
+    "type": "int",
+    "name": "spectateMask",
+    "evidence": "046 [inferred]"
+   },
+   {
+    "offset": "0x2748",
+    "type": "int",
+    "name": "clientNum",
+    "evidence": "046; chunk 048 treats +0x2748 as a sub-record address; ClientDisconnect clears 0x2748..0x27a3 [observed]"
+   },
+   {
+    "offset": "0x274c",
+    "type": "int",
+    "name": "team",
+    "evidence": "046/047/052/053; 049 sessionTeam; script sessionteam 0 none,1 allies,2 axis,3 spectator [observed]"
+   },
+   {
+    "offset": "0x2750",
+    "type": "int",
+    "name": "modelIndex",
+    "evidence": "046 [inferred]"
+   },
+   {
+    "offset": "0x2754",
+    "type": "int[6]",
+    "name": "attachModelIndex",
+    "evidence": "046 [inferred]"
+   },
+   {
+    "offset": "0x276c",
+    "type": "int[6]",
+    "name": "attachTagIndex",
+    "evidence": "046 [inferred]"
+   },
+   {
+    "offset": "0x2784",
+    "type": "char[32]",
+    "name": "cleanName",
+    "evidence": "046 cleanName; script field name->0x2784; 047/048/050 name [observed offset, naming conflict]"
+   },
+   {
+    "offset": "0x27a4",
+    "type": "int",
+    "name": "psOffsetTime",
+    "evidence": "046; script field psoffsettime [observed]"
+   },
+   {
+    "offset": "0x27a8",
+    "type": "int",
+    "name": "followClient",
+    "evidence": "046 followClient; 047 lastFollowedClient [observed]"
+   },
+   {
+    "offset": "0x27ac",
+    "type": "int",
+    "name": "noclip",
+    "evidence": "046 field_27ac (ClientThink_real skips touch when set); 047 noclip [inferred]"
+   },
+   {
+    "offset": "0x27b0",
+    "type": "int",
+    "name": "ufo",
+    "evidence": "047 [inferred]"
+   },
+   {
+    "offset": "0x27b4",
+    "type": "int",
+    "name": "freezeControls",
+    "evidence": "103 (PlayerCmd_freezecontrols); 046 ClientThink_real maps to pm_flags 0x8000 [inferred]"
+   },
+   {
+    "offset": "0x27b8",
+    "type": "int",
+    "name": "lastThinkTime",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x27bc",
+    "type": "uint32",
+    "name": "buttons",
+    "evidence": "046/103; 045 buttons_prev; 049 flags27bc [observed offset, naming conflict]"
+   },
+   {
+    "offset": "0x27c0",
+    "type": "uint32",
+    "name": "oldButtons",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x27c4",
+    "type": "uint32",
+    "name": "buttonsPressed",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x27c8",
+    "type": "uint32",
+    "name": "buttonsLatched",
+    "evidence": "046; 103 oldButtons [name conflict]"
+   },
+   {
+    "offset": "0x27cc",
+    "type": "float[3]",
+    "name": "oldOrigin",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x27d8",
+    "type": "float[2]",
+    "name": "viewAnglesOut",
+    "evidence": "046 field_27d8/27dc store viewAnglesOut[0],[1] [observed]"
+   },
+   {
+    "offset": "0x27e0",
+    "type": "byte[0x20]",
+    "name": "damageFeedback",
+    "evidence": "103 damageTaken/damageDir; 045 recoil samples [unknown, conflict]"
+   },
+   {
+    "offset": "0x2800",
+    "type": "int",
+    "name": "inactivityDeadline",
+    "evidence": "045 inactivity_deadline; 046 field_2800 (ClientSpawn: g_inactivity*1000+time) [observed]"
+   },
+   {
+    "offset": "0x2808",
+    "type": "int",
+    "name": "lastSayTime",
+    "evidence": "046; 103 lastTalkTime [inferred]"
+   },
+   {
+    "offset": "0x2810",
+    "type": "float",
+    "name": "lerpFraction",
+    "evidence": "046/053 [inferred]"
+   },
+   {
+    "offset": "0x282c",
+    "type": "gentity_t *",
+    "name": "lookAtEnt",
+    "evidence": "052 ptr_282c; 103 lookAtEnt [inferred]"
+   },
+   {
+    "offset": "0x2830",
+    "type": "int",
+    "name": "lastTargetEnt",
+    "evidence": "046 field_2830 (ClientConnect writes 0x3ff); 052 lastTarget_2830; 053 useEntityNum [name conflict]"
+   },
+   {
+    "offset": "0x2838",
+    "type": "int",
+    "name": "targetIndex",
+    "evidence": "046; 053 useStartTime at 0x2834 [unknown]"
+   },
+   {
+    "offset": "0x2840..0x28a3",
+    "type": "mixed",
+    "name": "view springs",
+    "evidence": "046 field_2840..field_2898 (viewCalcA/B contexts), 045 recoil [observed offsets, semantics unknown]"
+   }
+  ],
+  "defined_in": [
+   "chunk_046_types.h",
+   "chunk_047_types.h",
+   "chunk_048_types.h",
+   "chunk_049_types.h",
+   "chunk_050_types.h",
+   "chunk_052_types.h",
+   "chunk_053_types.h",
+   "chunk_103_types.h",
+   "chunk_045_types.h",
+   "chunk_102_types.h (as client_s)"
+  ],
+  "conflicts": "Size 0x28a4 consistent (stride in G_Spawn, memset in ClientConnect/ClientSpawn, 0xa2900 = 64 x 0x28a4). Chunk 102 calls this struct client_s (name collides with the server client_s 0xb1064). Chunk 049 names +0x26c4 sortState; 046/047/048 connected. Chunk 049 uses +0x60 as usingTurretIndex but it is ps.groundEntityNum (see playerState_t). +0x2708 name vs +0x2784 cleanName semantic mismatch (script `.name` reads +0x2784). Hud lists live at +0x7a8/+0x1728 which is INSIDE ps (size 0x26a8).",
+  "confidence": "high for size, ps embedding and session fields; medium/low for 0x27e0+ region"
+ },
+ {
+  "name": "playerState_t",
+  "size": "0x26a8",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "int",
+    "name": "commandTime",
+    "evidence": "041/046 [observed]"
+   },
+   {
+    "offset": "0x004",
+    "type": "int",
+    "name": "pm_type",
+    "evidence": "039/041/042/043/044/046 (0 normal,1 dead? 4,5,6,7 seen) [observed]"
+   },
+   {
+    "offset": "0x00c",
+    "type": "uint32",
+    "name": "pm_flags",
+    "evidence": "008/041/042/043/044/046; 040 pmFlags2 [observed]; bits 0x1000,0x8000,0x10,0x20000,0x400000,0x800000 used by game"
+   },
+   {
+    "offset": "0x010",
+    "type": "int",
+    "name": "pm_time",
+    "evidence": "043/046 [inferred]; 040 jumpPhase conflicts"
+   },
+   {
+    "offset": "0x014",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "023/040/041/042/043/046 [observed]"
+   },
+   {
+    "offset": "0x020",
+    "type": "float[3]",
+    "name": "velocity",
+    "evidence": "040..046 [observed]"
+   },
+   {
+    "offset": "0x048",
+    "type": "int",
+    "name": "gravity",
+    "evidence": "041/043/046 [observed]"
+   },
+   {
+    "offset": "0x050",
+    "type": "int",
+    "name": "speed",
+    "evidence": "041/046 [observed]"
+   },
+   {
+    "offset": "0x054",
+    "type": "int[3]",
+    "name": "delta_angles",
+    "evidence": "008/042/046 [observed]"
+   },
+   {
+    "offset": "0x060",
+    "type": "int",
+    "name": "groundEntityNum",
+    "evidence": "041/042/043/044 [observed]; 046 field_60 uint16; 049 usingTurretIndex; 040 jumpBits60"
+   },
+   {
+    "offset": "0x0a0",
+    "type": "uint32",
+    "name": "eFlags",
+    "evidence": "039/042/046 [observed]; 040/041/044 name it buttonBits/pmFlags3 (conflict)"
+   },
+   {
+    "offset": "0x0a4",
+    "type": "int",
+    "name": "eventSequence",
+    "evidence": "041/046 [observed]"
+   },
+   {
+    "offset": "0x0a8",
+    "type": "int[4]",
+    "name": "events",
+    "evidence": "041/046 [observed]"
+   },
+   {
+    "offset": "0x0b8",
+    "type": "int[4]",
+    "name": "eventParms",
+    "evidence": "041/046 [observed]"
+   },
+   {
+    "offset": "0x0c8",
+    "type": "int",
+    "name": "eventSequenceSent",
+    "evidence": "041/046; 040 weaponIndex conflict [inferred]"
+   },
+   {
+    "offset": "0x0cc",
+    "type": "int",
+    "name": "clientNum",
+    "evidence": "023/039..046 all agree [observed]"
+   },
+   {
+    "offset": "0x0d0",
+    "type": "int",
+    "name": "offHandIndex",
+    "evidence": "043/044 [inferred]"
+   },
+   {
+    "offset": "0x0d4",
+    "type": "int",
+    "name": "weapon",
+    "evidence": "043/044/046/047/048(curWeapon) [observed]"
+   },
+   {
+    "offset": "0x0d8",
+    "type": "int",
+    "name": "weaponstate",
+    "evidence": "040/042/043/044 [observed]"
+   },
+   {
+    "offset": "0x0dc",
+    "type": "float",
+    "name": "weaponPosFrac",
+    "evidence": "043/044; 103 adsFraction [inferred]"
+   },
+   {
+    "offset": "0x0e8",
+    "type": "float[3]",
+    "name": "viewangles",
+    "evidence": "008/041/042/046 [observed]"
+   },
+   {
+    "offset": "0x0f8",
+    "type": "float",
+    "name": "viewHeight",
+    "evidence": "041/043/044/046 [observed]"
+   },
+   {
+    "offset": "0x12c",
+    "type": "int",
+    "name": "health",
+    "evidence": "046/048(syncedHealth)/103 [observed]"
+   },
+   {
+    "offset": "0x134",
+    "type": "int",
+    "name": "maxHealth",
+    "evidence": "046/048 [observed]"
+   },
+   {
+    "offset": "0x140",
+    "type": "int",
+    "name": "spawnCount",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x144",
+    "type": "int[128]",
+    "name": "ammo",
+    "evidence": "043/044/047/048/103 [observed]"
+   },
+   {
+    "offset": "0x344",
+    "type": "int[128]",
+    "name": "ammoclip",
+    "evidence": "043/044/047/048/103 [observed]"
+   },
+   {
+    "offset": "0x544",
+    "type": "uint32[4]",
+    "name": "weaponsOwned bitset",
+    "evidence": "043/044/048/103 [observed]"
+   },
+   {
+    "offset": "0x554",
+    "type": "byte[3]",
+    "name": "weaponSlot (index 1..2 used)",
+    "evidence": "043 heldSlot; 046 slotA 0x555/slotB 0x556; 048/103 weaponSlot 0x554 [inferred: BG_SetHeldSlot slot arg 1/2]"
+   },
+   {
+    "offset": "0x56c",
+    "type": "float[3]",
+    "name": "mins",
+    "evidence": "040/042/046 [observed]"
+   },
+   {
+    "offset": "0x578",
+    "type": "float[3]",
+    "name": "maxs",
+    "evidence": "same [observed]"
+   },
+   {
+    "offset": "0x594",
+    "type": "int",
+    "name": "linkedEntityNum",
+    "evidence": "046 (turret/viewlock entity, 0x3ff none); 049 turretEntityNum; 053 weaponEntityNum [inferred]"
+   },
+   {
+    "offset": "0x7a8",
+    "type": "hudelem_snapshot[31]",
+    "name": "hudListNoFlag",
+    "evidence": "048 HudElem_BuildClientLists (0xf80 bytes) [observed]"
+   },
+   {
+    "offset": "0x1728",
+    "type": "hudelem_snapshot[31]",
+    "name": "hudListFlag",
+    "evidence": "048 [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_022_types.h",
+   "chunk_023_types.h",
+   "chunk_046_types.h",
+   "chunk_039..045_types.h (partial)",
+   "chunk_048_types.h (hud lists)"
+  ],
+  "conflicts": "Size 0x26a8 consistent in 022/023/046. Many chunk-local names clash (see offsets): chunk 040 (pmove) disagrees with 043/044/041 at +0x08,+0x10,+0x90,+0xa0,+0xc8,+0xe4; chunk 049 names +0x60 usingTurretIndex; chunk 041 names +0xd4 linkedEntityNum while 043/044/046 call it weapon. Not resolved here (pmove lane owns the in-ps layout).",
+  "confidence": "medium; offsets with 3+ concurring chunks high"
+ },
+ {
+  "name": "level_locals_t",
+  "size": "0x3624 (zeroed block starting at 0x0864c380); chunk 046 asserts only 0x31c",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "gclient_t *",
+    "name": "clients",
+    "evidence": "046 level.clients; G_InitGame stores 0x087a2500 [observed]"
+   },
+   {
+    "offset": "0x004",
+    "type": "gentity_t *",
+    "name": "gentities",
+    "evidence": "046; G_InitGame stores 0x08716400 [observed]"
+   },
+   {
+    "offset": "0x00c",
+    "type": "int",
+    "name": "num_entities",
+    "evidence": "0x0864c38c; init 0x48; G_Spawn increments [observed]"
+   },
+   {
+    "offset": "0x010",
+    "type": "gentity_t *",
+    "name": "freeListHead",
+    "evidence": "0x0864c390 [observed]"
+   },
+   {
+    "offset": "0x014",
+    "type": "gentity_t *",
+    "name": "freeListTail",
+    "evidence": "0x0864c394 [observed]"
+   },
+   {
+    "offset": "0x018",
+    "type": "int",
+    "name": "logFile",
+    "evidence": "0x0864c398 [observed]"
+   },
+   {
+    "offset": "0x01c",
+    "type": "int",
+    "name": "creating",
+    "evidence": "0x0864c39c; 046 field_1c [observed]"
+   },
+   {
+    "offset": "0x020",
+    "type": "int",
+    "name": "spawning",
+    "evidence": "0x0864c3a0; 046 field_20 set around ClientSpawn [inferred]"
+   },
+   {
+    "offset": "0x1e4",
+    "type": "int",
+    "name": "maxclients",
+    "evidence": "046/047/048 [observed]"
+   },
+   {
+    "offset": "0x1e8",
+    "type": "int",
+    "name": "frameNum",
+    "evidence": "0x0864c568 G_RunFrame [observed]"
+   },
+   {
+    "offset": "0x1ec",
+    "type": "int",
+    "name": "time",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x1f0",
+    "type": "int",
+    "name": "previousTime",
+    "evidence": "0x0864c570 [observed]"
+   },
+   {
+    "offset": "0x1f4",
+    "type": "int",
+    "name": "frameTime",
+    "evidence": "0x0864c574 [observed]"
+   },
+   {
+    "offset": "0x1f8",
+    "type": "int",
+    "name": "startTime",
+    "evidence": "0x0864c578 [observed]"
+   },
+   {
+    "offset": "0x200",
+    "type": "int",
+    "name": "counter200",
+    "evidence": "046 field_200 (-> configstring 5) [observed use]"
+   },
+   {
+    "offset": "0x204",
+    "type": "int",
+    "name": "counter204",
+    "evidence": "046 field_204 (-> configstring 6) [observed use]"
+   },
+   {
+    "offset": "0x214",
+    "type": "int",
+    "name": "nameLockFlag",
+    "evidence": "046 field_214 [inferred]"
+   },
+   {
+    "offset": "0x218",
+    "type": "int",
+    "name": "numSortedClients",
+    "evidence": "046; 049 g_0864c598 [observed]"
+   },
+   {
+    "offset": "0x21c",
+    "type": "int[64]",
+    "name": "sortedClients",
+    "evidence": "046; 049 g_0864c59c [observed]"
+   },
+   {
+    "offset": "0xb1c",
+    "type": "int",
+    "name": "voteTime",
+    "evidence": "0x0864ce9c [observed]"
+   },
+   {
+    "offset": "0xb24",
+    "type": "int",
+    "name": "voteYes",
+    "evidence": "0x0864cea4 [observed]"
+   },
+   {
+    "offset": "0xb28",
+    "type": "int",
+    "name": "voteNo",
+    "evidence": "0x0864cea8 [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_046_types.h",
+   "chunk_047_types.h (as globals)",
+   "chunk_049_types.h (as globals)",
+   "chunk_052_types.h (as globals)"
+  ],
+  "conflicts": "Chunk 046 asserts size 0x31c (prefix up to sortedClients end) while G_InitGame memsets 0x3624 bytes at the same address; chunk 047/052 declare `level` as a pointer/int (client array base) and index it as an array; 052 `int32 level` vs 046 struct. Only the first 0x31c bytes are described as a struct; vote and later fields are stand-alone globals.",
+  "confidence": "medium"
+ },
+ {
+  "name": "entity_class_t",
+  "size": "0x28",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "void (*)(gentity_t*)",
+    "name": "think",
+    "evidence": "049 G_RunThink [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "void (*)(gentity_t*)",
+    "name": "onTrajectoryEnd",
+    "evidence": "050 [observed]; raw rows 5/6 hold G_ScriptMover_Think"
+   },
+   {
+    "offset": "0x08",
+    "type": "void (*)(gentity_t*,gentity_t*)",
+    "name": "onBlocked",
+    "evidence": "050 [observed]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "void (*)(gentity_t*,gentity_t*,int)",
+    "name": "touch",
+    "evidence": "045 g_08187d0c+0 / 053 onTouch [observed]"
+   },
+   {
+    "offset": "0x10",
+    "type": "void (*)(gentity_t*,gentity_t*)",
+    "name": "use",
+    "evidence": "053 onUse [observed]; raw rows 3/4 Ent_ToggleKind"
+   },
+   {
+    "offset": "0x14",
+    "type": "void (*)(gentity_t*,gentity_t*,int,const float*,int,const float*,int)",
+    "name": "pain",
+    "evidence": "047 G_Damage else-branch decompile [observed]"
+   },
+   {
+    "offset": "0x18",
+    "type": "void (*)(gentity_t*,gentity_t*,gentity_t*,int,int,int,const float*,int,int)",
+    "name": "die",
+    "evidence": "047; raw rows 9/10 hold player_die [observed]"
+   },
+   {
+    "offset": "0x1c",
+    "type": "void (*)(gentity_t*,void*)",
+    "name": "kindCallback",
+    "evidence": "052 Ent_RunKindCallback (table base +0x1c); raw rows 9/11 hold DObj_ServerAnimUpdate [observed]"
+   },
+   {
+    "offset": "0x20",
+    "type": "int",
+    "name": "mode",
+    "evidence": "049 field20; 050 kind==3 tested in missile runner [observed]"
+   },
+   {
+    "offset": "0x24",
+    "type": "int",
+    "name": "field24",
+    "evidence": "049 [unknown]"
+   }
+  ],
+  "defined_in": [
+   "chunk_045_types.h(entity_class_s)",
+   "chunk_047_types.h(entity_handler_s)",
+   "chunk_049_types.h(turret_mode_s)",
+   "chunk_050_types.h(cod2_entclass_s)",
+   "chunk_052_types.h",
+   "chunk_053_types.h(impact_entry_s)"
+  ],
+  "conflicts": "Same table at 0x08187d00 with five different bases: 045/053 at 0x08187d0c (touch first), 047 entity_handler at 0x08187d14 (pain,die), 052 at 0x08187d1c, 049/050 at 0x08187d00. The record layout above reconciles them using the decompile (die at +0x18, pain at +0x14 from 0x8101c58.c). Row count unknown (>= 14 observed rows 0..13).",
+  "confidence": "high"
+ },
+ {
+  "name": "hudelem_t",
+  "size": "0x8c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "type",
+    "evidence": "048 type (0=free; 7 timer, 8, 0xc shader timer); 047 inUse (Init sets 1) [observed]"
+   },
+   {
+    "offset": "0x10",
+    "type": "float",
+    "name": "fontscale",
+    "evidence": "047 init 1.0f; field table fontscale->0x10 [observed]"
+   },
+   {
+    "offset": "0x14",
+    "type": "int",
+    "name": "font",
+    "evidence": "field table [observed]"
+   },
+   {
+    "offset": "0x18",
+    "type": "int",
+    "name": "alignBits",
+    "evidence": "field table alignx/aligny masks 3 shift 2/0 [observed]"
+   },
+   {
+    "offset": "0x1c",
+    "type": "int",
+    "name": "alignBits2",
+    "evidence": "horzalign/vertalign mask 7 shift 3/0 [observed]"
+   },
+   {
+    "offset": "0x20",
+    "type": "int",
+    "name": "colorAlpha",
+    "evidence": "field table color/alpha; 047 init -1 [observed]"
+   },
+   {
+    "offset": "0x30",
+    "type": "int",
+    "name": "label",
+    "evidence": "field table [observed]"
+   },
+   {
+    "offset": "0x34",
+    "type": "int",
+    "name": "width",
+    "evidence": "048 [inferred]"
+   },
+   {
+    "offset": "0x38",
+    "type": "int",
+    "name": "height",
+    "evidence": "048 [inferred]"
+   },
+   {
+    "offset": "0x3c",
+    "type": "int",
+    "name": "shader",
+    "evidence": "048 [inferred]"
+   },
+   {
+    "offset": "0x68",
+    "type": "int",
+    "name": "endTime",
+    "evidence": "048 [inferred]"
+   },
+   {
+    "offset": "0x6c",
+    "type": "int",
+    "name": "duration",
+    "evidence": "048 [inferred]"
+   },
+   {
+    "offset": "0x78",
+    "type": "float",
+    "name": "sort",
+    "evidence": "field table sort->0x78 type 1 [observed]"
+   },
+   {
+    "offset": "0x7c",
+    "type": "int",
+    "name": "foreground",
+    "evidence": "field table [observed]"
+   },
+   {
+    "offset": "0x80",
+    "type": "int",
+    "name": "targetClient/ownerKey",
+    "evidence": "048 targetClient (0x3ff = all); 047 ownerKey compared in HudElem_FreeAllForOwner [observed]"
+   },
+   {
+    "offset": "0x84",
+    "type": "int",
+    "name": "viewerClient/secondKey",
+    "evidence": "048/047 [observed]"
+   },
+   {
+    "offset": "0x88",
+    "type": "int",
+    "name": "archived/listSelector",
+    "evidence": "048 listSelector; field table archived->0x88; 047 init 1 [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_047_types.h",
+   "chunk_048_types.h"
+  ],
+  "conflicts": "Both agree on size 0x8c and pool g_hudelems (0x08628f80, 1024 entries). Semantic conflict at 0x80/0x84/0x88: 047 treats 0x80 as the owner key (a gentity pointer-sized id) and 048 as targetClient (client filter); same bytes may hold either depending on newhudelem/newclienthudelem/newteamhudelem. Field 0x88 is both `archived` (script) and the flagged/unflagged list selector.",
+  "confidence": "medium"
+ },
+ {
+  "name": "hudelem_field_t",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "047/048 [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "offset",
+    "evidence": "047/048 [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "type",
+    "evidence": "0 int,1 float,3 script string [observed in dump]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint32",
+    "name": "mask",
+    "evidence": "047/048 [observed]"
+   },
+   {
+    "offset": "0x10",
+    "type": "uint8",
+    "name": "shift",
+    "evidence": "047/048 [observed]"
+   },
+   {
+    "offset": "0x14",
+    "type": "void (*)(hudelem_t*,int)",
+    "name": "getter",
+    "evidence": "048 only [inferred]"
+   },
+   {
+    "offset": "0x18",
+    "type": "void (*)(hudelem_t*,int)",
+    "name": "setter",
+    "evidence": "048 only [inferred]"
+   }
+  ],
+  "defined_in": [
+   "chunk_047_types.h (size 0x14)",
+   "chunk_048_types.h (size 0x1c)"
+  ],
+  "conflicts": "Stride 0x1c verified by dumping table 0x08159ee0 (15 entries terminated by null name) [observed]; chunk 047 asserts size 0x14. Use 0x1c.",
+  "confidence": "high"
+ },
+ {
+  "name": "bg_item_t",
+  "size": "0x2c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "field00",
+    "evidence": "043 [unknown]; 040 classname pointer at +0; 051 gitem classname at +0 [conflict: pointer vs int]"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "fromWeapon98",
+    "evidence": "043 [inferred]"
+   },
+   {
+    "offset": "0x14",
+    "type": "const char *",
+    "name": "name/pickupAlias",
+    "evidence": "040 pickupAlias; 043 name; 048 name [observed]"
+   },
+   {
+    "offset": "0x1c",
+    "type": "int",
+    "name": "itemType",
+    "evidence": "040 giType; 043/048 itemType (0 none,1 weapon,2 ammo,3 health) [observed]"
+   },
+   {
+    "offset": "0x20",
+    "type": "int",
+    "name": "weaponIndex",
+    "evidence": "040 giTag; 043/048 [observed]"
+   },
+   {
+    "offset": "0x24",
+    "type": "int",
+    "name": "ammoIndex",
+    "evidence": "043 [inferred]"
+   },
+   {
+    "offset": "0x28",
+    "type": "int",
+    "name": "clipIndex",
+    "evidence": "043 [inferred]"
+   }
+  ],
+  "defined_in": [
+   "chunk_040_types.h(BGItem)",
+   "chunk_043_types.h(bgItem043_s)",
+   "chunk_048_types.h(itemdef_s)",
+   "chunk_051_types.h(gitem_s)"
+  ],
+  "conflicts": "Same table at 0x081850c0, stride 0x2c, 0x81 entries. 051 reads +0 as a classname pointer (G_FindItemForClassname) and 048 reads +0 as itemName; 043 names +0 field00 and writes ints. 048 puts model pointers at +8/+0xc, 043 puts WeaponDef fields there; unresolved.",
+  "confidence": "medium"
+ },
+ {
+  "name": "weaponDef_t",
+  "size": "0x5fc (047) vs 0x604 (045)",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "043 internalName; 047/049 name [observed]"
+   },
+   {
+    "offset": "0x004",
+    "type": "const char *",
+    "name": "displayName",
+    "evidence": "043 field04Name; 102 displayName [observed]"
+   },
+   {
+    "offset": "0x078",
+    "type": "int",
+    "name": "field78",
+    "evidence": "043 (==3: first type-3 weapon); 047 (!=0: use global hitloc table); 050/103 [observed use]"
+   },
+   {
+    "offset": "0x07c",
+    "type": "int",
+    "name": "weaponClass",
+    "evidence": "039/049 weaponClass; 043 field7c (==9 special); 040 animTrack7c [conflict]"
+   },
+   {
+    "offset": "0x080",
+    "type": "int",
+    "name": "slotType",
+    "evidence": "043 weaponSlot (1/2 held slots); 103 slotType [inferred]"
+   },
+   {
+    "offset": "0x088",
+    "type": "int",
+    "name": "slotStackable",
+    "evidence": "043 [inferred]"
+   },
+   {
+    "offset": "0x1c4",
+    "type": "const char *",
+    "name": "ammoName",
+    "evidence": "043/102 [observed]"
+   },
+   {
+    "offset": "0x1c8",
+    "type": "int",
+    "name": "ammoIndex",
+    "evidence": "043/102/103 [observed]"
+   },
+   {
+    "offset": "0x1cc",
+    "type": "const char *",
+    "name": "clipName",
+    "evidence": "043/102 [observed]"
+   },
+   {
+    "offset": "0x1d0",
+    "type": "int",
+    "name": "clipIndex",
+    "evidence": "043 [observed]"
+   },
+   {
+    "offset": "0x1d4",
+    "type": "int",
+    "name": "maxAmmo",
+    "evidence": "043 [observed]; 102 maxAmmo at 0x1c0, 103 startAmmo at 0x1c0 [conflict]"
+   },
+   {
+    "offset": "0x1d8",
+    "type": "int",
+    "name": "clipSize",
+    "evidence": "043 [observed]"
+   },
+   {
+    "offset": "0x1e0",
+    "type": "const char *",
+    "name": "sharedAmmoCapName",
+    "evidence": "043 [observed]"
+   },
+   {
+    "offset": "0x1e4",
+    "type": "int",
+    "name": "sharedAmmoCapIndex",
+    "evidence": "043; 102 weaponClass [conflict]"
+   },
+   {
+    "offset": "0x1e8",
+    "type": "int",
+    "name": "sharedAmmoCap",
+    "evidence": "043 [observed]"
+   },
+   {
+    "offset": "0x1ec",
+    "type": "int",
+    "name": "damage",
+    "evidence": "049 [inferred]"
+   },
+   {
+    "offset": "0x368",
+    "type": "const char *",
+    "name": "altWeaponName",
+    "evidence": "043 [observed]"
+   },
+   {
+    "offset": "0x36c",
+    "type": "int",
+    "name": "altWeaponIndex",
+    "evidence": "043 [observed]"
+   },
+   {
+    "offset": "0x5b0",
+    "type": "float[19]",
+    "name": "hitLocMultiplier",
+    "evidence": "047 G_GetHitLocMultiplier [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_043_types.h(WeaponDef043_s)",
+   "chunk_047_types.h(weaponDef_s)",
+   "chunk_049_types.h(weaponinfo_s)",
+   "chunk_050_types.h",
+   "chunk_045_types.h(weapon_def_s 0x604)",
+   "chunk_102_types.h",
+   "chunk_103_types.h"
+  ],
+  "conflicts": "Size 0x5fc (047) vs 0x604 (045) unreconciled; 0x1c0 is maxAmmo/startAmmo/field1c0 in 102/103/043; 0x7c is weaponClass vs special-9 flag vs animTrack. Hitloc multiplier array (19 floats) at 0x5b0 ends at 0x5fc, matching 047's size; 045's 0x604 may include 8 more bytes.",
+  "confidence": "low-medium"
+ },
+ {
+  "name": "trajectory_t",
+  "size": "0x24",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "trType",
+    "evidence": "049/051 [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "trTime",
+    "evidence": "051 [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "trDuration",
+    "evidence": "051 [observed]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "trBase",
+    "evidence": "050/051 [observed]"
+   },
+   {
+    "offset": "0x18",
+    "type": "float[3]",
+    "name": "trDelta",
+    "evidence": "050/051 [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_040_types.h",
+   "chunk_049_types.h",
+   "chunk_050_types.h",
+   "chunk_051_types.h",
+   "chunk_104_types.h"
+  ],
+  "conflicts": "None on layout; 040 names the struct `Trajectory`.",
+  "confidence": "high"
+ },
+ {
+  "name": "trace_t",
+  "size": "0x24",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float",
+    "name": "fraction",
+    "evidence": "023/041/047/048 [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "float[3]",
+    "name": "normal",
+    "evidence": "005/023/040/041/042/052 [observed]; 045/048/053 call it endpos"
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "surfaceFlags",
+    "evidence": "003/040/041/042/050/053/106 [observed]"
+   },
+   {
+    "offset": "0x14",
+    "type": "int",
+    "name": "contents",
+    "evidence": "003/023/041 [observed]"
+   },
+   {
+    "offset": "0x1c",
+    "type": "uint16",
+    "name": "entityNum",
+    "evidence": "023/041/048/050/052/053 [observed]"
+   },
+   {
+    "offset": "0x22",
+    "type": "byte",
+    "name": "allsolid_or_startsolid",
+    "evidence": "see conflicts"
+   }
+  ],
+  "defined_in": [
+   "chunk_040_types.h",
+   "chunk_041_types.h",
+   "chunk_048_types.h(trace_result_s)",
+   "chunk_050_types.h",
+   "chunk_052_types.h(game_trace_result_s)",
+   "chunk_053_types.h",
+   "chunk_101_types.h",
+   "chunk_005_types.h(trace_result_s 0x24)"
+  ],
+  "conflicts": "Sizes: 0x24 (005/040/041/050/052/101) vs 0x28 (042 trace_s) vs 0x30 (047 trace_result_s). Bytes 0x22/0x23: chunks 003/041/045/050/106 put startsolid at 0x22 and allsolid at 0x23; chunks 040/042/048 put allsolid at 0x22 (048: startsolid at 0x23). Contradiction listed, not resolved by guess. Field 0x04 is `normal` in some chunks and `endpos` (chunk 045/048/053) in others; the chunk-048 use `tr.endpos[2] < 0.5f` reads a normal component.",
+  "confidence": "medium"
+ },
+ {
+  "name": "usercmd_t",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "serverTime",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "buttons",
+    "evidence": "008/041/046 [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint8",
+    "name": "weapon",
+    "evidence": "008; 046 field_08 [inferred]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int[3]",
+    "name": "angles",
+    "evidence": "008/041/042/046 [observed]"
+   },
+   {
+    "offset": "0x18",
+    "type": "int8",
+    "name": "forwardMove",
+    "evidence": "008/041/042 [observed]"
+   },
+   {
+    "offset": "0x19",
+    "type": "int8",
+    "name": "rightMove",
+    "evidence": "008/041 [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_008_types.h",
+   "chunk_020_types.h",
+   "chunk_022_types.h",
+   "chunk_041_types.h",
+   "chunk_042_types.h",
+   "chunk_046_types.h"
+  ],
+  "conflicts": "Size 0x1c consistent; chunk 040 mentions deltaMsec at 0x28 (outside the struct, inside pmove_t).",
+  "confidence": "medium-high"
+ },
+ {
+  "name": "game_attach_node_t",
+  "size": "0x70",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "gentity_t *",
+    "name": "owner",
+    "evidence": "052 [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "gentity_t *",
+    "name": "next",
+    "evidence": "052 [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint16",
+    "name": "scrName",
+    "evidence": "052 [observed]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "tagIndex",
+    "evidence": "052 [observed]"
+   },
+   {
+    "offset": "0x10",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "052 [observed]"
+   },
+   {
+    "offset": "0x34",
+    "type": "float[3]",
+    "name": "angles",
+    "evidence": "052 [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_052_types.h"
+  ],
+  "conflicts": "Single source (chunk 049 sees the same pointer as driverRef, ent->driverRef->ent).",
+  "confidence": "medium"
+ },
+ {
+  "name": "entity_pair_t",
+  "size": "0x0c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint16",
+    "name": "entityA",
+    "evidence": "049/052 [observed]"
+   },
+   {
+    "offset": "0x02",
+    "type": "uint16",
+    "name": "entityB",
+    "evidence": "049/052 [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "genA",
+    "evidence": "entity+0x228 snapshot [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "genB",
+    "evidence": "[observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_049_types.h",
+   "chunk_052_types.h"
+  ],
+  "conflicts": "None.",
+  "confidence": "high"
+ },
+ {
+  "name": "corpse_slot_t",
+  "size": "0x4c8",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "int",
+    "name": "handle/header",
+    "evidence": "048 ent_ext_s; 103 corpse103_s [unknown]"
+   },
+   {
+    "offset": "0x004",
+    "type": "int",
+    "name": "entNum",
+    "evidence": "052 reads at base 0x0884e7bc; -1 when free [observed]"
+   },
+   {
+    "offset": "0x00c",
+    "type": "byte[...]",
+    "name": "animBlock",
+    "evidence": "048 Ent_UpdateDObj passes slot+0x0c as anim block [inferred]"
+   },
+   {
+    "offset": "0x010",
+    "type": "byte[0x4b8]",
+    "name": "clientInfoCopy",
+    "evidence": "103 memcpy 0x4b8 from g_clientInfos [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_048_types.h(ent_ext_s)",
+   "chunk_052_types.h (stride only)",
+   "chunk_103_types.h(corpse103_s)"
+  ],
+  "conflicts": "Stride 0x4c8, 8 entries at 0x0884e7b8 confirmed by 048/052/103; internal layout reconciled only partially.",
+  "confidence": "low-medium"
+ },
+ {
+  "name": "clientInfo_t",
+  "size": "0x4b8",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "int",
+    "name": "field_00",
+    "evidence": "046 (set to 1 in ClientConnect) [observed]"
+   },
+   {
+    "offset": "0x004",
+    "type": "int",
+    "name": "field_04",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x008",
+    "type": "int",
+    "name": "clientNum",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x00c",
+    "type": "char[32]",
+    "name": "name",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x02c",
+    "type": "int",
+    "name": "team",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x040",
+    "type": "char[64]",
+    "name": "modelName",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x080",
+    "type": "char[384]",
+    "name": "attachModelNames",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x200",
+    "type": "char[384]",
+    "name": "attachTagNames",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x3e8",
+    "type": "float[3]",
+    "name": "viewangles",
+    "evidence": "046 [observed]"
+   },
+   {
+    "offset": "0x4a4",
+    "type": "void *",
+    "name": "poseHandle",
+    "evidence": "046 field_4a4 preserved across ClientConnect; 048 Pool_AllocGameObjects; 049 pose [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_046_types.h",
+   "chunk_049_types.h(turret_user_s: useFlags at 0x390, turret ptr 0x394)",
+   "chunk_048.cpp(pool stride)"
+  ],
+  "conflicts": "Chunk 049 reuses the same 0x4b8-byte bank as `turret_user_s` (useFlags +0x390, turret +0x394) while chunk 046 maps +0x380..+0x3e0 differently (pad_0380[0x60]). Overlap unresolved; both agree on size and +0x4a4.",
+  "confidence": "medium"
+ },
+ {
+  "name": "entityFieldDef_t",
+  "size": "0x10",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "051; dump of 0x0815e820 [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "offset",
+    "evidence": "same [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "type",
+    "evidence": "0 int,1 float,2 string,3 scrstring,4 vec3,5 entity,6 yaw,7 u16 object,8 model [chunk 051 comment, inferred]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "void(*)(gentity_t*,int)",
+    "name": "setter",
+    "evidence": "dump shows nonzero for classname/origin/model/spawnflags/health/angles [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_051_types.h"
+  ],
+  "conflicts": "The player field table (playerFieldDef_t, size 0x14: name, offset, type, setter, getter at 0x08157ce0, 13 entries) from chunk 046 uses the same name/offset/type prefix.",
+  "confidence": "high"
+ },
+ {
+  "name": "scriptFuncDef_t",
+  "size": "0x0c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "dump of 0x08188040 (145 entries), 0x08188720 (59 entries), 0x08158a40 (59 player methods) [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "void *",
+    "name": "handler",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "developerOnly/flag",
+    "evidence": "1 for print,println,line,assert*,getentbynum,... [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_050_types.h",
+   "chunk_046_types.h(playerMethodDef_t)",
+   "chunk_048_types.h(hudelem_method_s)"
+  ],
+  "conflicts": "None.",
+  "confidence": "high"
+ },
+ {
+  "name": "spawnDef_t",
+  "size": "0x08",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "051; dump of 0x08188a00 (21 entries) [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "void (*)(gentity_t*)",
+    "name": "spawn",
+    "evidence": "[observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_051_types.h"
+  ],
+  "conflicts": "None.",
+  "confidence": "high"
+ },
+ {
+  "name": "objective_t",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "state",
+    "evidence": "050 [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "050 [observed]"
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "entNum",
+    "evidence": "050 (0x3ff none) [observed]"
+   },
+   {
+    "offset": "0x14",
+    "type": "int",
+    "name": "unk_14",
+    "evidence": "[unknown]"
+   },
+   {
+    "offset": "0x18",
+    "type": "int",
+    "name": "icon",
+    "evidence": "050 (shader index via G_ShaderIndex) [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_050_types.h"
+  ],
+  "conflicts": "Single source.",
+  "confidence": "medium"
+ },
+ {
+  "name": "turret_t",
+  "size": "0x44",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "inUse",
+    "evidence": "049 [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "flags",
+    "evidence": "049 [observed]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[4]",
+    "name": "arcTop,arcRight,arcBottom,arcLeft",
+    "evidence": "049 [observed]"
+   },
+   {
+    "offset": "0x1c",
+    "type": "float",
+    "name": "restAngle",
+    "evidence": "049 [observed]"
+   },
+   {
+    "offset": "0x20",
+    "type": "int",
+    "name": "weaponParam",
+    "evidence": "049 [inferred]"
+   },
+   {
+    "offset": "0x24",
+    "type": "int",
+    "name": "tagSlot",
+    "evidence": "049 [inferred]"
+   },
+   {
+    "offset": "0x2c",
+    "type": "float[3]",
+    "name": "aimOrigin",
+    "evidence": "049 [inferred]"
+   }
+  ],
+  "defined_in": [
+   "chunk_049_types.h"
+  ],
+  "conflicts": "Single source.",
+  "confidence": "medium"
+ }
+]

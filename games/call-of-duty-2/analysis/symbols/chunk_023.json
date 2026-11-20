@@ -1,0 +1,741 @@
+{
+ "chunk": 23,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0809a408",
+   "name": "SV_BuildClientSnapshot",
+   "signature": "void SV_BuildClientSnapshot(struct client_s *cl)",
+   "subsystem": "server/snapshot",
+   "confidence": "observed",
+   "evidence": "* Name evidence: error string \"SV_BuildClientSnapshot: bad gEnt\" at 0x0814c320 (without the leading 0x15 byte); builds * client_frame_s (frames[outgoingSequence & 31]) from svs snapshot ring buffers or the cached snapshot frame.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809aad0",
+   "name": "SV_RateMsec",
+   "signature": "int SV_RateMsec(struct client_s *cl, int messageSize)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: string \"It would take %ims to send %i bytes to client %s (rate %i)\"; Quake III SV_RateMsec counterpart * (clamp 1500, optional max rate dvar, (size+48)*1000/rate).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809aba2",
+   "name": "SV_SendMessageToClient",
+   "signature": "void SV_SendMessageToClient(struct msg_s *msg, struct client_s *cl)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: Quake III SV_SendMessageToClient counterpart: compresses the message (first 4 bytes raw), records * frame messageSize/Sent/Acked, transmits through the netchan wrapper, schedules nextSnapshotTime from rate. * Exception-unwind cleanup of the TempBuffer (catch handler at 0x0809adba) is not modelled.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809adea",
+   "name": "SV_SendClientSnapshot",
+   "signature": "void SV_SendClientSnapshot(struct client_s *cl)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: Quake III SV_SendClientSnapshot counterpart; strings \"WARNING: msg overflowed for %s, trying to recover\", * \"WARNING: client disconnected for msg overflow: %s\", \"EXE_SERVERMESSAGEOVERFLOW\". Message-write callee semantics * (fn_0806800c writing the constant 7 as terminator) are inferred.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809b016",
+   "name": "SV_ArchiveSnapshot",
+   "signature": "void SV_ArchiveSnapshot(void)",
+   "subsystem": "server/snapshot",
+   "confidence": "observed",
+   "evidence": "* Name evidence: string \"SV_ArchiveSnapshot: ignoring snapshot because it overflowed.\" and anchor SV_ArchiveSnapshot. * Writes a (full or delta) snapshot into the archive ring buffer and caches entity/client state. Exception-unwind * cleanup of TempBuffer is not modelled.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809bcce",
+   "name": "SV_SendClientMessages",
+   "signature": "void SV_SendClientMessages(void)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: Quake III SV_SendClientMessages counterpart; string \"bpspc(%2.0f) bps(%2.0f) pk(%i) ubps(%2.0f) upk(%i) * cr(%2.2f) acr(%2.2f)\". Also keeps a 20-slot sliding window of sent/unsent byte counts (0849f638/0849f694).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809bf50",
+   "name": "Lerp_Float",
+   "signature": "float Lerp_Float(float a, float b, float t)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: computes b*t + (1-t)*a; linear interpolation. Returns float in st0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809bf66",
+   "name": "Vec3_Clear_0809bf66",
+   "signature": "void Vec3_Clear_0809bf66(float *v)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: zeroes three consecutive 32-bit words (vec3 clear).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809bf90",
+   "name": "Vec3_Copy_0809bf90",
+   "signature": "void Vec3_Copy_0809bf90(const float *src, float *dst)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: copies three 32-bit words from src to dst (VectorCopy).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809bfc0",
+   "name": "SV_WriteVoicePackets",
+   "signature": "void SV_WriteVoicePackets(struct client_s *cl, struct msg_s *msg)",
+   "subsystem": "server/voice",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: writes voicePacketCount then, per queued packet, talker byte, length and payload bytes into a message. * The two writer callees (0806800c / 08068044) are unnamed; the length field is written with the same callee as the count.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809c0a2",
+   "name": "SV_SendClientVoiceData",
+   "signature": "void SV_SendClientVoiceData(struct client_s *cl)",
+   "subsystem": "server/voice",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: string \"WARNING: voice msg overflowed for %s\"; sends an out-of-band packet beginning with the string \"v\" * (rodata 0x0814c5e0) followed by the queued voice packets, then clears the queue.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809c1dc",
+   "name": "SV_GetClientSendVoice",
+   "signature": "byte SV_GetClientSendVoice(int clientNum)",
+   "subsystem": "server/voice",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Returns svs.clients[clientNum].sendVoice (byte at client+0xb1020); field name is from the structs file, purpose as a send gate only inferred.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809c1fa",
+   "name": "SV_GetClientMuteListEntry",
+   "signature": "byte SV_GetClientMuteListEntry(int clientNum, int talker)",
+   "subsystem": "server/snapshot",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Returns svs.clients[clientNum].muteList[talker] (byte at client+0xb0fe0+talker). Old name Flag was less precise about the indexing.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809c21c",
+   "name": "SV_QueueVoicePacket",
+   "signature": "void SV_QueueVoicePacket(byte talker, int listener, struct voicepacket_s *pkt)",
+   "subsystem": "server/voice",
+   "confidence": "inferred",
+   "evidence": "* Appends a received voice packet to listener's queue (max 40), tagging the talker.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809c2ee",
+   "name": "SV_ParseVoicePacketsLocal",
+   "signature": "void SV_ParseVoicePacketsLocal(struct client_s *cl, struct msg_s *msg)",
+   "subsystem": "server/voice",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: string \"Received invalid voice packet of size %i from %s\"; reads packet count then each packet and * hands it to fn_080f9976 with the client's gentity. The talker byte of the local packet is never written (uninitialised).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809c3c6",
+   "name": "SV_ParseVoicePackets",
+   "signature": "void SV_ParseVoicePackets(struct client_s *cl, struct msg_s *msg)",
+   "subsystem": "server/voice",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: string \"Received invalid voice packet of size %i from %s\". Reads voice packets from a client and queues * them to every other connected client (state > 1) that does not mute the talker and has the voice flag set. The length is * read with fn_080683f2 (differs from the count reader fn_080683a8).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809c544",
+   "name": "SV_ClipHandleForEntity",
+   "signature": "int SV_ClipHandleForEntity(struct gentity_s *ent)",
+   "subsystem": "server/world",
+   "confidence": "inferred",
+   "evidence": "* Q3 SV_ClipHandleForEntity counterpart: brush models (bmodel) return a stored handle (entityState +0x8c), otherwise a * temporary box model built from mins/maxs/contents (fn_080592e2).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809c596",
+   "name": "SV_UnlinkEntity",
+   "signature": "void SV_UnlinkEntity(struct gentity_s *ent)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "* Q3 SV_UnlinkEntity counterpart: clears linked and removes the svEntity from its world sector.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809c5c2",
+   "name": "SV_SnapNearIntegers",
+   "signature": "void SV_SnapNearIntegers(float *v)",
+   "subsystem": "server/snapshot",
+   "confidence": "unknown",
+   "evidence": "* For each of 3 components, snaps to the nearest integer when the squared difference is below 1.0000001e-06.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809c63a",
+   "name": "SV_LinkEntity",
+   "signature": "void SV_LinkEntity(struct gentity_s *ent)",
+   "subsystem": "server/world",
+   "confidence": "inferred",
+   "evidence": "* Q3 SV_LinkEntity counterpart: packs entityState.solid from mins/maxs (bmodel -> 0xffffff), computes absmin/absmax * (with rotation handling and 1-unit padding), recomputes clusters, adds the entity to the world sector tree.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809cd64",
+   "name": "SV_ClipMoveToEntity_Box",
+   "signature": "void SV_ClipMoveToEntity_Box(struct BoxHitTrace *clipArg, struct svEntity_s *touch, struct trace_s *tr)",
+   "subsystem": "server/world",
+   "confidence": "inferred",
+   "evidence": "* Q3 SV_ClipMoveToEntity counterpart (box version): tests the swept box against one entity and updates the trace.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809cf08",
+   "name": "SV_ClipMoveToEntity_Line",
+   "signature": "void SV_ClipMoveToEntity_Line(struct SegHitTrace *clipArg, struct svEntity_s *touch, struct trace_s *tr)",
+   "subsystem": "server/world",
+   "confidence": "inferred",
+   "evidence": "* Line-trace counterpart of SV_ClipMoveToEntity (point trace, optional rotated brush-model / capsule path). * Local cmtrace_s is at ebp-0x68; its pseudocode locals were mis-split by the decompiler.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809d37c",
+   "name": "SV_ClipBoxHitsEntity",
+   "signature": "int SV_ClipBoxHitsEntity(struct BoxQueryTrace *clipArg, struct svEntity_s *touch)",
+   "subsystem": "server/world",
+   "confidence": "inferred",
+   "evidence": "* Boolean box test against a single entity (returns -1 on hit, 0 otherwise); uses the boxclip_b layout.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809d4ea",
+   "name": "SV_ClipLineHitsEntity",
+   "signature": "int SV_ClipLineHitsEntity(struct SegQueryA *clipArg, struct svEntity_s *touch)",
+   "subsystem": "server/world",
+   "confidence": "inferred",
+   "evidence": "* Boolean line test against a single entity (-1 on hit, 0 otherwise); lineclip_b layout, with the rotated brush-model * path when the entity has svFlags bit 4 and flag24 is set.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809d884",
+   "name": "SV_Trace",
+   "signature": "void SV_Trace(struct trace_s *results, const float *start, const float *mins, const float *maxs, const float *end, int passEntityNum, int contentmask, int param8, int param9, int extraCheck)",
+   "subsystem": "server/world",
+   "confidence": "inferred",
+   "evidence": "* Q3 SV_Trace counterpart: world trace via fn_0805b894, then clips against entities (line or box clip structs).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809dbbe",
+   "name": "SV_TraceIsClear",
+   "signature": "int SV_TraceIsClear(float *start, float *mins, float *maxs, float *end, int passEntityNum, int passOwnerNum, int contentmask, int flag, int extraCheck)",
+   "subsystem": "server/world",
+   "confidence": "unknown",
+   "evidence": "* Returns 1 when the swept line/box is clear of the world and entities (0 on obstruction). The stack layout matches * boxclip_b_s (mins/maxs/extent+1/start/end then pass/owner/mask).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809de38",
+   "name": "SV_TraceAccumulateHit",
+   "signature": "void SV_TraceAccumulateHit(int *hit, float *start, float *mins, float *maxs, float *end, int passEntityNum, int passOwnerNum, int contentmask)",
+   "subsystem": "server/world",
+   "confidence": "unknown",
+   "evidence": "* Like SV_TraceIsClear but accumulates into *hit: first the world test result (previous value passed in), then, if still * zero, the entity line/box test.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e05e",
+   "name": "SV_BoxEntityHit",
+   "signature": "int SV_BoxEntityHit(const float *start, const float *mins, const float *maxs, const float *end, int entityNum, unsigned int contentmask)",
+   "subsystem": "server/world",
+   "confidence": "unknown",
+   "evidence": "* Tests the swept box (points start/end, extents mins/maxs) against entity entityNum: contents mask, expanded-bounds * overlap against absmin/absmax, then the clip-model test. Returns -1 on hit, 0 otherwise.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e368",
+   "name": "SV_PointContents",
+   "signature": "unsigned int SV_PointContents(float *p, int passEntityNum, unsigned int contentmask)",
+   "subsystem": "server/world",
+   "confidence": "inferred",
+   "evidence": "* Q3 SV_PointContents counterpart: world contents at p ORed with contents of every entity (except passEntityNum) * found in a zero-size area query, masked by contentmask.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e470",
+   "name": "Round_Float",
+   "signature": "int Round_Float(float x)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "* floor(x + 0.5) converted to int by truncation (fistp with truncating control word).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e4a6",
+   "name": "Vec2_Add",
+   "signature": "void Vec2_Add(const float *a, const float *b, float *out)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "* Adds only the first two components (x,y).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e4d2",
+   "name": "Vec3_Copy2",
+   "signature": "void Vec3_Copy2(const float *src, float *dst)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "* Copies three words (duplicate of Vec3_Copy at 0809bf90).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e502",
+   "name": "Vec3_Add_0809e502",
+   "signature": "void Vec3_Add_0809e502(const float *a, const float *b, float *out)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "see chunk_023.cpp",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e546",
+   "name": "Vec3_Subtract_0809e546",
+   "signature": "void Vec3_Subtract_0809e546(const float *a, const float *b, float *out)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "see chunk_023.cpp",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e58a",
+   "name": "Vec3_Scale",
+   "signature": "void Vec3_Scale(const float *v, float s, float *out)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "see chunk_023.cpp",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e5c4",
+   "name": "Com_UpdateQuitOnErrorFlag",
+   "signature": "void Com_UpdateQuitOnErrorFlag(void)",
+   "subsystem": "common/filesystem",
+   "confidence": "inferred",
+   "evidence": "* Name evidence: strings \"QuitOnError\" and \"r_vc_compile\": caches whether errors should quit (command-line flag or * r_vc_compile==2) once the gate callee fn_080b1268 reports true.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e60a",
+   "name": "Com_GetQuitOnErrorFlag",
+   "signature": "char Com_GetQuitOnErrorFlag(void)",
+   "subsystem": "common/filesystem",
+   "confidence": "inferred",
+   "evidence": "see chunk_023.cpp",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e620",
+   "name": "FS_HasSearchPaths",
+   "signature": "bool FS_HasSearchPaths(void)",
+   "subsystem": "common/filesystem",
+   "confidence": "inferred",
+   "evidence": "* True when the search path list head (0849fd68) is non-null.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e632",
+   "name": "FS_Nop",
+   "signature": "void FS_Nop(void)",
+   "subsystem": "common/filesystem",
+   "confidence": "unknown",
+   "evidence": "* Empty function (called from FS_filelength).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e638",
+   "name": "FS_ChecksumAllowed",
+   "signature": "int FS_ChecksumAllowed(struct iwd_s *entry)",
+   "subsystem": "common/filesystem",
+   "confidence": "unknown",
+   "evidence": "* Returns 1 if the allow-list (084a4480 entries at 084a44a0) is empty or contains entry->checksum (+0x304).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e696",
+   "name": "FS_GetLoadStackCount",
+   "signature": "int FS_GetLoadStackCount(void)",
+   "subsystem": "common/filesystem",
+   "confidence": "inferred",
+   "evidence": "* Getter for global 0849fc24. [rename filesystem: objdump: 'mov eax,[0x849fc24]; ret', getter of fs_loadStack, called by Com_InitHunkMemory.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e6a0",
+   "name": "FS_SearchPathAllowed",
+   "signature": "int FS_SearchPathAllowed(struct searchpath_s *sp)",
+   "subsystem": "common/filesystem",
+   "confidence": "unknown",
+   "evidence": "* Search path acceptance test: rejects when field_c is set and the policy dvar is on; otherwise, for field_c != 0, * requires field_10 to equal fn_08138154().",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e6f6",
+   "name": "FS_HasLoadedPakWithId",
+   "signature": "int FS_HasLoadedPakWithId(int id)",
+   "subsystem": "common/filesystem",
+   "confidence": "unknown",
+   "evidence": "* Walks the search path list for a node with field_c != 0 and field_10 == id.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e740",
+   "name": "FS_HashFileName",
+   "signature": "unsigned int FS_HashFileName(const char *fname, int hashSize)",
+   "subsystem": "common/filesystem",
+   "confidence": "inferred",
+   "evidence": "* Q3 FS_HashFileName counterpart: lowercased, '\\\\' -> '/', stops at '.', hash += (i+119)*c, folded with >>20 and >>10.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e7d4",
+   "name": "FS_HandleForFile",
+   "signature": "int FS_HandleForFile(int zipFile)",
+   "subsystem": "common/filesystem",
+   "confidence": "observed",
+   "evidence": "* Name evidence: error string \"FS_HandleForFile: none free\" and the \"FILE %2i: '%s'\" dump. Slots 1..0x32 for * non-zip, 0x33..0x33+0xc for zip (zipFile != 0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e892",
+   "name": "FS_FileForHandle",
+   "signature": "void *FS_FileForHandle(int handle)",
+   "subsystem": "common/filesystem",
+   "confidence": "inferred",
+   "evidence": "* Q3 FS_FileForHandle counterpart: returns the stored file pointer of the handle slot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e8a6",
+   "name": "FS_filelength",
+   "signature": "long FS_filelength(int handle)",
+   "subsystem": "common/filesystem",
+   "confidence": "inferred",
+   "evidence": "* Q3 FS_filelength counterpart: non-zip handles seek to the end and back; zip handles read the size at +0x44 of the * unzip state.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e94a",
+   "name": "FS_ReplaceSeparators",
+   "signature": "void FS_ReplaceSeparators(char *path)",
+   "subsystem": "common/filesystem",
+   "confidence": "inferred",
+   "evidence": "* Replaces runs of '/' and '\\\\' with a single '/' in place.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809e9b6",
+   "name": "FS_BuildOSPath",
+   "signature": "void FS_BuildOSPath(const char *base, const char *game, const char *qpath, char *out, int failSilently)",
+   "subsystem": "common/filesystem",
+   "confidence": "observed",
+   "evidence": "* Name evidence: error string \"FS_BuildOSPath: os path length exceeded\"; builds base/game/qpath into out (max 255 chars), * with failSilently returning an empty string instead of raising the error.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809eab0",
+   "name": "FS_BuildOSPath_Fatal",
+   "signature": "void FS_BuildOSPath_Fatal(const char *base, const char *game, const char *qpath, char *out)",
+   "subsystem": "common/filesystem",
+   "confidence": "inferred",
+   "evidence": "* Wrapper of FS_BuildOSPath with failSilently = 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809eae0",
+   "name": "FS_CreatePath",
+   "signature": "int FS_CreatePath(char *path)",
+   "subsystem": "common/filesystem",
+   "confidence": "inferred",
+   "evidence": "* Q3 FS_CreatePath counterpart: refuses paths containing \"..\" or \"::\", otherwise creates each parent directory.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0842308c",
+   "name": "g_0842308c",
+   "type": "struct client_s *",
+   "confidence": "inferred",
+   "evidence": "svs.clients base pointer (stride 0xb1064)"
+  },
+  {
+   "addr": "0x08423084",
+   "name": "g_08423084",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "svs.time: used as time base for nextSnapshotTime"
+  },
+  {
+   "addr": "0x08440200",
+   "name": "g_sv_state",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "sv state; == 2 gates snapshot building/archiving"
+  },
+  {
+   "addr": "0x08423098",
+   "name": "g_svs_nextSnapshotEntities",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "svs.nextSnapshotEntities (error string 'svs.nextSnapshotEntities wrapped')"
+  },
+  {
+   "addr": "0x0842309c",
+   "name": "g_svs_nextSnapshotClients",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "svs.nextSnapshotClients (error string)"
+  },
+  {
+   "addr": "0x084230bc",
+   "name": "g_svs_nextCachedSnapshotEntities",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "svs.nextCachedSnapshotEntities (error string)"
+  },
+  {
+   "addr": "0x084230c0",
+   "name": "g_svs_nextCachedSnapshotClients",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "svs.nextCachedSnapshotClients (error string)"
+  },
+  {
+   "addr": "0x084230c4",
+   "name": "sv_nextCachedSnapshotFrame",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "svs.nextCachedSnapshotFrames (error string)"
+  },
+  {
+   "addr": "0x084230ac",
+   "name": "g_svs_nextArchivedSnapshotFrames",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "svs.nextArchivedSnapshotFrames (error string)"
+  },
+  {
+   "addr": "0x084230b8",
+   "name": "sv_nextArchivedSnapshotBuffer",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "svs.nextArchivedSnapshotBuffer (error string)"
+  },
+  {
+   "addr": "0x08442618",
+   "name": "sv_svEntities",
+   "type": "struct svEntity_s[]",
+   "confidence": "inferred",
+   "evidence": "svEntity table, stride 0x174"
+  },
+  {
+   "addr": "0x0849fd80",
+   "name": "g_0849fd80",
+   "type": "struct fileHandleData_s[]",
+   "confidence": "inferred",
+   "evidence": "file handle table, stride 0x11c (FS_HandleForFile)"
+  },
+  {
+   "addr": "0x0849fd68",
+   "name": "g_0849fd68",
+   "type": "struct searchpath_s *",
+   "confidence": "inferred",
+   "evidence": "search path list head"
+  },
+  {
+   "addr": "0x0849f638",
+   "name": "g_sendBytesHistory",
+   "type": "int[20]",
+   "confidence": "inferred",
+   "evidence": "bytes-per-frame history, SV_SendClientMessages sliding window"
+  },
+  {
+   "addr": "0x0849f688",
+   "name": "g_0849f688",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "SV_SendClientMessages stats"
+  },
+  {
+   "addr": "0x0849f68c",
+   "name": "g_0849f68c",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "SV_SendClientMessages stats"
+  },
+  {
+   "addr": "0x0849f690",
+   "name": "g_0849f690",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "SV_SendClientMessages stats"
+  },
+  {
+   "addr": "0x0849f694",
+   "name": "g_unsentBytesHistory",
+   "type": "int[20]",
+   "confidence": "inferred",
+   "evidence": "unsent-bytes history, SV_SendClientMessages sliding window"
+  },
+  {
+   "addr": "0x0849f6e4",
+   "name": "g_0849f6e4",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "SV_SendClientMessages stats"
+  },
+  {
+   "addr": "0x0849f6e8",
+   "name": "g_0849f6e8",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "SV_SendClientMessages stats"
+  },
+  {
+   "addr": "0x0849f6ec",
+   "name": "g_0849f6ec",
+   "type": "float",
+   "confidence": "inferred",
+   "evidence": "SV_SendClientMessages stats"
+  },
+  {
+   "addr": "0x0849f6f0",
+   "name": "g_0849f6f0",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "SV_SendClientMessages stats"
+  },
+  {
+   "addr": "0x0817db88",
+   "name": "g_0817db88",
+   "type": "float[3]",
+   "confidence": "inferred",
+   "evidence": "vec3 constant added to origin in SV_LinkEntity (.data)"
+  },
+  {
+   "addr": "0x0817db94",
+   "name": "g_0817db94",
+   "type": "float[3]",
+   "confidence": "inferred",
+   "evidence": "vec3 constant added to origin in SV_LinkEntity (.data)"
+  },
+  {
+   "addr": "0x0849fc04",
+   "name": "com_quitOnErrorFlag",
+   "type": "char",
+   "confidence": "inferred",
+   "evidence": "FS flag byte read by chunk 023 FS helpers (0x0849fc04)"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "client_s",
+   "size": "0xb1064",
+   "evidence": "stride from client index math (diff>>2 * 0x2165829); fields at offsets used by this chunk"
+  },
+  {
+   "name": "client_frame_s",
+   "size": "0x26c4",
+   "evidence": "frames[(outgoingSequence)&31], stride 0x9b1 ints; playerState 0x26a8 + 7 ints"
+  },
+  {
+   "name": "gentity_s",
+   "size": "0x274",
+   "evidence": "entity index math (diff>>2 * 0x3f4fd3f5 is for 0x174 svEntity; SV_GentityNum stride 0x274 assumed from earlier lane)"
+  },
+  {
+   "name": "svEntity_s",
+   "size": "0x174",
+   "evidence": "index = (ptr-0x8442618)>>2 * 0x3f4fd3f5 which is the inverse of 93 (0x174/4)"
+  },
+  {
+   "name": "cachedClient_s",
+   "size": "0x2708",
+   "evidence": "slot stride in cached snapshot clients: int + clientState 0x5c + playerState 0x26a8"
+  },
+  {
+   "name": "cachedEntity_s",
+   "size": "0x114",
+   "evidence": "cached snapshot entity stride; entityState 0xf0 + 0x24"
+  },
+  {
+   "name": "cachedFrame_s",
+   "size": "0x1c",
+   "evidence": "cached snapshot frame stride"
+  },
+  {
+   "name": "voicepacket_s",
+   "size": "0x105",
+   "evidence": "stride 0x105 in client voice queue; len at +0x101"
+  }
+ ],
+ "open_questions": [
+  "Semantics of unnamed message writers fn_0806800c (used for count, talker, length and the constant 7) and readers fn_080683a8/fn_080683f2.",
+  "gentity_s stride 0x274 and field meanings at +0xf4/+0xf8/+0x100 (ent[0x3d], [0x3e], [0x40]) are inferred only from use in SV_ArchiveSnapshot.",
+  "Identity of fn_080b8c98 (called with origin, ps fields 0x13/0x3b, 16.0, 20.0) and of the cached-frame lookup trio fn_08108e36/fn_08099c04/fn_08108e52.",
+  "SV_LinkEntity leaves boxMin/boxMax z uninitialised on the svFlags&2 path and in the Vec2_Add path (observed in asm); confirm intended behaviour."
+ ]
+}

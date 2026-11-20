@@ -1,0 +1,1089 @@
+{
+ "chunk": 26,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080a79c6",
+   "name": "Quat_VectorNormSqRatio",
+   "signature": "float Quat_VectorNormSqRatio(const float *q)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "inferred",
+   "evidence": "quaternion w^2+x^2+y^2+z^2 normaliser: ratio of vector part to total norm; no string, structure only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7a6a",
+   "name": "Sin_DegreesSquared",
+   "signature": "float Sin_DegreesSquared(float deg)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "sin(deg*pi/180)^2 descriptive name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7a9a",
+   "name": "Quat_RelativeVectorNormSq",
+   "signature": "float Quat_RelativeVectorNormSq(const float *a, const float *b)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "unknown",
+   "evidence": "combines quaternion b (via fn_080a77f8) with a (fn_080a76d6) then Quat_VectorNormSqRatio; callee semantics unresolved",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7ad8",
+   "name": "Quat_PlanarAngleDeg",
+   "signature": "float Quat_PlanarAngleDeg(const float *q)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "unknown",
+   "evidence": "atan2 of quaternion x/y terms scaled to degrees; descriptive name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7c30",
+   "name": "Quat_FromAxisAngleDeg",
+   "signature": "void Quat_FromAxisAngleDeg(float deg, const float *axis, float *q)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "inferred",
+   "evidence": "axis-angle to quaternion: xyz = sin(half)*axis, w = cos(half)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7e44",
+   "name": "Matrix4_Perspective",
+   "signature": "void Matrix4_Perspective(float *m, float fovX, float fovY, float nearZ)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "inferred",
+   "evidence": "projection matrix from fov x/y (degrees) and near distance; 0.9995003f epsilon factor; memset 0x40",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7f00",
+   "name": "Matrix4_Orthographic",
+   "signature": "void Matrix4_Orthographic(float *m, float w, float h, float depth)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "inferred",
+   "evidence": "orthographic matrix: 2/w, 2/h, 0.5/depth, z offset 0.5",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7f6e",
+   "name": "Matrix4_ViewFromAxis",
+   "signature": "void Matrix4_ViewFromAxis(float *m, const float *origin, const float *axis)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "inferred",
+   "evidence": "view matrix from origin and 3x3 axis (-axis1, axis2, axis0 columns)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a810c",
+   "name": "Color3_ToRGBA8",
+   "signature": "unsigned int Color3_ToRGBA8(float r, float g, float b)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "float rgb [0,1] to packed RGBA8 (alpha 0xff), truncating via fistp word",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a817c",
+   "name": "Color4_ToRGBA8",
+   "signature": "unsigned int Color4_ToRGBA8(float r, float g, float b, float a)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "float rgba to packed RGBA8",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8202",
+   "name": "Vec3_DivideByMaxComponent",
+   "signature": "float Vec3_DivideByMaxComponent(const float *in, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "divide vec3 by its max component (signed max, not abs); zero vec if max==0; returns max",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a82b0",
+   "name": "AngleMod_Dup",
+   "signature": "float AngleMod_Dup(float a)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "Q3 AngleMod: (360/65536)*((int)(a*(65536/360)) & 65535); duplicate of 0x80a8432",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a82f4",
+   "name": "LerpAngle",
+   "signature": "float LerpAngle(float from, float to, float frac)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "Q3 LerpAngle (shortest-path interpolation)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8364",
+   "name": "AngleSubtract",
+   "signature": "float AngleSubtract(float a, float b)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "Q3 AngleSubtract",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a83c6",
+   "name": "AnglesSubtract",
+   "signature": "void AnglesSubtract(const float *a, const float *b, float *out)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "Q3 AnglesSubtract (per component AngleSubtract)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8432",
+   "name": "AngleMod",
+   "signature": "float AngleMod(float a)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "Q3 AngleMod",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8476",
+   "name": "AngleNormalize180",
+   "signature": "float AngleNormalize180(float a)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "Q3 AngleNormalize180 using AngleMod",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a84b8",
+   "name": "AngleNormalize360_Loop",
+   "signature": "float AngleNormalize360_Loop(float a)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "loop-based normalise to [0,360)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8536",
+   "name": "AngleNormalize180_Loop",
+   "signature": "float AngleNormalize180_Loop(float a)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "loop-based normalise to (-180,180]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a85bc",
+   "name": "AngleDelta",
+   "signature": "float AngleDelta(float a, float b)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "AngleNormalize180(a - b)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a85d2",
+   "name": "Vec3_MaxAbsLength",
+   "signature": "float Vec3_MaxAbsLength(const float *a, const float *b)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "length of per-component max(|a|,|b|) vec3",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8660",
+   "name": "Vec2_MaxAbsLength",
+   "signature": "float Vec2_MaxAbsLength(const float *a, const float *b)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "2D variant of Vec3_MaxAbsLength",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a86ee",
+   "name": "Bounds_ExpandByMove",
+   "signature": "void Bounds_ExpandByMove(float *mins, float *maxs, const float *delta)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "expand mins/maxs by move delta (swept bounds)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a87b4",
+   "name": "Vec3Pair_PushZApart",
+   "signature": "void Vec3Pair_PushZApart(float *a, float *b)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "if b.z-a.z delta below max(dx,dy), push a.z down and b.z up by half the shortfall",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8832",
+   "name": "Vec3Pair_PullXYToZ",
+   "signature": "void Vec3Pair_PullXYToZ(float *a, float *b)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "for x and y: if delta (b-a) is below z delta, move a up and b down by half the shortfall",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a88d8",
+   "name": "Bounds3_Clear",
+   "signature": "void Bounds3_Clear(float *mins, float *maxs)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "Q3 ClearBounds: mins=+131072, maxs=-131072",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a892c",
+   "name": "Bounds2_Clear",
+   "signature": "void Bounds2_Clear(float *mins, float *maxs)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "2D ClearBounds",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a896e",
+   "name": "Bounds3_AddPoint",
+   "signature": "void Bounds3_AddPoint(const float *p, float *mins, float *maxs)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "Q3 AddPointToBounds",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8a58",
+   "name": "Bounds2_AddPoint",
+   "signature": "void Bounds2_AddPoint(const float *p, float *mins, float *maxs)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "2D AddPointToBounds",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8aee",
+   "name": "Bounds3_ContainsPoint",
+   "signature": "int Bounds3_ContainsPoint(const float *p, const float *mins, const float *maxs)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "point inside 3D bounds",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8ba6",
+   "name": "Bounds2_ContainsPoint",
+   "signature": "int Bounds2_ContainsPoint(const float *p, const float *mins, const float *maxs)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "point inside 2D bounds",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8c22",
+   "name": "Bounds3_Intersect",
+   "signature": "int Bounds3_Intersect(const float *mins1, const float *maxs1, const float *mins2, const float *maxs2)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "3D bounds overlap test",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8ce2",
+   "name": "Bounds2_Intersect",
+   "signature": "int Bounds2_Intersect(const float *mins1, const float *maxs1, const float *mins2, const float *maxs2)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "2D bounds overlap test",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8d62",
+   "name": "Bounds3_IntersectMargin",
+   "signature": "int Bounds3_IntersectMargin(const float *mins1, const float *maxs1, const float *mins2, const float *maxs2, float margin)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "3D overlap with margin added to the maxs of both boxes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8e28",
+   "name": "Bounds2_IntersectMargin",
+   "signature": "int Bounds2_IntersectMargin(const float *mins1, const float *maxs1, const float *mins2, const float *maxs2, float margin)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "2D overlap with margin",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8eac",
+   "name": "Bounds3_Union",
+   "signature": "void Bounds3_Union(const float *mins, const float *maxs, float *accMins, float *accMaxs)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "3D bounds union into accumulator",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a8f96",
+   "name": "Bounds2_Union",
+   "signature": "void Bounds2_Union(const float *mins, const float *maxs, float *accMins, float *accMaxs)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "2D bounds union into accumulator",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a902c",
+   "name": "Bounds3_TransformByAxis",
+   "signature": "void Bounds3_TransformByAxis(const float *bounds, const float *origin, const float *axis, float *out)",
+   "subsystem": "math/bounds",
+   "confidence": "inferred",
+   "evidence": "AABB (bounds[0..2]=mins,[3..5]=maxs) transformed by 3x3 axis + origin, sign-of-element selects min/max (Arvo method)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a9284",
+   "name": "Bounds3_TransformAndUnion",
+   "signature": "void Bounds3_TransformAndUnion(const float *bounds, const float *origin, const float *axis, float *accBounds)",
+   "subsystem": "math/bounds",
+   "confidence": "unknown",
+   "evidence": "transform bounds by axis/origin then union into accBounds",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a92d2",
+   "name": "Mat3_Identity",
+   "signature": "void Mat3_Identity(float *m)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "inferred",
+   "evidence": "3x3 identity",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a934a",
+   "name": "Mat3_Copy",
+   "signature": "void Mat3_Copy(const float *src, float *dst)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "inferred",
+   "evidence": "copy 3x3 as three Vec3_Copy",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a9394",
+   "name": "Mat3_Transpose",
+   "signature": "void Mat3_Transpose(const float *in, float *out)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "inferred",
+   "evidence": "3x3 transpose with integer-bit copies",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a9424",
+   "name": "Mat3_TransformComponents",
+   "signature": "void Mat3_TransformComponents(const float *m, float x, float y, float z, float *out)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "unknown",
+   "evidence": "x*row0 + y*row1 + z*row2 of a 3x3 (row-major axis)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a94aa",
+   "name": "AnglesToAxis",
+   "signature": "void AnglesToAxis(const float *angles, float *axis)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "Q3 AnglesToAxis: forward, left (= zero - right), up",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a94f2",
+   "name": "AnglesToAxis_ZUp",
+   "signature": "void AnglesToAxis_ZUp(float yaw, float *axis)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "AnglesToAxis variant with up fixed to (0,0,1) (callee takes no up output)",
+   "status": "translated",
+   "notes": "arg0 is a float yaw passed by value (objdump 0x080a94f2: [ebp+8] forwarded to Angle_YawToForwardRight which fld's it; callers chunk_049 pass yawSum) arg0 is a float yaw by value (objdump 0x080a94f2 forwards [ebp+8] to Angle_YawToForwardRight, which fld's it; chunk_049 caller passes yawSum)"
+  },
+  {
+   "addr": "0x080a9558",
+   "name": "AxisToAngles",
+   "signature": "void AxisToAngles(const float *axis, float *angles)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "axis to pitch/yaw/roll; roll from rotated left vector",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a969c",
+   "name": "AxisToAngles_Alt",
+   "signature": "void AxisToAngles_Alt(const float *axis, float *angles)",
+   "subsystem": "math/angles",
+   "confidence": "inferred",
+   "evidence": "identical to AxisToAngles but uses fn_080a5122 for pitch/yaw",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a97e0",
+   "name": "Planes3_Intersect",
+   "signature": "bool Planes3_Intersect(const float *const *planes, float *out)",
+   "subsystem": "math/plane",
+   "confidence": "inferred",
+   "evidence": "intersection point of three planes (x,y,z,d rows) via Cramer's rule; fails when |det| < 0.001",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a9b3e",
+   "name": "Vec3_SnapToGridNearPlanes3",
+   "signature": "void Vec3_SnapToGridNearPlanes3(const float *const *planes, float *vec, float grid, float epsilon)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "snap vec to grid per component when within epsilon; accept only if still within epsilon of three planes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a9ce0",
+   "name": "Vec3_SnapToGridNearPlanes",
+   "signature": "void Vec3_SnapToGridNearPlanes(const float *planes, int numPlanes, float *vec, float grid, float epsilon)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "pull vec onto nearby planes (stride 16) then grid-snap like Vec3_SnapToGridNearPlanes3",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a9f00",
+   "name": "Polygon_ContainsPoint",
+   "signature": "int Polygon_ContainsPoint(const float *verts, int numVerts, const float *normal, const float *point)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "point inside convex polygon projected along dominant axes of normal",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aa0e4",
+   "name": "Vec3_ProjectOnPlane",
+   "signature": "void Vec3_ProjectOnPlane(const float *v, const float *normal, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Q3 ProjectPointOnPlane-style: out = v - dot(normal,v)*normal",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aa12c",
+   "name": "Plane_SetSignbits",
+   "signature": "void Plane_SetSignbits(struct cplane_s *p)",
+   "subsystem": "math/plane",
+   "confidence": "inferred",
+   "evidence": "Q3 SetPlaneSignbits (bit i set if normal[i] < 0, stored at +0x11)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aa17e",
+   "name": "BoxOnPlaneSide",
+   "signature": "byte BoxOnPlaneSide(const float *mins, const float *maxs, const struct cplane_s *p)",
+   "subsystem": "math/plane",
+   "confidence": "inferred",
+   "evidence": "Q3 BoxOnPlaneSide: 1=front, 2=back, 3=both; axial planes fast path, signbits switch otherwise",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aa680",
+   "name": "Vec3_SharedSideMinSqExceeds",
+   "signature": "bool Vec3_SharedSideMinSqExceeds(const float *a, const float *b, const float *origin, float threshold)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "per axis where (a-origin) and (b-origin) share sign, accumulate min of squares; return threshold < sum",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aa74e",
+   "name": "Float_Round",
+   "signature": "float Float_Round(float x)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "floor(x+0.5) as float",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aa776",
+   "name": "Vec3_ScaleByInvMaxComponent",
+   "signature": "float Vec3_ScaleByInvMaxComponent(const float *in, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "scale vec3 by 1/max component (signed max); (1,1,1) and return 0 if max==0; returns max",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aa82a",
+   "name": "Vec3_RotateByAngles",
+   "signature": "void Vec3_RotateByAngles(const float *v, const float *angles, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "rotate vec by euler angles (degrees) one axis at a time using double sin/cos; skips zero angles",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aaa30",
+   "name": "AnglesToForward_ProjectedNormalized",
+   "signature": "float AnglesToForward_ProjectedNormalized(float yaw, const float *normal)",
+   "subsystem": "math/angles",
+   "confidence": "unknown",
+   "evidence": "forward vector of angles projected on plane(normal) then normalized; returns callee's result (type assumed float)",
+   "status": "translated",
+   "notes": "arg0 is float yaw by value (objdump 0x080aaa30) arg0 is a float yaw by value (objdump 0x080aaa30)"
+  },
+  {
+   "addr": "0x080aaa76",
+   "name": "Rand_SetSeed",
+   "signature": "void Rand_SetSeed(unsigned int seed)",
+   "subsystem": "common/random",
+   "confidence": "inferred",
+   "evidence": "seed MSVC-style LCG (0x343fd / 0x269ec3)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aaa84",
+   "name": "Rand_Float",
+   "signature": "float Rand_Float(float lo, float hi)",
+   "subsystem": "common/random",
+   "confidence": "inferred",
+   "evidence": "float in [lo,hi) from LCG bits 17..31 / 32768",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aaada",
+   "name": "Rand_Int",
+   "signature": "int Rand_Int(int lo, int hi)",
+   "subsystem": "common/random",
+   "confidence": "inferred",
+   "evidence": "int in [lo,hi) from LCG",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aab1a",
+   "name": "Vec3_TransformByQuatTransform_Wrap",
+   "signature": "void Vec3_TransformByQuatTransform_Wrap(const float *v, const struct QuatTransform_s *t, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "thin wrapper over Vec3_TransformByQuatTransform",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aab3c",
+   "name": "Mat3_ToQuat",
+   "signature": "void Mat3_ToQuat(const float *m, float *quat)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "inferred",
+   "evidence": "rotation matrix to quaternion (largest of four candidate vectors, normalised)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aadca",
+   "name": "Float_RoundMantissaBits",
+   "signature": "float Float_RoundMantissaBits(float v, int tolerance, byte bits)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "integer-bit rounding of a float's low mantissa bits (granularity 1<<bits) within tolerance; Ghidra showed it as float cast, disassembly shows int ops on bits",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aae30",
+   "name": "Float_SnapToStep",
+   "signature": "float Float_SnapToStep(float v, float step, float tolerance)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "snap float to multiples of 1/step if within tolerance after mantissa rounding (4, 12 bits)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aaea4",
+   "name": "Float_Abs",
+   "signature": "float Float_Abs(float x)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "fabsf",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aaebe",
+   "name": "Float_Sqrt",
+   "signature": "float Float_Sqrt(float x)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "(float)sqrt((double)x)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aaede",
+   "name": "Float_Max",
+   "signature": "float Float_Max(float a, float b)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "max(a,b) via Float_Select(a-b,a,b)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aaf02",
+   "name": "Float_Select2",
+   "signature": "float Float_Select2(float a, float b, float c)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "nested Float_Select; returns b if b>=a else min(a,c)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aaf40",
+   "name": "Float_Bits",
+   "signature": "int Float_Bits(const float *p)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "reads float bits as int",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aaf4a",
+   "name": "Float_RoundToInt",
+   "signature": "int Float_RoundToInt(float x)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "(int)floor(x+0.5)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aaf80",
+   "name": "SinCos_Float",
+   "signature": "void SinCos_Float(float ang, float *s, float *c)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "sin/cos of float angle (radians) in double, results stored as float",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aafae",
+   "name": "SinCos_Double",
+   "signature": "void SinCos_Double(double ang, double *s, double *c)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "sin/cos in double",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aafdc",
+   "name": "Vec2_Clear",
+   "signature": "void Vec2_Clear(float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec2 clear",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aaff8",
+   "name": "Vec2_Set",
+   "signature": "void Vec2_Set(float *v, float x, float y)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec2 set (raw 4-byte copies)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab010",
+   "name": "Vec2_Sub",
+   "signature": "void Vec2_Sub(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec2 subtract",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab03c",
+   "name": "Vec2_Dot",
+   "signature": "float Vec2_Dot(const float *a, const float *b)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec2 dot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab05e",
+   "name": "Vec2_Length",
+   "signature": "float Vec2_Length(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec2 length",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab08a",
+   "name": "Vec3_Clear",
+   "signature": "void Vec3_Clear(float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec3 clear",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab0b4",
+   "name": "Vec3_Set",
+   "signature": "void Vec3_Set(float *v, float x, float y, float z)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec3 set",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab0d8",
+   "name": "Vec3_Copy",
+   "signature": "void Vec3_Copy(const float *in, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec3 copy (integer-bit copy)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab108",
+   "name": "Vec3_Add",
+   "signature": "void Vec3_Add(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec3 add",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab14c",
+   "name": "Vec3_Sub",
+   "signature": "void Vec3_Sub(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec3 subtract",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab190",
+   "name": "Vec3_Scale",
+   "signature": "void Vec3_Scale(const float *v, float s, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec3 scale",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab1c8",
+   "name": "Vec3_Mul",
+   "signature": "void Vec3_Mul(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec3 componentwise multiply",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab20c",
+   "name": "Vec3_MA",
+   "signature": "void Vec3_MA(const float *base, float s, const float *dir, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Q3 VectorMA: out = base + s*dir",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab260",
+   "name": "Vec3_Dot",
+   "signature": "float Vec3_Dot(const float *a, const float *b)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec3 dot (z,y,x summation order)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab294",
+   "name": "Vec3_Equal",
+   "signature": "int Vec3_Equal(const float *a, const float *b)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "exact vec3 equality",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab2fe",
+   "name": "Vec3_Length",
+   "signature": "float Vec3_Length(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec3 length",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab33c",
+   "name": "Vec4_Scale",
+   "signature": "void Vec4_Scale(const float *v, float s, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec4 scale",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab388",
+   "name": "Vec4_LengthSq",
+   "signature": "float Vec4_LengthSq(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "vec4 squared length",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab3ce",
+   "name": "Float_Select",
+   "signature": "float Float_Select(float cond, float a, float b)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Q_fsel-style select: cond >= 0 ? a : b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab3f8",
+   "name": "Vec3_TransformByQuatTransform",
+   "signature": "void Vec3_TransformByQuatTransform(const float *v, const struct QuatTransform_s *t, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "v transformed by quat->mat3 (columns as read here) plus origin",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab4a0",
+   "name": "QuatTransform_ToMat3",
+   "signature": "void QuatTransform_ToMat3(const struct QuatTransform_s *t, float *m)",
+   "subsystem": "math/matrix_quat",
+   "confidence": "inferred",
+   "evidence": "quaternion (x,y,z,w) with scale factor at +0x1c to 3x3 rotation",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab5b8",
+   "name": "Com_Free_A",
+   "signature": "void Com_Free_A(void *p)",
+   "subsystem": "common/memory",
+   "confidence": "inferred",
+   "evidence": "free() wrapper (one of three identical)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab5cc",
+   "name": "Com_Free_B",
+   "signature": "void Com_Free_B(void *p)",
+   "subsystem": "common/memory",
+   "confidence": "inferred",
+   "evidence": "free() wrapper (one of three identical)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab5e0",
+   "name": "Com_Free_C",
+   "signature": "void Com_Free_C(void *p)",
+   "subsystem": "common/memory",
+   "confidence": "inferred",
+   "evidence": "free() wrapper (one of three identical)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab5f4",
+   "name": "Com_AllocFailed_228",
+   "signature": "void Com_AllocFailed_228(void)",
+   "subsystem": "common/memory",
+   "confidence": "inferred",
+   "evidence": "calls error handler with \"universal/com_memory.cpp\", line 0xe4 (string observed) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab610",
+   "name": "Com_Malloc_Raw",
+   "signature": "void *Com_Malloc_Raw(unsigned int size)",
+   "subsystem": "common/memory",
+   "confidence": "inferred",
+   "evidence": "malloc wrapper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab624",
+   "name": "Com_MallocZeroed_Raw",
+   "signature": "void *Com_MallocZeroed_Raw(unsigned int size)",
+   "subsystem": "common/memory",
+   "confidence": "inferred",
+   "evidence": "malloc then zero-fill via fn_080acbd6 (memset-like)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab65e",
+   "name": "Com_MallocZeroed",
+   "signature": "void *Com_MallocZeroed(unsigned int size)",
+   "subsystem": "common/memory",
+   "confidence": "inferred",
+   "evidence": "zeroed malloc, calls Com_AllocFailed_228 on NULL (original passes size as ignored extra stack arg)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab688",
+   "name": "Com_Malloc",
+   "signature": "void *Com_Malloc(unsigned int size)",
+   "subsystem": "common/memory",
+   "confidence": "inferred",
+   "evidence": "malloc, calls Com_AllocFailed_228 on NULL",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab6b2",
+   "name": "Com_Calloc_Raw",
+   "signature": "void *Com_Calloc_Raw(unsigned int size)",
+   "subsystem": "common/memory",
+   "confidence": "inferred",
+   "evidence": "calloc(1,size) wrapper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab6ce",
+   "name": "Com_Calloc",
+   "signature": "void *Com_Calloc(unsigned int size)",
+   "subsystem": "common/memory",
+   "confidence": "inferred",
+   "evidence": "calloc; on NULL calls error handler with \"universal/com_memory.cpp\", line 0x218 (string observed) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0814cfc8",
+   "name": "vec3_origin",
+   "type": "float [3]",
+   "confidence": "inferred",
+   "evidence": "vec3 minuend in AnglesToAxis (left = this - right); presumably zero vector"
+  },
+  {
+   "addr": "0x0817e338",
+   "name": "g_randSeed",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "LCG seed updated with 0x343fd/0x269ec3 in Rand_Float/Rand_Int, set by Rand_SetSeed"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "cplane_s",
+   "size": "0x14",
+   "evidence": "offsets 0xc dist, 0x10 type, 0x11 signbits in BoxOnPlaneSide/Plane_SetSignbits"
+  },
+  {
+   "name": "QuatTransform_s",
+   "size": "0x20",
+   "evidence": "quat[4], origin at 0x10, scale at 0x1c in QuatTransform_ToMat3/Vec3_TransformByQuatTransform"
+  }
+ ],
+ "open_questions": [
+  "Manifest has address gaps (e.g. 0x80a7b4b..0x80a7c30, 0x80aa974..0x80aaa30) containing functions not in chunk_026.json; untranslated here (e.g. 0x80aa974, 0x80aa9c8).",
+  "Return types of fn_080a4e5a (called by AnglesToForward_ProjectedNormalized, returned tail-call) and quaternion callees fn_080a76d6/fn_080a77f8 unresolved.",
+  "g_0814cfc8 value (zero vector assumed) and QuatTransform_s field at 0x1c semantics (2/|q|^2 assumed) not confirmed."
+ ]
+}

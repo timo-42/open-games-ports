@@ -1,0 +1,986 @@
+{
+ "chunk": 30,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080b6004",
+   "name": "Com_EndParseSession",
+   "signature": "void Com_EndParseSession(void)",
+   "subsystem": "common/parser",
+   "confidence": "observed",
+   "evidence": "string \"Com_EndParseSession: session underflow\" at 0x814f640 is raised here",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b603e",
+   "name": "Com_ResetParseSessions",
+   "signature": "void Com_ResetParseSessions(void)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "counterpart of Com_EndParseSession; resets the session stack index to 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b605c",
+   "name": "Com_SetSpaceDelimited",
+   "signature": "void Com_SetSpaceDelimited(int enable)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "writes session byte 0x405 which Com_ParseExt tests to read until char <= ' '",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6092",
+   "name": "Com_SetKeepStringQuotes",
+   "signature": "void Com_SetKeepStringQuotes(int enable)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "writes session byte 0x406 which makes Com_ParseExt keep the enclosing quotes of strings",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b60c8",
+   "name": "Com_SetCSVMode",
+   "signature": "void Com_SetCSVMode(int enable)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "writes session byte 0x407 which routes Com_ParseExt to Com_ParseCSV",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b60fe",
+   "name": "Com_SetParseNegativeNumbers",
+   "signature": "void Com_SetParseNegativeNumbers(int enable)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "writes session byte 0x408 which lets Com_ParseExt read \"-5\" as one number token",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6134",
+   "name": "Com_GetParseLine",
+   "signature": "int Com_GetParseLine(void)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "returns the session line counter that Com_ParseError prints as \"line %i\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6162",
+   "name": "Com_SetParseErrorPrefix",
+   "signature": "void Com_SetParseErrorPrefix(const char *prefix)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "stores the pointer printed as first %s by Com_ParseError",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6194",
+   "name": "Com_SetParseWarningPrefix",
+   "signature": "void Com_SetParseWarningPrefix(const char *prefix)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "stores the pointer printed as first %s by Com_ParseWarning",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b61c6",
+   "name": "Com_ParseError",
+   "signature": "void Com_ParseError(const char *fmt, ...)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "formats the message then raises an error with \"File %s, line %i: %s\" (error code 1); counterpart of Com_ParseWarning",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b62a0",
+   "name": "Com_ParseWarning",
+   "signature": "void Com_ParseWarning(const char *fmt, ...)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "same as Com_ParseError but prints through the console print function instead of raising an error",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b636a",
+   "name": "Com_UngetToken",
+   "signature": "void Com_UngetToken(void)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "string \"UngetToken called twice\" (Q3 Com_UngetToken counterpart) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b63c4",
+   "name": "Com_SaveParseOffset",
+   "signature": "void Com_SaveParseOffset(const char **data_p, struct ParseSave *save)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "snapshot of parser position, restored by Com_RestoreParseOffset (used by Com_CountTokensOnLine)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6430",
+   "name": "Com_RestoreParseOffset",
+   "signature": "void Com_RestoreParseOffset(const char **data_p, const struct ParseSave *save)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "restores what Com_SaveParseOffset stored",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b64a0",
+   "name": "Com_SkipWhitespace",
+   "signature": "const char *Com_SkipWhitespace(const char *data, int *hasNewLines)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "Q3 SkipWhitespace counterpart: skips chars <= ' ', counts '\\n' in the session line number and flags *hasNewLines; NULL at end of text",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b650e",
+   "name": "Com_Compress",
+   "signature": "int Com_Compress(char *data)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "in-place removal of // and /* */ comments (keeps newlines), returns the new length; Q3 COM_Compress counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b664a",
+   "name": "Com_GetLastTokenPos",
+   "signature": "const char *Com_GetLastTokenPos(void)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "returns the position at which the most recent token started",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6664",
+   "name": "Com_ParseCSV",
+   "signature": "char *Com_ParseCSV(const char **data_p, int allowLineBreaks)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "CSV field parser used by Com_ParseExt when csvMode is set: reads up to ',' or '\\n', handles \"\" quoting",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b67f8",
+   "name": "Com_ParseExt",
+   "signature": "char *Com_ParseExt(const char **data_p, int allowLineBreaks)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "Q3 COM_ParseExt counterpart: returns the session token buffer; supports //, /* */ comments, quoted strings, numbers (with exponent), identifiers and the multi-char punctuation table g_0817e3e0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6db2",
+   "name": "Com_Parse",
+   "signature": "char *Com_Parse(const char **data_p)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "Q3 COM_Parse counterpart: honours a pending UngetToken, then Com_ParseExt(data_p, 1)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6e20",
+   "name": "Com_ParseOnLine",
+   "signature": "char *Com_ParseOnLine(const char **data_p)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "Q3 COM_ParseOnLine counterpart: Com_ParseExt(data_p, 0); with an ungot token and no space-delimited mode the old token is returned as is",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6ea8",
+   "name": "Com_MatchToken",
+   "signature": "int Com_MatchToken(const char **data_p, const char *match, int warningOnly)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "string \"MatchToken: %s != %s\\n\"; parameter 3 selects Com_ParseError (0) or Com_ParseWarning (non-zero) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6f90",
+   "name": "Com_SkipRestOfLine",
+   "signature": "void Com_SkipRestOfLine(const char **data_p)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "advances to just past the next '\\n' (counting the line) or to end of text",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6ff4",
+   "name": "Com_CountTokensOnLine",
+   "signature": "int Com_CountTokensOnLine(const char **data_p)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "counts the tokens remaining on the current line, then restores the parser position",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7166",
+   "name": "Com_Parse1DMatrix",
+   "signature": "void Com_Parse1DMatrix(const char **data_p, int x, float *m)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "Q3 Parse1DMatrix counterpart: \"(\" n floats \")\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b71ec",
+   "name": "Com_Parse2DMatrix",
+   "signature": "void Com_Parse2DMatrix(const char **data_p, int y, int x, float *m)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "Q3 Parse2DMatrix counterpart: \"(\" y rows of Com_Parse1DMatrix \")\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b72ec",
+   "name": "ColorIndex",
+   "signature": "int ColorIndex(char c)",
+   "subsystem": "common/parser",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns c-0x30 for digits 0-9 else 7; sole caller ClientCleanName (0x080f8b9b); counterpart of Q3 ColorIndex (digit -> colour index) with CoD2 default 7.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b731c",
+   "name": "COM_SkipPath",
+   "signature": "char *COM_SkipPath(char *pathname)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q3 COM_SkipPath: pointer after the last '/'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b741a",
+   "name": "COM_GetExtension",
+   "signature": "char *COM_GetExtension(char *name)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "extension search: last '.' not followed by a '/' or '\\\\'; returns end of string if none",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7470",
+   "name": "COM_StripExtension",
+   "signature": "void COM_StripExtension(const char *in, char *out)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q3 COM_StripExtension counterpart: copies in up to the extension into out",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b74ae",
+   "name": "COM_ExtractFilePath",
+   "signature": "void COM_ExtractFilePath(const char *path, char *dest)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "copies the directory part (including the final '/') of path to dest",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b74f2",
+   "name": "COM_DefaultExtension",
+   "signature": "void COM_DefaultExtension(char *path, int maxSize, const char *extension)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q3 COM_DefaultExtension: appends extension when the last path component has no '.'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7572",
+   "name": "BigShort",
+   "signature": "int BigShort(short l)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "dispatches through the byte-order slot g_085bc800 (ShortSwap on little-endian hosts)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7590",
+   "name": "BigLong",
+   "signature": "int BigLong(int l)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "dispatches through g_085bc808 (LongSwap on little-endian hosts)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b75a6",
+   "name": "BigLong64",
+   "signature": "uint64 BigLong64(uint64 l)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "dispatches through g_085bc810 (64-bit swap on big-endian hosts only)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b75ce",
+   "name": "LittleShort_ViaSlot",
+   "signature": "int LittleShort_ViaSlot(short l)",
+   "subsystem": "common/byteorder",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Duplicate (second translation unit copy) of LittleShort: calls through function pointer slot 0x085bc804 which Swap_InitLittleEndian/BigEndian fill with ShortNoSwap/ShortSwap. The address suffix is only a disambiguator; renaming keeps it unique (LittleShort already at 0x08055358).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b75ec",
+   "name": "LittleLong_ViaSlot",
+   "signature": "int LittleLong_ViaSlot(int l)",
+   "subsystem": "common/byteorder",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Duplicate of LittleLong dispatching through slot 0x085bc80c (LittleLong slot, filled by Swap_InitLittleEndian/BigEndian); unique alias since LittleLong exists at 0x0805208a and 0x0805536c.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b762e",
+   "name": "ShortSwap",
+   "signature": "int ShortSwap(int value)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "swaps the two bytes of a 16-bit value, result sign-extended (cwde)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7666",
+   "name": "ShortNoSwap",
+   "signature": "int ShortNoSwap(int value)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "returns the 16-bit value sign-extended",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b767a",
+   "name": "LongSwap",
+   "signature": "int LongSwap(uint32 value)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "reverses the four bytes of a 32-bit value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b76d6",
+   "name": "LongNoSwap",
+   "signature": "int LongNoSwap(int value)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "identity",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b76de",
+   "name": "Long64Swap",
+   "signature": "uint64 Long64Swap(uint64 value)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "reverses all eight bytes of a 64-bit value (low word and high word each byte swapped, then exchanged)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b781a",
+   "name": "Long64NoSwap",
+   "signature": "uint64 Long64NoSwap(uint64 value)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "identity on 64-bit value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7834",
+   "name": "FloatSwap",
+   "signature": "float FloatSwap(uint32 bits)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "reverses the bytes of a 32-bit pattern and returns it as float (x87 fld)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7868",
+   "name": "FloatNoSwap",
+   "signature": "float FloatNoSwap(uint32 bits)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "forwards the bit pattern to fn_080b933a (no-swap float helper)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b787c",
+   "name": "FloatBitsSwap",
+   "signature": "int FloatBitsSwap(uint32 bits)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "reverses the four bytes of a 32-bit pattern, returned as integer bits",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b78aa",
+   "name": "FloatBitsNoSwap",
+   "signature": "int FloatBitsNoSwap(uint32 bits)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "passes the address of its own argument to fn_080b9330 and forwards the result",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b78be",
+   "name": "Swap_InitLittleEndian",
+   "signature": "void Swap_InitLittleEndian(void)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "installs the swapping (BigShort/BigLong = swap) function slots used on little-endian hosts (Q3 Swap_Init little-endian branch)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b790a",
+   "name": "Swap_InitBigEndian",
+   "signature": "void Swap_InitBigEndian(void)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "opposite slot assignment (big-endian host branch of Swap_Init)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7956",
+   "name": "Swap_Init",
+   "signature": "void Swap_Init(void)",
+   "subsystem": "common/byteorder",
+   "confidence": "inferred",
+   "evidence": "Swap_Init: the endianness test was folded away by the compiler (only the little-endian branch survives)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b797a",
+   "name": "Q_isprint",
+   "signature": "int Q_isprint(int c)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_isprint: 0x20..0x7e",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b79a0",
+   "name": "Q_islower",
+   "signature": "int Q_islower(int c)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_islower: 'a'..'z'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b79c6",
+   "name": "Q_isupper",
+   "signature": "int Q_isupper(int c)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_isupper: 'A'..'Z'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b79ec",
+   "name": "Q_isalpha",
+   "signature": "int Q_isalpha(int c)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_isalpha: letters",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7a20",
+   "name": "Q_isnumeric",
+   "signature": "int Q_isnumeric(int c)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_isnumeric: '0'..'9'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7a46",
+   "name": "Q_isalphanumeric",
+   "signature": "int Q_isalphanumeric(int c)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_isalphanumeric",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7a80",
+   "name": "Q_isidentifierchar",
+   "signature": "int Q_isidentifierchar(int c)",
+   "subsystem": "common/string",
+   "confidence": "unknown",
+   "evidence": "alphanumeric, '_' or '-'; callers not in this chunk, so only the character class is known",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7ab6",
+   "name": "Q_strncpyz",
+   "signature": "void Q_strncpyz(char *dest, const char *src, int destsize)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_strncpyz: strncpy(dest, src, destsize-1) then NUL terminator",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7ae2",
+   "name": "Q_stricmpn",
+   "signature": "int Q_stricmpn(const char *s1, const char *s2, int n)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_stricmpn: case-insensitive compare of at most n characters (upper-casing via Q_islower)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7b88",
+   "name": "Q_strncmp",
+   "signature": "int Q_strncmp(const char *s1, const char *s2, int n)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_strncmp: case-sensitive compare of at most n characters (signed char compare)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7bf8",
+   "name": "Q_stricmp",
+   "signature": "int Q_stricmp(const char *s1, const char *s2)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_stricmp: Q_stricmpn with unlimited length (the result stays in eax)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7c1a",
+   "name": "Q_strcmp",
+   "signature": "int Q_strcmp(const char *s1, const char *s2)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_strcmp: Q_strncmp with unlimited length",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7c3c",
+   "name": "Q_WildcardCompare",
+   "signature": "int Q_WildcardCompare(const char *pattern, const char *text)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "wildcard compare: '*' matches any run (recursive), '?' any single char, otherwise tolower compare; 0 means match",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7d14",
+   "name": "Q_strlwr",
+   "signature": "char *Q_strlwr(char *s1)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_strlwr: lower-cases in place via Q_isupper, returns s",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7d56",
+   "name": "Q_strupr",
+   "signature": "char *Q_strupr(char *s1)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_strupr: upper-cases in place via Q_islower, returns s",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7d98",
+   "name": "I_strncat",
+   "signature": "void I_strncat(char *dest, int size, const char *src)",
+   "subsystem": "common/string",
+   "confidence": "observed",
+   "evidence": "string \"I_strncat: already overflowed\" (error code 0 when strlen(dest) >= size)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7dec",
+   "name": "Q_PrintStrlen",
+   "signature": "int Q_PrintStrlen(const char *string)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_PrintStrlen: string length ignoring ^0..^9 colour codes (\"^^\" is not a code)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7e54",
+   "name": "Q_CleanStr",
+   "signature": "char *Q_CleanStr(char *string)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Q_CleanStr: strips colour codes and control characters (<0x20, 0x7f) in place",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7edc",
+   "name": "Q_NormalizeApostrophe",
+   "signature": "int Q_NormalizeApostrophe(char c)",
+   "subsystem": "common/string",
+   "confidence": "unknown",
+   "evidence": "maps byte 0x92 (typographic apostrophe) to 0x27 ('); other chars returned as sign-extended char",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7f0a",
+   "name": "Com_sprintf",
+   "signature": "int Com_sprintf(char *dest, size_t size, const char *fmt, ...)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Com_sprintf: vsnprintf then forced NUL at dest[size-1]; returns the vsnprintf result",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7f48",
+   "name": "Com_IsPersistentPointer",
+   "signature": "int Com_IsPersistentPointer(const char *ptr)",
+   "subsystem": "common/misc",
+   "confidence": "unknown",
+   "evidence": "returns 0 when the pointer is within 0x2000 bytes above this frame's local (a caller's stack buffer) or inside the 0xc00-byte va() area, otherwise 1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7fa6",
+   "name": "va",
+   "signature": "char *va(const char *fmt, ...)",
+   "subsystem": "common/string",
+   "confidence": "observed",
+   "evidence": "string \"Attempted to overrun string in call to va()\"; two rotating 0x400 buffers in per-thread block slot 1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b805e",
+   "name": "Com_SetThreadBlocks",
+   "signature": "void Com_SetThreadBlocks(int threadIndex)",
+   "subsystem": "common/misc",
+   "confidence": "inferred",
+   "evidence": "registers the three per-thread blocks (slot 1 = va state stride 0x804, slot 2 stride 0x9c, slot 3 stride 0x18) for thread index",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b80c8",
+   "name": "Com_NarrowWideString",
+   "signature": "void Com_NarrowWideString(const char *src, char *dest, int count)",
+   "subsystem": "common/misc",
+   "confidence": "unknown",
+   "evidence": "narrows a 16-bit-per-char string by copying the high byte of each pair (offset +1), then NUL at dest[count-1]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8108",
+   "name": "Info_ValueForKey",
+   "signature": "char *Info_ValueForKey(const char *s, const char *key)",
+   "subsystem": "common/infostring",
+   "confidence": "observed",
+   "evidence": "string \"Info_ValueForKey: oversize infostring\"; walks \\key\\value pairs, copies the value into one of two 0x2000 static buffers",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8260",
+   "name": "Info_NextPair",
+   "signature": "void Info_NextPair(const char **head, char *key, char *value)",
+   "subsystem": "common/infostring",
+   "confidence": "inferred",
+   "evidence": "Q3 Info_NextPair counterpart: reads one \\key\\value pair at *head into key/value and advances *head",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8318",
+   "name": "Info_RemoveKey",
+   "signature": "void Info_RemoveKey(char *s, const char *key)",
+   "subsystem": "common/infostring",
+   "confidence": "observed",
+   "evidence": "string \"Info_RemoveKey: oversize infostring\" (0x400 limit); removes \"\\key\\value\" with matching key (case-sensitive strcmp) in place",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b844a",
+   "name": "Info_RemoveKey_Big",
+   "signature": "void Info_RemoveKey_Big(char *s, const char *key)",
+   "subsystem": "common/infostring",
+   "confidence": "observed",
+   "evidence": "string \"Info_RemoveKey_Big: oversize infostring\" (0x2000 limit); same as Info_RemoveKey with 8 KiB buffers",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b857c",
+   "name": "Info_Validate",
+   "signature": "int Info_Validate(const char *s)",
+   "subsystem": "common/infostring",
+   "confidence": "inferred",
+   "evidence": "Info_Validate: 0 if the string contains '\"' or ';', else 1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b85ce",
+   "name": "Info_SetValueForKey",
+   "signature": "void Info_SetValueForKey(char *s, const char *key, const char *value)",
+   "subsystem": "common/infostring",
+   "confidence": "observed",
+   "evidence": "string \"Info_SetValueForKey: oversize infostring\" and key rejection messages; removes the key, then appends \"\\key\\value\" (value stripped of '\\\\', ';', '\"')",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8802",
+   "name": "Info_SetValueForKey_Big",
+   "signature": "void Info_SetValueForKey_Big(char *s, const char *key, const char *value)",
+   "subsystem": "common/infostring",
+   "confidence": "inferred",
+   "evidence": "big-buffer variant of Info_SetValueForKey (0x2000 buffers); note it still limits the result to strlen sum < 0x401 and calls Info_RemoveKey_Big [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8a36",
+   "name": "Com_ParseInfoFields",
+   "signature": "bool Com_ParseInfoFields(char *base, struct InfoField *fields, int count, const char *info, int numCustomTypes, int (*customParse)(char *base, const char *value, int type), void (*setField)(void *dst, const char *value))",
+   "subsystem": "common/infostring",
+   "confidence": "inferred",
+   "evidence": "fills a structure from an info string according to an InfoField table: callback / string copies (0x400,0x40,0x100) / int / bool / float / int(float*1000, truncated)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8c60",
+   "name": "Ease_OutQuadSigned",
+   "signature": "float Ease_OutQuadSigned(float t)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Computes t*(2-|t|) (quadratic ease-out mirrored for negative t); callers BG_PlayerAngles, PlayerView_ComputeSway, WeaponView_ApplyTimedKickB, Rotate_Eased.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8c7e",
+   "name": "Ease_OutQuadInverse",
+   "signature": "float Ease_OutQuadInverse(float t)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Computes 1-sqrt(1-t), the exact inverse of t*(2-t) on [0,1]; sole caller PM_UpdateLean.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8c98",
+   "name": "BG_ApplyLeanRotationOffset",
+   "signature": "void BG_ApplyLeanRotationOffset(float *dst, float yaw, float t, float angleScale, float blendScale)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Eases t, builds a rotation about the given axis scaled by angleScale and adds the result scaled by blendScale to dst; callers PM_UpdateLean, G_GetPlayerViewOrigin, SV_BuildClientSnapshot. Lean semantics inferred from callers only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b8d30",
+   "name": "Orient_TransformPoint",
+   "signature": "void Orient_TransformPoint(const float *frame, const float *in, float *out)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): out = origin(frame[0..2]) + in rotated by 3x3 block frame[3..11]; caller Orient_Concat.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0817e3e0",
+   "name": "com_parsePunctuation",
+   "type": "const char *[15]",
+   "confidence": "observed",
+   "evidence": "NULL-terminated punctuation table read by Com_ParseExt: += -= *= /= &= |= ++ -- && || <= >= == !="
+  },
+  {
+   "addr": "0x085bc800",
+   "name": "pfnBigShort",
+   "type": "short (*)(int)",
+   "confidence": "inferred",
+   "evidence": "BigShort slot written by Swap_InitLittleEndian/BigEndian"
+  },
+  {
+   "addr": "0x085bc804",
+   "name": "pfnLittleShort",
+   "type": "short (*)(int)",
+   "confidence": "inferred",
+   "evidence": "LittleShort slot"
+  },
+  {
+   "addr": "0x085bc808",
+   "name": "swap_bigLongFn",
+   "type": "int (*)(int)",
+   "confidence": "inferred",
+   "evidence": "BigLong slot"
+  },
+  {
+   "addr": "0x085bc80c",
+   "name": "pfnLittleLong",
+   "type": "int (*)(int)",
+   "confidence": "inferred",
+   "evidence": "LittleLong slot"
+  },
+  {
+   "addr": "0x085bc810",
+   "name": "g_085bc810",
+   "type": "uint64 (*)(uint64)",
+   "confidence": "inferred",
+   "evidence": "BigLong64 slot"
+  },
+  {
+   "addr": "0x085bc814",
+   "name": "g_085bc814",
+   "type": "float (*)(uint32)",
+   "confidence": "inferred",
+   "evidence": "float swap slot"
+  },
+  {
+   "addr": "0x085bc818",
+   "name": "g_085bc818",
+   "type": "int (*)(uint32)",
+   "confidence": "inferred",
+   "evidence": "float-bits swap slot"
+  },
+  {
+   "addr": "0x085b8800",
+   "name": "info_valueBuffers",
+   "type": "char[2][0x2000]",
+   "confidence": "inferred",
+   "evidence": "Info_ValueForKey result buffers selected by g_085bc81c"
+  },
+  {
+   "addr": "0x085bc81c",
+   "name": "info_valueBufferIndex",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "toggled 0/1 on each Info_ValueForKey call"
+  },
+  {
+   "addr": "0x085b76a0",
+   "name": "com_vaThreadBuffers",
+   "type": "char[][0x804]",
+   "confidence": "inferred",
+   "evidence": "per-thread va() block (2 x 0x400 + index at 0x800) registered by Com_SetThreadBlocks"
+  },
+  {
+   "addr": "0x085b86c0",
+   "name": "com_threadJmpBufs",
+   "type": "char[][0x9c]",
+   "confidence": "unknown",
+   "evidence": "per-thread slot 2 block, stride 0x9c"
+  },
+  {
+   "addr": "0x085b7660",
+   "name": "g_085b7660",
+   "type": "char[][0x18]",
+   "confidence": "unknown",
+   "evidence": "per-thread slot 3 block, stride 0x18"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "ParseSession",
+   "size": "0x45c",
+   "evidence": "stride of 0x45c from Com_* parser accessors indexing sessionIndex"
+  },
+  {
+   "name": "ComParseState",
+   "size": "0x45cc",
+   "evidence": "16 sessions then index at 0x45c0, lastTokenPos 0x45c4, prevTokenPos 0x45c8 (end of struct not proven)"
+  },
+  {
+   "name": "ParseSave",
+   "size": "0x14",
+   "evidence": "Com_SaveParseOffset/RestoreParseOffset"
+  },
+  {
+   "name": "InfoField",
+   "size": "0xc",
+   "evidence": "Com_ParseInfoFields table stride 3 dwords"
+  }
+ ],
+ "open_questions": [
+  "Out-of-chunk callees fn_080b934c/fn_080a5226/fn_080b9370/fn_080b92f6/fn_080b9310 (quaternion/easing helpers used by Rotate_Eased/Ease_*) have guessed argument types.",
+  "fn_080b9330/fn_080b933a (float swap no-op helpers) return types inferred from pass-through code only.",
+  "Per-thread block layout for g_085b86c0 and g_085b7660 (slots 2 and 3 of fn_080d6bae) unknown; end of ComParseState (after 0x45c8) unproven."
+ ]
+}

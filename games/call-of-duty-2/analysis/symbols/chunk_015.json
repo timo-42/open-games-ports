@@ -1,0 +1,809 @@
+{
+ "chunk": 15,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0807cf02",
+   "name": "Scr_EvalSizeValue",
+   "signature": "void Scr_EvalSizeValue(struct VariableValue *value)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalSizeValue: string \"size cannot be applied to %s\"; replaces a value with its size (array count / strlen).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807cffc",
+   "name": "Scr_GetArraySize",
+   "signature": "uint16 Scr_GetArraySize(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "inferred",
+   "evidence": "Scr_GetArraySize: returns entry +6 (array element count); same body as fn_0807d522 (see Scr_GetArraySizeDup).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d01e",
+   "name": "Scr_GetNextSibling",
+   "signature": "unsigned int Scr_GetNextSibling(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "inferred",
+   "evidence": "Scr_GetNextSibling: iteration step used as for (c = f(id); c; c = f(c)) over an object's children; 0 when end/invalid type.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d066",
+   "name": "Scr_GetSiblingViaPrevLinks",
+   "signature": "unsigned int Scr_GetSiblingViaPrevLinks(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_GetSiblingViaPrevLinks: follows link_b twice from the link slot then link_a; 0 when target type > 0xe. Meaning of the links unknown.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d0c2",
+   "name": "Scr_GetVarNameId",
+   "signature": "unsigned int Scr_GetVarNameId(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "inferred",
+   "evidence": "Scr_GetVarNameId: flags >> 8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d0d6",
+   "name": "Scr_GetOrCreateObjectId",
+   "signature": "int Scr_GetOrCreateObjectId(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_GetOrCreateObjectId: untyped entry becomes type 1 and gets a fresh id from fn_0807bbf0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d122",
+   "name": "Scr_GetOrCreateArrayId",
+   "signature": "int Scr_GetOrCreateArrayId(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_GetOrCreateArrayId: as Scr_GetOrCreateObjectId but allocates through fn_0807bca8 (array allocation).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d16e",
+   "name": "Scr_GetVarValue",
+   "signature": "int Scr_GetVarValue(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "inferred",
+   "evidence": "Scr_GetVarValue: raw 32-bit value at entry +4.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d18e",
+   "name": "Scr_IsVarTypeBelowArray",
+   "signature": "bool Scr_IsVarTypeBelowArray(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_IsVarTypeBelowArray: entry type < 0x16.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d1c4",
+   "name": "Scr_IsVarNotDead",
+   "signature": "bool Scr_IsVarNotDead(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_IsVarNotDead: entry type != 0x17.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d1fa",
+   "name": "Scr_EvalBoolNot",
+   "signature": "void Scr_EvalBoolNot(struct VariableValue *value)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalBoolNot: casts to bool then logical not (only if the cast left an int).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d228",
+   "name": "Scr_EvalBitNot",
+   "signature": "void Scr_EvalBitNot(struct VariableValue *value)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalBitNot: string \"~ cannot be applied to \\\"%s\\\"\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d288",
+   "name": "Scr_CastBool",
+   "signature": "void Scr_CastBool(struct VariableValue *value)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_CastBool: string \"cannot cast %s to bool\". Int -> (v != 0); float -> int (v != 0.0f, NaN is true).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d31e",
+   "name": "Scr_CastString",
+   "signature": "int Scr_CastString(struct VariableValue *value)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_CastString: string \"cannot cast %s to string\"; returns 1 on success, 0 on failure (message kept in g_08397510).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d420",
+   "name": "Scr_ConvertToDisplayString",
+   "signature": "void Scr_ConvertToDisplayString(struct VariableValue *value)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_ConvertToDisplayString: converts any value to a string value (type name for objects/others, animation name for type 11).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d4fc",
+   "name": "Scr_GetVarClassChar",
+   "signature": "int Scr_GetVarClassChar(int varId)",
+   "subsystem": "script/classes",
+   "confidence": "unknown",
+   "evidence": "Scr_GetVarClassChar: class letter of the class table entry indexed by the entry's name field.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d522",
+   "name": "Scr_GetArraySizeDup",
+   "signature": "uint16 Scr_GetArraySizeDup(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_GetArraySizeDup: byte-identical behaviour to Scr_GetArraySize (entry +6).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d534",
+   "name": "Scr_ReleaseThreeValues",
+   "signature": "void Scr_ReleaseThreeValues(struct VariableValue *values)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_ReleaseThreeValues: releases values [2],[1],[0] and clears the type of value [0].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d56e",
+   "name": "Scr_CastVector",
+   "signature": "void Scr_CastVector(struct VariableValue *values)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_CastVector: string \"type %s is not a float\"; builds a vector from three stack values (values[2] becomes x).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d64a",
+   "name": "Scr_GetFieldObject",
+   "signature": "int Scr_GetFieldObject(int arg, struct VariableValue *value)",
+   "subsystem": "script/fields",
+   "confidence": "inferred",
+   "evidence": "Scr_GetFieldObject: string \"%s is not a field object\"; resolves an object value below array type through fn_0807caac.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d6dc",
+   "name": "Scr_UnmatchedPairError",
+   "signature": "void Scr_UnmatchedPairError(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_UnmatchedPairError: string \"pair '%s' and '%s' has unmatching types '%s' and '%s'\"; releases both values and reports.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d7aa",
+   "name": "Scr_CastNumericPair",
+   "signature": "void Scr_CastNumericPair(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_CastNumericPair: int/float mix promotes the int side to float; other mismatches report an error.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807d824",
+   "name": "Scr_CastStringPair",
+   "signature": "void Scr_CastStringPair(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_CastStringPair: like Scr_CastNumericPair but a string on either side converts float/vector/int on the other side to string.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807da06",
+   "name": "Scr_EvalBitOr",
+   "signature": "void Scr_EvalBitOr(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalBitOr: opcode 0x66; ints only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807da44",
+   "name": "Scr_EvalBitXor",
+   "signature": "void Scr_EvalBitXor(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalBitXor: opcode 0x67; ints only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807da82",
+   "name": "Scr_EvalBitAnd",
+   "signature": "void Scr_EvalBitAnd(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalBitAnd: opcode 0x68; ints only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807dac0",
+   "name": "Scr_EvalEquals",
+   "signature": "void Scr_EvalEquals(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalEquals: opcode 0x69; result left in a as int. Float compares |a-b| < 1e-06f.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807dd26",
+   "name": "Scr_EvalNotEquals",
+   "signature": "void Scr_EvalNotEquals(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalNotEquals: opcode 0x6a; !Scr_EvalEquals.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807dd52",
+   "name": "Scr_EvalLess",
+   "signature": "void Scr_EvalLess(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalLess: opcode 0x6b; a < b for float/int.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807ddd4",
+   "name": "Scr_EvalGreaterEqual",
+   "signature": "void Scr_EvalGreaterEqual(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalGreaterEqual: opcode 0x6e; !(a < b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807de00",
+   "name": "Scr_EvalGreater",
+   "signature": "void Scr_EvalGreater(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalGreater: opcode 0x6c; b < a for float/int.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807de82",
+   "name": "Scr_EvalLessEqual",
+   "signature": "void Scr_EvalLessEqual(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalLessEqual: opcode 0x6d; !(a > b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807deae",
+   "name": "Scr_EvalShiftLeft",
+   "signature": "void Scr_EvalShiftLeft(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalShiftLeft: opcode 0x6f; ints only, shift count masked to 5 bits.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807def4",
+   "name": "Scr_EvalShiftRight",
+   "signature": "void Scr_EvalShiftRight(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalShiftRight: opcode 0x70; ints only, arithmetic shift, count masked to 5 bits.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807df3a",
+   "name": "Scr_EvalPlus",
+   "signature": "void Scr_EvalPlus(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalPlus: opcode 0x71; string \"cannot concat \\\"%s\\\" and \\\"%s\\\" - max string length exceeded\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e192",
+   "name": "Scr_EvalMinus",
+   "signature": "void Scr_EvalMinus(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalMinus: opcode 0x72; float, vector, int.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e290",
+   "name": "Scr_EvalMultiply",
+   "signature": "void Scr_EvalMultiply(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalMultiply: opcode 0x73; float or int.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e2f6",
+   "name": "Scr_EvalDivide",
+   "signature": "void Scr_EvalDivide(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalDivide: opcode 0x74; string \"divide by 0\". Int/int yields a float.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e3b4",
+   "name": "Scr_EvalModulo",
+   "signature": "void Scr_EvalModulo(struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalModulo: opcode 0x75; ints only; string \"divide by 0\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e422",
+   "name": "Scr_EvalBinaryOperator",
+   "signature": "void Scr_EvalBinaryOperator(int opcode, struct VariableValue *a, struct VariableValue *b)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalBinaryOperator: dispatches opcodes 0x66..0x75 (or, xor, and, ==, !=, <, >, <=, >=, <<, >>, +, -, *, /, %).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e5a2",
+   "name": "Scr_IsVarUnreferenced",
+   "signature": "bool Scr_IsVarUnreferenced(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_IsVarUnreferenced: (flags & 0x60) == 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e5cc",
+   "name": "Scr_GetVarType",
+   "signature": "unsigned int Scr_GetVarType(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "inferred",
+   "evidence": "Scr_GetVarType: flags & 0x1f.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e5e0",
+   "name": "Scr_QueueEntityRelease",
+   "signature": "void Scr_QueueEntityRelease(unsigned int nameId, int classnum)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_QueueEntityRelease: if class tracking is on, looks the name up in the class entity array, retags the target as type 0x14, links it on the g_08397530 chain and removes the lookup entry.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e69a",
+   "name": "Scr_FlushEntityReleaseChain",
+   "signature": "void Scr_FlushEntityReleaseChain(void)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_FlushEntityReleaseChain: pops the g_08397530 chain (links in entry +6), notifies each id and releases it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e716",
+   "name": "Scr_SweepEntityVars",
+   "signature": "void Scr_SweepEntityVars(void)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_SweepEntityVars: for every id 1..0xfffd whose status bits are set and type is 0x13 or 0x14: fn_08083b24 then fn_0807b5d2.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e78c",
+   "name": "Scr_InitClass",
+   "signature": "void Scr_InitClass(int classnum)",
+   "subsystem": "script/classes",
+   "confidence": "inferred",
+   "evidence": "Scr_InitClass: allocates the per-class entity array (entArrayId) first, then the field map (fieldMapId).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e7d2",
+   "name": "Scr_ShutdownClass",
+   "signature": "void Scr_ShutdownClass(int classnum)",
+   "subsystem": "script/classes",
+   "confidence": "inferred",
+   "evidence": "Scr_ShutdownClass: if class tracking is on, releases and clears both class arrays.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e846",
+   "name": "Scr_AddClassField",
+   "signature": "void Scr_AddClassField(int classnum, const char *name, uint16 offset)",
+   "subsystem": "script/classes",
+   "confidence": "inferred",
+   "evidence": "Scr_AddClassField: registers a field name (by id of the name and of its lowered string) -> int offset in the class field map.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e93a",
+   "name": "Scr_FindClassFieldOffset",
+   "signature": "int Scr_FindClassFieldOffset(int classnum, const char *name)",
+   "subsystem": "script/classes",
+   "confidence": "inferred",
+   "evidence": "Scr_FindClassFieldOffset: looks a name up in the class field map; -1 when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e998",
+   "name": "Scr_FindClassEntityVar",
+   "signature": "int Scr_FindClassEntityVar(unsigned int nameId, int classnum)",
+   "subsystem": "script/classes",
+   "confidence": "unknown",
+   "evidence": "Scr_FindClassEntityVar: value of the named entry in the class entity array, 0 if missing.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807e9f8",
+   "name": "Scr_GetOrCreateClassEntityVar",
+   "signature": "int Scr_GetOrCreateClassEntityVar(unsigned int index, int classnum)",
+   "subsystem": "script/classes",
+   "confidence": "unknown",
+   "evidence": "Scr_GetOrCreateClassEntityVar: indexed entry in the class entity array; creates it through fn_0807bc3a on first use.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807ea8c",
+   "name": "Scr_GetArrayVarForIndex",
+   "signature": "int Scr_GetArrayVarForIndex(int arrayId, struct VariableValue *index)",
+   "subsystem": "script/variables",
+   "confidence": "inferred",
+   "evidence": "Scr_GetArrayVarForIndex: strings \"array index %d out of range\", \"%s is not an array index\"; creates the slot (int index or string key).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807eb54",
+   "name": "Scr_FindArrayVarForIndex",
+   "signature": "int Scr_FindArrayVarForIndex(int arrayId, struct VariableValue *index)",
+   "subsystem": "script/variables",
+   "confidence": "inferred",
+   "evidence": "Scr_FindArrayVarForIndex: lookup-only variant of Scr_GetArrayVarForIndex; releases arrayId on error.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807ec32",
+   "name": "Scr_EvalArrayIndex",
+   "signature": "void Scr_EvalArrayIndex(struct VariableValue *container, struct VariableValue *index)",
+   "subsystem": "script/operators",
+   "confidence": "inferred",
+   "evidence": "Scr_EvalArrayIndex: container a[index]; index value is overwritten with the result. Handles strings, arrays and vectors.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807eea8",
+   "name": "Scr_GetArrayForWrite",
+   "signature": "int Scr_GetArrayForWrite(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "inferred",
+   "evidence": "Scr_GetArrayForWrite: resolves the array variable to modify (varId 0xfffe means the current field g_08397540/g_08397544); strings \"read-only array cannot be changed\", \"string characters cannot be individually changed\", \"vector components cannot be individually changed\", \"%s is not an array\". Shared arrays (refCount != 0) are replaced by a fresh copy. Quirk kept from the binary: on the 0xfffe path with a non-pointer-resolved array the entry pointer stays NULL and a shared array would store through NULL.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f152",
+   "name": "Scr_SetArrayElement",
+   "signature": "void Scr_SetArrayElement(int varId, struct VariableValue *index)",
+   "subsystem": "script/variables",
+   "confidence": "inferred",
+   "evidence": "Scr_SetArrayElement: writes into the array resolved like Scr_GetArrayForWrite, element chosen by index (int or string key); strings \"array index %d out of range\", \"%s is not an array index\", \"%s is not an array\". Same NULL-entry quirk as Scr_GetArrayForWrite on the 0xfffe path.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f3ec",
+   "name": "Scr_AddNewArrayValue",
+   "signature": "void Scr_AddNewArrayValue(int arg)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_AddNewArrayValue: allocates an array and passes it as an object value to fn_0807caac.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f416",
+   "name": "Scr_GetVarInfoPair",
+   "signature": "struct ScrVarInfoPair Scr_GetVarInfoPair(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_GetVarInfoPair: returns {entry +6, flags>>8 as u16} through a hidden result pointer.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f44e",
+   "name": "Scr_CopyChildren",
+   "signature": "void Scr_CopyChildren(int srcId, int dstId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_CopyChildren: copies every child (except name id 0x1fffe) of srcId into dstId, merging type bits and taking a reference on the value.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f520",
+   "name": "Scr_CopyClassEntityChildren",
+   "signature": "void Scr_CopyClassEntityChildren(unsigned int srcIndex, unsigned int dstIndex, int classnum)",
+   "subsystem": "script/classes",
+   "confidence": "unknown",
+   "evidence": "Scr_CopyClassEntityChildren: if the source class entity has children, copies them into the destination class entity.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f576",
+   "name": "Scr_GetValueWeight",
+   "signature": "float Scr_GetValueWeight(int type, int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_GetValueWeight: weight of a value: for a type-1 value pointing at an array, weight(array) / (1 + refCount); otherwise 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f5d6",
+   "name": "Scr_GetEntryWeight",
+   "signature": "float Scr_GetEntryWeight(struct ScrVarEntry *entry)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_GetEntryWeight: 1 + weight of the entry's typed value.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f600",
+   "name": "Scr_GetNamedRootWeight",
+   "signature": "float Scr_GetNamedRootWeight(int nameId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_GetNamedRootWeight: weight of the value found in g_08397520 under the given name, 0 when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f658",
+   "name": "Scr_GetVarWeight",
+   "signature": "float Scr_GetVarWeight(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_GetVarWeight: 1.0 plus the entry weight of every child of varId.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f6c4",
+   "name": "Scr_GetFrameWeight",
+   "signature": "float Scr_GetFrameWeight(struct ScrStackBuffer_s *frame, float *outRootWeight)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_GetFrameWeight: accumulates variable weights across a frame's records walked from the last to the first; kind 7 records advance the variable id through fn_0807b82c. The second weight sum is stored through outRootWeight.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f7ba",
+   "name": "Scr_FindFieldDef",
+   "signature": "uint16 Scr_FindFieldDef(const char *name, int *outType)",
+   "subsystem": "script/fields",
+   "confidence": "inferred",
+   "evidence": "Scr_FindFieldDef: case-insensitive search of the field table (records: name, NUL, u16 id, s8 type); 0 when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807f840",
+   "name": "Scr_AddFieldsFromFile",
+   "signature": "void Scr_AddFieldsFromFile(const char *fileName)",
+   "subsystem": "script/fields",
+   "confidence": "inferred",
+   "evidence": "Scr_AddFieldsFromFile: parses a field definition file (\"type name\" pairs, types float/int/string/vector) and appends field records to the table; parse session label \"Scr_AddFields\"; errors via fn_08061124(1, ...).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807facc",
+   "name": "Scr_LoadFieldFiles",
+   "signature": "void Scr_LoadFieldFiles(const char *directory, const char *extension)",
+   "subsystem": "script/fields",
+   "confidence": "inferred",
+   "evidence": "Scr_LoadFieldFiles: lists the files of a directory, rebuilds the field table (empty NUL-terminated record list) and loads every file with Scr_AddFieldsFromFile; format \"%s/%s\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807fba6",
+   "name": "Scr_ReleaseVarThunk",
+   "signature": "void Scr_ReleaseVarThunk(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_ReleaseVarThunk: tail wrapper around fn_0807be2c.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807fbba",
+   "name": "Scr_PruneArrayChildren",
+   "signature": "int Scr_PruneArrayChildren(int varId)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_PruneArrayChildren: returns 0 if varId is not an array; otherwise removes children that are types 7..11 or pointers whose own prune returns 0, restarting the scan after each removal; returns 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807fc9e",
+   "name": "Scr_InitPersistentArray",
+   "signature": "void Scr_InitPersistentArray(void)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_InitPersistentArray: first call allocates g_08397528 and registers it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807fcc8",
+   "name": "Scr_ShutdownPersistentArray",
+   "signature": "void Scr_ShutdownPersistentArray(int release)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_ShutdownPersistentArray: flag 0 prunes the array children, otherwise releases the variable and clears g_08397528.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807fd12",
+   "name": "Scr_GetStatSnapshot",
+   "signature": "void Scr_GetStatSnapshot(struct ScrStatSnapshot *out)",
+   "subsystem": "script/variables",
+   "confidence": "unknown",
+   "evidence": "Scr_GetStatSnapshot: fills {g_0839753c, g_08205cb0, g_0839754c - g_08397548}.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08297500",
+   "name": "g_08297500",
+   "type": "struct ScrVarEntry[]",
+   "confidence": "inferred",
+   "evidence": "16-byte variable table indexed by id<<4"
+  },
+  {
+   "addr": "0x0817d920",
+   "name": "g_0817d920",
+   "type": "struct ScrClassDef[]",
+   "confidence": "inferred",
+   "evidence": "12-byte class table: ids, class letter 'e/h/p/v', name pointer"
+  },
+  {
+   "addr": "0x0817d960",
+   "name": "g_0817d960",
+   "type": "const char *[]",
+   "confidence": "observed",
+   "evidence": "type name strings undefined/object/string/..."
+  },
+  {
+   "addr": "0x08397500",
+   "name": "g_scr_field_table",
+   "type": "char *",
+   "confidence": "inferred",
+   "evidence": "field table pointer"
+  },
+  {
+   "addr": "0x08397510",
+   "name": "g_scr_compile_error_message",
+   "type": "const char *",
+   "confidence": "inferred",
+   "evidence": "pending cast error message"
+  },
+  {
+   "addr": "0x08397514",
+   "name": "g_08397514",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "error context flag set before script errors"
+  },
+  {
+   "addr": "0x08397530",
+   "name": "scrVarPub_freeEntList",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "entity release chain head"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "ScrVarEntry",
+   "size": "0x10",
+   "evidence": "id<<4 indexing and +4/+6/+8/+0xe field accesses"
+  },
+  {
+   "name": "VariableValue",
+   "size": "0x8",
+   "evidence": "value/type pairs on script stack"
+  },
+  {
+   "name": "ScrClassDef",
+   "size": "0xc",
+   "evidence": "stride 0xc at 0x817d920 with class letters and names"
+  }
+ ],
+ "open_questions": [
+  "Meaning of ScrVarEntry link_a/link_b/link_slot (sibling chain/hash layout) is not established",
+  "Callee placeholders (fn_0807c160 etc.) argument types are from decompiler output only; x87 return of float helpers assumed float",
+  "Semantics of fn_0807f6c4 frame records and the weight functions (memory accounting?) unknown"
+ ]
+}

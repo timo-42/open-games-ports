@@ -4,8 +4,8 @@
 It does not run the original executable or unpack files into the source tree.
 
 The shared crate also exports `AssetVfs` and `AssetStream` for seekable directory,
-ISO9660 and nested ZIP asset access, with ordered loose-file overlays. Underground
-2 uses this streaming interface. The crate also retains bounded readers for EA
+ISO9660 and nested ZIP asset access, with ordered loose-file overlays. The crate
+also retains bounded readers for EA
 BIG archives and RefPack-compressed payloads, used by supported Need for Speed
 asset formats.
 
@@ -22,8 +22,7 @@ members are fingerprinted with SHA-256. Selected Inno ZIP containers may be
 copied into a disposable cache as described below; no installer executes.
 Only primary ISO9660 volumes with 2048-byte sectors and
 stored/Deflate `COMPRESS.ZIP` payloads have been validated. Other disc layouts,
-installers, binary deltas and native mod logic remain outstanding; see
-[Underground 2's media coverage](../../games/nfs-underground-2/port/README.md).
+installers, binary deltas and native mod logic remain outstanding.
 
 `archive::Archive::parse` reads EA BIGF/BIG4 indexes, retaining member names,
 byte ranges and declared-size warnings. Lookup rejects ambiguous names and unsafe
@@ -43,15 +42,14 @@ cargo test --locked -p open-games-vfs
 cargo clippy --locked -p open-games-vfs --all-targets -- -D warnings
 ```
 
-The `layers` API mounts its sources through the same `AssetVfs` stream abstraction and adds read-only, case-insensitive directory and ordinary Inno installer mounts with ordered whole-file update/mod overlays, SHA-256 source identities and seekable file streams. RCT uses this API directly. `Layer::open_with_known_artifacts` indexes a directory or installer without rehashing its full payload set; supplied manifest hashes remain recorded identities, while each opened Inno member is verified against its installer checksum. A caller must record separately whether those manifest hashes were rechecked. ISO9660 and nested ZIP mounts are supported through `AssetVfs`; other disc formats, Galaxy logical file reconstruction and binary patch reconstruction remain unsupported.
+The `layers` API mounts its sources through the same `AssetVfs` stream abstraction and adds read-only, case-insensitive directory and ordinary Inno installer mounts with ordered whole-file update/mod overlays, SHA-256 source identities and seekable file streams. `Layer::open_with_known_artifacts` indexes a directory or installer without rehashing its full payload set; supplied manifest hashes remain recorded identities, while each opened Inno member is verified against its installer checksum. A caller must record separately whether those manifest hashes were rechecked. ISO9660 and nested ZIP mounts are supported through `AssetVfs`; other disc formats, Galaxy logical file reconstruction and binary patch reconstruction remain unsupported.
 
 `Layer::tar_bz2_member` mounts one named regular file from a SHA-256-pinned tar.bz2 package and verifies the member digest. The tar reader and bzip2 decoder provide sequential access; the VFS spools the selected member to a disposable seekable file, so nested ZIP readers can seek independently while memory use stays bounded. CoD2 uses this path to mount its official 1.3 multiplayer data update. [tar archive reader](https://docs.rs/tar/0.4.46/tar/struct.Archive.html) · [bzip2 streaming decoder](https://docs.rs/bzip2/0.6.1/bzip2/read/struct.BzDecoder.html)
 
 The pinned `inno` 0.7.0 crate lacked the `idskb32` disk-slice variant used by the supplied Battlefield 2 repack. A narrow vendored patch in `runtime/vfs/vendor/inno` accepts its 64-bit slice size and 16-byte header, following [Inno Setup's slice structure](https://github.com/jrsoftware/issrc/blob/main/Projects/Src/Shared.Struct.pas). Inno ZIP containers requested through `Layer` are copied on demand to a disposable, checksum-verified cache so the ZIP index has a seekable stream without loading a 641 MB archive into RAM. `prefetch_installer_zips` fills several requested ZIPs in one forward pass over solid installer chunks. The cache uses `.local/open-games-vfs-cache` in debug builds, the platform user-cache directory in release builds, or `OPEN_GAMES_VFS_CACHE_DIR` when set. It is bounded to 2 GiB per container; decoded ZIP members retain the 256 MiB limit. The original media is not modified.
 
 GOG installers are indexed by the wasm-capable
-[`open-games-vfs-inno`](../vfs-inno/README.md) crate, which the Anno 1602
-browser host also uses. Legacy GOG installers (the 2015 "2.0.0.x" builds:
+[`open-games-vfs-inno`](../vfs-inno/README.md) crate. Legacy GOG installers (the 2015 "2.0.0.x" builds:
 `goggame-*` metadata beside ordinary `{app}` members) are read as plain Inno
 installers; they were rejected before. Galaxy-era installers (`{tmp}/<md5>`
 zlib payloads) are mapped from the installer's own `before_install`/
@@ -62,11 +60,7 @@ keep the earlier `.hashdb` mapping (whole-file MD5, decompressing each payload
 at mount; multi-part files are then omitted with a warning).
 Redistributables (`before_install_dependency`, `__redist/`) and `goggame-*`
 metadata are not exposed. No `check_if_install` language condition is
-evaluated; a path listed twice with different content is rejected. Validated
-on the four supplied Anno 1602 GOG installers
-([gog-editions.md](../../games/anno-1602/analysis/gog-editions.md)); the
-supplied Rollercoaster Tycoon 77749 Galaxy installer now lists 504 files
-(game adapter not revalidated). `Layer::original_name` and
+evaluated; a path listed twice with different content is rejected. `Layer::original_name` and
 `Sources::original_name` give the installer's own spelling of a member path
 (lookups stay case-insensitive), for games that show or store file names.
 
@@ -83,15 +77,7 @@ indexes the resource directory and exposes each payload at
 file-backed byte range, without extracting or loading the complete executable.
 PE32+ resources and unusual PE resource layouts have not been validated.
 
-The [inspection tools](../vfs-tools/README.md) expose the resolved `Sources` view
-through an extraction CLI, a versioned JSON Lines protocol and optional
-read-only FUSE. `Sources::file_info` reports size and the winning layer through
-the same overlay used for reads. `Layer::open` also accepts ISO9660/2048 images
-using the existing ISO/nested ZIP backend; this adds no new disc-format coverage.
-
 The vendored Inno directory retains `LICENSE-MIT.md` and `LICENSE-APACHE.md`.
 These are byte-for-byte copies of the upstream 0.7.0 revision
-`373a35233ebd0ce5fb6b517e83c687353532ceba`, verified against the SHA-256s in
-`games/battlefield-2/docs/licenses/infantry-engine-fallback-notices.json`.
-The `idskb32` modification, the kept file conditions and the slice readers
-described above remain local patches.
+`373a35233ebd0ce5fb6b517e83c687353532ceba`. The `idskb32` modification, the
+kept file conditions and the slice readers described above remain local patches.

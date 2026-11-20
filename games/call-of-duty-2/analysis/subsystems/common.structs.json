@@ -1,0 +1,961 @@
+[
+ {
+  "name": "dvar_s",
+  "size": "0x24",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "Dvar_Create stores name (0x080b3c48); Dvar_FindHashed compares Q_stricmp(name, d->name) (0x080b2e54); chunk_006/007/029/049/050/100/101/102 all read +0"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint16",
+    "name": "flags",
+    "evidence": "Dvar_SetVariant tests 0x10/0x20/0x40/0x80 (0x080b2afa); Dvar_OrFlags ORs a uint16 at +4 (0x080b507a); dvarlist legend in chunk_100"
+   },
+   {
+    "offset": "0x06",
+    "type": "uint8",
+    "name": "type",
+    "evidence": "0 bool,1 float,2 vec2,3 vec3,4 vec4,5 int,6 enum,7 string,8 color; Dvar_ValuesEqual switch, Dvar_FormatValue switch (0x080b187c); Dvar_AllocValueBlock uses type as float count"
+   },
+   {
+    "offset": "0x07",
+    "type": "uint8",
+    "name": "modified",
+    "evidence": "set to 1 by Dvar_SetVariant, 0 by Dvar_Create, tested/cleared by Com_CheckViewlog (0x080626ae)"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint32 (union int/float bits/bool byte/char*/float*)",
+    "name": "current",
+    "evidence": "Dvar_GetInt/Float/Bool read +8; every chunk that only maps +8 agrees (006,019,022,023,042,047,049,050,051,101)"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint32",
+    "name": "latched",
+    "evidence": "Dvar_SetLatched writes +0xc (0x080b29f0); chunk_007 unk0c (not touched there); chunk_028/029/100/102"
+   },
+   {
+    "offset": "0x10",
+    "type": "uint32",
+    "name": "reset",
+    "evidence": "Dvar_SetReset / Dvar_ResetToDefault read +0x10 (0x080b5092); Dvar_FormatResetValue; chunk_028/029/100/102"
+   },
+   {
+    "offset": "0x14",
+    "type": "uint32 (int/float bits or enum count)",
+    "name": "domain_min",
+    "evidence": "Dvar_Command passes min to Dvar_PrintDomain (0x08063054); Dvar_CurrentEnumString tests enumCount (0x080b17c0); toggle uses min/max for int/float"
+   },
+   {
+    "offset": "0x18",
+    "type": "uint32 (int/float bits or const char **enumNames)",
+    "name": "domain_max",
+    "evidence": "chunk_028 enumNames@0x18, chunk_007 max@0x18, chunk_029 domain_max"
+   },
+   {
+    "offset": "0x1c",
+    "type": "struct dvar_s *",
+    "name": "sorted_next",
+    "evidence": "Dvar_Create insertion into name-sorted list (0x080b3c48); chunk_007/100 call it next; walks in dvarlist/dvardump/Dvar_InfoString"
+   },
+   {
+    "offset": "0x20",
+    "type": "struct dvar_s *",
+    "name": "hash_next",
+    "evidence": "Dvar_FindHashed chain (0x080b2e54), Dvar_Create bucket push; chunks 029, 102"
+   }
+  ],
+  "defined_in": [
+   "chunk_006_types.h",
+   "chunk_007_types.h",
+   "chunk_019_types.h",
+   "chunk_022_types.h",
+   "chunk_023_types.h",
+   "chunk_028_types.h",
+   "chunk_029_types.h",
+   "chunk_042_types.h",
+   "chunk_046_types.h",
+   "chunk_047_types.h",
+   "chunk_049_types.h",
+   "chunk_050_types.h",
+   "chunk_051_types.h",
+   "chunk_100_types.h",
+   "chunk_101_types.h",
+   "chunk_102_types.h",
+   "(alias cvar_s in chunk_009/020/021/024/040_types.h)"
+  ],
+  "conflicts": "No offset contradiction among the 16 dvar_s definitions; they differ only in how much they name. Size 0x24 is supported by pool arithmetic: pool 0x085abe20 + 0x500*0x24 = 0x085b7220 = hash table address. Contradictions to resolve by renaming, not by layout: chunk_007 calls +0x1c 'next' while chunk_029 calls it sorted_next and has a separate hash_next@0x20; chunk_007 names +0x0c/+0x10 unk0c/unk10 (they are latched/reset); chunk_007 and chunk_100 give min/max as typed unions while chunk_028/029 use raw words (both are the same bits). The legacy alias cvar_s in chunk_009 puts a 'string' pointer at +4 which contradicts flags/type/modified at +4..+7 (only +8 integer is used there). chunk_028 omits +0..+5 and +0x1c/+0x20 (sub-view). Vector dvars (type 2..4) make current/latched/reset pointers into one malloc block of type*12 bytes (current,latched,reset consecutive); strings are shared with canonical literals.",
+  "confidence": "high"
+ },
+ {
+  "name": "dvar_enum_desc_s",
+  "size": "0x08",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int32",
+    "name": "count",
+    "evidence": "passed as (enumCount, enumNames) to Dvar_ParseEnumIndex/Dvar_ParseValueWord (0x080b1bae, 0x080b1e18); equals dvar_s.domain_min for type 6"
+   },
+   {
+    "offset": "0x04",
+    "type": "const char **",
+    "name": "names",
+    "evidence": "equals dvar_s.domain_max for type 6"
+   }
+  ],
+  "defined_in": [
+   "chunk_028_types.h"
+  ],
+  "conflicts": "chunk_029_types.h declares the same entry points with (uint32 min, uint32 max) parameters and a different return type for Dvar_ParseEnumIndex (const char * vs int); the chunk_028 form (int, sentinel -0x539) is the one consistent with the code.",
+  "confidence": "medium"
+ },
+ {
+  "name": "cmd_text_s",
+  "size": "0x0c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "byte *",
+    "name": "data",
+    "evidence": "Cbuf_Init stores &storage[i*0x10000] (0x0805fc9a)"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "maxsize",
+    "evidence": "0x10000; Cbuf_AddText overflow test"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "cursize",
+    "evidence": "Cbuf_AddText/InsertText/Execute"
+   }
+  ],
+  "defined_in": [
+   "chunk_006_types.h"
+  ],
+  "conflicts": "none. Array g_cmd_text_buffers[1] at 0x0818f084; Cbuf_Init loops i<1 so exactly one instance exists; g_cmd_text (0x0817d77c) points at it; storage 0x0818f100.",
+  "confidence": "high"
+ },
+ {
+  "name": "cmd_function_s",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "struct cmd_function_s *",
+    "name": "next",
+    "evidence": "Cmd_AddCommand pushes at head (0x080606b6)"
+   },
+   {
+    "offset": "0x04",
+    "type": "char *",
+    "name": "name",
+    "evidence": "CopyString(name); Cmd_RemoveCommand frees it"
+   },
+   {
+    "offset": "0x08",
+    "type": "void *",
+    "name": "aux8",
+    "evidence": "Cmd_SetCommandAuxPair (0x0806079c); chunk_100 Cmd_FileCompletion uses it as path"
+   },
+   {
+    "offset": "0x0c",
+    "type": "void *",
+    "name": "auxC",
+    "evidence": "same; used as extension"
+   },
+   {
+    "offset": "0x10",
+    "type": "void (*)(void)",
+    "name": "function",
+    "evidence": "Cmd_ExecuteString calls cmd->function (0x080608a6)"
+   }
+  ],
+  "defined_in": [
+   "chunk_006_types.h",
+   "chunk_100_types.h"
+  ],
+  "conflicts": "none (allocated with Com_MallocZeroed(0x14)). Matching chunk_100 comment fixes the semantics of aux8/auxC.",
+  "confidence": "high"
+ },
+ {
+  "name": "sysEvent_s",
+  "size": "0x18",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "evTime",
+    "evidence": "Sys_QueEvent (0x080d47a2)"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "evType",
+    "evidence": "0 none, 4 console text, 5 packet (Com_EventLoop switch 0x0806182a)"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "evValue",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "evValue2",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "evPtrLength",
+    "evidence": "packet payload = 0x14 netadr + data"
+   },
+   {
+    "offset": "0x14",
+    "type": "void *",
+    "name": "evPtr",
+    "evidence": "malloc'ed payload freed with Com_Free_A"
+   }
+  ],
+  "defined_in": [
+   "cod2_types.h (promoted)",
+   "chunk_038_types.h (uses promoted)",
+   "chunk_006_types.h (uses promoted)"
+  ],
+  "conflicts": "none. Two 256-entry rings use it: eventQue 0x085e5060 (0x1800 bytes) and com_pushedEvents 0x081a3300.",
+  "confidence": "high"
+ },
+ {
+  "name": "netadr_s",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "type",
+    "evidence": "NetadrToSockadr tests type 3/4 (0x080d5160); Sys_SendPacket tests 3,4,5,6"
+   },
+   {
+    "offset": "0x04",
+    "type": "byte[4]",
+    "name": "ip",
+    "evidence": "NetadrToSockadr copies dword at a+4 to sin_addr (objdump 0x080d51c3..0x080d51cb); SockadrToNetadr writes it back (0x080d51e4..0x080d51ef)"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint16",
+    "name": "port",
+    "evidence": "NetadrToSockadr: movzx ax,WORD PTR [eax+8] (objdump 0x080d51d3); SockadrToNetadr writes WORD at +8 (0x080d51fb)"
+   },
+   {
+    "offset": "0x0a",
+    "type": "byte[10]",
+    "name": "ipx",
+    "evidence": "inferred from chunks 009/021/022/038; total size 0x14 observed from memcpy(...,0x14) in Sys_GetEvent"
+   }
+  ],
+  "defined_in": [
+   "chunk_006_types.h (words[5])",
+   "chunk_009_types.h",
+   "chunk_020_types.h",
+   "chunk_021_types.h",
+   "chunk_022_types.h",
+   "chunk_038_types.h",
+   "chunk_101_types.h"
+  ],
+  "conflicts": "chunk_101_types.h puts ipx[10] at +0x08 and port at +0x12 (Q3 order); this contradicts the observed disassembly (port word at +8, ip dword at +4). chunk_020 models ip as uint32 and leaves +0x0c..+0x13 unrecovered (compatible). chunk_006 treats the record as 5 raw ints (compatible). The ipx bytes at 0x0a..0x13 are never read in finished chunks.",
+  "confidence": "high for type/ip/port/size, low for ipx"
+ },
+ {
+  "name": "msg_s",
+  "size": "0x18",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "overflowed",
+    "evidence": "chunk_008 MSG_BeginReading resets overflow flag; chunk_009/022/038/100 name it overflowed; chunk_006 unk0, chunk_021 allowoverflow (inferred)"
+   },
+   {
+    "offset": "0x04",
+    "type": "byte *",
+    "name": "data",
+    "evidence": "MSG_Init (0x08067bd8) stores data"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "maxsize",
+    "evidence": "MSG_Init stores maxsize; recvfrom length in Sys_GetPacket"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "cursize",
+    "evidence": "Sys_GetEvent total = cursize+0x14"
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "readcount",
+    "evidence": "Netchan_Process, Sys_GetPacket zeroes it"
+   },
+   {
+    "offset": "0x14",
+    "type": "int",
+    "name": "bit",
+    "evidence": "chunk_008/022/038/100; absolute bit cursor"
+   }
+  ],
+  "defined_in": [
+   "chunk_006_types.h",
+   "chunk_008_types.h",
+   "chunk_009_types.h",
+   "chunk_020_types.h",
+   "chunk_021_types.h",
+   "chunk_022_types.h",
+   "chunk_038_types.h",
+   "chunk_100_types.h"
+  ],
+  "conflicts": "Size 0x18 is observed (MSG_Init memset(msg,0,0x18)). chunk_006 and chunk_021 only define 4 fields and call word 0 unk0/allowoverflow (chunk_021: 'inferred'); chunk_009 stops at readcount; chunk_020 uses a 0x20-byte tail (w0,w2,tail[0xc]) which is larger than 0x18 and contradicts MSG_Init. Q3's msg_t has allowoverflow/overflowed/oob before data; this binary has a single leading flag.",
+  "confidence": "high"
+ },
+ {
+  "name": "field_s",
+  "size": "0x118",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "cursor",
+    "evidence": "Sys_ConsoleInput backspace/append (0x080d3e06)"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "scroll",
+    "evidence": "Com_InitStringBuffer zeroes it (0x080628b6)"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "widthInChars",
+    "evidence": "Com_InitStringBuffer sets 0x100 (chunk_007 'capacity')"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "unk0c",
+    "evidence": "unrecovered"
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "unk10",
+    "evidence": "unrecovered"
+   },
+   {
+    "offset": "0x14",
+    "type": "int",
+    "name": "unk14",
+    "evidence": "unrecovered"
+   },
+   {
+    "offset": "0x18",
+    "type": "char[256]",
+    "name": "buffer",
+    "evidence": "memset(data,0,0x100) in Com_InitStringBuffer; tty_con.buffer in Sys_ConsoleInput; history copies are 0x46 dwords (=0x118)"
+   }
+  ],
+  "defined_in": [
+   "cod2_types.h (promoted)",
+   "chunk_038_types.h",
+   "chunk_037_types.h",
+   "chunk_007_types.h (as comStringBuffer_s)"
+  ],
+  "conflicts": "chunk_007 comStringBuffer_s (0x18-byte header + data[0x100]) is the same layout under a different name; Com_InitStringBuffer (0x080628b6) is the Field_Clear equivalent. History array tty_history[32] at 0x08606a00 ends exactly at tty_history_count 0x08608d00 (0x08606a00+32*0x118).",
+  "confidence": "high"
+ },
+ {
+  "name": "hunk_user_t",
+  "size": "variable: strlen(name)+10, or 9 for anonymous entries",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "value",
+    "evidence": "released by type in Hunk_ReleaseEntriesInRange (0x080abce4)"
+   },
+   {
+    "offset": "0x04",
+    "type": "struct hunk_user_t *",
+    "name": "next",
+    "evidence": "bucket chain; list heads g_084a87a0[0x401]"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint8",
+    "name": "type",
+    "evidence": "3,4,5,6 released; Hunk_FindUserEntry matches type+name"
+   },
+   {
+    "offset": "0x09",
+    "type": "char[]",
+    "name": "name",
+    "evidence": "strcpy target in Hunk_AddUserEntry (0x080abbb6); strcasecmp in lookup; absent for the anonymous variant"
+   }
+  ],
+  "defined_in": [
+   "chunk_027_types.h"
+  ],
+  "conflicts": "single definition; allocation size strlen+10 / 9 observed in Hunk_AddUserEntry / Hunk_AddAnonymousUserEntry.",
+  "confidence": "high"
+ },
+ {
+  "name": "hunk_state",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "lowPermanent",
+    "evidence": "0x085a9804; Hunk_AllocLowAlign, Hunk_GetLowPermanent"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "lowTemp",
+    "evidence": "0x085a9808; Hunk_AllocateTempMemory"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "highPermanent",
+    "evidence": "0x085a980c; Hunk_AllocAlign"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "highTemp",
+    "evidence": "0x085a9810; Hunk_AllocateTempMemoryHigh"
+   },
+   {
+    "offset": "0x10",
+    "type": "byte *",
+    "name": "base",
+    "evidence": "0x085a9814; calloc result in Com_InitHunkMemory"
+   },
+   {
+    "offset": "0x14",
+    "type": "void *",
+    "name": "rawPtr",
+    "evidence": "0x085a9818; freed by Hunk_Shutdown"
+   },
+   {
+    "offset": "0x18",
+    "type": "int",
+    "name": "totalBytes",
+    "evidence": "0x085a981c; com_hunkMegs<<20 or 0x5000000"
+   }
+  ],
+  "defined_in": [
+   "chunk_027_types.h (as seven separate globals g_085a9804..g_085a981c)"
+  ],
+  "conflicts": "Not declared as a struct anywhere; the proposal groups seven contiguous 4-byte globals (0x085a9804..0x085a981c) that are always used together. Hunk_Shutdown memsets 8 bytes at 0x085a9804 and 8 bytes at 0x085a980c (two pairs: low marks, high marks), consistent with this ordering. Extent beyond 0x1c is not observed.",
+  "confidence": "medium"
+ },
+ {
+  "name": "ParseSession",
+  "size": "0x45c",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "char[0x400]",
+    "name": "token",
+    "evidence": "token buffer returned by Com_ParseExt (chunk_030)"
+   },
+   {
+    "offset": "0x400",
+    "type": "int",
+    "name": "lines",
+    "evidence": "current line"
+   },
+   {
+    "offset": "0x404",
+    "type": "uint8",
+    "name": "tokenUngotten",
+    "evidence": "Com_UngetToken"
+   },
+   {
+    "offset": "0x405",
+    "type": "uint8",
+    "name": "spaceDelimited",
+    "evidence": "Com_SetSpaceDelimited; ParseSlot_Init sets 1 (chunk_029)"
+   },
+   {
+    "offset": "0x406",
+    "type": "uint8",
+    "name": "keepStringQuotes",
+    "evidence": "Com_SetKeepStringQuotes"
+   },
+   {
+    "offset": "0x407",
+    "type": "uint8",
+    "name": "csvMode",
+    "evidence": "Com_SetCSVMode"
+   },
+   {
+    "offset": "0x408",
+    "type": "uint8",
+    "name": "allowNegativeNumbers",
+    "evidence": "Com_SetParseNegativeNumbers"
+   },
+   {
+    "offset": "0x40c",
+    "type": "const char *",
+    "name": "errorPrefix",
+    "evidence": "ParseSlot_Init points at the 'Already parsing:' literal"
+   },
+   {
+    "offset": "0x410",
+    "type": "const char *",
+    "name": "warningPrefix",
+    "evidence": "same"
+   },
+   {
+    "offset": "0x414",
+    "type": "int",
+    "name": "savedLines",
+    "evidence": "Com_SaveParseOffset"
+   },
+   {
+    "offset": "0x418",
+    "type": "const char *",
+    "name": "savedPos",
+    "evidence": ""
+   },
+   {
+    "offset": "0x41c",
+    "type": "char[0x40]",
+    "name": "name",
+    "evidence": "Q_strncpyz(slot->name,name,0x40) in Com_BeginParseSession (0x080b5f32)"
+   }
+  ],
+  "defined_in": [
+   "chunk_030_types.h",
+   "chunk_029_types.h (as parse_slot_s)",
+   "chunk_102_types.h"
+  ],
+  "conflicts": "chunk_029 parse_slot_s names +0x400 'unknown_400' (set to 1) and writes +0x405 = 1 / +0x404 = 0 while chunk_030 gives +0x400 = lines (not a flag) - ParseSlot_Init sets lines=1 (start at line 1) which is consistent. chunk_030 initialises prefixes at 0x40c/0x410 as errorPrefix/warningPrefix; chunk_029 only knows they hold the same literal. Slot 0x409..0x40b padding.",
+  "confidence": "high"
+ },
+ {
+  "name": "ComParseState",
+  "size": "0x45cc",
+  "fields": [
+   {
+    "offset": "0x0000",
+    "type": "ParseSession[16]",
+    "name": "sessions",
+    "evidence": "stride 0x45c; Com_BeginParseSession writes slot at index depth (0x080b5f32)"
+   },
+   {
+    "offset": "0x45c0",
+    "type": "int",
+    "name": "sessionIndex",
+    "evidence": "depth; limit 0xf then Com_Error(0)"
+   },
+   {
+    "offset": "0x45c4",
+    "type": "const char *",
+    "name": "lastTokenPos",
+    "evidence": "Com_ParseExt (chunk_030)"
+   },
+   {
+    "offset": "0x45c8",
+    "type": "const char *",
+    "name": "prevTokenPos",
+    "evidence": "Com_ParseExt"
+   }
+  ],
+  "defined_in": [
+   "chunk_030_types.h",
+   "chunk_029_types.h (as parse_session_s, size asserted 0x45c4)"
+  ],
+  "conflicts": "chunk_029 parse_session_s asserts total size 0x45c4 (depth at 0x45c0 is the last field), chunk_030 has two more pointers at 0x45c4/0x45c8 (size >= 0x45cc). Singleton at 0x0817e420. chunk_029's remark that depth 16 'writes past the struct' is unreachable because Com_Error(0) does not return.",
+  "confidence": "medium"
+ },
+ {
+  "name": "ParseSave",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "lines",
+    "evidence": "Com_SaveParseOffset (0x080b63c4)"
+   },
+   {
+    "offset": "0x04",
+    "type": "const char *",
+    "name": "pos",
+    "evidence": ""
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "tokenUngotten",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "savedLines",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "const char *",
+    "name": "savedPos",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_030_types.h"
+  ],
+  "conflicts": "single definition",
+  "confidence": "medium"
+ },
+ {
+  "name": "InfoField",
+  "size": "0x0c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "Com_ParseInfoFields (0x080b8a36)"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "offset",
+    "evidence": "byte offset into destination"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "type",
+    "evidence": "0 callback, 1..3 strings (0x400/0x40/0x100), 4 int, 5 bool, 6 float, 7 float*1000 (chunk_030)"
+   }
+  ],
+  "defined_in": [
+   "chunk_030_types.h"
+  ],
+  "conflicts": "single definition; symbols.json name for the function is corrupted ('Com_Parsestruct InfoFields').",
+  "confidence": "medium"
+ },
+ {
+  "name": "msgbuf_s",
+  "size": "0x14 (at least; array stride not observed)",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint8 *",
+    "name": "data",
+    "evidence": "MsgBuf_WriteData/ReadData (0x080b5bfe/0x080b5d5e)"
+   },
+   {
+    "offset": "0x04",
+    "type": "int32",
+    "name": "maxsize",
+    "evidence": "bound check"
+   },
+   {
+    "offset": "0x08",
+    "type": "int32",
+    "name": "cursor",
+    "evidence": "read/write position"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint8",
+    "name": "warn_on_overflow",
+    "evidence": "Com_Error(1,...) only when set"
+   },
+   {
+    "offset": "0x0d",
+    "type": "uint8",
+    "name": "overflowed",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "void (*)(msgbuf_s*,uint32,void*)",
+    "name": "transfer",
+    "evidence": "MsgBuf_IsReader/IsWriter compare it with ReadData/WriteData"
+   }
+  ],
+  "defined_in": [
+   "chunk_029_types.h",
+   "chunk_102_types.h (without transfer)",
+   "chunk_053_types.h (data@0, cursize@8 only)"
+  ],
+  "conflicts": "chunk_053 sees only data@0x00 and cursize@0x08 (consistent with cursor@0x08) and hides maxsize@4 - compatible; chunk_102 omits transfer@0x10. No size recovered.",
+  "confidence": "medium"
+ },
+ {
+  "name": "fileHandleData_s",
+  "size": "0x11c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "FILE * / unzip handle",
+    "name": "file",
+    "evidence": "chunk_007 FS_SV_FOpenFileRead stores fopen result at +0 (objdump 0x08064645 mov [ebx+0x849fd80])"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "unk04",
+    "evidence": "chunk_007 unk04; chunk_101 calls it handleSync (contradicted)"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "handleSync",
+    "evidence": "objdump 0x08064657/0x08064734/0x0806480c: mov DWORD PTR [eax+0x849fd88],0 right after each fopen"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "unk0c",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "unk10",
+    "evidence": ""
+   },
+   {
+    "offset": "0x14",
+    "type": "int",
+    "name": "zipFile",
+    "evidence": "chunk_007 zeroes +0x14 (objdump 0x0806458f [eax+0x849fd94]); chunk_023/101: zipFile"
+   },
+   {
+    "offset": "0x18",
+    "type": "int",
+    "name": "unk18",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1c",
+    "type": "char[256]",
+    "name": "name",
+    "evidence": "Q_strncpyz(0x849fd9c...,0x100)"
+   }
+  ],
+  "defined_in": [
+   "chunk_007_types.h",
+   "chunk_023_types.h",
+   "chunk_101_types.h"
+  ],
+  "conflicts": "chunk_101 places handleSync at +0x04 and baseOffset at +0x08 / fileSize@0x0c / zipFilePos@0x10; chunk_007 and the disassembly (store of 0 to table+0x08 after fopen) place handleSync at +0x08. Layout of +0x04, +0x0c, +0x10 is therefore not settled (filesystem lane to resolve). Table at 0x0849fd80, stride 0x11c (imul 0x11c observed).",
+  "confidence": "medium for stride/name/+0x00/+0x08/+0x14, low elsewhere"
+ },
+ {
+  "name": "searchpath_s",
+  "size": "unknown (>= 0x14)",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "struct searchpath_s *",
+    "name": "next",
+    "evidence": "list head fs_searchpaths 0x0849fd68"
+   },
+   {
+    "offset": "0x04",
+    "type": "iwd_s * / fs_pack_s *",
+    "name": "iwd",
+    "evidence": "chunk_007 iwd, chunk_100 pack"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "unk08",
+    "evidence": "chunk_007"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "dir",
+    "evidence": "non-zero for directory entries (chunk_007), field_c in chunk_023"
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "field_10",
+    "evidence": "chunk_023 only"
+   }
+  ],
+  "defined_in": [
+   "chunk_007_types.h",
+   "chunk_023_types.h",
+   "chunk_100_types.h"
+  ],
+  "conflicts": "chunk_100 stops at pack@0x04; chunk_023 names +0xc/+0x10 without meaning; no contradiction in offsets. Filesystem lane owns the final layout.",
+  "confidence": "medium"
+ },
+ {
+  "name": "cod2_bucket_node",
+  "size": "0x08",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint16[2]",
+    "name": "child",
+    "evidence": "Mem_BucketTree_Insert/Remove/PopRoot index g_08206f80[idx].child[0/1] (0x08076774..0x08076be0)"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "aux",
+    "evidence": "copied alongside the children when nodes are swapped"
+   }
+  ],
+  "defined_in": [
+   "chunk_012_types.h"
+  ],
+  "conflicts": "single definition; pool g_08206f80[0x10000] ends at 0x08286f80 where the 256-byte tz table starts (consistent with 0x10000*8 = 0x80000).",
+  "confidence": "high"
+ },
+ {
+  "name": "thread_va_block",
+  "size": "0x804",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "char[2][0x400]",
+    "name": "buffers",
+    "evidence": "va() alternates two 0x400 buffers (0x080b7fa6)"
+   },
+   {
+    "offset": "0x800",
+    "type": "int",
+    "name": "selector",
+    "evidence": "index of next buffer (0/1)"
+   }
+  ],
+  "defined_in": [
+   "chunk_030_types.h (as raw g_085b76a0, stride 0x804 per thread)"
+  ],
+  "conflicts": "Not declared as a struct. Other per-thread value slots: slot 2 = jmp_buf (stride 0x9c at 0x085b86c0), slot 3 = collision scratch 0x18 bytes (stride 0x18 at 0x085b7660, 6 ints used by cm_scratch_* in chunk_004). Only thread index 0 is ever populated.",
+  "confidence": "medium"
+ },
+ {
+  "name": "com_qtime_t",
+  "size": "0x24",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "tm_sec",
+    "evidence": "Com_RealTime copies struct tm members (0x080acb04)"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "tm_min",
+    "evidence": "Com_RealTime copies struct tm members (0x080acb04)"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "tm_hour",
+    "evidence": "Com_RealTime copies struct tm members (0x080acb04)"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "tm_mday",
+    "evidence": "Com_RealTime copies struct tm members (0x080acb04)"
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "tm_mon",
+    "evidence": "Com_RealTime copies struct tm members (0x080acb04)"
+   },
+   {
+    "offset": "0x14",
+    "type": "int",
+    "name": "tm_year",
+    "evidence": "Com_RealTime copies struct tm members (0x080acb04)"
+   },
+   {
+    "offset": "0x18",
+    "type": "int",
+    "name": "tm_wday",
+    "evidence": "Com_RealTime copies struct tm members (0x080acb04)"
+   },
+   {
+    "offset": "0x1c",
+    "type": "int",
+    "name": "tm_yday",
+    "evidence": "Com_RealTime copies struct tm members (0x080acb04)"
+   },
+   {
+    "offset": "0x20",
+    "type": "int",
+    "name": "tm_isdst",
+    "evidence": "Com_RealTime copies struct tm members (0x080acb04)"
+   }
+  ],
+  "defined_in": [
+   "chunk_027_types.h"
+  ],
+  "conflicts": "single definition; identical in layout to the first nine ints of glibc struct tm.",
+  "confidence": "high"
+ },
+ {
+  "name": "cod2_stat_t",
+  "size": "0x58",
+  "fields": [
+   {
+    "offset": "0x10",
+    "type": "uint32",
+    "name": "st_mode",
+    "evidence": "Sys_Chmod ORs mode bits (0x080d4bbe)"
+   },
+   {
+    "offset": "0x2c",
+    "type": "int32",
+    "name": "st_size",
+    "evidence": "glibc 2.3 i386 struct stat as filled by __xstat(3,...)"
+   },
+   {
+    "offset": "0x40",
+    "type": "int32",
+    "name": "st_mtime_sec",
+    "evidence": "Sys_FileTime returns this (0x080d3c44)"
+   }
+  ],
+  "defined_in": [
+   "chunk_038_types.h"
+  ],
+  "conflicts": "single definition; only st_mode/st_size/st_mtime are used by finished chunks (listed fields only).",
+  "confidence": "medium"
+ }
+]

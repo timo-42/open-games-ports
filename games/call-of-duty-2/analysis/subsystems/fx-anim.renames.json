@@ -1,0 +1,233 @@
+{
+ "renames": [
+  {
+   "addr": "0x0812ca0a",
+   "old": "FX_ParseNodeName",
+   "new": "ConfigBlock_GetName",
+   "confidence": "inferred",
+   "evidence": "objdump: returns [node+0]; ConfigTree name field (section 10)."
+  },
+  {
+   "addr": "0x0812ca14",
+   "old": "FX_ParseNodeNext",
+   "new": "ConfigNode_GetNext",
+   "confidence": "inferred",
+   "evidence": "objdump: returns [node+4] (next link of ConfigTree list)."
+  },
+  {
+   "addr": "0x0812ca20",
+   "old": "FX_ParseNodeChild",
+   "new": "ConfigBlock_GetFirstChild",
+   "confidence": "inferred",
+   "evidence": "objdump: returns [node+0x1c] = ConfigBlock.firstChild."
+  },
+  {
+   "addr": "0x0812ca2c",
+   "old": "FX_ParseNodeSelf",
+   "new": "ConfigNode_Self",
+   "confidence": "inferred",
+   "evidence": "objdump: returns its argument unchanged (identity accessor)."
+  },
+  {
+   "addr": "0x08131760",
+   "old": "ParseNode_NextSibling",
+   "new": "ConfigNode_GetNextAlias",
+   "confidence": "inferred",
+   "evidence": "objdump: returns [node+4]; identical copy of 0x0812ca14."
+  },
+  {
+   "addr": "0x0813176c",
+   "old": "ParseNode_NextSibling2",
+   "new": "ConfigNode_GetNextAlias2",
+   "confidence": "inferred",
+   "evidence": "objdump: returns [node+4]; third identical copy."
+  },
+  {
+   "addr": "0x08131778",
+   "old": "ParseNode_FirstChild",
+   "new": "ConfigBlock_GetFirstAttr",
+   "confidence": "inferred",
+   "evidence": "objdump: returns [node+0x10] = ConfigBlock.firstAttr; not a parse-node child field."
+  },
+  {
+   "addr": "0x08131784",
+   "old": "ParseNode_FirstChild2",
+   "new": "ConfigAttr_GetFirstValueAlias",
+   "confidence": "inferred",
+   "evidence": "objdump: returns [node+0x10]; identical body to 0x08131778; duplicate of ConfigAttr_GetFirstValue."
+  },
+  {
+   "addr": "0x08131814",
+   "old": "Fx_ActiveObj_Call",
+   "new": "FX_PlayEffect",
+   "confidence": "inferred",
+   "evidence": "objdump: forwards (a,b) with global 0x8a53804 (scheduler) to 0x0812ac78 FxScheduler_PlayEffect_DefaultAxis."
+  },
+  {
+   "addr": "0x0813198c",
+   "old": "Fx_ActiveObj_Query",
+   "new": "FX_GetEffectDuration",
+   "confidence": "inferred",
+   "evidence": "objdump: forwards (scheduler 0x8a53804, a) to 0x0812b2aa, which computes max(life.hi+delay.hi)."
+  },
+  {
+   "addr": "0x0812b2aa",
+   "old": "FxEffectTemplate_GetMaxEnd",
+   "new": "FxEffectTemplate_GetDuration",
+   "confidence": "inferred",
+   "evidence": "section 10: computes max(life.hi+delay.hi), first arg unused; used as effect duration by 0x0813198c."
+  },
+  {
+   "addr": "0x081318c6",
+   "old": "Fx_Wrap_08133780",
+   "new": "FX_InitThunk",
+   "confidence": "observed",
+   "evidence": "objdump: movzx byte arg then call 0x08133780 (FX_Init); pure forwarder."
+  },
+  {
+   "addr": "0x081318e0",
+   "old": "Fx_Shutdown_Wrap1",
+   "new": "FX_ShutdownSystem_Full",
+   "confidence": "inferred",
+   "evidence": "objdump: calls 0x081336c2 (FX_ShutdownSystem) with constant 1."
+  },
+  {
+   "addr": "0x081318f4",
+   "old": "Fx_Shutdown_Wrap0",
+   "new": "FX_ShutdownSystem_Partial",
+   "confidence": "inferred",
+   "evidence": "objdump: calls FX_ShutdownSystem with constant 0; sibling of 0x081318e0. Arg semantics unverified; name only encodes the 0/1 variant."
+  },
+  {
+   "addr": "0x0812aeec",
+   "old": "fn_0812aeec",
+   "new": "FxScheduler_PlayEffect",
+   "confidence": "inferred",
+   "evidence": "symbols.json signature is already FxScheduler_PlayEffect(self,effect,...); name is a leftover fn_ placeholder; core callee of PlayEffect_* wrappers (section 10)."
+  },
+  {
+   "addr": "0x08128ba0",
+   "old": "FxObjBase_Construct_A",
+   "new": "Light_Construct",
+   "confidence": "observed",
+   "evidence": "objdump: calls base ctor 0x0812464c then stores vptr 0x0815f348 (Light vtable, RTTI 5Light)."
+  },
+  {
+   "addr": "0x08128bbc",
+   "old": "FxObjBase_Construct_B",
+   "new": "Light_ConstructBase",
+   "confidence": "observed",
+   "evidence": "objdump: identical body to 0x08128ba0 (base ctor + vptr 0x0815f348): second ctor of the pair."
+  },
+  {
+   "addr": "0x08128bd8",
+   "old": "FxObjBase_Destruct",
+   "new": "Light_DestructComplete",
+   "confidence": "observed",
+   "evidence": "objdump: sets vptr 0x0815f348, calls base dtor 0x08124690; delete branch dead (`and eax,0`); sibling 0x08128c0c is Light_Destruct."
+  },
+  {
+   "addr": "0x0813768c",
+   "old": "Fx_ConstructG",
+   "new": "Flash_Construct",
+   "confidence": "observed",
+   "evidence": "objdump: calls Light ctor 0x08128ba0 then stores vptr 0x0815f308 (Flash vtable, RTTI 5Flash)."
+  },
+  {
+   "addr": "0x0811d598",
+   "old": "G_FreeModelHandle",
+   "new": "G_ModelIsDefault",
+   "confidence": "observed",
+   "evidence": "objdump: returns XModel_IsDefault(0x080c5320) of G_GetModelHandle(index) (0x0811d588); frees nothing."
+  },
+  {
+   "addr": "0x08090afa",
+   "old": "SV_ForwardCallToGame",
+   "new": "FX_GetAttenuationThunk",
+   "confidence": "observed",
+   "evidence": "objdump: pure forwarder of (a,b) to 0x08133c18 FX_GetAttenuation."
+  },
+  {
+   "addr": "0x08091e48",
+   "old": "SV_ValidateModelName",
+   "new": "SV_RegisterModel",
+   "confidence": "inferred",
+   "evidence": "objdump: validates name via 0x080c5dfc, warns (rodata 0x814acfa '%s'.no model.) on failure, then returns XModel_FindOrLoad(name+7,...) result; not void/validate-only."
+  },
+  {
+   "addr": "0x080bc81e",
+   "old": "XAnim_ForgetPendingHandle",
+   "new": "XAnim_ClearEndNotifyString",
+   "confidence": "inferred",
+   "evidence": "objdump: only `mov [0x85e4900],0`; chunk_032.cpp line 89 shows that global holds interned \"end\". Store-only; no release performed."
+  }
+ ],
+ "rejected": [
+  {
+   "addr": "0x08131796",
+   "old": "Fx_CheckClientSlot0",
+   "suggested": "",
+   "reason": "Loop with bound 0<i tests only slot [0x8a533f0] and calls empty stub 0x08131790; purpose unclear."
+  },
+  {
+   "addr": "0x08131790",
+   "old": "Fx_NoOp",
+   "suggested": "FX_NoOp",
+   "reason": "Empty stub; no evidence to improve the name."
+  },
+  {
+   "addr": "0x0813156a",
+   "old": "Fx_IsKindFive",
+   "suggested": "",
+   "reason": "Jump-table predicate over kinds 0..12; semantics not established."
+  },
+  {
+   "addr": "0x08133b50",
+   "old": "FX_UpdateFlagged",
+   "suggested": "FX_RebuildBlockers",
+   "reason": "Disasm confirms flag 0x1000 test and vtable +0x1c call, but chunks disagree on slot role; current name neutral and valid."
+  },
+  {
+   "addr": "0x0812b31a",
+   "old": "FxCurvePairTemplate_SampleVec3",
+   "suggested": "FxPrimitiveTemplate_SampleVec3",
+   "reason": "Only [I] evidence (callers); not re-verified."
+  },
+  {
+   "addr": "0x0812b52a",
+   "old": "FxCurvePairTemplate_ResolveBoltRef",
+   "suggested": "FxPrimitive_ResolveBoltRef",
+   "reason": "Only [I] evidence via FX_DrawPrimitive caller; role not confirmed."
+  },
+  {
+   "addr": "0x08137670",
+   "old": "Fx_AllocPool98",
+   "suggested": "FxPool_LightFlash_Alloc",
+   "reason": "Pool-size to class mapping not re-verified."
+  },
+  {
+   "addr": "0x08137a38",
+   "old": "Fx_PoolAllocFc",
+   "suggested": "FxPool_LightFlash_Alloc",
+   "reason": "Size-based names; class attribution unverified for the other pools."
+  },
+  {
+   "addr": "0x08128a16",
+   "old": "FxObj29c_IntegrateVelocity",
+   "suggested": "Emitter_IntegrateVelocity",
+   "reason": "Emitter class attribution inferred from typeinfo only; no string names it."
+  },
+  {
+   "addr": "0x0811cea8",
+   "old": "Ent_AreaEffectApply",
+   "suggested": "",
+   "reason": "Outside this subsystem (damage trigger logic)."
+  },
+  {
+   "addr": "0x0811d096",
+   "old": "Ent_AreaEffectApplyFlagged",
+   "suggested": "",
+   "reason": "Outside this subsystem."
+  }
+ ]
+}

@@ -1,0 +1,1192 @@
+{
+ "chunk": 38,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0080d38d8",
+   "name": "Tty_HistAdd",
+   "signature": "void Tty_HistAdd(struct field_s *field)",
+   "subsystem": "sys/console",
+   "confidence": "inferred",
+   "evidence": "Evidence: shifts a 32-entry ring of 0x118-byte field_t lines and stores the new line at [0] (Q3 Hist_Add); called only by Sys_ConsoleInput on '\\n'.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d39b4",
+   "name": "Tty_HistNext",
+   "signature": "struct field_s *Tty_HistNext(void)",
+   "subsystem": "sys/console",
+   "confidence": "inferred",
+   "evidence": "Evidence: increments the history cursor while below the stored count; used for the ESC [ A (up arrow) branch of Sys_ConsoleInput (Q3 Hist_Next).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d39f6",
+   "name": "Tty_HistPrev",
+   "signature": "struct field_s *Tty_HistPrev(void)",
+   "subsystem": "sys/console",
+   "confidence": "inferred",
+   "evidence": "Evidence: decrements the history cursor, returns NULL at -1; used for the ESC [ B (down arrow) branch of Sys_ConsoleInput (Q3 Hist_Prev).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d3a36",
+   "name": "Sys_Exit",
+   "signature": "void Sys_Exit(int code)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: Q3 Sys_Exit shape: tty shutdown (0x080d389e), optional delayed process start (see Sys_StartProcess), then exit(code); calls sleep/exit imports.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d3a7a",
+   "name": "Sys_Quit",
+   "signature": "void Sys_Quit(void)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: three shutdown calls, clears O_NONBLOCK (0x800) on stdin, then Sys_Exit(0); called from 0x0806123e (quit path).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d3ad6",
+   "name": "Sys_InitCvars",
+   "signature": "void Sys_InitCvars(void)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: registers command \"in_restart\" and cvars \"arch\"=\"linux i386\" and \"username\" (Sys_GetCurrentUser); called from 0x080620c0 init path (Q3 Sys_Init).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d3b3c",
+   "name": "Sys_Error",
+   "signature": "void Sys_Error(const char *fmt, ...)",
+   "subsystem": "sys/console",
+   "confidence": "observed",
+   "evidence": "Evidence: string \"Sys_Error: %s\\n\"; vsprintf into a local buffer then Sys_Exit(1); Q3 Sys_Error.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d3c44",
+   "name": "Sys_FileTime",
+   "signature": "int Sys_FileTime(const char *path)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: stat() wrapper returning the st_mtime field (offset 0x40 of the i386 struct stat) or -1 on failure (Q3 Sys_FileTime).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d3c78",
+   "name": "Sys_FPEHandler",
+   "signature": "void Sys_FPEHandler(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: re-arms itself as the SIGFPE (8) handler via signal(); descriptive name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d3c94",
+   "name": "Sys_ConsoleInputInit",
+   "signature": "void Sys_ConsoleInputInit(void)",
+   "subsystem": "sys/console",
+   "confidence": "inferred",
+   "evidence": "Evidence: strings \"ttycon\", \"Started tty console (use +set ttycon 0 to disable)\\n\", \"stdin is not a tty, tty console mode failed\\n\"; tcgetattr/tcsetattr (Q3 Sys_ConsoleInputInit).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d3e06",
+   "name": "Sys_ConsoleInput",
+   "signature": "char *Sys_ConsoleInput(void)",
+   "subsystem": "sys/console",
+   "confidence": "inferred",
+   "evidence": "Evidence: strings \"ttycon\", \"droping ISCTL sequence: %d, tty_erase: %d\\n\"; tty line editing, history on ESC [ A/B, tab completion, select()+read() on stdin otherwise (Q3 Sys_ConsoleInput).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d432a",
+   "name": "Sys_UnloadDll",
+   "signature": "void Sys_UnloadDll(void *handle)",
+   "subsystem": "sys/misc",
+   "confidence": "observed",
+   "evidence": "Evidence: strings \"Sys_UnloadDll(NULL)\\n\" and \"Sys_UnloadGame failed on dlclose: \\\"%s\\\"!\\n\"; dlclose/dlerror.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4372",
+   "name": "Sys_NoOp_080d4372",
+   "signature": "void Sys_NoOp_080d4372(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body (push ebp; pop ebp; ret); no strings, no referenced state.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4378",
+   "name": "Sys_NoOp_080d4378",
+   "signature": "void Sys_NoOp_080d4378(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d437e",
+   "name": "Sys_ReturnZero_080d437e",
+   "signature": "int Sys_ReturnZero_080d437e(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: returns constant 0, no side effects.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4388",
+   "name": "Sys_ReturnZero_080d4388",
+   "signature": "int Sys_ReturnZero_080d4388(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: returns constant 0, no side effects.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4392",
+   "name": "Sys_OutOfMemory",
+   "signature": "void Sys_OutOfMemory(const char *file, int line)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: string \"OUT OF MEMORY! ABORTING!!! (%s:%d)\\n\" followed by exit(-1). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4742",
+   "name": "Sys_NoOp_080d4742",
+   "signature": "void Sys_NoOp_080d4742(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4748",
+   "name": "Sys_NoOp_080d4748",
+   "signature": "void Sys_NoOp_080d4748(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d474e",
+   "name": "Sys_NoOp_080d474e",
+   "signature": "void Sys_NoOp_080d474e(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4754",
+   "name": "Sys_NoOp_080d4754",
+   "signature": "void Sys_NoOp_080d4754(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d475a",
+   "name": "Sys_Fread",
+   "signature": "int Sys_Fread(int buf, int size, int count, int handle)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: fread-shaped (buf,size,count,handle) thunk forwarding (buf,size*count,handle) to the file-handle read at 0x080a052a; returns its result.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4780",
+   "name": "Sys_Fseek",
+   "signature": "int Sys_Fseek(int handle, int offset, int whence)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: fseek-shaped (handle,offset,whence) thunk forwarding to 0x080a078a (which itself calls back here); returns its result.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d47a2",
+   "name": "Sys_QueEvent",
+   "signature": "void Sys_QueEvent(int time, int type, int value, int value2, int ptrLength, void *ptr)",
+   "subsystem": "sys/misc",
+   "confidence": "observed",
+   "evidence": "Evidence: string \"Sys_QueEvent: overflow\\n\"; 256-entry ring of 0x18-byte events (Q3 Sys_QueEvent).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d484e",
+   "name": "Sys_GetEvent",
+   "signature": "struct sysEvent_s Sys_GetEvent(void)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: pops the event ring, else polls Sys_ConsoleInput (queues type 4) and Sys_GetPacket (queues type 5 with a 20-byte netadr prefix) (Q3 Sys_GetEvent).",
+   "status": "translated",
+   "notes": "returns sysEvent_t (0x18) through a hidden pointer L12 sigfix: was \"void Sys_GetEvent(struct sysEvent_s *result)\"; disassembly shows by-value struct (arg slots at ebp+8.., sret ret 4 for Sys_GetEvent)."
+  },
+  {
+   "addr": "0x0080d4ad0",
+   "name": "Sys_NoOp_080d4ad0",
+   "signature": "void Sys_NoOp_080d4ad0(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4ad6",
+   "name": "Sys_ReturnZero_080d4ad6",
+   "signature": "int Sys_ReturnZero_080d4ad6(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: returns constant 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4ae0",
+   "name": "Sys_Print",
+   "signature": "void Sys_Print(const char *msg)",
+   "subsystem": "sys/console",
+   "confidence": "inferred",
+   "evidence": "Evidence: hides the tty prompt, fputs(msg, stderr), shows it again (Q3 Sys_Print).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4b18",
+   "name": "Sys_ConfigureFPU",
+   "signature": "void Sys_ConfigureFPU(void)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Executes fnstcw into a dead local; sole caller main (0x080d5102); Q3 linux Sys_ConfigureFPU counterpart (inferred, weak).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4b2a",
+   "name": "Sys_PrintBinVersion",
+   "signature": "void Sys_PrintBinVersion(const char *name)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: banner strings \"Linux Quake3 Dedicated Server [%s %s]\\n\", build date \"Jun 23 2006\" \"12:25:18\", \" local install: %s\\n\"; called by Sys_ParseArgs for --version.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4bbe",
+   "name": "Sys_Chmod",
+   "signature": "void Sys_Chmod(const char *path, unsigned int mode)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: strings \"chmod('%s', %d) failed: errno %d\\n\", \"stat('%s')  failed: errno %d\\n\"; adds mode bits to existing st_mode (Q3 Sys_Chmod-like).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4c56",
+   "name": "Sys_DoStartProcess",
+   "signature": "void Sys_DoStartProcess(const char *cmd)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: fork(); child runs execl(cmd,cmd,NULL) if there is no space in cmd, else system(cmd), then _exit(0) (Q3 Sys_DoStartProcess).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4cbe",
+   "name": "Sys_StartProcess",
+   "signature": "void Sys_StartProcess(const char *cmd, int doexit)",
+   "subsystem": "sys/misc",
+   "confidence": "observed",
+   "evidence": "Evidence: strings \"Sys_StartProcess %s\\n\" and \"Sys_StartProcess %s (delaying to final exit)\\n\"; queues \"quit\\n\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4d2e",
+   "name": "Sys_OpenURL",
+   "signature": "void Sys_OpenURL(const char *url, int doexit)",
+   "subsystem": "sys/misc",
+   "confidence": "observed",
+   "evidence": "Evidence: strings \"Sys_OpenURL %s\\n\", \"openurl.sh\", \"%s not found\\n\", \"URL script: %s\\n\"; searches cwd, fs_homepath, fs_basepath.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d4f1c",
+   "name": "Sys_ParseArgs",
+   "signature": "void Sys_ParseArgs(int argc, char **argv)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: strings \"--version\" and \"-v\"; prints the banner via Sys_PrintBinVersion and exits.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5160",
+   "name": "NetadrToSockadr",
+   "signature": "void NetadrToSockadr(const struct netadr_s *a, struct sockaddr_in *s)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: converts netadr type 3 (broadcast, INADDR_BROADCAST) / 4 (IP) into a 16-byte sockaddr_in (Q3 NetadrToSockadr).",
+   "status": "translated",
+   "notes": "netadr_t (0x14 bytes) is passed by value in the binary"
+  },
+  {
+   "addr": "0x0080d51de",
+   "name": "SockadrToNetadr",
+   "signature": "void SockadrToNetadr(const struct sockaddr_in *s, struct netadr_s *a)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: copies sin_addr/sin_port into a netadr and sets type 4 (Q3 SockadrToNetadr).",
+   "status": "translated",
+   "notes": "netadr_t (0x14 bytes) is passed by value in the binary"
+  },
+  {
+   "addr": "0x0080d520a",
+   "name": "NET_BaseAdrToString",
+   "signature": "const char *NET_BaseAdrToString(struct netadr_s adr)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: formats the 4 ip bytes (second dword) with \"%i.%i.%i.%i\" into a static 0x40 buffer; first dword is the (unused) address type.",
+   "status": "translated",
+   "notes": "netadr_t (0x14 bytes) is passed by value in the binary L12 sigfix: was \"const char *NET_BaseAdrToString(struct netadr_s *adr)\"; disassembly shows by-value struct (arg slots at ebp+8.., sret ret 4 for Sys_GetEvent)."
+  },
+  {
+   "addr": "0x0080d5254",
+   "name": "Sys_StringToSockaddr",
+   "signature": "int Sys_StringToSockaddr(const char *s, struct sockaddr_in *sadr)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: digit-first strings go through inet_addr, others through gethostbyname (Q3 Sys_StringToSockaddr).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d52ec",
+   "name": "Sys_StringToAdr",
+   "signature": "int Sys_StringToAdr(const char *s, struct netadr_s *a)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: resolves a string to a sockaddr and converts it to a netadr (Q3 Sys_StringToAdr).",
+   "status": "translated",
+   "notes": "netadr_t (0x14 bytes) is passed by value in the binary"
+  },
+  {
+   "addr": "0x0080d5330",
+   "name": "Sys_GetPacket",
+   "signature": "int Sys_GetPacket(struct netadr_s *net_from, struct msg_s *net_message)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: strings \"NET_GetPacket: %s from %s\\n\" and \"Oversize packet from %s\\n\"; recvfrom on ip then ipx sockets (Q3 NET_GetPacket). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "netadr_t (0x14 bytes) is passed by value in the binary"
+  },
+  {
+   "addr": "0x0080d54a4",
+   "name": "Sys_SendPacket",
+   "signature": "int Sys_SendPacket(int length, const void *data, struct netadr_s to)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: strings \"NET_SendPacket: bad address type\" and \"NET_SendPacket ERROR: %s to %s\\n\"; sendto (Q3 NET_SendPacket). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "netadr_t (0x14 bytes) is passed by value in the binary L12 sigfix: was \"int Sys_SendPacket(int length, const void *data, struct netadr_s *to)\"; disassembly shows by-value struct (arg slots at ebp+8.., sret ret 4 for Sys_GetEvent)."
+  },
+  {
+   "addr": "0x0080d55c4",
+   "name": "Sys_SendPacketToHost",
+   "signature": "void Sys_SendPacketToHost(const char *host, uint16 port, int length, const void *data)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: resolves host string to a type-4 netadr, overrides the port with htons(port) and sends (Q3 NET_SendPacket-to-string helper).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5638",
+   "name": "Sys_IsLANAddress",
+   "signature": "int Sys_IsLANAddress(struct netadr_s adr)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: loopback/IPX true; IPv4 private ranges 10/8, 127/8, 169.254/16, 172.16/12, 192.168/16, then first 3 bytes against localIP[] (Q3 Sys_IsLANAddress).",
+   "status": "translated",
+   "notes": "netadr_t (0x14 bytes) is passed by value in the binary L12 sigfix: was \"int Sys_IsLANAddress(struct netadr_s *adr)\"; disassembly shows by-value struct (arg slots at ebp+8.., sret ret 4 for Sys_GetEvent)."
+  },
+  {
+   "addr": "0x0080d5742",
+   "name": "NET_ShowIP",
+   "signature": "void NET_ShowIP(void)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: string \"IP: %i.%i.%i.%i\\n\" printed for each localIP entry (Q3 NET_ShowIP).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d57ae",
+   "name": "NET_GetLocalAddress",
+   "signature": "void NET_GetLocalAddress(void)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: strings \"Hostname: %s\\n\", \"Alias: %s\\n\", \"IP: %i.%i.%i.%i\\n\"; gethostname/gethostbyname fills localIP (Q3 NET_GetLocalAddress).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d597e",
+   "name": "NET_OpenIP",
+   "signature": "void NET_OpenIP(void)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: strings \"net_ip\", \"localhost\", \"net_port\", \"Couldn't allocate IP port\"; tries 10 consecutive ports (Q3 NET_OpenIP). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5a5c",
+   "name": "NET_Init",
+   "signature": "void NET_Init(void)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: string \"net_noudp\"; opens the IP socket when UDP is allowed and none is open (Q3 NET_Config/NET_Init shape). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5aa8",
+   "name": "NET_IPSocket",
+   "signature": "int NET_IPSocket(const char *net_interface, int port)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: strings \"Opening IP socket: %s:%i\\n\", \"ERROR: UDP_OpenSocket: socket/ioctl FIONBIO/setsockopt SO_BROADCAST/bind\"; socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP) (Q3 NET_IPSocket). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5c7e",
+   "name": "NET_CloseIP",
+   "signature": "void NET_CloseIP(void)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: close() on the IP socket global and clear it (Q3 NET_CloseIP).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5ca6",
+   "name": "NET_ErrorString",
+   "signature": "const char *NET_ErrorString(void)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: returns strerror(errno) (eax is left holding the strerror result; Ghidra shows void) (Q3 NET_ErrorString).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5cc4",
+   "name": "NET_Sleep",
+   "signature": "void NET_Sleep(int msec)",
+   "subsystem": "net/udp",
+   "confidence": "inferred",
+   "evidence": "Evidence: select() on stdin (when active) and the IP socket with a millisecond timeout (Q3 NET_Sleep).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5d98",
+   "name": "Sys_Milliseconds",
+   "signature": "int Sys_Milliseconds(void)",
+   "subsystem": "sys/time-math",
+   "confidence": "inferred",
+   "evidence": "Evidence: gettimeofday with a first-call time base in seconds (Q3 Sys_Milliseconds); first call returns usec/1000 without storing curtime.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5e20",
+   "name": "Sys_MillisecondsRaw",
+   "signature": "int Sys_MillisecondsRaw(void)",
+   "subsystem": "sys/time-math",
+   "confidence": "unknown",
+   "evidence": "Evidence: gettimeofday converted to absolute milliseconds into the shared curtime global, no time base.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5e6e",
+   "name": "Q_ftol",
+   "signature": "int Q_ftol(float f)",
+   "subsystem": "sys/time-math",
+   "confidence": "inferred",
+   "evidence": "Evidence: x87 fistp with control word RC=truncate (or ax,0xc00), i.e. (int)f (Q3 Q_ftol).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5e94",
+   "name": "Sys_SnapVector",
+   "signature": "void Sys_SnapVector(float *v)",
+   "subsystem": "sys/time-math",
+   "confidence": "inferred",
+   "evidence": "Evidence: rint() on each of three floats via double (Q3 Sys_SnapVector shape).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5ee4",
+   "name": "Sys_Mkdir",
+   "signature": "void Sys_Mkdir(const char *path)",
+   "subsystem": "sys/time-math",
+   "confidence": "inferred",
+   "evidence": "Evidence: mkdir(path, 0777) (Q3 Sys_Mkdir).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d5f00",
+   "name": "Sys_ListFilteredFiles",
+   "signature": "void Sys_ListFilteredFiles(const char *basedir, const char *subdirs, const char *filter, char **list, int *numfiles)",
+   "subsystem": "sys/files-paths",
+   "confidence": "inferred",
+   "evidence": "Evidence: recursive opendir/readdir walk with \"%s/%s\" joins, directory test (mode & 0x4000), skips \".\" and \"..\", filter via 0x080ac9b0, cap 0xfff entries (Q3 Sys_ListFilteredFiles).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6198",
+   "name": "Sys_ListFiles",
+   "signature": "char **Sys_ListFiles(const char *directory, const char *extension, const char *filter, int *numfiles, int wantsubs)",
+   "subsystem": "sys/files-paths",
+   "confidence": "inferred",
+   "evidence": "Evidence: opendir/readdir directory listing with extension suffix match (Q_stricmp on the name tail), \"/\" extension meaning directories only, NULL-terminated copied list (Q3 Sys_ListFiles).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6528",
+   "name": "Sys_FreeFileList",
+   "signature": "void Sys_FreeFileList(char **list)",
+   "subsystem": "sys/files-paths",
+   "confidence": "inferred",
+   "evidence": "Evidence: frees each entry of a NULL-terminated list then the list (Q3 Sys_FreeFileList); free is 0x080ab5b8 = Com_Free_A.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d657e",
+   "name": "Sys_Cwd",
+   "signature": "char *Sys_Cwd(void)",
+   "subsystem": "sys/files-paths",
+   "confidence": "inferred",
+   "evidence": "Evidence: getcwd into a static 0x100 buffer, forces NUL at index 0xff (Q3 Sys_Cwd).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d65a6",
+   "name": "Sys_SetDefaultCDPath",
+   "signature": "void Sys_SetDefaultCDPath(const char *path)",
+   "subsystem": "sys/files-paths",
+   "confidence": "inferred",
+   "evidence": "Evidence: Q_strncpyz into the static cd-path buffer (Q3 Sys_SetDefaultCDPath).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d65ca",
+   "name": "Sys_DefaultCDPath",
+   "signature": "char *Sys_DefaultCDPath(void)",
+   "subsystem": "sys/files-paths",
+   "confidence": "inferred",
+   "evidence": "Evidence: returns the static cd-path buffer (Q3 Sys_DefaultCDPath).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d65d4",
+   "name": "Sys_DefaultInstallPath",
+   "signature": "char *Sys_DefaultInstallPath(void)",
+   "subsystem": "sys/files-paths",
+   "confidence": "inferred",
+   "evidence": "Evidence: returns the install-path buffer when set else Sys_Cwd (Q3 Sys_DefaultInstallPath); byte-identical twin of 0x080d661e.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d661e",
+   "name": "Sys_DefaultBasePath",
+   "signature": "char *Sys_DefaultBasePath(void)",
+   "subsystem": "sys/files-paths",
+   "confidence": "unknown",
+   "evidence": "Evidence: identical body to Sys_DefaultInstallPath (install-path buffer else Sys_Cwd); distinguishing role unknown.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6668",
+   "name": "Sys_DefaultHomePath",
+   "signature": "char *Sys_DefaultHomePath(void)",
+   "subsystem": "sys/files-paths",
+   "confidence": "inferred",
+   "evidence": "Evidence: strings \"HOME\", \"/.callofduty2\", \"Unable to create directory \\\"%s\\\", error is %s(%d)\\n\"; mkdir 0777 ignoring EEXIST (Q3 Sys_DefaultHomePath). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6746",
+   "name": "Sys_ReturnZero_080d6746",
+   "signature": "int Sys_ReturnZero_080d6746(void)",
+   "subsystem": "sys/files-paths",
+   "confidence": "unknown",
+   "evidence": "Evidence: returns constant 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6750",
+   "name": "Sys_ReturnZero_080d6750",
+   "signature": "int Sys_ReturnZero_080d6750(void)",
+   "subsystem": "sys/files-paths",
+   "confidence": "unknown",
+   "evidence": "Evidence: returns constant 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d675a",
+   "name": "Sys_NoOp_080d675a",
+   "signature": "void Sys_NoOp_080d675a(void)",
+   "subsystem": "sys/files-paths",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6760",
+   "name": "Sys_GetCurrentUser",
+   "signature": "const char *Sys_GetCurrentUser(void)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: getpwuid(getuid())->pw_name else the literal \"player\"; feeds the \"username\" cvar in Sys_InitCvars.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6792",
+   "name": "Q_strlwr_EndPtr",
+   "signature": "char *Q_strlwr_EndPtr(char *s)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: lowercases a string in place with tolower(); quirk: returns the pointer advanced to the terminating NUL (not the start); NULL stays NULL.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d67da",
+   "name": "Sys_InitMutexes",
+   "signature": "void Sys_InitMutexes(void)",
+   "subsystem": "sys/threads",
+   "confidence": "inferred",
+   "evidence": "Evidence: six pthread mutexes of type 1 (recursive) initialised in a static array (stride 0x18).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6842",
+   "name": "Sys_EnterCriticalSection",
+   "signature": "void Sys_EnterCriticalSection(int index)",
+   "subsystem": "sys/threads",
+   "confidence": "inferred",
+   "evidence": "Evidence: pthread_mutex_lock on sys_mutexes[index]; Com_Error locks index 2.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6864",
+   "name": "Sys_LeaveCriticalSection",
+   "signature": "void Sys_LeaveCriticalSection(int index)",
+   "subsystem": "sys/threads",
+   "confidence": "inferred",
+   "evidence": "Evidence: pthread_mutex_unlock on sys_mutexes[index].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6886",
+   "name": "Sys_DirectoryHasContent",
+   "signature": "int Sys_DirectoryHasContent(const char *path)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: copies the path converting '\\\\' to '/', opendir and returns 1 if any entry other than \".\" / \"..\" exists.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6976",
+   "name": "Sys_RemoveDirTree",
+   "signature": "int Sys_RemoveDirTree(const char *path)",
+   "subsystem": "sys/misc",
+   "confidence": "inferred",
+   "evidence": "Evidence: recursive directory removal (opendir/readdir/stat/unlink/rmdir, \"%s/%s\", '\\\\' to '/'); quirk: always returns 1 regardless of success.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6b60",
+   "name": "Sys_SetMainThread",
+   "signature": "void Sys_SetMainThread(void)",
+   "subsystem": "sys/threads",
+   "confidence": "inferred",
+   "evidence": "Evidence: records pthread_self() as the main thread and calls Com_SetThreadBlocks(0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6b7e",
+   "name": "Sys_ReturnZero_080d6b7e",
+   "signature": "int Sys_ReturnZero_080d6b7e(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: returns constant 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6b88",
+   "name": "Sys_IsMainThread",
+   "signature": "int Sys_IsMainThread(void)",
+   "subsystem": "sys/threads",
+   "confidence": "inferred",
+   "evidence": "Evidence: compares pthread_self() with the recorded main thread.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6bae",
+   "name": "Sys_SetValue",
+   "signature": "void Sys_SetValue(int index, void *value)",
+   "subsystem": "sys/threads",
+   "confidence": "inferred",
+   "evidence": "Evidence: stores into a 5-slot array; slot 2 is read back as the longjmp target by Com_Error (0x08061124).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6bc0",
+   "name": "Sys_GetValue",
+   "signature": "void *Sys_GetValue(int index)",
+   "subsystem": "sys/threads",
+   "confidence": "inferred",
+   "evidence": "Evidence: reads the 5-slot array written by Sys_SetValue.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6bd0",
+   "name": "Sys_NoOp_080d6bd0",
+   "signature": "void Sys_NoOp_080d6bd0(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6bd6",
+   "name": "Sys_NoOp_080d6bd6",
+   "signature": "void Sys_NoOp_080d6bd6(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6bdc",
+   "name": "Sys_NoOp_080d6bdc",
+   "signature": "void Sys_NoOp_080d6bdc(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6be2",
+   "name": "Sys_ReturnZero_080d6be2",
+   "signature": "int Sys_ReturnZero_080d6be2(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: returns constant 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6bec",
+   "name": "Sys_ReturnZero_080d6bec",
+   "signature": "int Sys_ReturnZero_080d6bec(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: returns constant 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6bf6",
+   "name": "Sys_ReturnZero_080d6bf6",
+   "signature": "int Sys_ReturnZero_080d6bf6(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: returns constant 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6c00",
+   "name": "Sys_ReturnZero_080d6c00",
+   "signature": "int Sys_ReturnZero_080d6c00(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: returns constant 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6c0a",
+   "name": "Sys_ReturnZero_080d6c0a",
+   "signature": "int Sys_ReturnZero_080d6c0a(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: returns constant 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6c14",
+   "name": "Sys_NoOp_080d6c14",
+   "signature": "void Sys_NoOp_080d6c14(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6c1a",
+   "name": "Sys_NoOp_080d6c1a",
+   "signature": "void Sys_NoOp_080d6c1a(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6c20",
+   "name": "Sys_NoOp_080d6c20",
+   "signature": "void Sys_NoOp_080d6c20(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6c26",
+   "name": "Sys_NoOp_080d6c26",
+   "signature": "void Sys_NoOp_080d6c26(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0080d6c2c",
+   "name": "Sys_NoOp_080d6c2c",
+   "signature": "void Sys_NoOp_080d6c2c(void)",
+   "subsystem": "sys/misc",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty body.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08184420",
+   "name": "stdin_active",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08184424",
+   "name": "tty_hist_current",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08184440",
+   "name": "sys_exit_cmdline",
+   "type": "char[0x400]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08606880",
+   "name": "ttycon_cvar",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08606884",
+   "name": "ttycon_on",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x0860688c",
+   "name": "tty_erase",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08606890",
+   "name": "tty_eof",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x086068a0",
+   "name": "tty_tc",
+   "type": "struct termios (0x3c)",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x086068e0",
+   "name": "tty_con",
+   "type": "struct field_s",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08606a00",
+   "name": "tty_history",
+   "type": "struct field_s[32]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08608d00",
+   "name": "tty_history_count",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08608d04",
+   "name": "sys_arch_cvar",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08608d08",
+   "name": "sys_username_cvar",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08608d20",
+   "name": "sys_console_text",
+   "type": "char[256]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08608e34",
+   "name": "ip_socket",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08608e38",
+   "name": "ipx_socket",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08608e3c",
+   "name": "net_noudp_cvar",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08608e40",
+   "name": "numIP",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x08608e60",
+   "name": "localIP",
+   "type": "byte[16][4]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x0860aee0",
+   "name": "sys_ipstring",
+   "type": "char[0x40]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x0860af20",
+   "name": "sys_curtime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x0860af24",
+   "name": "sys_timeBase",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x0860af40",
+   "name": "sys_cdpath",
+   "type": "char[0x100]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x0860b040",
+   "name": "sys_installpath",
+   "type": "char[0x100]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x0860b140",
+   "name": "sys_homepath",
+   "type": "char[0x100]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x0860b240",
+   "name": "sys_cwd",
+   "type": "char[0x100]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x0860b340",
+   "name": "sys_mutexes",
+   "type": "pthread_mutex_t[6]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x0860b3d0",
+   "name": "sys_values",
+   "type": "void *[5]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x0860b3e4",
+   "name": "sys_mainthread",
+   "type": "pthread_t",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x085e5060",
+   "name": "eventQue",
+   "type": "struct sysEvent_s[256]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x085e6860",
+   "name": "eventHead",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x085e6864",
+   "name": "eventTail",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  },
+  {
+   "addr": "0x085e6880",
+   "name": "sys_packetReceived",
+   "type": "byte[0x20000]",
+   "confidence": "inferred",
+   "evidence": "Q3 unix_main.c / net_ip counterpart; layout and use sites recovered from this chunk's disassembly and decompilation"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "cod2_stat_s",
+   "size": "0x58",
+   "evidence": "__xstat(3) i386 struct stat: st_mode +0x10, st_mtime +0x40"
+  }
+ ],
+ "open_questions": [
+  "Sys_ConsoleInputInit calls 0x080b4980(ttycon, 0) right after registering ttycon with default 1, which looks like it forces tty console off; also reads tty_erase/tty_eof from a still-zeroed local termios. Both preserved; confirm with a runtime trace of the server on a tty.",
+  "Names of ~25 empty/return-0 stubs (e.g. 0x080d4372, 0x080d437e, 0x080d6bd0..0x080d6c2c) and the twin 0x080d65d4/0x080d661e (Sys_DefaultInstallPath vs Sys_DefaultBasePath) are unresolved; roles depend on callers via function pointer tables (no direct callers).",
+  "Sys_IsLANAddress (0x080d5638) and NET_BaseAdrToString (0x080d520a) read only the first two dwords of a netadr; whether callers pass netadr_t by value (20 bytes) or a different layout is unverified. Sys_FileTime/stat layout offset 0x40 is st_mtime of the glibc 2.3 i386 struct.",
+  "Sys_Chmod passes one argument to a two-conversion format ('chmod +%d '%s'') in the binary; kept verbatim. Cvar helper semantics (0x080b3fd2/0x080b4232/0x080b403a/0x080b4980) are inferred from names only until the cvar chunk merges."
+ ]
+}

@@ -1,0 +1,1179 @@
+{
+ "chunk": 14,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x08079eba",
+   "name": "Scr_IntToStringId",
+   "signature": "int Scr_IntToStringId(int value)",
+   "subsystem": "server/script_strings",
+   "confidence": "inferred",
+   "evidence": "sprintf \"%i\" into a 136-byte buffer, then interned via fn_080798e0(buf,0,14); returns that call's result",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079f00",
+   "name": "Scr_VectorToStringId",
+   "signature": "int Scr_VectorToStringId(const float *vec)",
+   "subsystem": "server/script_strings",
+   "confidence": "inferred",
+   "evidence": "string \"(%g, %g, %g)\" formatted from three floats (promoted to double), interned via fn_080798e0(buf,0,14)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079f60",
+   "name": "ScrStr_ClearFlagBits",
+   "signature": "void ScrStr_ClearFlagBits(unsigned char mask)",
+   "subsystem": "server/script_strings",
+   "confidence": "unknown",
+   "evidence": "no strings; walks the 0x4000-slot string table at 0x08287400, clears a flag mask on the string headers (byte +1) and calls fn_08079cf2 until the changed flag g_08297404 stays 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a01a",
+   "name": "ScrStr_ReplaceFlagBits",
+   "signature": "void ScrStr_ReplaceFlagBits(unsigned char mask, unsigned char replacement)",
+   "subsystem": "server/script_strings",
+   "confidence": "unknown",
+   "evidence": "same walk as ScrStr_ClearFlagBits; for headers having any bit of mask, clears mask and sets replacement bits",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a0a8",
+   "name": "ScrStr_ProcessTableAndListFlagged",
+   "signature": "void ScrStr_ProcessTableAndListFlagged(void)",
+   "subsystem": "server/script_strings",
+   "confidence": "unknown",
+   "evidence": "two passes over the string table (fn_08079d2a until g_08297404 stays 0, then list build for headers with flag 4 using strlen+5); callee fn_080770b2/fn_080770da/fn_08077154 behave as list begin/add/end",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a1d4",
+   "name": "Scr_NormalizeFilename",
+   "signature": "void Scr_NormalizeFilename(char *dst, const char *src, int maxLen)",
+   "subsystem": "server/script_files",
+   "confidence": "inferred",
+   "evidence": "error text \"\\x15Filename '%s' exceeds maximum length of %d\" at 0x8144880; lowercases a path, collapses leading and repeated / and \\ separators, converts \\ to /",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a27a",
+   "name": "Scr_NormalizeFilenameToStringId",
+   "signature": "int Scr_NormalizeFilenameToStringId(const char *path)",
+   "subsystem": "server/script_files",
+   "confidence": "inferred",
+   "evidence": "normalizes the path into a 1032-byte buffer (limit 0x400) then interns it via fn_080798e0(buf,0,7)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a2c0",
+   "name": "ScrStr_Strlen",
+   "signature": "unsigned int ScrStr_Strlen(const char *s)",
+   "subsystem": "server/script_strings",
+   "confidence": "unknown",
+   "evidence": "tail-calls strlen and returns its result",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a2d4",
+   "name": "TempMemory_Reset",
+   "signature": "void TempMemory_Reset(void)",
+   "subsystem": "server/script_buffer",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): writes 0 to running offset g_08297484; called by Scr_InitCompileState, Scr_LoadFieldFiles, CMod_LoadBrushRelated (compiler and collision loader share it); lineage CoD4 TempMemoryReset",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a2e4",
+   "name": "TempMemory_Reserve",
+   "signature": "int TempMemory_Reserve(int delta)",
+   "subsystem": "server/script_buffer",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): bump-reserves delta bytes: Hunk_ReallocateTempMemory(offset+delta), returns base+old offset; 27 callers incl. EmitOpcode/EmitByte, CM_AllocBrushNode; lineage CoD4 TempMalloc",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a318",
+   "name": "TempMemory_ReserveAliasA",
+   "signature": "int TempMemory_ReserveAliasA(int delta)",
+   "subsystem": "server/script_buffer",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): identical wrapper of ScrBuf_Advance; callers EmitInt32/EmitShort/EmitUnsignedShort/EmitStringIndex/EmitCodePos/EmitCanonicalString",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a32c",
+   "name": "TempMemory_ReserveAliasB",
+   "signature": "int TempMemory_ReserveAliasB(int delta)",
+   "subsystem": "server/script_buffer",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): second identical wrapper; callers EmitFloat, Scr_CompileSwitchStmt",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a340",
+   "name": "TempMemory_SetPos",
+   "signature": "int TempMemory_SetPos(int mark)",
+   "subsystem": "server/script_buffer",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): rewinds running offset by (current - mark) and reallocates; callers EmitOpcode, ScrCompile_DevBlockLeave, Scr_CompileDevBlock; lineage CoD4 TempMemorySetPos",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a374",
+   "name": "ScrVarEntry_IsObjectType",
+   "signature": "bool ScrVarEntry_IsObjectType(const ScrVarEntry *entry)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "(info & 0x1f) > 0xe: type is an object-like variable (thread/struct/entity/array)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a398",
+   "name": "ScrVar_IsObjectTypeById",
+   "signature": "bool ScrVar_IsObjectTypeById(unsigned int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "fn_0807e5cc(id) > 0xe (signed compare)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a3be",
+   "name": "ScrThreadDumpRec_Compare",
+   "signature": "int ScrThreadDumpRec_Compare(const void *a, const void *b)",
+   "subsystem": "server/script_debug",
+   "confidence": "inferred",
+   "evidence": "qsort comparator for ScrThreadDumpRec: compares stack[] lexicographically up to the shorter depth, then depth",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a43e",
+   "name": "Scr_DumpScriptThreads",
+   "signature": "void Scr_DumpScriptThreads(void)",
+   "subsystem": "server/script_debug",
+   "confidence": "inferred",
+   "evidence": "strings \"Cannot dump script threads: out of memory\\n\", \"count: %d, var usage: %d, endon usage: %d\\n\", \"called from:\\n\", \"ent type '%s'... count: %d, var usage: %d\\n\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a8e8",
+   "name": "Scr_NoOp",
+   "signature": "void Scr_NoOp(void)",
+   "subsystem": "server/script_debug",
+   "confidence": "unknown",
+   "evidence": "empty body (single ret)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a8ee",
+   "name": "ScrVar_InitFreeList",
+   "signature": "void ScrVar_InitFreeList(void)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "initialises the 0xfffe-entry pool: every entry self-linked and chained into a free list through u.s.refCount (next) and link2 (prev), head in entry 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807a9b8",
+   "name": "ScrVar_Reset",
+   "signature": "void ScrVar_Reset(void)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "calls ScrVar_InitFreeList then zeroes fieldObject/entityList of the 4 class entries",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807aa06",
+   "name": "ScrVar_ReleaseGlobalObject",
+   "signature": "void ScrVar_ReleaseGlobalObject(void)",
+   "subsystem": "server/script_variables",
+   "confidence": "unknown",
+   "evidence": "if g_08397528 != 0, releases that id with ScrVar_ReleaseAndFree and clears it",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807aa2e",
+   "name": "Scr_ReturnZero",
+   "signature": "unsigned int Scr_ReturnZero(void)",
+   "subsystem": "server/script_variables",
+   "confidence": "unknown",
+   "evidence": "returns 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807aa38",
+   "name": "ScrVar_GetNameIndex",
+   "signature": "int ScrVar_GetNameIndex(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "unknown",
+   "evidence": "(info >> 8) - 0x10000 of the entry",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807aa52",
+   "name": "ScrVar_FindInBucket",
+   "signature": "unsigned int ScrVar_FindInBucket(unsigned int name, unsigned int slot)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "hash bucket lookup: slot's variable must be a bucket head (status 0x40), then scans the link12 ring for a variable whose info>>8 equals name; returns the slot or 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807ab22",
+   "name": "ScrVar_FindVariable",
+   "signature": "int ScrVar_FindVariable(int parent, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "hash = (parent+name) % 0xfffd + 1 as 16 bit, lookup via ScrVar_FindInBucket(name, hash); returns the slot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807ab64",
+   "name": "ScrVar_AllocateInSlot",
+   "signature": "unsigned int ScrVar_AllocateInSlot(int parent, int name, unsigned int slot)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "string \"exceeded maximum number of script variables\" at two allocation points; moves/relinks entries to claim hash slot param_3 for a new variable, increments array element count (type 0x16) and notifies fn_08075dd4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b064",
+   "name": "ScrVar_NewChildA",
+   "signature": "int ScrVar_NewChildA(int parent, int name, unsigned int slot)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "calls ScrVar_AllocateInSlot then links the new slot into the parent's child ring after link14",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b110",
+   "name": "ScrVar_NewChildB",
+   "signature": "int ScrVar_NewChildB(int parent, int name, unsigned int slot)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "like ScrVar_NewChildA but links the new slot on the opposite side of the parent's child ring",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b1e6",
+   "name": "ScrVar_NewChildAByHash",
+   "signature": "int ScrVar_NewChildAByHash(int parent, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "hash = (name+parent) % 0xfffd + 1; ScrVar_NewChildA",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b22e",
+   "name": "ScrVar_NewChildBByHash",
+   "signature": "int ScrVar_NewChildBByHash(int parent, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "hash = (name+parent) % 0xfffd + 1; ScrVar_NewChildB",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b276",
+   "name": "ScrVar_GetOrNewChild",
+   "signature": "int ScrVar_GetOrNewChild(int parent, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "find-or-create: ScrVar_FindInBucket on hash slot, else ScrVar_NewChildA",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b2e4",
+   "name": "ScrVar_UnlinkChild",
+   "signature": "void ScrVar_UnlinkChild(ScrVarEntry *slotEnt, ScrVarEntry *parent)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "unlinks one child slot from its parent's ring and returns it to the free state (status 0x60); for array parents (type 0x16) decrements the element count and calls fn_08075df4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b50a",
+   "name": "ScrVar_FreeChildren",
+   "signature": "void ScrVar_FreeChildren(unsigned int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "unlinks every child of the object (ScrVar_UnlinkChild), then releases each child id (ScrVar_ReleaseAndFree)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b5d2",
+   "name": "ScrVar_DestroyObject",
+   "signature": "void ScrVar_DestroyObject(unsigned int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "addref, free all children, drop ref",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b5fc",
+   "name": "ScrVar_SetNotifyThread",
+   "signature": "void ScrVar_SetNotifyThread(int id, int value)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "sets type 0x10 (notify thread) keeping only the low byte of info, then stores value<<8",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b654",
+   "name": "ScrVar_ClearChildrenAndReleaseAux",
+   "signature": "void ScrVar_ClearChildrenAndReleaseAux(unsigned int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "if the first child slot is not the object itself frees the children; then releases the object stored in aux",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b69e",
+   "name": "ScrVar_ResetAuxToGlobal",
+   "signature": "void ScrVar_ResetAuxToGlobal(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "clears/releases as above, then stores g_08397524 into aux and adds a reference to it",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b6d4",
+   "name": "ScrVar_ReleaseNameAndSetThread",
+   "signature": "void ScrVar_ReleaseNameAndSetThread(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "releases the string id in info bits 8..23 (fn_08079cf2) and sets the type to 0xf (thread)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b728",
+   "name": "ScrVar_SetThreadType",
+   "signature": "void ScrVar_SetThreadType(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "sets type 0xf",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b760",
+   "name": "ScrVar_GetNameLow16",
+   "signature": "unsigned int ScrVar_GetNameLow16(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "unknown",
+   "evidence": "(info >> 8) & 0xffff",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b778",
+   "name": "ScrVar_SetTimeThread",
+   "signature": "void ScrVar_SetTimeThread(int id, int value)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "sets type 0x11 (time thread) keeping low byte of info, then stores value<<8",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b7e0",
+   "name": "ScrVar_SetThreadTypeB",
+   "signature": "void ScrVar_SetThreadTypeB(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "sets type 0xf (duplicate of ScrVar_SetThreadType)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b818",
+   "name": "ScrVar_GetInfoHigh",
+   "signature": "unsigned int ScrVar_GetInfoHigh(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "unknown",
+   "evidence": "info >> 8",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b82c",
+   "name": "ScrVar_GetInfoHighB",
+   "signature": "unsigned int ScrVar_GetInfoHighB(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "unknown",
+   "evidence": "info >> 8 (duplicate)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b840",
+   "name": "ScrVar_GetChildThreadParent",
+   "signature": "unsigned int ScrVar_GetChildThreadParent(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "for type 0x12 (child thread) returns info>>8 (parent), else 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b87a",
+   "name": "ScrVar_ResolveChildThreadRoot",
+   "signature": "unsigned int ScrVar_ResolveChildThreadRoot(unsigned int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "follows type-0x12 links through info>>8 until a non child-thread variable",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b8ae",
+   "name": "ScrVar_RemoveThread",
+   "signature": "void ScrVar_RemoveThread(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "clears children, removes the thread's notify table (fn_08082a16 per notify entry), then marks the variable as type 0x17 (removed thread)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b9b0",
+   "name": "ScrVar_ReleaseAuxOnly",
+   "signature": "void ScrVar_ReleaseAuxOnly(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "releases the aux object and marks the variable as type 0x17 (removed thread)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807b9f8",
+   "name": "ScrVar_AllocVariable",
+   "signature": "unsigned short ScrVar_AllocVariable(void)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "string \"exceeded maximum number of script variables\" at 0x8144... when the free list head (entry 0 refCount) is empty; pops the head, relinks hash/ring fields and returns the entry's var id",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807baf0",
+   "name": "ScrVar_FreeVariable",
+   "signature": "void ScrVar_FreeVariable(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "returns an entry to the free list (info = 0, refCount = old head, head = entry link12)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bbb2",
+   "name": "ScrVar_AllocValue",
+   "signature": "unsigned int ScrVar_AllocValue(void)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "allocates a variable and sets info = 0x60 (no type)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bbf0",
+   "name": "ScrVar_AllocStruct",
+   "signature": "unsigned int ScrVar_AllocStruct(void)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "allocates a variable of type 0x13 (struct) with refCount 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bc3a",
+   "name": "ScrVar_AllocEntity",
+   "signature": "unsigned int ScrVar_AllocEntity(int classNum, unsigned short entNum)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "allocates type 0x15 (entity): class number in info>>8, entity number in aux",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bca8",
+   "name": "ScrVar_AllocArray",
+   "signature": "unsigned int ScrVar_AllocArray(void)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "allocates type 0x16 (array) with refCount 0 and aux 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bcfc",
+   "name": "ScrVar_AllocThread",
+   "signature": "unsigned int ScrVar_AllocThread(unsigned short aux)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "allocates type 0xf (thread) with refCount 0 and aux = argument",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bd50",
+   "name": "ScrVar_AllocChildThread",
+   "signature": "unsigned int ScrVar_AllocChildThread(unsigned short aux, int parent)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "allocates type 0x12 (child thread): parent in info>>8, aux = first argument",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bdb6",
+   "name": "ScrVar_GetAux",
+   "signature": "unsigned short ScrVar_GetAux(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "unknown",
+   "evidence": "returns aux (u16 at +6)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bdc8",
+   "name": "ScrVar_ReleaseAndFree",
+   "signature": "void ScrVar_ReleaseAndFree(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "releases the payload by type (ScrVar_ReleaseValue) then frees the entry",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807be0a",
+   "name": "ScrVar_AddRef",
+   "signature": "void ScrVar_AddRef(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "refCount++ (u16)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807be2c",
+   "name": "ScrVar_Release",
+   "signature": "void ScrVar_Release(unsigned int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "refcount release: at 0 frees the entry (destroying children first when needed); otherwise decrements and, when an entity (type 0x15) hits 0 as bucket head, turns it into type 0x14 and removes it from its class entity list",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bf24",
+   "name": "ScrVar_DropRef",
+   "signature": "void ScrVar_DropRef(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "refCount == 0 -> ScrVar_FreeVariable, else refCount--",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bf64",
+   "name": "ScrVar_GetRefCount",
+   "signature": "unsigned short ScrVar_GetRefCount(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "unknown",
+   "evidence": "returns refCount",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bf86",
+   "name": "Scr_AllocVectorBlock",
+   "signature": "unsigned int *Scr_AllocVectorBlock(void)",
+   "subsystem": "server/script_vectors",
+   "confidence": "inferred",
+   "evidence": "allocates 0x10 bytes (tag 2) via fn_0807706a, zeroes the first dword (header) and returns pointer + 4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bfb8",
+   "name": "Scr_CloneVector",
+   "signature": "unsigned int *Scr_CloneVector(const unsigned int *src)",
+   "subsystem": "server/script_vectors",
+   "confidence": "inferred",
+   "evidence": "allocates a vector block and copies three dwords from the source",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807bff6",
+   "name": "Scr_VectorAddRef",
+   "signature": "void Scr_VectorAddRef(char *vec)",
+   "subsystem": "server/script_vectors",
+   "confidence": "inferred",
+   "evidence": "if the byte before the vector is 0, increments the u16 at vector-4 (reference count)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c01a",
+   "name": "Scr_VectorRelease",
+   "signature": "void Scr_VectorRelease(char *vec)",
+   "subsystem": "server/script_vectors",
+   "confidence": "inferred",
+   "evidence": "if the byte before the vector is 0: when the u16 at vector-4 is 0 frees the block (fn_08077090(vec-4,0x10)), else decrements it",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c064",
+   "name": "ScrVar_AddRefValue",
+   "signature": "void ScrVar_AddRefValue(int type, unsigned int value)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "add-ref by value type: 1 -> ScrVar_AddRef, 2/3 -> fn_08079b6e (string), 4 -> Scr_VectorAddRef",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c0b4",
+   "name": "ScrVar_ReleaseValue",
+   "signature": "void ScrVar_ReleaseValue(int type, unsigned int value)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "release by value type: 1 -> ScrVar_Release, 2/3 -> fn_08079cf2 (string), 4 -> Scr_VectorRelease",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c104",
+   "name": "Scr_IsSmallNameIndex",
+   "signature": "bool Scr_IsSmallNameIndex(int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "(unsigned)(x + 0x7e0002) < 0xfe0002",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c12a",
+   "name": "Scr_BiasName24",
+   "signature": "unsigned int Scr_BiasName24(int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "(x + 0x800000) & 0xffffff",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c13c",
+   "name": "ScrVar_FindVariable24",
+   "signature": "int ScrVar_FindVariable24(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "ScrVar_FindVariable(parent, (x + 0x800000) & 0xffffff)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c160",
+   "name": "ScrVar_FindVarValueId24",
+   "signature": "unsigned short ScrVar_FindVarValueId24(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "var id of ScrVar_FindVariable24",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c184",
+   "name": "ScrVar_FindVarValueId",
+   "signature": "unsigned short ScrVar_FindVarValueId(int parent, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "var id of ScrVar_FindVariable",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c1a8",
+   "name": "ScrVar_FindVarValueIdBias",
+   "signature": "unsigned short ScrVar_FindVarValueIdBias(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "var id of ScrVar_FindVariable(parent, x + 0x10000)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c1d2",
+   "name": "ScrVar_GetOrNewChild24",
+   "signature": "int ScrVar_GetOrNewChild24(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "ScrVar_GetOrNewChild(parent, (x + 0x800000) & 0xffffff)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c1f6",
+   "name": "ScrVar_NewChildAByHash24",
+   "signature": "int ScrVar_NewChildAByHash24(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "ScrVar_NewChildAByHash(parent, (x + 0x800000) & 0xffffff)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c21a",
+   "name": "ScrVar_GetVarIdForSet",
+   "signature": "int ScrVar_GetVarIdForSet(int id, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "string \"cannot set field of %s\" with the type-name table at 0x0817d960; plain objects use ScrVar_GetNewVarValueId, entities (type 0x15) use field lookup and the pending-field globals with sentinel 0xfffe",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c2cc",
+   "name": "ScrVar_ReadFieldValue",
+   "signature": "VariableValue *ScrVar_ReadFieldValue(VariableValue *out, int id, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "looks the field up; if absent and the object is an entity reads the class field (ScrVar_ReadClassField), else returns type 0 (value left unset as in the binary)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c35e",
+   "name": "ScrVar_EnumerateNames",
+   "signature": "int ScrVar_EnumerateNames(unsigned int id, int *out)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "enumerates child names of an object: entities (0x15) list class fields not set on the entity (name - 0x800000 <= g_08397508), arrays (0x16) list all child names, objects of type >= 0xf list names excluding 0x1fffe/0x1ffff; writes into out[] when non-null and returns the count",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c57c",
+   "name": "ScrVar_NameToValue",
+   "signature": "VariableValue *ScrVar_NameToValue(VariableValue *out, unsigned int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "maps a biased variable name back to a (value,type) pair: < 0x10000 -> string id (type 2), < 0x1fffe -> (name-0x10000, type 1), else (name-0x800000, type 6)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c5de",
+   "name": "ScrVar_GetFieldIntoTarget",
+   "signature": "void ScrVar_GetFieldIntoTarget(int id, int name, struct ScrVarSetTarget *dest)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "if the field is not a plain child and the object is an entity, looks it up in the class field object and calls fn_08085496 with the destination's VariableValue (type zeroed first); if the child exists calls ScrVar_RemoveVar",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c6b0",
+   "name": "ScrVar_GetOrNewVarValueId24",
+   "signature": "unsigned short ScrVar_GetOrNewVarValueId24(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "var id of ScrVar_GetOrNewChild24",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c6d4",
+   "name": "ScrVar_NewChildAVarId24",
+   "signature": "unsigned short ScrVar_NewChildAVarId24(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "var id of ScrVar_NewChildAByHash24",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c6f8",
+   "name": "ScrVar_GetNewVarValueId",
+   "signature": "unsigned short ScrVar_GetNewVarValueId(int parent, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "var id of ScrVar_GetOrNewChild",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c71c",
+   "name": "ScrVar_NewChildAVarId",
+   "signature": "unsigned short ScrVar_NewChildAVarId(int parent, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "var id of ScrVar_NewChildAByHash",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c740",
+   "name": "ScrVar_GetNewVarValueIdBias",
+   "signature": "unsigned short ScrVar_GetNewVarValueIdBias(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "var id of ScrVar_GetOrNewChild(parent, x + 0x10000)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c76a",
+   "name": "ScrVar_NewChildAVarIdBias",
+   "signature": "unsigned short ScrVar_NewChildAVarIdBias(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "var id of ScrVar_NewChildAByHash(parent, x + 0x10000)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c794",
+   "name": "ScrVar_NewChildBVarIdBias",
+   "signature": "unsigned short ScrVar_NewChildBVarIdBias(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "var id of ScrVar_NewChildBByHash(parent, x + 0x10000)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c7be",
+   "name": "ScrVar_RemoveVar",
+   "signature": "void ScrVar_RemoveVar(int parent, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "finds the child slot (no null check), unlinks it from the parent and releases the variable",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c81c",
+   "name": "ScrVar_RemoveFirstChild",
+   "signature": "void ScrVar_RemoveFirstChild(int parent)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "unlinks and releases the first slot of the parent's child ring",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c878",
+   "name": "ScrVar_RemoveVarBias",
+   "signature": "void ScrVar_RemoveVarBias(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "ScrVar_RemoveVar(parent, x + 0x10000)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c898",
+   "name": "ScrVar_RemoveVarIfPresent24",
+   "signature": "void ScrVar_RemoveVarIfPresent24(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "ScrVar_RemoveVarIfPresent(parent, (x + 0x800000) & 0xffffff)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c8bc",
+   "name": "ScrVar_RemoveVar24",
+   "signature": "void ScrVar_RemoveVar24(int parent, int x)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "ScrVar_RemoveVar(parent, (x + 0x800000) & 0xffffff)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c8e0",
+   "name": "ScrVar_RemoveVarIfPresent",
+   "signature": "void ScrVar_RemoveVarIfPresent(int parent, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "like ScrVar_RemoveVar but does nothing when the child is absent",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807c946",
+   "name": "ScrVar_CopyChildren",
+   "signature": "void ScrVar_CopyChildren(unsigned int src, unsigned int dst)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "deep copy of all children of src into dst (recursing into arrays, add-ref for other values)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807caac",
+   "name": "ScrVar_SetVarValueReleasing",
+   "signature": "void ScrVar_SetVarValueReleasing(int id, VariableValue *v)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "releases the old payload by type, then stores new type bits and value from the (value,type) pair",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807cb12",
+   "name": "ScrVar_SetVarValue",
+   "signature": "void ScrVar_SetVarValue(int id, VariableValue *v)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "ORs the type bits into info and stores the value, without releasing the old payload",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807cb4c",
+   "name": "ScrVar_GetValuePtr",
+   "signature": "unsigned int *ScrVar_GetValuePtr(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "unknown",
+   "evidence": "returns &entry.u.value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807cb6c",
+   "name": "ScrVar_SetClassFieldValue",
+   "signature": "void ScrVar_SetClassFieldValue(int id, int name, VariableValue *v)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "for an entity: looks up the class field and tries fn_08085496; if absent or it returns 0, stores the value as a plain child variable",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807cc32",
+   "name": "ScrVar_ClearValue",
+   "signature": "void ScrVar_ClearValue(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "releases the payload by type and clears the type bits (keeps value word)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807cc78",
+   "name": "ScrVar_SetVarValueOrPending",
+   "signature": "void ScrVar_SetVarValueOrPending(int id, VariableValue *v)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "id 0xfffe is the pending entity-field marker set by ScrVar_GetVarIdForSet: routes to ScrVar_SetClassFieldValue(g_08397540, g_08397544, v); else ScrVar_SetVarValueReleasing",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807ccba",
+   "name": "ScrVar_ReadVarValue",
+   "signature": "VariableValue *ScrVar_ReadVarValue(VariableValue *out, int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "out = (type = info & 0x1f, value = u.value), then fn_08075dd4(out)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807ccfe",
+   "name": "ScrVar_GetFieldObjectId",
+   "signature": "int ScrVar_GetFieldObjectId(int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "string \"%s is not a field object\"; returns the object id when the variable is a pointer (type 1) to an object of type < 0x16, otherwise reports an error and returns 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807cd7c",
+   "name": "ScrVar_ReadClassField",
+   "signature": "VariableValue *ScrVar_ReadClassField(VariableValue *out, int id, int name)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "reads a class field of an entity via fn_08085512; when the result is a pointer to a non-empty array (type 0x16, refCount != 0) it is copied into a fresh array (release, alloc, ScrVar_CopyChildren)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807ce8c",
+   "name": "ScrVar_ReadVarValueOrPending",
+   "signature": "VariableValue *ScrVar_ReadVarValueOrPending(VariableValue *out, int id)",
+   "subsystem": "server/script_variables",
+   "confidence": "inferred",
+   "evidence": "id 0xfffe is the pending entity-field marker: ScrVar_ReadClassField(g_08397540, g_08397544), else ScrVar_ReadVarValue",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08297500",
+   "name": "g_scrVar",
+   "type": "struct ScrVarEntry[0xfffe]",
+   "confidence": "inferred",
+   "evidence": "16-byte entries indexed by id; entry 0 holds the free-list head (u.s.refCount) and is initialised by 0x807a8ee"
+  },
+  {
+   "addr": "0x08287400",
+   "name": "g_scrStrTable",
+   "type": "struct ScrStrSlot[0x4000]",
+   "confidence": "inferred",
+   "evidence": "4-byte slots walked 1..0x3fff with flag mask 0xc000 and string id at +2 (0x8079f60, 0x807a0a8)"
+  },
+  {
+   "addr": "0x0817d920",
+   "name": "g_scrClassInfo",
+   "type": "struct ScrClassInfo[4]",
+   "confidence": "observed",
+   "evidence": "12-byte entries; name pointers at +8 are \"entity\",\"hudelem\",\"pathnode\",\"vehiclenode\""
+  },
+  {
+   "addr": "0x0817d960",
+   "name": "g_scrTypeNames",
+   "type": "const char *[24]",
+   "confidence": "observed",
+   "evidence": "pointer table whose entries are \"undefined\",\"object\",\"string\",... \"array\",\"removed thread\""
+  },
+  {
+   "addr": "0x08297404",
+   "name": "g_08297404",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "set to 0 then polled around fn_08079cf2/fn_08079d2a in string-table passes"
+  },
+  {
+   "addr": "0x08297484",
+   "name": "g_scr_buffer_offset",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "running offset adjusted by 0x807a2e4/0x807a340"
+  },
+  {
+   "addr": "0x08397508",
+   "name": "g_scr_next_slot_number",
+   "type": "unsigned int",
+   "confidence": "unknown",
+   "evidence": "upper bound on field name index in 0x807c35e"
+  },
+  {
+   "addr": "0x08397520",
+   "name": "scrVarPub_notifyArrayId",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "object id used as notify table root in 0x807b8ae"
+  },
+  {
+   "addr": "0x08397524",
+   "name": "g_08397524",
+   "type": "unsigned int",
+   "confidence": "unknown",
+   "evidence": "id stored into aux and add-ref'd by 0x807b69e"
+  },
+  {
+   "addr": "0x08397528",
+   "name": "g_08397528",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "global object id released by 0x807aa06"
+  },
+  {
+   "addr": "0x08397540",
+   "name": "scrVarPub_pendingFieldObjectId",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "pending entity id set with the 0xfffe marker in 0x807c21a"
+  },
+  {
+   "addr": "0x08397544",
+   "name": "scrVarPub_pendingFieldNameId",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "pending field name set with the 0xfffe marker in 0x807c21a"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "ScrVarEntry",
+   "size": "0x10",
+   "evidence": "stride 0x10 on the pool at 0x08297500; fields +0 var,+2 link2,+4 u,+8 info,+0xc link12,+0xe link14"
+  },
+  {
+   "name": "VariableValue",
+   "size": "0x8",
+   "evidence": "(value,type) pairs returned through hidden pointers by 0x807c57c/0x807ccba/0x807cd7c"
+  },
+  {
+   "name": "ScrVarSetTarget",
+   "size": "0x10",
+   "evidence": "0x807c5de passes param+8 as a VariableValue* and zeroes param+0xc"
+  },
+  {
+   "name": "ScrStrSlot",
+   "size": "0x4",
+   "evidence": "stride 4 over 0x4000 slots"
+  },
+  {
+   "name": "ScrClassInfo",
+   "size": "0xc",
+   "evidence": "stride 0xc; names at +8"
+  },
+  {
+   "name": "ScrThreadDumpRec",
+   "size": "0x8c",
+   "evidence": "qsort element size 0x8c in 0x807a43e; depth at +0x80, floats at +0x84/+0x88"
+  }
+ ],
+ "open_questions": [
+  "Roles of ScrVarEntry link2/link12/link14 (hash slot vs child ring vs free list) are inferred only from link manipulation, not named by strings; the 0x40/0x20/0x60 status bits likewise.",
+  "fn_080798e0(str,0,14|7), fn_08078ec8 and the g_08287400 string table: confirm they are the string-interning (SL_*) layer and the meaning of the 0x4 header flag walked in 0x807a0a8.",
+  "Whether 0x807c2cc reading an unset local (value word when absent, non-entity) is an original bug (observed in the binary) and what fn_08085496/fn_08085512 (class field get/set) do per class."
+ ]
+}

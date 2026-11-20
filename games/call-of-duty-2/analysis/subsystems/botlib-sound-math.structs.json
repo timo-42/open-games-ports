@@ -1,0 +1,1195 @@
+[
+ {
+  "name": "snd_alias_t",
+  "size": "0x44",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "chunk 027 SND_GetAliasListName/101 SND_GetAliasIndex read list->aliasName from the list node; Com_AddSoundAlias (0x080aefd8) first store of alias name; chunk 028 snd_alias_s.name and 101 snd_alias_t.aliasName agree"
+   },
+   {
+    "offset": "0x04",
+    "type": "const char *",
+    "name": "subtitle",
+    "evidence": "chunk 028 Com_AddSoundAlias stores subtitle pool string or NULL (mov [alias+0x4])"
+   },
+   {
+    "offset": "0x08",
+    "type": "char *",
+    "name": "secondaryName",
+    "evidence": "chunk 028: hunk copy of build+0x80 or NULL"
+   },
+   {
+    "offset": "0x0c",
+    "type": "struct snd_file_t *",
+    "name": "soundFile",
+    "evidence": "chunk 028: fileRec; 0x080aefd8"
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "sequence",
+    "evidence": "chunk 027 Com_PickSoundAlias 0x080ad32a reads/writes [alias+0x10] (cmp, `chosen->sequence = max+1`); chunk 028 Com_AddSoundAlias writes 0 at 0x080af059 (disasm `mov [eax+0x10],0`). chunk 028 calls it reserved10"
+   },
+   {
+    "offset": "0x14",
+    "type": "float",
+    "name": "volMin",
+    "evidence": "build+0x10c copied raw (disasm 0x080af06c region); float per chunk 027 parse (atof)"
+   },
+   {
+    "offset": "0x18",
+    "type": "float",
+    "name": "volMax",
+    "evidence": "build+0x110"
+   },
+   {
+    "offset": "0x1c",
+    "type": "float",
+    "name": "pitchMin",
+    "evidence": "build+0x118"
+   },
+   {
+    "offset": "0x20",
+    "type": "float",
+    "name": "pitchMax",
+    "evidence": "build+0x11c"
+   },
+   {
+    "offset": "0x24",
+    "type": "float",
+    "name": "distMin",
+    "evidence": "build+0x120"
+   },
+   {
+    "offset": "0x28",
+    "type": "float",
+    "name": "distMax",
+    "evidence": "build+0x124"
+   },
+   {
+    "offset": "0x2c",
+    "type": "uint32",
+    "name": "packedBits",
+    "evidence": "disasm 0x080af0c0-0x080af1df: channel<<7 (bits 7-10), type<<5 (bits 5-6), flags bit0 looping(build+0x144), bit1 isMaster(+0x145), bit2 isSlave(+0x146), bit3 fullDryLevel(+0x147), bit4 noWetLevel(+0x148)"
+   },
+   {
+    "offset": "0x30",
+    "type": "float",
+    "name": "slavePercentage",
+    "evidence": "disasm 0x080af1e8: alias+0x30 <- build+0x134 (chunk 027 slavePercentage float; chunk 028 calls it loadSpec)"
+   },
+   {
+    "offset": "0x34",
+    "type": "float",
+    "name": "probability",
+    "evidence": "disasm 0x080af1f7: alias+0x34 <- build+0x138 (chunk 027 probability float); Com_PickSoundAlias uses [alias+0x34] as float weight (fadd/fmul at 0x080ad38e,0x080ad3a7). chunk 028 calls it masterSlave"
+   },
+   {
+    "offset": "0x38",
+    "type": "float",
+    "name": "lfePercentage",
+    "evidence": "disasm 0x080af206: alias+0x38 <- build+0x13c (chunk 027 lfePercentage float); chunk 028 calls it falloffCurveRef"
+   },
+   {
+    "offset": "0x3c",
+    "type": "int",
+    "name": "startDelay",
+    "evidence": "disasm 0x080af215: <- build+0x140; chunk 027 startDelay atoi"
+   },
+   {
+    "offset": "0x40",
+    "type": "struct snd_curve_t *",
+    "name": "volumeFalloffCurve",
+    "evidence": "disasm 0x080af0fd/0x080af103: alias+0x40 <- build+0x130 (chunk 027 volumeFalloffCurve pointer, always NULL on this server since Com_FindFalloffCurve returns 0); chunk 028 calls it probability"
+   }
+  ],
+  "defined_in": [
+   "chunk_027_types.h",
+   "chunk_028_types.h",
+   "chunk_101_types.h"
+  ],
+  "conflicts": "chunk_028 labels 0x10 'reserved10 always zero' (it is the runtime sequence counter updated by Com_PickSoundAlias), 0x30 loadSpec, 0x34 masterSlave, 0x38 falloffCurveRef, 0x40 probability. Disassembly of Com_AddSoundAlias plus Com_PickSoundAlias's use of +0x34 as a float weight supports the chunk_027 view of the build record, which gives the labels above. chunk_027 leaves 0x00-0x0f,0x14-0x33 opaque and chunk_101 only types +0x00. The raw copy means the float/int typing of 0x14-0x28 follows the build record types.",
+  "confidence": "high for offsets/sizes and for 0x10/0x34 meaning; medium for 0x30/0x38/0x40 (derived by composing the copy map with chunk 027 column parsing)"
+ },
+ {
+  "name": "snd_alias_list_t",
+  "size": "0x10",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "SND_FindAliasList compares Q_stricmp(name, e->aliasName) (0x080acc42); Com_MakeSoundAliasesPermanent sets listNode->name"
+   },
+   {
+    "offset": "0x04",
+    "type": "struct snd_alias_t *",
+    "name": "head",
+    "evidence": "SND_GetAliasListHead returns [list+4]; Com_PickSoundAlias base = list->head"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "count",
+    "evidence": "Com_PickSoundAlias loop bound; chunk 028 aliasCount incremented per alias"
+   },
+   {
+    "offset": "0x0c",
+    "type": "struct snd_alias_list_t *",
+    "name": "next",
+    "evidence": "SND_InsertAliasList writes list->next = bucket head (0x080acd9e); SND_FindAliasList walks e->next"
+   }
+  ],
+  "defined_in": [
+   "chunk_027_types.h",
+   "chunk_028_types.h (as snd_alias_list_s)",
+   "chunk_101_types.h"
+  ],
+  "conflicts": "chunk_028 snd_alias_list_s names 0x0c 'reserved0c'. It is the hash-chain link written by SND_InsertAliasList which chunk 028's own Com_MakeSoundAliasesPermanent calls. chunk_028 also calls 0x00 'name' and 0x04 'aliases' (same offsets).",
+  "confidence": "high"
+ },
+ {
+  "name": "snd_file_t",
+  "size": "0x10",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "chunk 028 SndFile_Init (0x080aefb8) stores pool name copy"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "useCount",
+    "evidence": "zeroed in SndFile_Init"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint32",
+    "name": "reserved08",
+    "evidence": "not written by chunk 028 code"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint32",
+    "name": "loadType",
+    "evidence": "SndFile_Init third arg; build.type value (1 loaded, 2 streamed/primed)"
+   }
+  ],
+  "defined_in": [
+   "chunk_028_types.h"
+  ],
+  "conflicts": "No layout conflict (single chunk). Semantic issue only: chunk 028 assumes loadType 3 = primed but Com_ParseAliasType (0x080ad93c) writes 2 for both streamed and primed.",
+  "confidence": "medium"
+ },
+ {
+  "name": "snd_alias_build_t",
+  "size": "0x154",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "char[0x40]",
+    "name": "fileName",
+    "evidence": "chunk 027 Com_InitSoundAliasBuild strcpy(fileName) (0x080ad622); chunk 028 sourceFile"
+   },
+   {
+    "offset": "0x040",
+    "type": "char[0x40]",
+    "name": "name",
+    "evidence": "chunk 027 column 1; chunk 028 name"
+   },
+   {
+    "offset": "0x080",
+    "type": "char[0x40]",
+    "name": "secondaryName",
+    "evidence": "column 18; copied to runtime alias+0x08"
+   },
+   {
+    "offset": "0x0c0",
+    "type": "char *",
+    "name": "subtitle",
+    "evidence": "column 4; temp hunk copy"
+   },
+   {
+    "offset": "0x0c4",
+    "type": "int",
+    "name": "sequence",
+    "evidence": "column 2 atoi"
+   },
+   {
+    "offset": "0x0c8",
+    "type": "char[0x40]",
+    "name": "soundFile",
+    "evidence": "column 3"
+   },
+   {
+    "offset": "0x108",
+    "type": "struct snd_file_t *",
+    "name": "soundFileRecord",
+    "evidence": "chunk 027: never written during parse; chunk 028: assigned in Com_MakeSoundAliasesPermanent (entry->soundFile)"
+   },
+   {
+    "offset": "0x10c",
+    "type": "float",
+    "name": "volMin",
+    "evidence": "column 5"
+   },
+   {
+    "offset": "0x110",
+    "type": "float",
+    "name": "volMax",
+    "evidence": "column 6"
+   },
+   {
+    "offset": "0x114",
+    "type": "float",
+    "name": "volMod",
+    "evidence": "column 7; applied in Com_ValidateSoundAlias, not copied to runtime"
+   },
+   {
+    "offset": "0x118",
+    "type": "float",
+    "name": "pitchMin",
+    "evidence": "column 8"
+   },
+   {
+    "offset": "0x11c",
+    "type": "float",
+    "name": "pitchMax",
+    "evidence": "column 9"
+   },
+   {
+    "offset": "0x120",
+    "type": "float",
+    "name": "distMin",
+    "evidence": "column 10, default 120.0"
+   },
+   {
+    "offset": "0x124",
+    "type": "float",
+    "name": "distMax",
+    "evidence": "column 11, default 0 (-> 5*distMin)"
+   },
+   {
+    "offset": "0x128",
+    "type": "int",
+    "name": "channel",
+    "evidence": "column 12, index into table 0x817e3a0 (0..10)"
+   },
+   {
+    "offset": "0x12c",
+    "type": "int",
+    "name": "type",
+    "evidence": "column 13: loaded=1, streamed=2, primed=2 (disasm 0x080ad95c/0x080ad982/0x080ad9a8)"
+   },
+   {
+    "offset": "0x130",
+    "type": "struct snd_curve_t *",
+    "name": "volumeFalloffCurve",
+    "evidence": "column 19, default Com_GetDefaultFalloffCurve; copied to runtime alias+0x40"
+   },
+   {
+    "offset": "0x134",
+    "type": "float",
+    "name": "slavePercentage",
+    "evidence": "masterslave column, default 1.0; copied to runtime alias+0x30"
+   },
+   {
+    "offset": "0x138",
+    "type": "float",
+    "name": "probability",
+    "evidence": "column 15, default 1.0; copied to runtime alias+0x34"
+   },
+   {
+    "offset": "0x13c",
+    "type": "float",
+    "name": "lfePercentage",
+    "evidence": "column 23, default 0; copied to runtime alias+0x38"
+   },
+   {
+    "offset": "0x140",
+    "type": "int",
+    "name": "startDelay",
+    "evidence": "column 20; copied to runtime alias+0x3c"
+   },
+   {
+    "offset": "0x144",
+    "type": "uint8",
+    "name": "looping",
+    "evidence": "flag bit0"
+   },
+   {
+    "offset": "0x145",
+    "type": "uint8",
+    "name": "isMaster",
+    "evidence": "flag bit1"
+   },
+   {
+    "offset": "0x146",
+    "type": "uint8",
+    "name": "isSlave",
+    "evidence": "flag bit2"
+   },
+   {
+    "offset": "0x147",
+    "type": "uint8",
+    "name": "fullDryLevel",
+    "evidence": "flag bit3 (reverb column)"
+   },
+   {
+    "offset": "0x148",
+    "type": "uint8",
+    "name": "noWetLevel",
+    "evidence": "flag bit4 (reverb column)"
+   },
+   {
+    "offset": "0x149",
+    "type": "uint8",
+    "name": "hasError",
+    "evidence": "chunk 027"
+   },
+   {
+    "offset": "0x14a",
+    "type": "uint8",
+    "name": "loadSpecPass",
+    "evidence": "chunk 027 (set from Com_ParseAliasLoadSpec / menu compare)"
+   },
+   {
+    "offset": "0x14b",
+    "type": "uint8",
+    "name": "unk14b",
+    "evidence": "padding"
+   },
+   {
+    "offset": "0x14c",
+    "type": "struct snd_alias_build_t *",
+    "name": "dupOf",
+    "evidence": "chunk 028 Com_MakeSoundAliasesPermanent pass 1; chunk 027 unk14c never written"
+   },
+   {
+    "offset": "0x150",
+    "type": "struct snd_alias_build_t *",
+    "name": "next",
+    "evidence": "list link (both chunks)"
+   }
+  ],
+  "defined_in": [
+   "chunk_027_types.h (snd_alias_build_t)",
+   "chunk_028_types.h (snd_alias_entry_s)"
+  ],
+  "conflicts": "Offsets 0x130-0x13c: chunk 028 labels them probability, loadSpec, masterSlave, falloffCurveRef; chunk 027 labels them volumeFalloffCurve, slavePercentage, probability, lfePercentage. The Com_InitSoundAliasBuild defaults (curve pointer at 0x130, 1.0f at 0x134 and 0x138) and Com_ParseAliasColumn writes, plus Com_PickSoundAlias's float use of the runtime +0x34, support chunk 027. Also chunk 028 types 0x10c-0x13c as raw uint32 words (copy only). 0x108: chunk 027 unk108, chunk 028 soundFile pointer; consistent (written later). 'type' value 3 (chunk 028 snd_loadTypeName) is never produced by the parser.",
+  "confidence": "high for offsets and sizes; medium for the 0x130-0x13c naming"
+ },
+ {
+  "name": "snd_curve_t",
+  "size": "0x48",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "chunk 028 SndCurve_InitDefault sets name to the empty string"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "knotCount",
+    "evidence": "Com_ParseSndCurve: knotCount in 2..8; InitDefault sets 2"
+   },
+   {
+    "offset": "0x08",
+    "type": "struct { float x; float y; }[8]",
+    "name": "knots",
+    "evidence": "Com_ParseSndCurve writes knots[i].x at 0x08+8i, .y at 0x0c+8i; first knot forced (0,1), last (1,0)"
+   }
+  ],
+  "defined_in": [
+   "chunk_027_types.h (opaque data[0x48])",
+   "chunk_028_types.h (snd_curve_s, snd_range_default_s)"
+  ],
+  "conflicts": "chunk_028 also defines snd_range_default_s {name, mode, reserved08, x0, y0, x1, y1} with the first knot at 0x0c (mode=2 at 0x04); SndCurve_InitDefault is declared against snd_curve_s whose knots start at 0x08. The two definitions disagree on where knot 0 starts (0x08 vs 0x0c); the parse code (same chunk) uses 0x08. Not resolved by disassembly of InitDefault (0x080afcaa) here.",
+  "confidence": "medium"
+ },
+ {
+  "name": "snd_volmod_group_t",
+  "size": "0x44",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "char[0x40]",
+    "name": "name",
+    "evidence": "chunk 027 Com_LoadVolumeModGroups strcpy(name); Com_GetVolumeModGroup strcasecmp"
+   },
+   {
+    "offset": "0x40",
+    "type": "float",
+    "name": "volume",
+    "evidence": "atof of the second token"
+   }
+  ],
+  "defined_in": [
+   "chunk_027_types.h"
+  ],
+  "conflicts": "",
+  "confidence": "high (array of 32 at 0x085ab168)"
+ },
+ {
+  "name": "snd_alias_bank_t / snd_alias_set_s",
+  "size": "0x10",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint32",
+    "name": "unk00",
+    "evidence": "chunk 027 word0 untouched; chunk 028 reserved00"
+   },
+   {
+    "offset": "0x04",
+    "type": "struct snd_alias_t *",
+    "name": "aliases",
+    "evidence": "chunk 028 aliasSet->aliases; chunk 027 word1 (zeroed by Com_UnloadSoundAliases)"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "aliasCount",
+    "evidence": "chunk 028 aliasCount; chunk 027 word2 (zeroed on unload)"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint32",
+    "name": "unk0c",
+    "evidence": "chunk 027 word3"
+   }
+  ],
+  "defined_in": [
+   "chunk_027_types.h (snd_alias_bank_t, array g_085aa848[3])",
+   "chunk_028_types.h (snd_alias_set_s, size not stated)"
+  ],
+  "conflicts": "Labels differ only (chunk 027 word0..word3 vs chunk 028 reserved00/aliases/aliasCount); no offset disagreement. chunk 028 states no size; stride 0x10 comes from chunk 027 (g_085aa848[3]). The companion aux record (g_085aa878[3], stride 8) = chunk 028 snd_file_set_s {int fileCount @0, snd_file_t *files @4} = chunk 027 snd_alias_bank_aux_t {word0, word1}.",
+  "confidence": "medium-high"
+ },
+ {
+  "name": "token_t",
+  "size": "0x42c",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "char[1024]",
+    "name": "string",
+    "evidence": "chunk 001/002"
+   },
+   {
+    "offset": "0x400",
+    "type": "int",
+    "name": "type",
+    "evidence": "1 string 2 literal 3 number 4 name 5 punctuation"
+   },
+   {
+    "offset": "0x404",
+    "type": "int",
+    "name": "subtype",
+    "evidence": "punctuation number or number flags (0x1008 for __LINE__)"
+   },
+   {
+    "offset": "0x408",
+    "type": "uint32",
+    "name": "intvalue",
+    "evidence": ""
+   },
+   {
+    "offset": "0x40c",
+    "type": "long double",
+    "name": "floatvalue",
+    "evidence": "12 bytes on i386; NumberValue x87 chain (0x0805068e)"
+   },
+   {
+    "offset": "0x418",
+    "type": "char *",
+    "name": "whitespace_p",
+    "evidence": ""
+   },
+   {
+    "offset": "0x41c",
+    "type": "char *",
+    "name": "endwhitespace_p",
+    "evidence": ""
+   },
+   {
+    "offset": "0x420",
+    "type": "int",
+    "name": "line",
+    "evidence": ""
+   },
+   {
+    "offset": "0x424",
+    "type": "int",
+    "name": "linescrossed",
+    "evidence": ""
+   },
+   {
+    "offset": "0x428",
+    "type": "struct token_s *",
+    "name": "next",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_001_types.h",
+   "chunk_002_types.h"
+  ],
+  "conflicts": "",
+  "confidence": "high (identical in both chunks, memcpy of 0x42c in PC_CopyToken)"
+ },
+ {
+  "name": "script_t",
+  "size": "0x4a4",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "char[64]",
+    "name": "filename",
+    "evidence": ""
+   },
+   {
+    "offset": "0x040",
+    "type": "char *",
+    "name": "buffer",
+    "evidence": ""
+   },
+   {
+    "offset": "0x044",
+    "type": "char *",
+    "name": "script_p",
+    "evidence": ""
+   },
+   {
+    "offset": "0x048",
+    "type": "char *",
+    "name": "end_p",
+    "evidence": ""
+   },
+   {
+    "offset": "0x04c",
+    "type": "char *",
+    "name": "lastscript_p",
+    "evidence": ""
+   },
+   {
+    "offset": "0x050",
+    "type": "char *",
+    "name": "whitespace_p",
+    "evidence": ""
+   },
+   {
+    "offset": "0x054",
+    "type": "char *",
+    "name": "endwhitespace_p",
+    "evidence": ""
+   },
+   {
+    "offset": "0x058",
+    "type": "int",
+    "name": "length",
+    "evidence": ""
+   },
+   {
+    "offset": "0x05c",
+    "type": "int",
+    "name": "line",
+    "evidence": "observed in PC_SourceError"
+   },
+   {
+    "offset": "0x060",
+    "type": "int",
+    "name": "lastline",
+    "evidence": ""
+   },
+   {
+    "offset": "0x064",
+    "type": "int",
+    "name": "tokenavailable",
+    "evidence": ""
+   },
+   {
+    "offset": "0x068",
+    "type": "int",
+    "name": "flags",
+    "evidence": ""
+   },
+   {
+    "offset": "0x06c",
+    "type": "struct punctuation_s *",
+    "name": "punctuations",
+    "evidence": ""
+   },
+   {
+    "offset": "0x070",
+    "type": "struct punctuation_s **",
+    "name": "punctuationtable",
+    "evidence": "256 entries"
+   },
+   {
+    "offset": "0x074",
+    "type": "token_t",
+    "name": "token",
+    "evidence": ""
+   },
+   {
+    "offset": "0x4a0",
+    "type": "struct script_s *",
+    "name": "next",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_001_types.h",
+   "chunk_002_types.h"
+  ],
+  "conflicts": "",
+  "confidence": "high"
+ },
+ {
+  "name": "source_t",
+  "size": "0x4c8",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "char[64]",
+    "name": "filename",
+    "evidence": ""
+   },
+   {
+    "offset": "0x40",
+    "type": "char[64]",
+    "name": "includepath",
+    "evidence": ""
+   },
+   {
+    "offset": "0x80",
+    "type": "struct punctuation_s *",
+    "name": "punctuations",
+    "evidence": ""
+   },
+   {
+    "offset": "0x84",
+    "type": "script_t *",
+    "name": "scriptstack",
+    "evidence": ""
+   },
+   {
+    "offset": "0x88",
+    "type": "token_t *",
+    "name": "tokens",
+    "evidence": ""
+   },
+   {
+    "offset": "0x8c",
+    "type": "define_t *",
+    "name": "defines",
+    "evidence": ""
+   },
+   {
+    "offset": "0x90",
+    "type": "define_t **",
+    "name": "definehash",
+    "evidence": "1024 entries"
+   },
+   {
+    "offset": "0x94",
+    "type": "indent_t *",
+    "name": "indentstack",
+    "evidence": ""
+   },
+   {
+    "offset": "0x98",
+    "type": "int",
+    "name": "skip",
+    "evidence": ""
+   },
+   {
+    "offset": "0x9c",
+    "type": "token_t",
+    "name": "token",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_001_types.h",
+   "chunk_002_types.h"
+  ],
+  "conflicts": "",
+  "confidence": "high"
+ },
+ {
+  "name": "define_t",
+  "size": "0x20",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "char *",
+    "name": "name",
+    "evidence": ""
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "flags",
+    "evidence": "bit0 fixed"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "builtin",
+    "evidence": "1 line 2 file 3 date 4 time"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "numparms",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "token_t *",
+    "name": "parms",
+    "evidence": ""
+   },
+   {
+    "offset": "0x14",
+    "type": "token_t *",
+    "name": "tokens",
+    "evidence": ""
+   },
+   {
+    "offset": "0x18",
+    "type": "struct define_s *",
+    "name": "next",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1c",
+    "type": "struct define_s *",
+    "name": "hashnext",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_001_types.h",
+   "chunk_002_types.h"
+  ],
+  "conflicts": "",
+  "confidence": "high"
+ },
+ {
+  "name": "indent_t",
+  "size": "0x10",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "type",
+    "evidence": ""
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "skip",
+    "evidence": ""
+   },
+   {
+    "offset": "0x08",
+    "type": "script_t *",
+    "name": "script",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "struct indent_s *",
+    "name": "next",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_001_types.h",
+   "chunk_002_types.h"
+  ],
+  "conflicts": "",
+  "confidence": "high"
+ },
+ {
+  "name": "punctuation_t",
+  "size": "0xc",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "char *",
+    "name": "p",
+    "evidence": ""
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "n",
+    "evidence": ""
+   },
+   {
+    "offset": "0x08",
+    "type": "struct punctuation_s *",
+    "name": "next",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_002_types.h"
+  ],
+  "conflicts": "",
+  "confidence": "medium (single chunk)"
+ },
+ {
+  "name": "pc_value_t",
+  "size": "0x18",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "intvalue",
+    "evidence": "chunk 001 expression evaluator"
+   },
+   {
+    "offset": "0x04",
+    "type": "double",
+    "name": "floatvalue",
+    "evidence": "4-byte aligned on i386; evaluator uses double although token_t.floatvalue is long double"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "parentheses",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "struct pc_value_s *",
+    "name": "prev",
+    "evidence": ""
+   },
+   {
+    "offset": "0x14",
+    "type": "struct pc_value_s *",
+    "name": "next",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_001_types.h"
+  ],
+  "conflicts": "",
+  "confidence": "medium (single chunk, no live caller)"
+ },
+ {
+  "name": "pc_operator_t",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "op",
+    "evidence": "punctuation subtype"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "priority",
+    "evidence": "PC_OperatorPriority 0x0804ce8c"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "parentheses",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "struct pc_operator_s *",
+    "name": "prev",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "struct pc_operator_s *",
+    "name": "next",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_001_types.h"
+  ],
+  "conflicts": "",
+  "confidence": "medium (single chunk, no live caller)"
+ },
+ {
+  "name": "cplane_t",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "normal",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "float",
+    "name": "dist",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "uint8",
+    "name": "type",
+    "evidence": "<3 axial"
+   },
+   {
+    "offset": "0x11",
+    "type": "uint8",
+    "name": "signbits",
+    "evidence": "Plane_SetSignbits 0x080aa12c"
+   },
+   {
+    "offset": "0x12",
+    "type": "uint8[2]",
+    "name": "pad",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "cod2_types.h",
+   "chunk_005_types.h (cod2_plane_s)",
+   "chunk_026_types.h (cplane_s asserts)",
+   "chunk_004_types.h (cm_plane_s, size not recovered)"
+  ],
+  "conflicts": "",
+  "confidence": "high"
+ },
+ {
+  "name": "Orient",
+  "size": "0x30",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "Orient_PointWorldToLocal 0x080b8ec6 subtracts [xf+0..8]; chunk 030 Frame_TransformPoint 0x080b8d30 adds frame[0..2]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3][3]",
+    "name": "axis",
+    "evidence": "rows at +0x0c,+0x18,+0x24 (disasm 0x080b8f04 uses +0xc,+0x10,+0x14 for row 0)"
+   }
+  ],
+  "defined_in": [
+   "chunk_031_types.h",
+   "chunk_030 (untyped float* frame[12])",
+   "chunk_059_types.h (forward declaration)"
+  ],
+  "conflicts": "chunk_052_types.h defines game_orient_s with the opposite order (axis[3][3] @0, origin @0x24), also size 0x30. Both are confirmed by disassembly of different code (0x080b8ec6 vs Bullet_ApplySpread 0x0811fac8 using o+0x24 as the translation base and o+0/+0xc/+0x18 as axes). They are different types sharing a size; do not merge.",
+  "confidence": "high"
+ },
+ {
+  "name": "Mat34 / game_orient_s",
+  "size": "0x30",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3][3]",
+    "name": "axis",
+    "evidence": "rows forward/right/up (inferred); Bullet_ApplySpread 0x0811fac8 passes o, o+0xc, o+0x18 as direction vectors"
+   },
+   {
+    "offset": "0x24",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "Bullet_ApplySpread passes o+0x24 as the MA base; chunk 025 Mat34_Concat / Mat34_ConcatRowVector treat elements 9..11 as translation (0x080a5ff2)"
+   }
+  ],
+  "defined_in": [
+   "chunk_052_types.h (game_orient_s)",
+   "chunk_025.cpp (Mat34_* element indexing)"
+  ],
+  "conflicts": "Opposite order from Orient (chunk_031). Same size 0x30.",
+  "confidence": "high for the layout, medium for the axis-role names"
+ },
+ {
+  "name": "BoneQuat (QuatTransform_s / DObjBone / XAnimPoseBone)",
+  "size": "0x20",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[4]",
+    "name": "quat",
+    "evidence": "chunk 031 comments: identity quaternion has quat[3]=1; chunk 026 QuatTransform_ToMat3 0x080ab4a0 (x,y,z,w)"
+   },
+   {
+    "offset": "0x10",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "translation"
+   },
+   {
+    "offset": "0x1c",
+    "type": "float",
+    "name": "quatScale",
+    "evidence": "2/|q|^2 (chunk 031), factor in QuatTransform_ToMat3 (chunk 026)"
+   }
+  ],
+  "defined_in": [
+   "chunk_026_types.h (QuatTransform_s)",
+   "chunk_031_types.h (DObjBone)",
+   "chunk_033_types.h (XAnimPoseBone)"
+  ],
+  "conflicts": "chunk_033 names the float at 0x1c 'timer' (accumulated time) where chunks 026/031 name it quatScale. Either the same slot is reused with different meaning, or chunk 033 is mislabeled; not resolved.",
+  "confidence": "medium-high for 0x00-0x1b, low for 0x1c"
+ },
+ {
+  "name": "cod2_box_s / cm_aabb_s",
+  "size": "0x24 / 0x18",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "mins",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "maxs",
+    "evidence": ""
+   },
+   {
+    "offset": "0x18",
+    "type": "float[3]",
+    "name": "inv",
+    "evidence": "reciprocal extents, present only in chunk 005 cod2_box_s (Box_ComputeInverseExtents 0x0805d86c)"
+   }
+  ],
+  "defined_in": [
+   "chunk_005_types.h (cod2_box_s 0x24)",
+   "chunk_004_types.h (cm_aabb_s 0x18)"
+  ],
+  "conflicts": "Prefix-compatible: cm_aabb_s is the first 0x18 bytes of cod2_box_s.",
+  "confidence": "high"
+ },
+ {
+  "name": "Plane4",
+  "size": "0x10",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "normal",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "float",
+    "name": "dist",
+    "evidence": "Orient_PlaneLocalToWorld 0x080b8e7a"
+   }
+  ],
+  "defined_in": [
+   "chunk_031_types.h"
+  ],
+  "conflicts": "Not the same as cplane_t (0x14, with type/signbits).",
+  "confidence": "medium (single chunk)"
+ },
+ {
+  "name": "usercmd_t",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "serverTime",
+    "evidence": "chunk 020/022"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "buttons",
+    "evidence": "SV_BotRandomUserCmd ORs 0x1 and 0x28 here (0x080967ff, 0x08096819)"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint8",
+    "name": "weapon",
+    "evidence": "bot cmd stores byte from game-client +0xd4"
+   },
+   {
+    "offset": "0x09",
+    "type": "uint8",
+    "name": "unk09",
+    "evidence": "chunk 020 b09 'patched from playerstate'; chunk 022 pad"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int[3]",
+    "name": "angles",
+    "evidence": "bot cmd writes (int)(360*Rand_Signed()) per component (chunk 022)"
+   },
+   {
+    "offset": "0x18",
+    "type": "int8",
+    "name": "forwardmove",
+    "evidence": "bytes 0x7f / 0x81 stored at [cmd+0x18] (disasm 0x08096830/0x0809684a)"
+   },
+   {
+    "offset": "0x19",
+    "type": "int8",
+    "name": "rightmove",
+    "evidence": "0x7f/0x81 at [cmd+0x19] (disasm 0x08096862/0x0809687c)"
+   },
+   {
+    "offset": "0x1a",
+    "type": "uint8[2]",
+    "name": "pad",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_020_types.h",
+   "chunk_022_types.h"
+  ],
+  "conflicts": "chunk_020 types 0x0c..0x1b as w0c[4] and names byte 0x09; chunk_022 splits them into angles[3], forwardmove, rightmove with 0x09 as padding. Offsets 0x18/0x19 for the move bytes are observed in the bot generator; the meaning of 0x09 and of 0x1a/0x1b is unresolved.",
+  "confidence": "medium-high"
+ },
+ {
+  "name": "cod2_curve_point_s",
+  "size": "0x8",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float",
+    "name": "x",
+    "evidence": "Curve_EvalPiecewise 0x080a3dea"
+   },
+   {
+    "offset": "0x04",
+    "type": "float",
+    "name": "y",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_025_types.h"
+  ],
+  "conflicts": "",
+  "confidence": "medium (single chunk)"
+ }
+]

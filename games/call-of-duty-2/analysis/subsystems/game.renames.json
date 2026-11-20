@@ -1,0 +1,224 @@
+{
+ "renames": [
+  {
+   "addr": "0x081084a4",
+   "old": "Dvar_RegisterServerDvars",
+   "new": "G_RegisterDvars",
+   "confidence": "inferred",
+   "evidence": "Registers sv_cheats, g_gametype, sv_maxclients, g_log, g_password, g_banIPs, g_synchronousClients etc. (chunk_048 lines 1491+); only caller is G_InitGame (chunk_049 line 121). Matches id Tech 3 G_RegisterCvars, not a generic server dvar init."
+  },
+  {
+   "addr": "0x081097e6",
+   "old": "G_BuildEntityOrder",
+   "new": "G_CalculateRanks",
+   "confidence": "inferred",
+   "evidence": "Builds sorted client index list at 0x0864c59c from clients with state !=0, counts state-2 non-spectators (sessionTeam!=3), qsorts with the comparator, sets dirty flag 0x0864c590 consumed by G_FlushPendingTurretUpdates; Q3 CalculateRanks shape. It sorts clients, not entities."
+  },
+  {
+   "addr": "0x0810968e",
+   "old": "G_CompareEntityOrder",
+   "new": "G_SortRanks",
+   "confidence": "inferred",
+   "evidence": "qsort comparator over client indices: state 1 sorts last, spectators (sessionTeam 3) last, then by score; Q3 SortRanks."
+  },
+  {
+   "addr": "0x0811d634",
+   "old": "G_SoundIndex",
+   "new": "G_ShellShockIndex",
+   "confidence": "inferred",
+   "evidence": "objdump 0x0811d634: calls G_FindConfigstringIndex(name,0x48e,max 0x10,create=1,0). Sole caller 0x08114910 is the handler of builtin 'precacheshellshock' (0x081883bc table entry, chunk_105 lines 1435-1441). 16 slots matches max shellshocks."
+  },
+  {
+   "addr": "0x081182f4",
+   "old": "G_CallLevelScriptA",
+   "new": "G_CallGametypeMain",
+   "confidence": "observed",
+   "evidence": "chunk_050 lines 752-755: GScr_GetFunctionOffset(path,\"main\") stored at 0x0884d708; objdump 0x081182f4 loads ds:0x884d708 and calls the script-call helper with 0 args."
+  },
+  {
+   "addr": "0x08118322",
+   "old": "G_CallLevelScriptB",
+   "new": "G_CallStartGameType",
+   "confidence": "observed",
+   "evidence": "0x0884d70c is set from GScr_GetFunctionOffset(\"maps/mp/gametypes/_callbacksetup\",\"CodeCallback_StartGameType\") (chunk_050 line 753); objdump 0x08118330 loads ds:0x884d70c."
+  },
+  {
+   "addr": "0x08118350",
+   "old": "G_CallEntityScriptA",
+   "new": "G_CallPlayerConnect",
+   "confidence": "observed",
+   "evidence": "0x0884d710 = CodeCallback_PlayerConnect (chunk_050 line 754); objdump 0x08118363 passes ds:0x884d710 with ent to the entity-call helper."
+  },
+  {
+   "addr": "0x08118384",
+   "old": "G_CallEntityScriptB",
+   "new": "G_CallPlayerDisconnect",
+   "confidence": "observed",
+   "evidence": "0x0884d714 = CodeCallback_PlayerDisconnect (chunk_050 line 755); objdump 0x08118397 loads ds:0x884d714."
+  },
+  {
+   "addr": "0x08090afa",
+   "old": "SV_ForwardCallToGame",
+   "new": "G_GetFXAttenuation",
+   "confidence": "inferred",
+   "evidence": "objdump 0x08090afa is a 26-byte thunk forwarding two pointer args to 0x08133c18 = FX_GetAttenuation (symbols; returns 1.0 when no blockers). Callers 0x08113bde and 0x08121fcd are in the game range. Old name was misleading."
+  },
+  {
+   "addr": "0x08108e1a",
+   "old": "Client_GetUnk26b8",
+   "new": "G_GetClientScore",
+   "confidence": "inferred",
+   "evidence": "Reads client record (stride 0x28a4) +0x26b8; G_ExitLevel (0x08109920) zeroes the same offset when state(+0x26c4)==2; chunk_021 status lines print it as score before ping and name."
+  },
+  {
+   "addr": "0x08108e36",
+   "old": "Client_GetUnk26b4",
+   "new": "G_GetClientArchiveTime",
+   "confidence": "inferred",
+   "evidence": "Reads client +0x26b4; chunk_023 passes it as the age key to SV_FindCachedSnapshotByAge and writes it back via the setter; chunk_046 names +0x26b4 archiveTime. Lower confidence: chunk_022 bot code also tests it ==0."
+  },
+  {
+   "addr": "0x08108e52",
+   "old": "Client_SetUnk26b4",
+   "new": "G_SetClientArchiveTime",
+   "confidence": "inferred",
+   "evidence": "Writes client +0x26b4 (objdump 0x08108e69); counterpart of G_GetClientArchiveTime."
+  },
+  {
+   "addr": "0x08107dbc",
+   "old": "Ent_UpdateProjectile",
+   "new": "G_RunCorpse",
+   "confidence": "inferred",
+   "evidence": "Called from G_RunFrame (chunk_049 line 512) only for eType==2; PlayerCmd_cloneplayer (chunk_103) creates entities with eType=2 plus a tracked slot copying clientInfo 0x4b8 and the XAnim tree. Real missiles use eType 4 / G_RunMissile. Body = slot update, DObj refresh, G_RunThink."
+  },
+  {
+   "addr": "0x08107846",
+   "old": "Ent_UpdateMissileSlot",
+   "new": "G_UpdateCorpseSlot",
+   "confidence": "inferred",
+   "evidence": "Sole callee of G_RunCorpse (eType 2 corpse entities); steps the tracked-slot entity through traces."
+  },
+  {
+   "addr": "0x0810758e",
+   "old": "Ent_ApplyTraceResult",
+   "new": "G_CorpseApplyTrace",
+   "confidence": "inferred",
+   "evidence": "Applies a trace result to a moving entity; part of the corpse slot update chain (eType 2)."
+  },
+  {
+   "addr": "0x0810773a",
+   "old": "Ent_UpdateAnglesFromTrace",
+   "new": "G_CorpseAlignToTrace",
+   "confidence": "inferred",
+   "evidence": "Derives new angles from trace end point and forward axis in the corpse slot update chain (eType 2)."
+  },
+  {
+   "addr": "0x080920d0",
+   "old": "ScrEntity_CallVoidArgA",
+   "new": "SV_DObjBindingSetTime",
+   "confidence": "inferred",
+   "evidence": "Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls XAnim_BindingSetTime (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c."
+  },
+  {
+   "addr": "0x08092102",
+   "old": "ScrEntity_CallVoidArgsAB",
+   "new": "SV_DObjGetHierarchyBits",
+   "confidence": "inferred",
+   "evidence": "Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls DObj_GetHierarchyBits (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c."
+  },
+  {
+   "addr": "0x08092134",
+   "old": "ScrEntity_CallVoidArgB",
+   "new": "SV_DObjBindingRebuild",
+   "confidence": "inferred",
+   "evidence": "Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls XAnim_BindingRebuild (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c."
+  },
+  {
+   "addr": "0x0809215e",
+   "old": "ScrEntity_CallVoidArgC",
+   "new": "SV_DObjCalcSkel",
+   "confidence": "inferred",
+   "evidence": "Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls DObj_CalcSkel (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c."
+  },
+  {
+   "addr": "0x08092188",
+   "old": "ScrEntity_CallVoid",
+   "new": "SV_DObjGetNumBones",
+   "confidence": "inferred",
+   "evidence": "Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls DObj_GetNumBones (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c."
+  },
+  {
+   "addr": "0x080921ac",
+   "old": "ScrEntity_QueryArg",
+   "new": "SV_DObjGetBoneIndexByName",
+   "confidence": "inferred",
+   "evidence": "Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls DObj_GetBoneIndexByName (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c."
+  },
+  {
+   "addr": "0x08092210",
+   "old": "ScrEntity_CallVoidC",
+   "new": "SV_DObjDumpAnimTree",
+   "confidence": "inferred",
+   "evidence": "Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls XAnim_DumpTree (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c."
+  },
+  {
+   "addr": "0x080922c4",
+   "old": "ScrEntity_Query",
+   "new": "SV_DObjGetTree",
+   "confidence": "inferred",
+   "evidence": "Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls DObj_GetTree (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c."
+  },
+  {
+   "addr": "0x0809236e",
+   "old": "ScrEntity_Exists",
+   "new": "SV_DObjExists",
+   "confidence": "inferred",
+   "evidence": "Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls Com_GetServerDObj (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c."
+  },
+  {
+   "addr": "0x0809208a",
+   "old": "ScrEntity_CallRet2",
+   "new": "SV_DObjBindingSetWeight",
+   "confidence": "inferred",
+   "evidence": "Server DObj handle wrapper: looks up the server DObj for the ref (Com_GetServerDObj 0x08062bc4) then calls XAnim_BindingSetWeight (callee name from symbols.json, itself inferred); not a script-entity function. Matches existing SV_DObjGetRotTransArray at 0x0809223c."
+  }
+ ],
+ "rejected": [
+  {
+   "addr": "0x080921ec",
+   "old": "ScrEntity_CallVoidB",
+   "suggested": "",
+   "reason": "ScrEntity_CallVoidB wraps DObj_GetRotTransArray but returns void unlike SV_DObjGetRotTransArray (0x0809223c); purpose unclear, keep."
+  },
+  {
+   "addr": "0x08107812",
+   "old": "Ext_ReadSlotHandle",
+   "suggested": "",
+   "reason": "Ext_ReadSlotHandle: only evidence is a call to fn_080c1504 writing a handle to out; no corroborating strings or callee names."
+  },
+  {
+   "addr": "0x08107de6",
+   "old": "Ent_StepMovement",
+   "suggested": "G_RunItem",
+   "reason": "Ent_StepMovement is reached for eType 3 without driver and for any occupied entity (chunk_049 lines 503-525); Q3 G_RunItem match only partial."
+  },
+  {
+   "addr": "0x08092002",
+   "old": "ScrEntity_CachedSkelOp",
+   "suggested": "",
+   "reason": "ScrEntity_CachedSkelOp: skel allocator evidence only; semantics not pinned down."
+  },
+  {
+   "addr": "0x080f9f4e",
+   "old": "G_ClientIsPlaying",
+   "suggested": "",
+   "reason": "G_ClientIsPlaying and G_IsSessionPlaying (0x080ff614) are duplicate sessionState==0 checks; names acceptable, nothing better."
+  },
+  {
+   "addr": "0x08108e72",
+   "old": "Client_GetUnk2748Addr",
+   "suggested": "",
+   "reason": "Client_GetUnk2748Addr: only the +0x2748 sub-record address is known; semantics not established."
+  }
+ ]
+}

@@ -1,0 +1,620 @@
+{
+ "functions": [
+  {
+   "addr": "0x0805528e",
+   "old": "Vec3_SetBits",
+   "new": "Vec3_Set_0805528e",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body stores three scalar arguments into dst[0..2]; same byte family as Vec3_Set_080b5810/080bc0e0. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_set, Vec3_Set_080b5810, Vec3_Set_b_080b934c; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080575a0",
+   "old": "cm_sqrt",
+   "new": "Float_Sqrt_080575a0",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body (float)sqrt((double)x) through libm; same shape as Float_Sqrt_080aaebe. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080575c0",
+   "old": "cm_max_float",
+   "new": "Float_Max_080575c0",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body tail-jumps to the sign select with (a-b,a,b), i.e. Float_Max. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080575e4",
+   "old": "cm_vec2_sub",
+   "new": "Vec2_Subtract_080575e4",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body 2-component subtract; same byte family as Vec2Subtract_080f9ada. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec2_Subtract, VectorSubtract2D, Vec2Subtract_080f9ada; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08057610",
+   "old": "cm_vec2_dot",
+   "new": "Vec2_Dot_08057610",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body a0*b0+a1*b1; same byte family as Vec2_Dot_080ab03c. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec2_Dot_080ab03c, Vec2_Dot_080bc094, DotProduct2D; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08057632",
+   "old": "cm_vec2_length_sq",
+   "new": "Vec2_LengthSq_08057632",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body x*x+y*y of one 2-vector. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08057654",
+   "old": "cm_vec3_set",
+   "new": "Vec3_Set_08057654",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body stores three scalar arguments into dst[0..2]; same byte family as Vec3_Set_080b5810/080bc0e0. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec3_SetBits, Vec3_Set_080b5810, Vec3_Set_b_080b934c; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08057678",
+   "old": "cm_vec3_scale",
+   "new": "Vec3_Scale_08057678",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_scale_copy, cm_vec3_scale_local, Vec3_Scale_080ab190; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080576b0",
+   "old": "cm_select_by_sign",
+   "new": "Float_SelectNonNegative_080576b0",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body returns a when x>=0 else b (fucompp/sahf); same family as Float_SelectNonNegative_080982de. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Float_SelectNonNegative_0805d552, Float_Select_0805fafc, Float_SelectNonNegative_080982de; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08057fd0",
+   "old": "cm_vec3_copy",
+   "new": "Vec3_CopyBits_08057fd0",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08058000",
+   "old": "cm_vec3_add",
+   "new": "Vec3_Add_08058000",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a+b per component; same byte family as Vec3_Add_080ab108. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_add_b, Vec3_Add_0809e502, Vec3_Add_080ab108; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08058044",
+   "old": "cm_vec3_sub",
+   "new": "Vec3_Sub_08058044",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub_b, cm_vec3_sub_c, Vec3_Subtract_0809e546; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08058088",
+   "old": "cm_vec3_scale_copy",
+   "new": "Vec3_Scale_08058088",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_scale, cm_vec3_scale_local, Vec3_Scale_080ab190; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080580c0",
+   "old": "cm_vec3_madd",
+   "new": "Vec3_MA_080580c0",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a + s*dir per component (VectorMA); same byte family as Vec3_MA_080bc1f4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec3_MA_b, Vec3_MA_080bc1f4, Vec3_MA_080c5efc; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08058114",
+   "old": "cm_vec3_dot",
+   "new": "Vec3_Dot_08058114",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body ((a0*b0+a1*b1)+a2*b2) in st(0); same byte family as Vec3_Dot_080ab260. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_dot_b, Vec3_Dot_080ab260, Vec3_Dot_080b93c4; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08058366",
+   "old": "cm_vec3_copy_d",
+   "new": "Vec3_CopyBits_08058366",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08058396",
+   "old": "cm_vec3_sub_b",
+   "new": "Vec3_Sub_08058396",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub, cm_vec3_sub_c, Vec3_Subtract_0809e546; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08058ae4",
+   "old": "cm_vec3_copy_b",
+   "new": "Vec3_CopyBits_08058ae4",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08058b14",
+   "old": "cm_vec3_add_b",
+   "new": "Vec3_Add_08058b14",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a+b per component; same byte family as Vec3_Add_080ab108. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_add, Vec3_Add_0809e502, Vec3_Add_080ab108; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08058b58",
+   "old": "cm_vec3_scale_local",
+   "new": "Vec3_Scale_08058b58",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_scale, cm_vec3_scale_copy, Vec3_Scale_080ab190; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080591c8",
+   "old": "cm_vec3_copy_c",
+   "new": "Vec3_CopyBits_080591c8",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080591f8",
+   "old": "cm_vec3_sub_c",
+   "new": "Vec3_Sub_080591f8",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub, cm_vec3_sub_b, Vec3_Subtract_0809e546; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x0805923c",
+   "old": "cm_vec3_dot_b",
+   "new": "Vec3_Dot_0805923c",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body ((a0*b0+a1*b1)+a2*b2) in st(0); same byte family as Vec3_Dot_080ab260. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_dot, Vec3_Dot_080ab260, Vec3_Dot_080b93c4; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x0808577a",
+   "old": "Vec3_CopyBits",
+   "new": "Vec3_CopyBits_0808577a",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080943ea",
+   "old": "Vec3_CopyBits2",
+   "new": "Vec3_CopyBits_080943ea",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080a3748",
+   "old": "Int_Identity",
+   "new": "Int_Identity_080a3748",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body returns its int argument unchanged, 8-byte body identical to Identity_080527da. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Identity_080527da, LittleLong_0805536c, Passthrough_Int; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080bc27c",
+   "old": "Vec3_LengthSq",
+   "new": "Vec3_LengthSq_080bc27c",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body x*x+y*y+z*z; same byte family as Vec3_LengthSq_080c790a. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec3_LengthSq_080c790a, Vec3_LengthSq_080dc516, VectorLengthSquared_080e99b4; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080bc2de",
+   "old": "Float_SelectBySign",
+   "new": "Float_SelectNonNegative_080bc2de",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body returns a when x>=0 else b (fucompp/sahf); same family as Float_SelectNonNegative_080982de. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_select_by_sign, Float_SelectNonNegative_0805d552, Float_Select_0805fafc; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080c522a",
+   "old": "Float_SqrtA",
+   "new": "Float_Sqrt_080c522a",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body (float)sqrt((double)x) through libm; same shape as Float_Sqrt_080aaebe. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080c524a",
+   "old": "Vec3_CopyA",
+   "new": "Vec3_CopyBits_080c524a",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080c5eb8",
+   "old": "Vec3_SubtractA",
+   "new": "Vec3_Sub_080c5eb8",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub, cm_vec3_sub_b, cm_vec3_sub_c; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080c5f84",
+   "old": "Float_SelectGE0",
+   "new": "Float_SelectNonNegative_080c5f84",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body returns a when x>=0 else b (fucompp/sahf); same family as Float_SelectNonNegative_080982de. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_select_by_sign, Float_SelectNonNegative_0805d552, Float_Select_0805fafc; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080c5fae",
+   "old": "Vec3_ScaleA",
+   "new": "Vec3_Scale_080c5fae",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_scale, cm_vec3_scale_copy, cm_vec3_scale_local; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080c77cc",
+   "old": "Float_SqrtB",
+   "new": "Float_Sqrt_080c77cc",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body (float)sqrt((double)x) through libm; same shape as Float_Sqrt_080aaebe. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080c783a",
+   "old": "Vec3_CopyC",
+   "new": "Vec3_CopyBits_080c783a",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080c786a",
+   "old": "Vec3_SubtractB",
+   "new": "Vec3_Sub_080c786a",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub, cm_vec3_sub_b, cm_vec3_sub_c; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080c7984",
+   "old": "Vec3_ScaleB",
+   "new": "Vec3_Scale_080c7984",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_scale, cm_vec3_scale_copy, cm_vec3_scale_local; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080dc354",
+   "old": "Math_AbsF",
+   "new": "Float_Abs_080dc354",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body fabs stored to float; same shape as Float_Abs_080aaea4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Float_Abs_080551fc, Float_Abs_0805618c, Float_Abs_0805d57c; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080dc4c2",
+   "old": "Vec3_MulAdd",
+   "new": "Vec3_MA_080dc4c2",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a + s*dir per component (VectorMA); same byte family as Vec3_MA_080bc1f4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_madd, Vec3_MA_b, Vec3_MA_080bc1f4; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080dce30",
+   "old": "Math_SqrtF_B",
+   "new": "Float_Sqrt_080dce30",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body (float)sqrt((double)x) through libm; same shape as Float_Sqrt_080aaebe. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080dce76",
+   "old": "Vec3_SetRaw",
+   "new": "Vec3_Set_080dce76",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body stores three scalar arguments into dst[0..2]; same byte family as Vec3_Set_080b5810/080bc0e0. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec3_SetBits, cm_vec3_set, Vec3_Set_080b5810; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080dce9a",
+   "old": "Vec3_CopyRaw",
+   "new": "Vec3_CopyBits_080dce9a",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080dcf02",
+   "old": "Vec3_MulAddRaw",
+   "new": "Vec3_MA_080dcf02",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a + s*dir per component (VectorMA); same byte family as Vec3_MA_080bc1f4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_madd, Vec3_MA_b, Vec3_MA_080bc1f4; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080de63a",
+   "old": "Math_AbsF_B",
+   "new": "Float_Abs_080de63a",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body fabs stored to float; same shape as Float_Abs_080aaea4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Float_Abs_080551fc, Float_Abs_0805618c, Float_Abs_0805d57c; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080de654",
+   "old": "Vec3_SetAlt",
+   "new": "Vec3_Set_080de654",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body stores three scalar arguments into dst[0..2]; same byte family as Vec3_Set_080b5810/080bc0e0. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec3_SetBits, cm_vec3_set, Vec3_Set_080b5810; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080de678",
+   "old": "Vec3_CopyAlt",
+   "new": "Vec3_CopyBits_080de678",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080de72a",
+   "old": "Vec3_SubAlt",
+   "new": "Vec3_Sub_080de72a",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub, cm_vec3_sub_b, cm_vec3_sub_c; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080de7a6",
+   "old": "Vec3_MulAddAlt",
+   "new": "Vec3_MA_080de7a6",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a + s*dir per component (VectorMA); same byte family as Vec3_MA_080bc1f4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_madd, Vec3_MA_b, Vec3_MA_080bc1f4; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080f29c0",
+   "old": "Vec3_Zero",
+   "new": "Vec3_Clear_080f29c0",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body n/a. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080f3ef2",
+   "old": "Vec3_CopyB",
+   "new": "Vec3_CopyBits_080f3ef2",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x0811d28a",
+   "old": "Vec3_CopyWords",
+   "new": "Vec3_CopyBits_0811d28a",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x0811f58c",
+   "old": "Vec3_CopyWordsAlt",
+   "new": "Vec3_CopyBits_0811f58c",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x0811f5bc",
+   "old": "Vec3_AddAlt",
+   "new": "Vec3_Add_0811f5bc",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = a+b per component; same byte family as Vec3_Add_080ab108. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_add, cm_vec3_add_b, Vec3_Add_0809e502; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x08122402",
+   "old": "Vec3_ScaleAlt",
+   "new": "Vec3_Scale_08122402",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x0812248e",
+   "old": "Vec3_DotAlt",
+   "new": "Vec3_Dot_0812248e",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body ((a0*b0+a1*b1)+a2*b2) in st(0); same byte family as Vec3_Dot_080ab260. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x081240d0",
+   "old": "Passthrough_Int",
+   "new": "Int_Identity_081240d0",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body returns its int argument unchanged, 8-byte body identical to Identity_080527da. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Identity_080527da, LittleLong_0805536c, Int_Identity; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x081371a4",
+   "old": "Math_FabsF",
+   "new": "Float_Abs_081371a4",
+   "confidence": "descriptive",
+   "evidence": "Reconstructed body fabs stored to float; same shape as Float_Abs_080aaea4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Float_Abs_080551fc, Float_Abs_0805618c, Float_Abs_0805d57c; observed disassembly, no string evidence."
+  },
+  {
+   "addr": "0x080593e2",
+   "old": "cm_mat3_transform_inplace",
+   "new": "Mat3_TransformVecInPlace_080593e2",
+   "confidence": "descriptive",
+   "evidence": "Body copies v to tmp then v[i]=Vec3_Dot(row i of m, tmp) with rows at m, m+3, m+6 (chunk_004 reconstruction, 107-byte body): in-place 3x3 matrix times vector. Observed in disassembly and reconstructed source; no string evidence."
+  },
+  {
+   "addr": "0x0805944e",
+   "old": "cm_mat3_transpose",
+   "new": "Mat3_TransposeBits_0805944e",
+   "confidence": "descriptive",
+   "evidence": "Nested 3x3 loop copying words out[c*3+r]=in[r*3+c] with integer moves (chunk_004); suffixed because Mat3_Transpose_080a9394 exists. Observed in disassembly and reconstructed source; no string evidence."
+  },
+  {
+   "addr": "0x080594ba",
+   "old": "cm_angle_vectors_flip_right",
+   "new": "Angles_ToVectorsNegRight_080594ba",
+   "confidence": "descriptive",
+   "evidence": "Calls Angles_ToVectors(angles, axes, axes+3, axes+6) then negates the second row (right vector) via Vec3_Negate; collision-module local wrapper. Observed in disassembly and reconstructed source; no string evidence."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0814cfc8",
+   "old": "g_0814cfc8",
+   "new": "vec3_origin",
+   "type_hint": "float[3]",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 vec3_origin counterpart: read-only all-zero 3-float vector in .rodata (symbols.json evidence: rodata bytes verified zero); read by AnglesToAxis, Normal_IndexToDir (out-of-range returns zero vector), Rigid_Invert."
+  },
+  {
+   "addr": "0x0814d100",
+   "old": "g_0814d100",
+   "new": "identityMatrix4",
+   "type_hint": "float[16]",
+   "confidence": "observed",
+   "evidence": "Read-only 4x4 identity (rodata bytes verified); sole subsystem reader is Mat4_CopyIdentity 0x080a57c2."
+  },
+  {
+   "addr": "0x0817dba0",
+   "old": "g_0817dba0",
+   "new": "bytedirs",
+   "type_hint": "float[162][3]",
+   "confidence": "inferred",
+   "evidence": "Quake/id Tech 3 bytedirs counterpart: 162 unit normals (verified unit length); used by Normal_DirToIndex and Normal_IndexToDir. Subsystem md calls it bytedirs."
+  },
+  {
+   "addr": "0x0817e338",
+   "old": "g_0817e338",
+   "new": "g_randSeed",
+   "type_hint": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "LCG seed (0x343fd/0x269ec3 multiplier/increment) updated by Rand_Float/Rand_Int and set by Rand_SetSeed 0x080aaa76; initial value 0x89abcdef per subsystem md."
+  },
+  {
+   "addr": "0x085a9844",
+   "old": "g_085a9844",
+   "new": "g_soundAliasRandSeed",
+   "type_hint": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "Second LCG seed read/written only by Com_GetRandSeed, Com_SetRandSeed and Com_Rand 0x080ad574, the RNG used by Com_PickSoundAlias."
+  },
+  {
+   "addr": "0x0817e3a0",
+   "old": "g_0817e3a0",
+   "new": "g_soundChannelNames",
+   "type_hint": "const char *[12]",
+   "confidence": "inferred",
+   "evidence": "Channel name table (auto, auto2d, menu, weapon, voice, item, body, local, music, announcer, shellshock, plus off at index 11) indexed by Com_ParseAliasChannel 0x080ad820; subsystem md section 2.3."
+  },
+  {
+   "addr": "0x08188c80",
+   "old": "g_08188c80",
+   "new": "pc_numtokens",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Incremented in PC_CopyToken, decremented in PC_FreeToken: id botlib l_precomp.c numtokens counterpart."
+  },
+  {
+   "addr": "0x08188c84",
+   "old": "g_08188c84",
+   "new": "pc_globaldefines",
+   "type_hint": "struct define_s *",
+   "confidence": "inferred",
+   "evidence": "Head of global define list iterated by PC_AddGlobalDefinesToSource via next at +0x18; id l_precomp.c globaldefines counterpart."
+  },
+  {
+   "addr": "0x085a9840",
+   "old": "g_085a9840",
+   "new": "g_soundAliasBankLoaded",
+   "type_hint": "unsigned char[4]",
+   "confidence": "inferred",
+   "evidence": "Per-bank flag set to 1 at end of Com_LoadSoundAliases (bank index) and cleared by Com_UnloadSoundAliases."
+  },
+  {
+   "addr": "0x085a9848",
+   "old": "g_085a9848",
+   "new": "g_soundAliasHash",
+   "type_hint": "struct snd_alias_list_t *[1024]",
+   "confidence": "inferred",
+   "evidence": "1024-entry chain table indexed by SND_HashAliasName (h=c+h*0x7a69 & 0x3ff); used by SND_FindAliasList, SND_InsertAliasList."
+  },
+  {
+   "addr": "0x085aa848",
+   "old": "g_085aa848",
+   "new": "g_soundAliasBanks",
+   "type_hint": "struct snd_alias_bank_t[3]",
+   "confidence": "inferred",
+   "evidence": "Bank descriptors read/written by Com_LoadSoundAliases and Com_UnloadSoundAliases (bank 2 = map bank per SV_SpawnServer call)."
+  },
+  {
+   "addr": "0x085aa878",
+   "old": "g_085aa878",
+   "new": "g_soundAliasBankAux",
+   "type_hint": "struct snd_alias_bank_aux_t[3]",
+   "confidence": "inferred",
+   "evidence": "Auxiliary per-bank data touched only by Com_LoadSoundAliases."
+  },
+  {
+   "addr": "0x085aa8d0",
+   "old": "g_085aa8d0",
+   "new": "g_soundCurvesInitialised",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Init-once flag tested/set in SND_InitAliasCurves 0x080acf52."
+  },
+  {
+   "addr": "0x085aa8d4",
+   "old": "g_085aa8d4",
+   "new": "g_soundFalloffCurves",
+   "type_hint": "struct snd_curve_t[16]",
+   "confidence": "inferred",
+   "evidence": "Falloff curve slots (slot 0 default) filled by SND_InitAliasCurves, read by Com_GetDefaultFalloffCurve 0x080ad4aa."
+  },
+  {
+   "addr": "0x085aad94",
+   "old": "g_085aad94",
+   "new": "g_soundFalloffCurveNames",
+   "type_hint": "char[15][0x40]",
+   "confidence": "inferred",
+   "evidence": "Curve names (.vfcurve loader, max 15 curves) written by SND_InitAliasCurves."
+  },
+  {
+   "addr": "0x085ab160",
+   "old": "g_085ab160",
+   "new": "g_soundAliasBuildHead",
+   "type_hint": "struct snd_alias_build_t *",
+   "confidence": "inferred",
+   "evidence": "Build-list head: Com_AddBuildSoundAlias adds, Com_ClearBuildSoundAliases clears, Com_MakeSoundAliasesPermanent consumes."
+  },
+  {
+   "addr": "0x085ab164",
+   "old": "g_085ab164",
+   "new": "g_soundAliasBuildCount",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Build-list entry count paired with g_085ab160 in the same three functions."
+  },
+  {
+   "addr": "0x085ab168",
+   "old": "g_085ab168",
+   "new": "g_volumeModGroups",
+   "type_hint": "struct snd_volmod_group_t[32]",
+   "confidence": "inferred",
+   "evidence": "Volume mod groups (name + float, max 32) loaded from volumemodgroups.def in Com_LoadSoundAliasFile, looked up by Com_GetVolumeModGroup."
+  },
+  {
+   "addr": "0x0860b3ec",
+   "old": "g_0860b3ec",
+   "new": "snd_errorOnMissing",
+   "type_hint": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Written by Snd_RegisterErrorOnMissing 0x080d6c7c, which registers dvar \"snd_errorOnMissing\" (bool, flags 0x1001); name follows existing dvar-pointer convention (e.g. com_dedicated)."
+  }
+ ],
+ "left_unknown": [
+  {
+   "addr": "0x085e4ff8",
+   "name": "g_085e4ff8",
+   "why": "Written only by Global_Set_085e4ff8 0x080c5330; no reader found, so no role can be established."
+  },
+  {
+   "addr": "0x080c5330",
+   "name": "Global_Set_085e4ff8",
+   "why": "Setter of an unread global; name already descriptive, nothing further supported."
+  },
+  {
+   "addr": "0x085b7654",
+   "name": "g_085b7654",
+   "why": "Byte read by the getter and set to 1/0 in dvar code (chunk 029, sv_cheats ready); belongs to the dvar subsystem, not this one."
+  },
+  {
+   "addr": "0x085b7655",
+   "name": "g_085b7655",
+   "why": "Gate byte tested in dvar user-set path (chunk 029); dvar subsystem, naming deferred."
+  },
+  {
+   "addr": "0x080bdd54",
+   "name": "XAnim_ReflectPair",
+   "why": "2D reflection-style update from a normalised direction; no strings or named callers, so xanim-specific meaning is unproven."
+  },
+  {
+   "addr": "0x080a7ad8",
+   "name": "Quat_PlanarAngleDeg",
+   "why": "Purpose inferred from arithmetic only; no caller names or strings."
+  },
+  {
+   "addr": "0x080a7a9a",
+   "name": "Quat_RelativeVectorNormSq",
+   "why": "Arithmetic-only role; no corroborating evidence."
+  },
+  {
+   "addr": "0x080a7a6a",
+   "name": "Sin_DegreesSquared",
+   "why": "Arithmetic-only role; no corroborating evidence."
+  }
+ ]
+}

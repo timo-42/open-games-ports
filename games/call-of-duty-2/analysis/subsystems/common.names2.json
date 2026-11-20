@@ -1,0 +1,803 @@
+{
+ "functions": [
+  {
+   "addr": "0x08051e4c",
+   "old": "BspFile_IsLoaded",
+   "new": "Com_IsBspLoaded",
+   "confidence": "inferred",
+   "evidence": "Returns whether the BSP image pointer (0x08188da8) is non-NULL; IW/CoD4 lineage Com_IsBspLoaded. Callers BspFile_FreeIfLoaded."
+  },
+  {
+   "addr": "0x08051e5e",
+   "old": "BspFile_Get",
+   "new": "Com_GetBspHeader",
+   "confidence": "inferred",
+   "evidence": "Returns BSP image pointer and optional length/checksum out-params; counterpart of IW Com_GetBsp* accessors (CoD4 lineage, name not verified in binary)."
+  },
+  {
+   "addr": "0x08051e88",
+   "old": "BspFile_Load",
+   "new": "Com_LoadBsp",
+   "confidence": "inferred",
+   "evidence": "Reads map via FS_OpenFileRead, errors \"EXE_ERR_COULDNT_LOAD\" / \"EXE_ERR_WRONG_MAP_VERSION_NUM\", checks magic 0x50534249 \"IBSP\" version 4, byte-swaps 39 lump entries; IW Com_LoadBsp counterpart."
+  },
+  {
+   "addr": "0x08052054",
+   "old": "BspFile_Free",
+   "new": "Com_UnloadBsp",
+   "confidence": "inferred",
+   "evidence": "Frees BSP image via Com_Free_A and clears pointer 0x08188da8; paired with Com_LoadBsp."
+  },
+  {
+   "addr": "0x08052074",
+   "old": "BspFile_FreeIfLoaded",
+   "new": "Com_UnloadBspIfLoaded",
+   "confidence": "descriptive",
+   "evidence": "Calls unload only when BspFile_IsLoaded(); called from Com_ErrorRecover."
+  },
+  {
+   "addr": "0x08051e18",
+   "old": "Com_BuildVersionString",
+   "new": "Com_FormatBuildVersion",
+   "confidence": "descriptive",
+   "evidence": "sprintf \"%s %s\" of \"pc_1.3_1_1\" and \"Mon May 01 2006 05:05:43PM\" into g_08a6f440 (observed strings)."
+  },
+  {
+   "addr": "0x08060000",
+   "old": "Cbuf_Execute_Wrapper",
+   "new": "Cbuf_ExecuteThunk",
+   "confidence": "descriptive",
+   "evidence": "Single-instruction-body thunk calling Cbuf_Execute; replaces Wrapper-style name."
+  },
+  {
+   "addr": "0x080609cc",
+   "old": "Cmd_ExecuteString_alt",
+   "new": "Cmd_ExecuteStringThunk",
+   "confidence": "descriptive",
+   "evidence": "Body only calls Cmd_ExecuteString(text); sole caller SVC_RemoteCommand (0x0809745a)."
+  },
+  {
+   "addr": "0x08060eb8",
+   "old": "Com_ServerShutdown_alt",
+   "new": "Com_ServerShutdownThunk",
+   "confidence": "descriptive",
+   "evidence": "Body only calls Com_ServerShutdown(msg); duplicate entry of that function."
+  },
+  {
+   "addr": "0x0806079c",
+   "old": "Cmd_SetCommandAuxPair",
+   "new": "Cmd_SetAutoComplete",
+   "confidence": "inferred",
+   "evidence": "Looks up command by name and stores two words (dir, ext) into the command record at +8/+0xc; CoD4 lineage Cmd_SetAutoComplete(cmdName, dir, ext)."
+  },
+  {
+   "addr": "0x08060ede",
+   "old": "Com_SetGlobal_081a2270",
+   "new": "Com_SetExtraTimeScale",
+   "confidence": "descriptive",
+   "evidence": "Stores float bits into g_081a2270, which Com_ModifyMsec multiplies with com_timescale (fld/fmul at 0x080625d1/0x080625f1) and Com_Init sets to 1.0f."
+  },
+  {
+   "addr": "0x0806b1b8",
+   "old": "Net_SignExtend16",
+   "new": "LittleShort_0806b1b8",
+   "confidence": "inferred",
+   "evidence": "16-bit sign-extension identity used only by MSG_WriteShort (0x080680be) and MSG_ReadShort (0x08068421); id Tech 3 LittleShort on a little-endian host."
+  },
+  {
+   "addr": "0x0806b1cc",
+   "old": "Net_Identity32",
+   "new": "LittleLong_0806b1cc",
+   "confidence": "inferred",
+   "evidence": "32-bit identity used only by MSG_WriteLong (0x0806810d) and MSG_ReadLong (0x0806847e); id Tech 3 LittleLong on little-endian host."
+  },
+  {
+   "addr": "0x0806cf00",
+   "old": "Netchan_SequenceToWire",
+   "new": "LittleLong_0806cf00",
+   "confidence": "inferred",
+   "evidence": "32-bit identity; sole caller Netchan_Process (0x0806c2d2) at the sequence read, matching Q3 LittleLong(*(int*)msg->data)."
+  },
+  {
+   "addr": "0x0809163e",
+   "old": "StrNCaseCmp",
+   "new": "Str_NCaseCmp_0809163e",
+   "confidence": "inferred",
+   "evidence": "Body identical to Str_NCaseCmp (0x080ad4dc): tolower compare, -1/0/1, same n==0 / *a==0 handling; ICF-style duplicate; caller SV_UnbanUserByName."
+  },
+  {
+   "addr": "0x080b72ec",
+   "old": "Com_DigitValueOrSeven",
+   "new": "ColorIndex",
+   "confidence": "inferred",
+   "evidence": "Returns c-0x30 for digits 0-9 else 7; sole caller ClientCleanName (0x080f8b9b); counterpart of Q3 ColorIndex (digit -> colour index) with CoD2 default 7."
+  },
+  {
+   "addr": "0x080b8c60",
+   "old": "Ease_Mirror",
+   "new": "Ease_OutQuadSigned",
+   "confidence": "descriptive",
+   "evidence": "Computes t*(2-|t|) (quadratic ease-out mirrored for negative t); callers BG_PlayerAngles, PlayerView_ComputeSway, WeaponView_ApplyTimedKickB, Rotate_Eased."
+  },
+  {
+   "addr": "0x080b8c7e",
+   "old": "Ease_Invert",
+   "new": "Ease_OutQuadInverse",
+   "confidence": "descriptive",
+   "evidence": "Computes 1-sqrt(1-t), the exact inverse of t*(2-t) on [0,1]; sole caller PM_UpdateLean."
+  },
+  {
+   "addr": "0x080b8c98",
+   "old": "Rotate_Eased",
+   "new": "BG_ApplyLeanRotationOffset",
+   "confidence": "descriptive",
+   "evidence": "Eases t, builds a rotation about the given axis scaled by angleScale and adds the result scaled by blendScale to dst; callers PM_UpdateLean, G_GetPlayerViewOrigin, SV_BuildClientSnapshot. Lean semantics inferred from callers only."
+  },
+  {
+   "addr": "0x080b8d30",
+   "old": "Frame_TransformPoint",
+   "new": "Orient_TransformPoint",
+   "confidence": "descriptive",
+   "evidence": "out = origin(frame[0..2]) + in rotated by 3x3 block frame[3..11]; caller Orient_Concat."
+  },
+  {
+   "addr": "0x08101350",
+   "old": "String_Copy_08101350",
+   "new": "G_InfoFieldStrcpyCallback",
+   "confidence": "descriptive",
+   "evidence": "strcpy wrapper whose address is passed as the string-copy callback in G_ParseHitLocDmgTable (0x0810159b)."
+  },
+  {
+   "addr": "0x08109082",
+   "old": "Pool_ItemCallback",
+   "new": "Hunk_AllocLowCallback",
+   "confidence": "descriptive",
+   "evidence": "Forwards size to Hunk_AllocLow; address stored as allocator callback in G_InitGame (0x087035b8 write) and passed in Pool_AllocGameObjects."
+  },
+  {
+   "addr": "0x081383ee",
+   "old": "Loc_CallA",
+   "new": "LocTable_CreateThunk",
+   "confidence": "descriptive",
+   "evidence": "Tail thunk to LocTable_Create; callers FS_InitFilesystem, FS_Restart."
+  },
+  {
+   "addr": "0x081383fc",
+   "old": "Loc_CallB",
+   "new": "LocTable_DestroyThunk",
+   "confidence": "descriptive",
+   "evidence": "Tail thunk to LocTable_Destroy; caller FS_Shutdown."
+  },
+  {
+   "addr": "0x0813e230",
+   "old": "Crt_CallInit",
+   "new": "libc_csu_init",
+   "confidence": "observed",
+   "evidence": "Address pushed as the init argument (before fini 0x0813e290) to __libc_start_main in _start (0x0804a6d0); body calls .init and ctors: glibc crt csu init."
+  },
+  {
+   "addr": "0x080d3764",
+   "old": "Tty_StubNoopB",
+   "new": "Sys_In_Restart_f",
+   "confidence": "inferred",
+   "evidence": "Empty handler registered with Cmd_AddCommand(\"in_restart\") in Sys_InitCvars (0x080d3adc); Q3 unix_main Sys_In_Restart_f counterpart."
+  },
+  {
+   "addr": "0x080d4b18",
+   "old": "Sys_StoreFPUControlWord",
+   "new": "Sys_ConfigureFPU",
+   "confidence": "inferred",
+   "evidence": "Executes fnstcw into a dead local; sole caller main (0x080d5102); Q3 linux Sys_ConfigureFPU counterpart (inferred, weak)."
+  },
+  {
+   "addr": "0x080b5202",
+   "old": "Dvar_WriteFlaggedPairs",
+   "new": "Dvar_GetCombinedString",
+   "confidence": "inferred",
+   "evidence": "Walks all 256 hash buckets under critical section 4 and writes name\\0value\\0 pairs for dvars matching a flag mask (buf==NULL measures length); IW/CoD4 lineage Dvar_GetCombinedString."
+  },
+  {
+   "addr": "0x080b52ee",
+   "old": "Dvar_ParseInfoPairs",
+   "new": "Dvar_SetFromCombinedString",
+   "confidence": "inferred",
+   "evidence": "Parses name\\0value\\0 pairs over [buf,buf+len): known dvar -> Dvar_SetVariant, unknown -> Dvar_RegisterString flags 0x4000; counterpart of Dvar_GetCombinedString."
+  },
+  {
+   "addr": "0x080b53e4",
+   "old": "Dvar_ResetFlagged",
+   "new": "Dvar_ResetAllWithFlags",
+   "confidence": "descriptive",
+   "evidence": "Walks dvar_vars under critical section 4 and calls Dvar_ResetToDefault for dvars whose flags match the mask."
+  },
+  {
+   "addr": "0x080b5440",
+   "old": "Dvar_WriteConfigLines",
+   "new": "Dvar_FormatNamedAsConfigLines",
+   "confidence": "descriptive",
+   "evidence": "snprintf \"%s \\\"%s\\\"\\n\" for each named dvar into buf; returns 1 on success, 0 on snprintf failure (observed format)."
+  },
+  {
+   "addr": "0x080b54e2",
+   "old": "Dvar_LoadNamedFromFile",
+   "new": "Dvar_LoadNamedSetFromFile",
+   "confidence": "descriptive",
+   "evidence": "Resets named dvars, parses file tokens, applies values with Dvar_SetFromString; prints \"^1ERROR: the following dvars were not specified in file '%s'\" (observed)."
+  },
+  {
+   "addr": "0x080b4e02",
+   "old": "Dvar_SetVec4OrCreate",
+   "new": "Dvar_SetVec4OrRegisterString",
+   "confidence": "descriptive",
+   "evidence": "If dvar missing registers string \"%g %g %g %g\" with flags 0x4000 else Dvar_SetVec4."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188da8",
+   "old": "g_08188da8_bspData",
+   "new": "com_bspData",
+   "type_hint": "int *",
+   "confidence": "inferred",
+   "evidence": "Set by Com_LoadBsp (FS_Read target), freed by unload; header magic IBSP checked on it."
+  },
+  {
+   "addr": "0x08188dac",
+   "old": "g_08188dac_bspLength",
+   "new": "com_bspLength",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "File length from FS_OpenFileRead in Com_LoadBsp; returned via out-param of BspFile_Get."
+  },
+  {
+   "addr": "0x08188db0",
+   "old": "g_08188db0_bspChecksum",
+   "new": "com_bspChecksum",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Com_BlockChecksum of the BSP image in Com_LoadBsp; returned via out-param of BspFile_Get."
+  },
+  {
+   "addr": "0x08a6f440",
+   "old": "g_08a6f440",
+   "new": "com_buildVersionString",
+   "type_hint": "char[]",
+   "confidence": "observed",
+   "evidence": "Buffer filled by sprintf of \"pc_1.3_1_1\" and the build timestamp string and returned."
+  },
+  {
+   "addr": "0x081a21c8",
+   "old": "g_081a21c8",
+   "new": "com_errorMessage_dvar",
+   "type_hint": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Result of Dvar_RegisterString(\"com_errorMessage\",\"\",0x1040) in Com_RegisterErrorDvars."
+  },
+  {
+   "addr": "0x081a21cc",
+   "old": "g_081a21cc",
+   "new": "com_errorTitle_dvar",
+   "type_hint": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Result of Dvar_RegisterString(\"com_errorTitle\",\"\",0x1040) in Com_RegisterErrorDvars."
+  },
+  {
+   "addr": "0x081a2270",
+   "old": "g_081a2270",
+   "new": "com_extraTimeScale",
+   "type_hint": "float",
+   "confidence": "inferred",
+   "evidence": "Reset to 1.0f in Com_Init; multiplied with com_timescale in Com_ModifyMsec; written by Com_SetGlobal_081a2270. Declared int in symbols but used as float."
+  },
+  {
+   "addr": "0x0849fc04",
+   "old": "g_0849fc04",
+   "new": "com_quitOnErrorFlag",
+   "type_hint": "char",
+   "confidence": "inferred",
+   "evidence": "Written by Com_UpdateQuitOnErrorFlag from dvar \"QuitOnError\" or r_vc_compile==2; returned by Com_GetQuitOnErrorFlag."
+  },
+  {
+   "addr": "0x0817e338",
+   "old": "g_0817e338",
+   "new": "rand_seed",
+   "type_hint": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "LCG seed (0x343fd/0x269ec3) in Rand_Float/Rand_Int, set by Rand_SetSeed."
+  },
+  {
+   "addr": "0x085a9844",
+   "old": "g_085a9844",
+   "new": "com_randSeed",
+   "type_hint": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "LCG seed (0x343fd/0x269ec3) in Com_Rand, set by Com_SetRandSeed."
+  },
+  {
+   "addr": "0x085a9804",
+   "old": "g_085a9804",
+   "new": "hunk_lowPermanent",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Low permanent offset used by Hunk_AllocLowAlign/Hunk_GetLowPermanent (chunk_027 access pattern)."
+  },
+  {
+   "addr": "0x085a9808",
+   "old": "g_085a9808",
+   "new": "hunk_lowTemp",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Low temp offset used by Hunk_AllocateTempMemory/Hunk_ClearTempMemory/Hunk_CommitLowTemp."
+  },
+  {
+   "addr": "0x085a980c",
+   "old": "g_085a980c",
+   "new": "hunk_highPermanent",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "High permanent offset used by Hunk_SetHighPermanent/Hunk_SetHighMark."
+  },
+  {
+   "addr": "0x085a9810",
+   "old": "g_085a9810",
+   "new": "hunk_highTemp",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "High temp offset used by Hunk_ClearTempMemoryHigh/Hunk_SetHighMark."
+  },
+  {
+   "addr": "0x085a9814",
+   "old": "g_085a9814",
+   "new": "hunk_base",
+   "type_hint": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "Hunk base pointer from calloc in Com_InitHunkMemory."
+  },
+  {
+   "addr": "0x085a9818",
+   "old": "g_085a9818",
+   "new": "hunk_rawPtr",
+   "type_hint": "void *",
+   "confidence": "inferred",
+   "evidence": "Raw hunk pointer freed in Hunk_Shutdown."
+  },
+  {
+   "addr": "0x085a981c",
+   "old": "g_085a981c",
+   "new": "hunk_totalBytes",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "com_hunkMegs << 20 stored by Com_InitHunkMemory."
+  },
+  {
+   "addr": "0x084a87a0",
+   "old": "g_084a87a0",
+   "new": "hunk_userEntryTable",
+   "type_hint": "struct hunk_user_t *[0x401]",
+   "confidence": "inferred",
+   "evidence": "0x400 hash buckets + anonymous head; Hunk_AddUserEntry/Hunk_FindUserEntry/Hunk_ReleaseUserEntries."
+  },
+  {
+   "addr": "0x084a97a4",
+   "old": "g_084a97a4",
+   "new": "com_poolOffset",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Bump offset advanced by Com_PoolAlloc (size rounded to 4), reset by Com_PoolReset."
+  },
+  {
+   "addr": "0x084a9800",
+   "old": "g_084a9800",
+   "new": "com_poolBase",
+   "type_hint": "unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "Base returned via Com_PoolAt(offset)."
+  },
+  {
+   "addr": "0x085abe20",
+   "old": "g_085abe20",
+   "new": "dvar_pool",
+   "type_hint": "struct dvar_s[0x500]",
+   "confidence": "inferred",
+   "evidence": "Dvar entries (stride 0x24) allocated by Dvar_Create; 0x500 limit message; ends at hash table 0x085b7220."
+  },
+  {
+   "addr": "0x085b7220",
+   "old": "g_085b7220",
+   "new": "dvar_hashTable",
+   "type_hint": "struct dvar_s *[0x100]",
+   "confidence": "inferred",
+   "evidence": "256-bucket chain walked by Dvar_FindHashed/Dvar_Create/Dvar_GetCombinedString (0x080b5202)."
+  },
+  {
+   "addr": "0x085b7654",
+   "old": "g_085b7654",
+   "new": "dvar_initialised",
+   "type_hint": "uint8",
+   "confidence": "inferred",
+   "evidence": "Byte read by Dvar_IsInitialised (renamed from Snd_GetFlagByte in common.renames.json), set by Dvar_InitSvCheats, cleared by Dvar_Shutdown."
+  },
+  {
+   "addr": "0x085b7655",
+   "old": "g_085b7655",
+   "new": "dvar_loadingConfig",
+   "type_hint": "uint8",
+   "confidence": "inferred",
+   "evidence": "Config-load gate written by Dvar_SetLoadingConfig and tested by Dvar_SetFromUserInput (common.renames.json evidence)."
+  },
+  {
+   "addr": "0x085b7660",
+   "old": "g_085b7660_slots",
+   "new": "cm_scratchSlots",
+   "type_hint": "cm_slot_t[2]",
+   "confidence": "inferred",
+   "evidence": "Thread value slot 3 base set in Com_SetThreadBlocks (stride 0x18); CM_InitSlotBuffers fills entries 0 and 1."
+  },
+  {
+   "addr": "0x085b76a0",
+   "old": "g_085b76a0",
+   "new": "com_vaThreadBuffers",
+   "type_hint": "char[][0x804]",
+   "confidence": "inferred",
+   "evidence": "Thread value slot 1 (va() state) set in Com_SetThreadBlocks with stride 0x804."
+  },
+  {
+   "addr": "0x085b86c0",
+   "old": "g_085b86c0",
+   "new": "com_threadJmpBufs",
+   "type_hint": "char[][0x9c]",
+   "confidence": "inferred",
+   "evidence": "Thread value slot 2 set in Com_SetThreadBlocks with stride 0x9c; Com_Error longjmps to Sys_GetValue(2)."
+  },
+  {
+   "addr": "0x085b8800",
+   "old": "g_085b8800",
+   "new": "info_valueBuffers",
+   "type_hint": "char[2][0x2000]",
+   "confidence": "inferred",
+   "evidence": "Two alternating result buffers in Info_ValueForKey."
+  },
+  {
+   "addr": "0x085bc81c",
+   "old": "g_085bc81c",
+   "new": "info_valueBufferIndex",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Selector toggled by Info_ValueForKey between its two buffers."
+  },
+  {
+   "addr": "0x085bc800",
+   "old": "g_085bc800",
+   "new": "swap_bigShortFn",
+   "type_hint": "short (*)(int)",
+   "confidence": "inferred",
+   "evidence": "Set to ShortSwap by Swap_InitLittleEndian; BigShort reads it."
+  },
+  {
+   "addr": "0x085bc804",
+   "old": "g_085bc804",
+   "new": "swap_littleShortFn",
+   "type_hint": "short (*)(int)",
+   "confidence": "inferred",
+   "evidence": "Set to ShortNoSwap by Swap_InitLittleEndian."
+  },
+  {
+   "addr": "0x085bc808",
+   "old": "g_085bc808",
+   "new": "swap_bigLongFn",
+   "type_hint": "int (*)(int)",
+   "confidence": "inferred",
+   "evidence": "Set to LongSwap by Swap_InitLittleEndian; BigLong reads it."
+  },
+  {
+   "addr": "0x085bc80c",
+   "old": "g_085bc80c",
+   "new": "swap_littleLongFn",
+   "type_hint": "int (*)(int)",
+   "confidence": "inferred",
+   "evidence": "Set to LongNoSwap by Swap_InitLittleEndian."
+  },
+  {
+   "addr": "0x0817e3e0",
+   "old": "g_0817e3e0",
+   "new": "com_parsePunctuation",
+   "type_hint": "const char *[15]",
+   "confidence": "observed",
+   "evidence": "Multi-character punctuation table read in Com_ParseExt (common.md section on parser)."
+  },
+  {
+   "addr": "0x0817d840",
+   "old": "g_0817d840",
+   "new": "md4_padding",
+   "type_hint": "const byte[64]",
+   "confidence": "observed",
+   "evidence": "MD4 padding block (0x80 then zeros) read by MD4_Final."
+  },
+  {
+   "addr": "0x08182e00",
+   "old": "g_08182e00",
+   "new": "com_surfaceTypeTable",
+   "type_hint": "struct SurfaceTypeEntry[22]",
+   "confidence": "inferred",
+   "evidence": "22 entries stride 0x14 with names bark..asphalt, read by Com_SurfaceTypeFromName."
+  },
+  {
+   "addr": "0x08606888",
+   "old": "g_08606888",
+   "new": "tty_hideDepth",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Incremented by Tty_HideInput, decremented by Tty_ShowInput."
+  },
+  {
+   "addr": "0x0860b3ec",
+   "old": "g_0860b3ec",
+   "new": "snd_errorOnMissing",
+   "type_hint": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Receives Dvar_RegisterBool(\"snd_errorOnMissing\",0,0x1001) in Snd_RegisterErrorOnMissing."
+  }
+ ],
+ "left_unknown": [
+  {
+   "addr": "0x080d4372",
+   "name": "Sys_NoOp_080d4372",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d4378",
+   "name": "Sys_NoOp_080d4378",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d4742",
+   "name": "Sys_NoOp_080d4742",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d4748",
+   "name": "Sys_NoOp_080d4748",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d474e",
+   "name": "Sys_NoOp_080d474e",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d4754",
+   "name": "Sys_NoOp_080d4754",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d4ad0",
+   "name": "Sys_NoOp_080d4ad0",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d675a",
+   "name": "Sys_NoOp_080d675a",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6bd0",
+   "name": "Sys_NoOp_080d6bd0",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6bd6",
+   "name": "Sys_NoOp_080d6bd6",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6bdc",
+   "name": "Sys_NoOp_080d6bdc",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6c14",
+   "name": "Sys_NoOp_080d6c14",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6c1a",
+   "name": "Sys_NoOp_080d6c1a",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6c20",
+   "name": "Sys_NoOp_080d6c20",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6c26",
+   "name": "Sys_NoOp_080d6c26",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6c2c",
+   "name": "Sys_NoOp_080d6c2c",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d375e",
+   "name": "Tty_StubNoopA",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080627d6",
+   "name": "Com_Noop_080627d6",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080627ee",
+   "name": "Com_Noop_080627ee",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x08062b64",
+   "name": "Com_Noop_08062b64",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x0806cf14",
+   "name": "Net_Noop",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x0805276e",
+   "name": "CM_Noop_0805276e",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x08052774",
+   "name": "CM_Noop_08052774",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6746",
+   "name": "Sys_ReturnZero_080d6746",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6750",
+   "name": "Sys_ReturnZero_080d6750",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d437e",
+   "name": "Sys_ReturnZero_080d437e",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d4388",
+   "name": "Sys_ReturnZero_080d4388",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d4ad6",
+   "name": "Sys_ReturnZero_080d4ad6",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6b7e",
+   "name": "Sys_ReturnZero_080d6b7e",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6be2",
+   "name": "Sys_ReturnZero_080d6be2",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6bec",
+   "name": "Sys_ReturnZero_080d6bec",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6bf6",
+   "name": "Sys_ReturnZero_080d6bf6",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6c00",
+   "name": "Sys_ReturnZero_080d6c00",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d6c0a",
+   "name": "Sys_ReturnZero_080d6c0a",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d3740",
+   "name": "Tty_StubReturnZero",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d374a",
+   "name": "Tty_StubReturnOne",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080d3754",
+   "name": "Tty_StubReturnZeroAlt",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x08060b90",
+   "name": "Com_ReturnZero",
+   "why": "Trivial stub (empty or constant return); no direct or data references in .text/.data/.rodata (or only one-call context), so no role evidence beyond its body."
+  },
+  {
+   "addr": "0x080b516e",
+   "name": "Dvar_ClearUnknownFlag0400",
+   "why": "Clears dvar flag 0x0400 on all pool entries; flag meaning unresolved (common.md open question)."
+  },
+  {
+   "addr": "0x0806299c",
+   "name": "Com_SetPendingHandle",
+   "why": "Stores a handle in g_081a4f8c; only callers are SV_SetModeFlagA/B with constant 1; role not recovered."
+  },
+  {
+   "addr": "0x080629aa",
+   "name": "Com_ClearPendingHandle",
+   "why": "Compares with g_081a4f8c then calls BG_ResetWeaponCount; semantics of the handle not recovered."
+  },
+  {
+   "addr": "0x08064974",
+   "name": "Com_ShiftString",
+   "why": "Adds a signed shift to each byte into static buffer 0x081e9100; no callers found, purpose unknown."
+  },
+  {
+   "addr": "0x0806cf08",
+   "name": "Net_CurrentClientNum",
+   "why": "Returns 0; called from Netchan and FX_Init paths, purpose of the value (client/thread id?) not evidenced."
+  },
+  {
+   "addr": "0x0806cf1a",
+   "name": "Net_GetStaticRecord",
+   "why": "Returns static 0x38-byte record; no callers."
+  },
+  {
+   "addr": "0x0806cf32",
+   "name": "Net_ClearStaticRecord",
+   "why": "Clears static 0x38-byte record; no callers."
+  },
+  {
+   "addr": "0x080d9cac",
+   "name": "NonFinite_FieldTest",
+   "why": "Tests exponent bits of a float field from BG_GetAnimationForIndex entry; meaning of the field unknown."
+  },
+  {
+   "addr": "0x081a21c4",
+   "name": "g_081a21c4",
+   "why": "Only ever written with 0 (Com_Error, Com_ErrorRecover, Com_Restart_Subsystems, SV_RestartMapFlagA); no reader found in disassembly."
+  },
+  {
+   "addr": "0x08205600",
+   "name": "g_08205600",
+   "why": "Static 0x38-byte record, only touched by never-called Net_GetStaticRecord/Net_ClearStaticRecord."
+  },
+  {
+   "addr": "0x08205638",
+   "name": "g_08205638",
+   "why": "Count paired with g_08205600; no callers of its accessors."
+  },
+  {
+   "addr": "0x0849fd70",
+   "name": "g_0849fd70",
+   "why": "Set to rand()+1 on certain loads (FS); role not identified."
+  },
+  {
+   "addr": "0x080b7602",
+   "name": "Swap_CallFloatHook",
+   "why": "Indirect call via float hook g_085bc814; hook slots 0x085bc810..818 not all attributable to Q3 names."
+  },
+  {
+   "addr": "0x080b7618",
+   "name": "Swap_CallIntHook",
+   "why": "Indirect call via int hook g_085bc818; see Swap_CallFloatHook."
+  }
+ ]
+}

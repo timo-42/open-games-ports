@@ -1,0 +1,47 @@
+{
+ "chunks_done": 71,
+ "functions": 5129,
+ "globals": 1001,
+ "conflicts": 124,
+ "files_renamed": 0,
+ "prototypes_dropped": [
+  {
+   "addr": "0x080ccb14",
+   "error": "\u2018c\u2019 was not declared in this scope"
+  },
+  {
+   "addr": "0x080ccb34",
+   "error": "\u2018inflate_huft\u2019 has not been declared"
+  },
+  {
+   "addr": "0x080ced80",
+   "error": "\u2018tree_desc\u2019 has not been declared"
+  },
+  {
+   "addr": "0x080cf172",
+   "error": "\u2018tree_desc\u2019 has not been declared"
+  },
+  {
+   "addr": "0x080ce832",
+   "error": "\u2018inflate_huft\u2019 has not been declared"
+  },
+  {
+   "addr": "0x080ce566",
+   "error": "\u2018inflate_huft\u2019 has not been declared"
+  },
+  {
+   "addr": "0x080ce64f",
+   "error": "\u2018inflate_huft\u2019 has not been declared"
+  },
+  {
+   "addr": "0x080cbd40",
+   "error": "\u2018inflate_codes_state_s\u2019 does not name a type; did you mean \u2018inflate_blocks_state_s\u2019?"
+  },
+  {
+   "addr": "0x080cdd38",
+   "error": "\u2018inflate_huft\u2019 has not been declared"
+  }
+ ],
+ "compile_failures": {},
+ "compile_pass": 71
+}

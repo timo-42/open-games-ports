@@ -1,0 +1,584 @@
+{
+ "chunk": 22,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080960e2",
+   "name": "SV_ReadPackets",
+   "signature": "void SV_ReadPackets(struct netadr_s from, struct msg_s *msg)",
+   "subsystem": "server/net",
+   "confidence": "observed",
+   "evidence": "string 'SV_ReadPackets: fixing up a translated port'; Q3 SV_PacketEvent shape [rename network: Called from the NET type-5 receive path when com_sv_running; calls SV_ConnectionlessPacket 0x0809594e for OOB packets (call at 0x08096126) and otherwise does client lookup by address/qport, 'fixing up a translated port' (0x814b540 referenced at 0x0809620b, literal prefix 'SV_ReadPackets:'), then Netchan_Process and serverId read. Q3 SV_PacketEvent equivalent; the string names it SV_ReadPackets. Depends on 0x08094b56 being renamed first (name uniqueness).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080963c8",
+   "name": "SV_CalcPings",
+   "signature": "void SV_CalcPings(void)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "strings 'Giving %s a 999 ping'; Q3 SV_CalcPings",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08096558",
+   "name": "SV_ReleaseClientScriptId",
+   "signature": "void SV_ReleaseClientScriptId(struct client_s *cl)",
+   "subsystem": "server/client",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body: Scr_ReleaseVarThunk(cl->scriptId); cl->scriptId = 0. Field is the script object handle (server.md section on client +0xae708).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809657e",
+   "name": "SV_CheckTimeouts",
+   "signature": "void SV_CheckTimeouts(void)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "strings 'Going from CS_ZOMBIE to CS_FREE', 'EXE_TIMEDOUT'; Q3 SV_CheckTimeouts",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080966ac",
+   "name": "SV_CheckPaused",
+   "signature": "int SV_CheckPaused(void)",
+   "subsystem": "server/frame",
+   "confidence": "inferred",
+   "evidence": "Q3 SV_CheckPaused structure (counts connected clients, sets sv_paused)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08096752",
+   "name": "SV_RunGameFrame",
+   "signature": "void SV_RunGameFrame(void)",
+   "subsystem": "server/frame",
+   "confidence": "unknown",
+   "evidence": "calls pre-frame helper then game entry with svs.time",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809676c",
+   "name": "SV_BotRandomUserCmd",
+   "signature": "void SV_BotRandomUserCmd(struct client_s *cl)",
+   "subsystem": "server/bots",
+   "confidence": "inferred",
+   "evidence": "builds random usercmd via rand() helpers, calls SV_ClientThink",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08096952",
+   "name": "SV_RunBotClients",
+   "signature": "void SV_RunBotClients(void)",
+   "subsystem": "server/bots",
+   "confidence": "inferred",
+   "evidence": "loops clients with remoteAddress.type==0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080969b0",
+   "name": "SV_Frame",
+   "signature": "void SV_Frame(int msec)",
+   "subsystem": "server/frame",
+   "confidence": "inferred",
+   "evidence": "Q3 SV_Frame structure; EXE_SERVERRESTART* strings; SV_MasterHeartbeat(\"COD-2\")",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08096e0c",
+   "name": "SV_ResolveMasterAddress",
+   "signature": "struct netadr_s *SV_ResolveMasterAddress(void)",
+   "subsystem": "server/master",
+   "confidence": "inferred",
+   "evidence": "strings 'Resolving %s', 'cod2master.activision.com'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08096ed6",
+   "name": "SV_MasterHeartbeat",
+   "signature": "void SV_MasterHeartbeat(const char *hbname)",
+   "subsystem": "server/master",
+   "confidence": "inferred",
+   "evidence": "string 'Sending heartbeat to cod2master.activision.com'; Q3 SV_MasterHeartbeat",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08096fd0",
+   "name": "SV_MasterGameCompleteStatus",
+   "signature": "void SV_MasterGameCompleteStatus(void)",
+   "subsystem": "server/master",
+   "confidence": "inferred",
+   "evidence": "string 'Sending gameCompleteStatus to cod2master.activision.com'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08097032",
+   "name": "SV_MasterShutdown",
+   "signature": "void SV_MasterShutdown(void)",
+   "subsystem": "server/master",
+   "confidence": "inferred",
+   "evidence": "string 'flatline'; Q3 SV_MasterShutdown",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08097050",
+   "name": "SV_FlushRedirect",
+   "signature": "void SV_FlushRedirect(char *outputbuf)",
+   "subsystem": "server/rcon",
+   "confidence": "inferred",
+   "evidence": "'print\\n%s' chunked OOB send; Q3 SV_FlushRedirect",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08097188",
+   "name": "SVC_RemoteCommand",
+   "signature": "void SVC_RemoteCommand(struct netadr_s from, struct msg_s *msg)",
+   "subsystem": "server/rcon",
+   "confidence": "inferred",
+   "evidence": "strings 'Bad rcon from %s:', 'Rcon from %s:'; Q3 SVC_RemoteCommand",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080974d2",
+   "name": "SV_ExitLevelStub",
+   "signature": "void SV_ExitLevelStub(void)",
+   "subsystem": "server/misc",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Single ret instruction; sole caller is GScr_ExitLevel (0x08116b6a). Name records only the call site.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080974d8",
+   "name": "SV_Netchan_Encode",
+   "signature": "void SV_Netchan_Encode(struct client_s *cl, byte *data, int length)",
+   "subsystem": "server/netchan",
+   "confidence": "inferred",
+   "evidence": "XOR keystream with outgoingSequence^challenge and lastClientCommandString; Q3 SV_Netchan_Encode",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08097562",
+   "name": "SV_Netchan_Decode",
+   "signature": "void SV_Netchan_Decode(struct client_s *cl, byte *data, int length)",
+   "subsystem": "server/netchan",
+   "confidence": "inferred",
+   "evidence": "key from challenge, serverId, messageAcknowledge; Q3 SV_Netchan_Decode",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08097610",
+   "name": "SV_Netchan_TransmitNextFragment",
+   "signature": "unsigned char SV_Netchan_TransmitNextFragment(struct netchan_s *chan)",
+   "subsystem": "server/netchan",
+   "confidence": "inferred",
+   "evidence": "thin wrapper over Netchan_TransmitNextFragment",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08097626",
+   "name": "SV_Netchan_Transmit",
+   "signature": "unsigned char SV_Netchan_Transmit(struct client_s *cl, byte *data, int length)",
+   "subsystem": "server/netchan",
+   "confidence": "inferred",
+   "evidence": "Encode(data+4,len-4) then Netchan_Transmit; Q3 SV_Netchan_Transmit",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809766e",
+   "name": "SV_NetProfile_RecordOOB",
+   "signature": "void SV_NetProfile_RecordOOB(int bytes)",
+   "subsystem": "server/netprofile",
+   "confidence": "unknown",
+   "evidence": "records sample in global OOB profile when enabled",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809771a",
+   "name": "SV_NetProfile_Update",
+   "signature": "void SV_NetProfile_Update(void)",
+   "subsystem": "server/netprofile",
+   "confidence": "unknown",
+   "evidence": "updates sent/recv halves of OOB and per-client profiles",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080977c6",
+   "name": "SV_PrintNetworkProfile",
+   "signature": "void SV_PrintNetworkProfile(int print)",
+   "subsystem": "server/netprofile",
+   "confidence": "inferred",
+   "evidence": "strings 'Server Network Profile:' and table headers",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08098296",
+   "name": "Float_Max_08098296",
+   "signature": "float Float_Max_08098296(float a, float b)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "select(a-b>=0 ? a : b)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080982ba",
+   "name": "Float_Min_080982ba",
+   "signature": "float Float_Min_080982ba(float a, float b)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "select(b-a>=0 ? a : b)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080982de",
+   "name": "Float_SelectNonNegative_080982de",
+   "signature": "float Float_SelectNonNegative_080982de(float selector, float ifNonNegative, float ifNegative)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "0.0<=selector ? a : b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08098308",
+   "name": "SV_EmitPacketEntities",
+   "signature": "void SV_EmitPacketEntities(int clientNum, int oldCount, int oldFirst, int newCount, int newFirst, struct msg_s *msg)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "Q3 SV_EmitPacketEntities merge walk, 0x3ff terminator in 10 bits",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809847c",
+   "name": "SV_EmitPacketClients",
+   "signature": "void SV_EmitPacketClients(int clientNum, int oldCount, int oldFirst, int newCount, int newFirst, struct msg_s *msg)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "client-state analogue of SV_EmitPacketEntities",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080985c8",
+   "name": "SV_WriteSnapshotToClient",
+   "signature": "void SV_WriteSnapshotToClient(struct client_s *cl, struct msg_s *msg)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "strings '(writing snapshot) Snapshot delta request from out of date packet'; Q3 SV_WriteSnapshotToClient",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080988b2",
+   "name": "SV_UpdateServerCommandsToClient",
+   "signature": "void SV_UpdateServerCommandsToClient(struct client_s *cl, struct msg_s *msg)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "string 'Client %s has the following un-ack'd reliable commands'; Q3 SV_UpdateServerCommandsToClient",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080989c0",
+   "name": "SV_UpdateServerCommandsToClientLimited",
+   "signature": "void SV_UpdateServerCommandsToClientLimited(struct client_s *cl, struct msg_s *msg, int maxSize)",
+   "subsystem": "server/snapshot",
+   "confidence": "unknown",
+   "evidence": "size-limited variant of the above",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08098a94",
+   "name": "SV_PrintUnackedServerCommands",
+   "signature": "void SV_PrintUnackedServerCommands(struct client_s *cl)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "string '-- Unacknowledged Server Commands for client %i:%s --'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08098b4c",
+   "name": "SV_AppendToIntList_ClientScan",
+   "signature": "void SV_AppendToIntList_ClientScan(int value, int *list)",
+   "subsystem": "server/visibility",
+   "confidence": "unknown",
+   "evidence": "counted int list append, cap 0x400",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08098b72",
+   "name": "SV_AppendToIntList_EntityScan",
+   "signature": "void SV_AppendToIntList_EntityScan(int value, int *list)",
+   "subsystem": "server/visibility",
+   "confidence": "unknown",
+   "evidence": "identical twin of 0x08098b4c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08098b98",
+   "name": "SV_BuildClientListForPoint",
+   "signature": "void SV_BuildClientListForPoint(const float *point, int excludeNum, int *outList)",
+   "subsystem": "server/visibility",
+   "confidence": "unknown",
+   "evidence": "PVS/cluster scan over client gentities; resembles Q3 SV_AddEntitiesVisibleFromPoint",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08098e32",
+   "name": "SV_BuildCachedEntityListForPoint",
+   "signature": "void SV_BuildCachedEntityListForPoint(int count, int first, const float *point, int excludeNum, int *outList)",
+   "subsystem": "server/visibility",
+   "confidence": "unknown",
+   "evidence": "PVS scan over cached-entity ring",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809907a",
+   "name": "SV_GetCachedSnapshot",
+   "signature": "struct cachedSnapshot_s *SV_GetCachedSnapshot(int archivedFrame)",
+   "subsystem": "server/snapshot-cache",
+   "confidence": "observed",
+   "evidence": "string 'SV_GetCachedSnapshot: end of message'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08099c04",
+   "name": "SV_FindCachedSnapshotByAge",
+   "signature": "struct cachedSnapshot_s *SV_FindCachedSnapshotByAge(int *msecAge)",
+   "subsystem": "server/snapshot-cache",
+   "confidence": "unknown",
+   "evidence": "walks archived frames from now-age, returns first rebuildable",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08099d30",
+   "name": "SV_GetCurrentPlayerAndClientState",
+   "signature": "int SV_GetCurrentPlayerAndClientState(int clientNum, struct playerState_s *ps, struct clientState_s *cs)",
+   "subsystem": "server/snapshot-cache",
+   "confidence": "unknown",
+   "evidence": "state==4 client: live player state + 0x5c client state copy",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08099dac",
+   "name": "SV_GetInterpolatedPlayerOrigin",
+   "signature": "int SV_GetInterpolatedPlayerOrigin(int clientNum, int msecAge, float *originOut)",
+   "subsystem": "server/snapshot-cache",
+   "confidence": "unknown",
+   "evidence": "lerps origins (ps+0x14) of two cached states within +-10 frames",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809a0b6",
+   "name": "SV_GetPlayerStateFromCache",
+   "signature": "int SV_GetPlayerStateFromCache(int clientNum, int *msecAge, struct playerState_s *ps, struct clientState_s *cs)",
+   "subsystem": "server/snapshot-cache",
+   "confidence": "unknown",
+   "evidence": "cached ps/cs lookup with time rebasing",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08423084",
+   "name": "g_08423084",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "svs.time"
+  },
+  {
+   "addr": "0x0842308c",
+   "name": "g_0842308c",
+   "type": "struct client_s *",
+   "confidence": "inferred",
+   "evidence": "svs.clients; stride 0xb1064"
+  },
+  {
+   "addr": "0x08440108",
+   "name": "g_svs_oobNetProfile",
+   "type": "struct netProfile_s *",
+   "confidence": "inferred",
+   "evidence": "OOB net profile"
+  },
+  {
+   "addr": "0x0849fbe0",
+   "name": "sv_masterAddress",
+   "type": "struct netadr_s",
+   "confidence": "inferred",
+   "evidence": "cached master address"
+  },
+  {
+   "addr": "0x084230d4",
+   "name": "g_084230d4",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "next heartbeat time"
+  },
+  {
+   "addr": "0x08440210",
+   "name": "g_sv_timeResidual",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "time residual in SV_Frame"
+  },
+  {
+   "addr": "0x0849f74c",
+   "name": "g_0849f74c",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "sv_maxclients (int at +8)"
+  },
+  {
+   "addr": "0x0849f734",
+   "name": "g_0849f734",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "sv_fps (frameMsec=1000/value)"
+  },
+  {
+   "addr": "0x084230ac",
+   "name": "g_svs_nextArchivedSnapshotFrames",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "nextArchivedSnapshotFrames"
+  },
+  {
+   "addr": "0x084230bc",
+   "name": "g_svs_nextCachedSnapshotEntities",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "nextCachedSnapshotEntities"
+  },
+  {
+   "addr": "0x084230c0",
+   "name": "g_svs_nextCachedSnapshotClients",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "nextCachedSnapshotClients"
+  },
+  {
+   "addr": "0x084230c4",
+   "name": "sv_nextCachedSnapshotFrame",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "nextCachedSnapshotFrames"
+  },
+  {
+   "addr": "0x084230b8",
+   "name": "sv_nextArchivedSnapshotBuffer",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "nextArchivedSnapshotBuffer"
+  },
+  {
+   "addr": "0x0817db80",
+   "name": "sv_antilagFrameOffsetA",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "origin-history window start (frames), read by SV_GetInterpolatedPlayerOrigin; lies in the gap after g_0817d9e0"
+  },
+  {
+   "addr": "0x0817db84",
+   "name": "sv_antilagFrameOffsetB",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "origin-history window end (frames), read by SV_GetInterpolatedPlayerOrigin"
+  },
+  {
+   "addr": "0x0849fbf4",
+   "name": "svc_lastRconTime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "last rcon time (rate limit 500 ms) in SVC_RemoteCommand; gap after g_0849fbe0"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "client_s",
+   "size": "0xb1064",
+   "evidence": "stride in every client loop; fields recovered at 0x40c,0x2080c,0x20c44,0x20e34,0x6e6c4,0xae700"
+  },
+  {
+   "name": "clientSnapshot_s",
+   "size": "0x26c4",
+   "evidence": "frames[32] stride 0x26c4 at client+0x20e34"
+  },
+  {
+   "name": "playerState_s",
+   "size": "0x26a8",
+   "evidence": "copy length in snapshot cache"
+  },
+  {
+   "name": "cachedClient_s",
+   "size": "0x2708",
+   "evidence": "ring stride"
+  },
+  {
+   "name": "cachedEntity_s",
+   "size": "0x114",
+   "evidence": "ring stride"
+  },
+  {
+   "name": "cachedSnapshot_s",
+   "size": "0x1c",
+   "evidence": "ring stride"
+  },
+  {
+   "name": "netProfile_s",
+   "size": "0x5e0",
+   "evidence": "sent half at +0, recv half at +0x2f0"
+  },
+  {
+   "name": "netadr_s",
+   "size": "0x14",
+   "evidence": "five 32-bit words passed by value"
+  },
+  {
+   "name": "usercmd_s",
+   "size": "0x1c",
+   "evidence": "memset size"
+  }
+ ],
+ "open_questions": [
+  "Names of the cluster/PVS visibility scans (0x08098b98, 0x08098e32) are descriptive only; consumer chunk should confirm (Q3 SV_AddEntitiesVisibleFromPoint analogue?).",
+  "netchan_t first field assumed outgoingSequence (xor key + deltaMessage seed); remaining netchan fields before remoteAddress unknown.",
+  "Time-valued playerState words (0,4,0x11,0x1c,0x3f,0x177,0x1e9, slot words) are unnamed; origin at +0x14 confirmed by interpolation code only.",
+  "Totals/OOB/client rows pass doubles to %5i conversions (decompiler and disassembly agree); reproduced as-is.",
+  "Cached-entity visibility flags at +0xf0 (int) vs live gentity svFlags at +0xf2 (byte) layouts may be different structs."
+ ]
+}

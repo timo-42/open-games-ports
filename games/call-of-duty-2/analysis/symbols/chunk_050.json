@@ -1,0 +1,1005 @@
+{
+ "chunk": 50,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0810e024",
+   "name": "G_AddImpactEvent",
+   "signature": "void G_AddImpactEvent(struct gentity_s *ent, struct trace_s *tr)",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "Spawns the 0xb6 temp-entity event describing a surface impact (surface normal code, velocity direction code, surface type, owner entity).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810e0ce",
+   "name": "G_RunMissile",
+   "signature": "void G_RunMissile(struct gentity_s *ent)",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "Per-frame missile mover (Quake III G_RunMissile counterpart: evaluate trajectory, trace, impact, think). No identifying strings.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810e68e",
+   "name": "G_SpawnGrenade",
+   "signature": "struct gentity_s *G_SpawnGrenade(struct gentity_s *owner, const float *origin, const float *dir, int weaponIndex, int defaultFuseTime)",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "Spawns a thrown-projectile entity (type 7, bouncing/tumbling trajectory); Quake III fire_grenade counterpart. Consumes the owner's client+0x3c fuse value.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810e938",
+   "name": "G_SpawnRocket",
+   "signature": "struct gentity_s *G_SpawnRocket(struct gentity_s *owner, const float *origin, float *dir)",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "Spawns a linear-trajectory projectile (type 8, 30 s lifetime) at the weapon's launch speed; Quake III fire_rocket counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810eb6a",
+   "name": "Abs_Float",
+   "signature": "float Abs_Float(float x)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "fabsf; used on the vertical trajectory velocity. No strings.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810eb84",
+   "name": "Vec3_Clear",
+   "signature": "void Vec3_Clear(float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorClear (zero a 3-vector).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ebae",
+   "name": "Vec3_Copy",
+   "signature": "void Vec3_Copy(const float *src, float *dst)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorCopy(src, dst).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ebde",
+   "name": "Vec3_Add",
+   "signature": "void Vec3_Add(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorAdd(a, b, out).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ec22",
+   "name": "Vec3_Subtract",
+   "signature": "void Vec3_Subtract(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorSubtract(a, b, out) = a - b.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ec66",
+   "name": "Vec3_Scale",
+   "signature": "void Vec3_Scale(const float *v, float scale, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorScale(v, scale, out).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ec9e",
+   "name": "Vec3_MA",
+   "signature": "void Vec3_MA(const float *base, float scale, const float *dir, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorMA(base, scale, dir, out) = base + scale*dir.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ecf2",
+   "name": "Vec3_Dot",
+   "signature": "long double Vec3_Dot(const float *a, const float *b)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "DotProduct; accumulated in extended precision (x87 return in st0, z term first).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ed26",
+   "name": "Vec3_Length",
+   "signature": "float Vec3_Length(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorLength: sqrtf of the sum of squares (z, y, x order), result returned in st0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ed64",
+   "name": "Sqrt_Float",
+   "signature": "float Sqrt_Float(float x)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Sqrt of a float via the double libm sqrt, narrowed back to float.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ed84",
+   "name": "G_TestEntityPosition",
+   "signature": "struct gentity_s *G_TestEntityPosition(struct gentity_s *ent, const float *origin)",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "G_TestEntityPosition counterpart: boxes the entity at `origin` and returns the entity it is stuck in, or NULL.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ee88",
+   "name": "AnglesToAxis",
+   "signature": "void AnglesToAxis(const float *angles, float axis[3][3])",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "AnglesToAxis: forward/right/up from Euler angles, then the second row (right) is negated.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810eec4",
+   "name": "Matrix3_Transpose",
+   "signature": "void Matrix3_Transpose(const float in[3][3], float out[3][3])",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "3x3 matrix transpose: out[r][c] = in[c][r].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ef30",
+   "name": "Matrix3_RotatePoint",
+   "signature": "void Matrix3_RotatePoint(float *point, const float matrix[3][3])",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Rotates `point` in place by the 3x3 matrix (row i dotted with the original point).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ef9c",
+   "name": "G_TryPushingEntity",
+   "signature": "int G_TryPushingEntity(struct gentity_s *check, struct gentity_s *pusher, const float *move, const float *amove)",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "G_TryPushingEntity counterpart: moves `check` by the pusher's linear and rotational delta; if blocked, probes nearby offsets before giving up.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810f4f0",
+   "name": "G_MoverPush",
+   "signature": "char G_MoverPush(struct gentity_s *pusher, const float *move, const float *amove, struct gentity_s **obstacle)",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "G_MoverPush counterpart: moves `pusher` by move/amove, pushes every overlapping or riding entity, and returns 0 (with *obstacle set) if one is blocked.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810fb0a",
+   "name": "G_RunMover",
+   "signature": "void G_RunMover(struct gentity_s *ent)",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "G_RunMover counterpart: evaluates the move/rotate trajectories, pushes, and on a block rolls back the push stack and shifts the trajectory times; fires the entClass callbacks.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810fdfe",
+   "name": "G_RunMoverEntity",
+   "signature": "void G_RunMoverEntity(struct gentity_s *ent)",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "Per-frame entity runner for mover-class entities: runs the mover when it has a trajectory, otherwise defers to fn_0811e316 when +0x208 is set; then the generic think.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810fe4a",
+   "name": "Nop_0810fe4a",
+   "signature": "void Nop_0810fe4a(void)",
+   "subsystem": "game/script",
+   "confidence": "unknown",
+   "evidence": "Empty function (no-op callback). No strings or callers evidence beyond the empty body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810fe50",
+   "name": "SP_trigger_use",
+   "signature": "void SP_trigger_use(struct gentity_s *ent)",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "trigger_use spawn function (strings \"cursorhint\", \"HINT_INHERIT\", \"hintstring\", \"...trigger_use entities\").",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110066",
+   "name": "Vec3_Set_b",
+   "signature": "void Vec3_Set_b(float *v, float x, float y, float z)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorSet(v, x, y, z).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811008a",
+   "name": "Vec3_Copy_b",
+   "signature": "void Vec3_Copy_b(const float *src, float *dst)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorCopy (second copy of Vec3_Copy).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081100ba",
+   "name": "Vec3_Negate_b",
+   "signature": "void Vec3_Negate_b(float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorNegate by flipping each sign bit.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081100f8",
+   "name": "Vec3_Add_b",
+   "signature": "void Vec3_Add_b(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorAdd (second copy).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811013c",
+   "name": "Vec3_Subtract_b",
+   "signature": "void Vec3_Subtract_b(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "VectorSubtract (second copy).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110180",
+   "name": "Vec3_Dot_b",
+   "signature": "long double Vec3_Dot_b(const float *a, const float *b)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "DotProduct (second copy), extended precision, z term first.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081101b4",
+   "name": "G_NewScriptString",
+   "signature": "unsigned short G_NewScriptString(const char *string)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Releases one reference to a script string id (calls fn_08079e58(id, 1)). [rename script-vm: Disassembly: tail-calls 0x08079e58 (ScrStr_InternCStringFlag1); used with literals to fill scr_const ids; interns and pins, releases nothing.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081101d0",
+   "name": "GScr_RunLevelMain",
+   "signature": "void GScr_RunLevelMain(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Runs the level script's main() (offset cached in g_0884d700) and releases the thread handle.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110208",
+   "name": "GScr_GetFunctionOffset",
+   "signature": "int GScr_GetFunctionOffset(const char *script, const char *label, int errorIfMissing)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Resolves script+label to a function offset; optionally reports \"Could not find script/label\" via Com_Error(1). Strings observed. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110286",
+   "name": "GScr_LoadGametypeScript",
+   "signature": "void GScr_LoadGametypeScript(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Loads the gametype script maps/mp/gametypes/<g_gametype> main and the CodeCallback_* entry points from _callbacksetup. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811037a",
+   "name": "GScr_LoadLevelScript",
+   "signature": "void GScr_LoadLevelScript(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Loads maps/mp/<mapname> main (optional; no error if missing). Dvar \"mapname\" registered with flags 0x1044. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081103e6",
+   "name": "GScr_InitClasses",
+   "signature": "void GScr_InitClasses(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Initialises script classes 0..3, then three out-of-chunk initialisers.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811041e",
+   "name": "GScr_LoadScripts",
+   "signature": "void GScr_LoadScripts(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script load sequence: compile state, codescripts/delete + codescripts/struct entry points, gametype and level scripts, then class init. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081104a8",
+   "name": "GScr_ShutdownClasses",
+   "signature": "void GScr_ShutdownClasses(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Shuts down script classes 0..3.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081104d2",
+   "name": "GScr_GetEntityFromRef",
+   "signature": "struct gentity_s *GScr_GetEntityFromRef(unsigned int ref)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Entity reference (low 16 bits = entity number, high 16 bits must be 0) to entity pointer; \"not an entity\" script error otherwise. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811050c",
+   "name": "GScr_GetPlayerEntity",
+   "signature": "struct gentity_s *GScr_GetPlayerEntity(unsigned int ref)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Like GScr_GetEntityFromRef but the entity must be a player (has a client); otherwise Scr_Error with entity number, origin, classname and targetname. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081105c0",
+   "name": "ScriptEntCmd_getclanid",
+   "signature": "void ScriptEntCmd_getclanid(void)",
+   "subsystem": "game/script",
+   "confidence": "observed",
+   "evidence": "Script method getclanid (builtin method table at 0x08188720): returns the string \"0\". [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred] [rename script-vm: Entity method table 0x08188720 maps handler 0x081105c0 to 'getclanid' (methods, not builtin functions); matches existing ScriptEntCmd_* convention.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081105d4",
+   "name": "ScriptEntCmd_getclanname",
+   "signature": "void ScriptEntCmd_getclanname(void)",
+   "subsystem": "game/script",
+   "confidence": "observed",
+   "evidence": "Script method getclanname (method table): returns an empty string. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred] [rename script-vm: Entity method table 0x08188720 maps handler 0x081105d4 to 'getclanname' (methods, not builtin functions); matches existing ScriptEntCmd_* convention.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081105e8",
+   "name": "ScriptEntCmd_getclanmotto",
+   "signature": "void ScriptEntCmd_getclanmotto(void)",
+   "subsystem": "game/script",
+   "confidence": "observed",
+   "evidence": "Script method getclanmotto (method table): returns an empty string. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred] [rename script-vm: Entity method table 0x08188720 maps handler 0x081105e8 to 'getclanmotto' (methods, not builtin functions); matches existing ScriptEntCmd_* convention.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110624",
+   "name": "GScr_print",
+   "signature": "void GScr_print(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin print (function table at 0x08188040): prints each argument with \"%s\" when the gating dvar byte is zero. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110674",
+   "name": "GScr_println",
+   "signature": "void GScr_println(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin println: print plus newline under the same dvar gate. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811069a",
+   "name": "Scr_RaiseError6",
+   "signature": "void Scr_RaiseError6(int param, const char *msg)",
+   "subsystem": "game/script",
+   "confidence": "unknown",
+   "evidence": "Raises Com_Error(6, message) with the message used directly as the format string; `param` is ignored.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081106b6",
+   "name": "GScr_CheckLocalizedRef",
+   "signature": "void GScr_CheckLocalizedRef(int param, const char *str, int len)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Validates a localized-string reference: every character must be alphanumeric or '_' (only checked when length > 1). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110720",
+   "name": "GScr_BuildMessageString",
+   "signature": "void GScr_BuildMessageString(int first, int last, const char *what, char *out, int outSize)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Concatenates script parameters first..last into `out` with 0x14 (localized separator) / 0x15 (literal/player-name marker) prefixes; control bytes inside text become '.'. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110a60",
+   "name": "GScr_SendGameMessage",
+   "signature": "void GScr_SendGameMessage(int clientNum, const char *cmd)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Builds a \"Game Message\" string from all script arguments and sends `<cmd> \"<text>\"` to the client (iprintln-style helper; sender is fn_080917aa). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08110c02",
+   "name": "GScr_line",
+   "signature": "void GScr_line(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin \"line\" (function table entry): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111e90",
+   "name": "ScriptEntCmd_playrumble",
+   "signature": "void ScriptEntCmd_playrumble(void)",
+   "subsystem": "game/script",
+   "confidence": "observed",
+   "evidence": "Script method playrumble (method table): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred] [rename script-vm: Entity method table 0x08188720 maps handler 0x08111e90 to 'playrumble' (methods, not builtin functions); matches existing ScriptEntCmd_* convention.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111e96",
+   "name": "ScriptEntCmd_playlooprumble",
+   "signature": "void ScriptEntCmd_playlooprumble(void)",
+   "subsystem": "game/script",
+   "confidence": "observed",
+   "evidence": "Script method playlooprumble (method table): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred] [rename script-vm: Entity method table 0x08188720 maps handler 0x08111e96 to 'playlooprumble' (methods, not builtin functions); matches existing ScriptEntCmd_* convention.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111e9c",
+   "name": "ScriptEntCmd_stoprumble",
+   "signature": "void ScriptEntCmd_stoprumble(void)",
+   "subsystem": "game/script",
+   "confidence": "observed",
+   "evidence": "Script method stoprumble (method table): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred] [rename script-vm: Entity method table 0x08188720 maps handler 0x08111e9c to 'stoprumble' (methods, not builtin functions); matches existing ScriptEntCmd_* convention.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112432",
+   "name": "G_FindOrAddHintString",
+   "signature": "int G_FindOrAddHintString(int *outIndex, const char *str)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Finds `str` in the hintstring config strings (0x4fe..0x51d) or claims the first empty slot; returns 1 with the index, or 0 with -1 when all 32 are taken.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112796",
+   "name": "G_ClearObjectives",
+   "signature": "void G_ClearObjectives(void)",
+   "subsystem": "game/script/objectives",
+   "confidence": "inferred",
+   "evidence": "Clears all 16 script objective slots.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081127ce",
+   "name": "G_ScriptStringToIndex",
+   "signature": "int G_ScriptStringToIndex(int *out, unsigned int stringId)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Maps one of three known script string ids to an index (g_08853230 -> 0, g_0885323e -> 2, g_08853226 -> 4); returns 0 with *out=0 otherwise.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112838",
+   "name": "G_ClearObjectiveEntity",
+   "signature": "void G_ClearObjectiveEntity(struct objective_s *obj)",
+   "subsystem": "game/script/objectives",
+   "confidence": "inferred",
+   "evidence": "Detaches an objective from its entity: clears bit 0x10 of entity byte +0xf2 when entity byte +0xfc is set, then marks the objective entity-less (0x3ff).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112890",
+   "name": "G_ClearObjective",
+   "signature": "void G_ClearObjective(struct objective_s *obj)",
+   "subsystem": "game/script/objectives",
+   "confidence": "inferred",
+   "evidence": "Resets one objective slot to its empty state (no entity, no icon).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081128ce",
+   "name": "G_SetObjectiveIcon",
+   "signature": "void G_SetObjectiveIcon(struct objective_s *obj, int param)",
+   "subsystem": "game/script/objectives",
+   "confidence": "inferred",
+   "evidence": "objective_icon helper: validates the icon name argument (printable, < 64 chars; errors reported against param 3) and stores its index in objective+0x18. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811344a",
+   "name": "G_MenuIndex",
+   "signature": "int G_MenuIndex(const char *name)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Menu config-string index (0x4de..0x4fd) for a precached menu name; script error \"Menu '%s' was not precached\" otherwise (returns 0). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081134dc",
+   "name": "GScr_PrecacheStatusIcon",
+   "signature": "void GScr_PrecacheStatusIcon(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin precachestatusicon (function table): registers a status icon name in config strings 0x17..0x1e (max 8); duplicates only log a developer message. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081135d2",
+   "name": "G_StatusIconIndex",
+   "signature": "int G_StatusIconIndex(const char *name)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "1-based status-icon index for a precached name; 0 for an empty name; script error \"Status icon '%s' was not precached\" if missing. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811367a",
+   "name": "GScr_PrecacheHeadIcon",
+   "signature": "void GScr_PrecacheHeadIcon(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin precacheheadicon (function table): registers a head icon in config strings 0x1f..0x2d (max 15). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113770",
+   "name": "G_HeadIconIndex",
+   "signature": "int G_HeadIconIndex(const char *name)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "1-based head-icon index for a precached name; 0 for an empty name; script error \"Head icon '%s' was not precached\" if missing. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113818",
+   "name": "GScr_bulletTrace",
+   "signature": "void GScr_bulletTrace(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin bullettrace (function table): params start, end, hitCharacters, ignoreEntity; returns an object with fraction, position, entity, normal and surfacetype. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114a36",
+   "name": "GScr_precacheRumble",
+   "signature": "void GScr_precacheRumble(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin precacherumble (function table): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115034",
+   "name": "GScr_FxError",
+   "signature": "void GScr_FxError(const char *msg, int fxIndex)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script error \"<msg> (effect = <name>)\" where the effect name is config string 0x34e+index, or \"not successfully loaded\" for index 0. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081150a4",
+   "name": "GScr_playFx",
+   "signature": "void GScr_playFx(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin playfx (function table): params fx, origin[, forward[, up]]; spawns temp entity event 0xc2 with the orientation angles in apos.trBase. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811571c",
+   "name": "GScr_SetCullFogParams",
+   "signature": "void GScr_SetCullFogParams(const char *funcName, float nearDist, float farDist, float param4, float red, float green, float blue, float transitionTime)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Validates cull-fog parameters (near >= 0, near < far, rgb in [0,1], time >= 0) and sends \"%g %g %g %g %g %g %.0f\" (time in ms) via fn_080fe4bc. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115858",
+   "name": "GScr_setCullFog",
+   "signature": "void GScr_setCullFog(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin setcullfog (function table): six float params near, far, r, g, b, time; passes 1.0 as the constant fourth value. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117906",
+   "name": "GScr_playRumbleOnPos",
+   "signature": "void GScr_playRumbleOnPos(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin playrumbleonpos (function table): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811790c",
+   "name": "GScr_playLoopRumbleOnPos",
+   "signature": "void GScr_playLoopRumbleOnPos(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin playlooprumbleonpos (function table): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117912",
+   "name": "GScr_stopAllRumbles",
+   "signature": "void GScr_stopAllRumbles(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin stopallrumbles (function table): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811792c",
+   "name": "GScr_matchend",
+   "signature": "void GScr_matchend(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin matchend (function table): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117932",
+   "name": "GScr_setPlayerTeamRank",
+   "signature": "void GScr_setPlayerTeamRank(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin setplayerteamrank (function table): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117938",
+   "name": "GScr_sendRanks",
+   "signature": "void GScr_sendRanks(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin sendranks (function table): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811793e",
+   "name": "GScr_endParty",
+   "signature": "void GScr_endParty(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Script builtin endparty (function table): empty body. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117cb2",
+   "name": "GScr_GetBuiltinFunction",
+   "signature": "void *GScr_GetBuiltinFunction(const char **name, int *developer)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Looks up a game builtin by strcmp in the 0x91-entry name/handler table at 0x08188040 and returns handler plus developer flag; sibling of Scr_GetEntityMethod/Scr_GetMethod (same script-name lookup shape). Name Scr_GetFunction is already used at 0x08084dd0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117d50",
+   "name": "Scr_GetEntityMethod",
+   "signature": "void *Scr_GetEntityMethod(const char **name, int *developer)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Same lookup against the 0x3b-entry entity-method table at 0x08188720 (attach, detach, ... releaseclaimedtrigger).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117dea",
+   "name": "Scr_GetMethod",
+   "signature": "int Scr_GetMethod(const char **name, int *developer)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Method lookup across several method tables in order (fn_080fddac, fn_0811a1fa, entity methods, fn_081047fe); the first non-null handler wins, but all four are always evaluated (call order preserved).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117f30",
+   "name": "Scr_AddVectorOrUndefined",
+   "signature": "void Scr_AddVectorOrUndefined(const float *vec)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Pushes a vector onto the script stack, or undefined when the pointer is NULL.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117f50",
+   "name": "Scr_AddEntityOrUndefined",
+   "signature": "void Scr_AddEntityOrUndefined(struct gentity_s *ent)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Pushes an entity onto the script stack, or undefined when the pointer is NULL.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117f70",
+   "name": "GScr_LoadGametypeList",
+   "signature": "void GScr_LoadGametypeList(void)",
+   "subsystem": "game/script",
+   "confidence": "inferred",
+   "evidence": "Builds the gametype list from maps/mp/gametypes/*.gsc (skipping names starting with '_'): name, description and team flag from <name>.txt (second token \"team\"). Caps at 0x20 entries. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08716400",
+   "name": "g_gentities",
+   "type": "struct gentity_s[1024]",
+   "confidence": "inferred",
+   "evidence": "entity array stride 0x230, indexed by entity number / 0x3ff sentinel"
+  },
+  {
+   "addr": "0x0864c56c",
+   "name": "g_0864c56c",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "level time: added to trajectory times and expire times"
+  },
+  {
+   "addr": "0x0864c570",
+   "name": "level_previousTime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "previous level time: frame delta in G_RunMover"
+  },
+  {
+   "addr": "0x08845680",
+   "name": "g_pushedStack",
+   "type": "pushed_t[]",
+   "confidence": "inferred",
+   "evidence": "mover push undo stack base"
+  },
+  {
+   "addr": "0x0884d680",
+   "name": "g_pushedStackTop",
+   "type": "pushed_t *",
+   "confidence": "inferred",
+   "evidence": "push stack top pointer"
+  },
+  {
+   "addr": "0x08187d00",
+   "name": "g_entityHandlerTable",
+   "type": "struct entity_handler_s[]",
+   "confidence": "inferred",
+   "evidence": "per-entClass callback table stride 0x28"
+  },
+  {
+   "addr": "0x08188020",
+   "name": "g_cursorHintNames",
+   "type": "const char *[6]",
+   "confidence": "observed",
+   "evidence": "cursor hint names HINT_NONE.."
+  },
+  {
+   "addr": "0x08188040",
+   "name": "g_scrBuiltinFunctionTable",
+   "type": "struct cod2_scrfunc_s[0x91]",
+   "confidence": "observed",
+   "evidence": "script builtin function table (print .. issplitscreen)"
+  },
+  {
+   "addr": "0x08188720",
+   "name": "g_scrEntityMethodTable",
+   "type": "struct cod2_scrfunc_s[0x3b]",
+   "confidence": "observed",
+   "evidence": "script entity method table (attach .. releaseclaimedtrigger)"
+  },
+  {
+   "addr": "0x0864c3a4",
+   "name": "level_objectives",
+   "type": "struct objective_s[16]",
+   "confidence": "inferred",
+   "evidence": "objective slots stride 0x1c"
+  },
+  {
+   "addr": "0x0884d72c",
+   "name": "g_gametypeList",
+   "type": "struct cod2_gametype_s[0x20]",
+   "confidence": "inferred",
+   "evidence": "gametype list, memset 0x1080"
+  },
+  {
+   "addr": "0x0884d728",
+   "name": "g_gametypeCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "gametype count"
+  },
+  {
+   "addr": "0x0884d700",
+   "name": "g_levelMainScriptOffset",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "level script main offset"
+  },
+  {
+   "addr": "0x0884d708",
+   "name": "g_gametypeMainScriptOffset",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "gametype main offset"
+  },
+  {
+   "addr": "0x087a2400",
+   "name": "g_087a2400",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "string value names the gametype script"
+  },
+  {
+   "addr": "0x087a24b0",
+   "name": "g_087a24b0",
+   "type": "struct dvar_s *",
+   "confidence": "unknown",
+   "evidence": "byte gate for print/println"
+  },
+  {
+   "addr": "0x08a6e550",
+   "name": "g_08a6e550",
+   "type": "struct dvar_s *",
+   "confidence": "unknown",
+   "evidence": "byte selects warning vs error for non-localized strings"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "cod2_gentity_s",
+   "size": "0x230",
+   "evidence": "stride 0x230 in entity array indexing; offsets recovered in chunk_050_types.h"
+  },
+  {
+   "name": "cod2_gclient_s",
+   "size": "unknown",
+   "evidence": "offsets 0x14 origin, 0x3c, 0x58, 0x2784 name"
+  },
+  {
+   "name": "trajectory_t",
+   "size": "0x24",
+   "evidence": "two embedded at 0x0c and 0x30"
+  },
+  {
+   "name": "trace_t",
+   "size": "0x24",
+   "evidence": "stack layout in G_RunMissile / bullettrace"
+  },
+  {
+   "name": "pushed_t",
+   "size": "0x20",
+   "evidence": "push stack stride 0x20"
+  },
+  {
+   "name": "cod2_entclass_s",
+   "size": "0x28",
+   "evidence": "table stride 0x28 at 0x08187d00"
+  },
+  {
+   "name": "cod2_objective_s",
+   "size": "0x1c",
+   "evidence": "loop stride in G_ClearObjectives"
+  },
+  {
+   "name": "cod2_gametype_s",
+   "size": "0x84",
+   "evidence": "stride in GScr_LoadGametypeList"
+  }
+ ],
+ "open_questions": [
+  "Merged names Scr_ReleaseAnyValue/Scr_ReleaseLocalizedString/Scr_GetPointer/Scr_AddEntity/Scr_PopAndRelease look mismatched to their use here (string getters, object-class query, push-new-object, set-object-field).",
+  "fn_080a4424 is treated as in-place normalize returning length (inferred from G_SpawnRocket discarding the result); confirm.",
+  "Gating dvars g_087a24b0 and g_08a6e550 are unnamed; entity fields unk_54/unk_d8/unk_dc/unk_88 and entClass table semantics are unresolved.",
+  "0x0811069a ignores its first parameter and passes the message as the Com_Error format string; caller intent unverified."
+ ]
+}

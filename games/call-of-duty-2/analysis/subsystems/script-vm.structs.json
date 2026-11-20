@@ -1,0 +1,1079 @@
+[
+ {
+  "name": "VariableValue",
+  "size": "0x08",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "union { int i; float f; uint32 stringId; uint32 objectId; const float *vector; const uint8 *codePos; }",
+    "name": "u",
+    "evidence": "chunk 016 OP_* handlers; pre-increment pushes in Scr_Add* (chunk 017) write value then type [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "type",
+    "evidence": "0 undefined,1 object,2 string,3 localized string,4 vector,5 float,6 int,7 codepos,8 precodepos,9 function,10 stack,11 animation; names from table 0x0817d960 [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_014_types.h (ScrVarValue {int value;int type})",
+   "chunk_015_types.h (VariableValue)",
+   "chunk_016_types.h (VariableValue)",
+   "chunk_017_types.h (cod2_scr_entry_s {uint32 value;uint32 type})",
+   "chunk_018_types.h (yy_stype_t is a different 8-byte pair: {value,pos}, not a stack value)"
+  ],
+  "conflicts": "Same 8-byte layout in all four chunks; only field names/union differ. chunk 014 ScrVarSetTarget (0x10 bytes, value at +8) is not a structure: it is two adjacent VariableValue stack slots (top[0], top[1]); see ScrVarEntry notes. Type code 7 is called FRAMEREF in chunk 017, CODEPOS in 016 (same value; marks a saved call frame inside a stack buffer).",
+  "confidence": "high"
+ },
+ {
+  "name": "ScrVarEntry",
+  "size": "0x10",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint16",
+    "name": "var",
+    "evidence": "hash-slot view: variable id stored in this slot; ScrVar_FindInBucket/AllocateInSlot (chunk 014) and Scr_GetNextSibling (015: link_a) both read it [observed]"
+   },
+   {
+    "offset": "0x02",
+    "type": "uint16",
+    "name": "link2",
+    "evidence": "slot back link / free-list prev; ScrVar_InitFreeList sets prev here [observed]; chunk 015 calls it link_b"
+   },
+   {
+    "offset": "0x04",
+    "type": "union { uint32 value; struct { uint16 refCount; uint16 aux; } s; }",
+    "name": "u",
+    "evidence": "payload for value-typed entries; for object entries refCount (+4) = extra references (also free-list next) and aux (+6) = entity index / thread self object id / array element count / entity release-chain link [observed in AllocEntity/AllocThread/AllocArray/QueueEntityRelease]"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint32",
+    "name": "info",
+    "evidence": "bits0-4 type (0..0x17), bits5-6 status (0x20 chained,0x40 bucket head,0x60 value/unused), bits8-31 name key (string id, 0x10000+id, or (int+0x800000)&0xffffff); for threads: type 0x10 string id, 0x11 wake tick, 0x12 parent local id; for entities: class number [observed]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint16",
+    "name": "link12",
+    "evidence": "slot ring link used by FindInBucket/UnlinkChild [observed in chunk 014]; chunk 015 calls it pad_0c and never touches it"
+   },
+   {
+    "offset": "0x0e",
+    "type": "uint16",
+    "name": "link14",
+    "evidence": "child ring link: first child = g_scrVar[g_scrVar[id].link14].var; chunk 015 calls it link_slot [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_014_types.h (var,link2,u,info,link12,link14)",
+   "chunk_015_types.h (link_a,link_b,value,flags,pad_0c,link_slot)",
+   "chunk_017_types.h (implicit: Scr_GetSiblingViaPrevLinks users)"
+  ],
+  "conflicts": "Identical size/offsets. Chunk 015's pad_0c is only unused in that chunk (chunk 014 uses it in 14 functions). Pool 0x08297500, 0x10000 entries (ids 0..0xfffd valid, 0xfffe = pseudo id for a pending entity field).",
+  "confidence": "high"
+ },
+ {
+  "name": "ScrVmFrame",
+  "size": "0x18",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const uint8 *",
+    "name": "pos",
+    "evidence": "resume code pointer stored before a call-out; printed by ScrRuntime_ReportTrace as pc [observed 013/016/017]"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "localId",
+    "evidence": "thread local-variable object of the function in this cell; 0 selects the 'started from' form in the trace printer; Scr_RestoreVarList writes scr_call_stack[k].id [observed 013 flags==0 test, 017]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "localVarCount",
+    "evidence": "number of local variable ids this frame pushed on scrVmPub.localVars; Scr_BuildVarList reads g_083d8a8c[2]*-4, Scr_RestoreVarList writes .count via Scr_PushChainIds [observed 016/017]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "VariableValue *",
+    "name": "callMarker",
+    "evidence": "slot overwritten with the call marker type for inline calls [observed 016]"
+   },
+   {
+    "offset": "0x10",
+    "type": "VariableValue *",
+    "name": "callerStartTop",
+    "evidence": "saved startTop of the caller [observed 016]"
+   },
+   {
+    "offset": "0x14",
+    "type": "int",
+    "name": "callMarkerType",
+    "evidence": "saved type of callMarker [observed 016]"
+   }
+  ],
+  "defined_in": [
+   "chunk_016_types.h (ScrVmFrame)",
+   "chunk_013_types.h (scr_call_entry_s {pc,flags,unk_08[4]})",
+   "chunk_017_types.h (cod2_scr_frame_s {owner,value,word2..5}, cod2_scr_thread_s {owner,id,count,pad[3]})"
+  ],
+  "conflicts": "Four views of the array at 0x083d8aa0 (scrVmPub+0x20, 32 cells). 013's 'flags' is localId; 017's 'owner' is pos, 'value' is localId in frame view and 'id' in thread view, 'word2'/'count' is localVarCount. Chunk 017 words 3..5 correspond to callMarker/callerStartTop/callMarkerType (not touched there).",
+  "confidence": "high"
+ },
+ {
+  "name": "scrVmPub_t",
+  "size": "0x320",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint32 *",
+    "name": "localVars",
+    "evidence": "top of the local variable id stack (grows upward; base is &scrVmGlob_starttime 0x083dce9c) [observed VM_Init]"
+   },
+   {
+    "offset": "0x04",
+    "type": "VariableValue *",
+    "name": "maxstack",
+    "evidence": "&scrVmStack[2047] [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "function_count",
+    "evidence": "called scr_call_depth in chunks 013/017 [observed addresses 0x083d8a88]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "ScrVmFrame *",
+    "name": "function_frame",
+    "evidence": "next free frame cell = g_083d8a8c [observed]"
+   },
+   {
+    "offset": "0x10",
+    "type": "VariableValue *",
+    "name": "top",
+    "evidence": "value stack top as seen by builtins = g_083d8a90 [observed]"
+   },
+   {
+    "offset": "0x14",
+    "type": "uint8",
+    "name": "debugCode",
+    "evidence": "chunk 013 scr_error_plain (0x083d8a94); set to 1 by Scr_ExecNamedCall [observed]"
+   },
+   {
+    "offset": "0x15",
+    "type": "uint8",
+    "name": "abort_on_error",
+    "evidence": "chunk 013 scr_error_recoverable; receives the 'developer' dvar value from Scr_Settings arg 3 [observed Com_ApplyDeveloperOptions call]"
+   },
+   {
+    "offset": "0x16",
+    "type": "uint8",
+    "name": "terminal_error",
+    "evidence": "chunk 013/017 scr_error_fatal; set by Scr_ErrorAndDisable and by Scr_ErrorInternal when developer&&loading [observed]"
+   },
+   {
+    "offset": "0x17",
+    "type": "uint8",
+    "name": "pad",
+    "evidence": "not accessed"
+   },
+   {
+    "offset": "0x18",
+    "type": "int",
+    "name": "outparamcount",
+    "evidence": "g_083d8a98: values pushed by a builtin [observed Scr_ReserveStackSlot]"
+   },
+   {
+    "offset": "0x1c",
+    "type": "int",
+    "name": "inparamcount",
+    "evidence": "g_083d8a9c: arguments handed to a builtin [observed Scr_GetInt param check]"
+   },
+   {
+    "offset": "0x20",
+    "type": "ScrVmFrame[32]",
+    "name": "function_frame_start",
+    "evidence": "0x083d8aa0 = scr_call_stack [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_016_types.h (scrVmPub_t)",
+   "chunk_013_types.h (scr_call_depth, scr_error_*, scr_call_stack as separate globals)",
+   "chunk_017_types.h (g_083d8a84/8c/90/98/9c as separate globals, scrVmPub typed uint8*/int*)",
+   "chunk_018_types.h (extern int *scrVmPub)"
+  ],
+  "conflicts": "Chunks 017/018 use the symbol scrVmPub for the first word only (uint8* / int*), i.e. localVars; chunk 016 uses it for the whole struct. Chunk 013/017 name the three flag bytes by effect (plain/recoverable/fatal); 016 by origin (debugCode/abort_on_error/terminal_error). Same bytes.",
+  "confidence": "high"
+ },
+ {
+  "name": "ScrClassInfo",
+  "size": "0x0c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint16",
+    "name": "fieldMapId",
+    "evidence": "array object mapping field name -> field index/offset; allocated second by Scr_InitClass [observed 0x0807e78c]"
+   },
+   {
+    "offset": "0x02",
+    "type": "uint16",
+    "name": "entArrayId",
+    "evidence": "array of the live script entity objects of the class, key Bias24(index); allocated first [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "classChar",
+    "evidence": "low byte 'e','h','p','v' [observed table dump]"
+   },
+   {
+    "offset": "0x08",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "\"entity\",\"hudelem\",\"pathnode\",\"vehiclenode\" [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_014_types.h (ScrClassInfo {fieldObject,entityList,...})",
+   "chunk_015_types.h (ScrClassDef {fieldMapId,entArrayId})",
+   "chunk_016_types.h (ScrClassMapEntry {field0,classnum,id,name})"
+  ],
+  "conflicts": "Same table at 0x0817d920, 4 entries. 014's names fieldObject(+0)/entityList(+2) agree with 015's fieldMapId/entArrayId; 016 labels +2 'classnum', which is wrong (it is the entity-array id; class number is the table index).",
+  "confidence": "high"
+ },
+ {
+  "name": "ScrStackBuffer (header, packed)",
+  "size": "0x0b",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const uint8 *",
+    "name": "owner",
+    "evidence": "resume code pointer; owner[-1]=opcode that suspended (0x77 selects waittillmatch argument comparison), owner[0]=parameter count [observed Scr_RunVarListCalls]"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint16",
+    "name": "count",
+    "evidence": "number of 5-byte records [observed Scr_BuildVarList]"
+   },
+   {
+    "offset": "0x06",
+    "type": "uint16",
+    "name": "size",
+    "evidence": "0x0b + 5*count (allocation size passed to StrPool_FreeBlock) [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint16",
+    "name": "head",
+    "evidence": "local id of the innermost thread (chain via info>>8) [observed]"
+   },
+   {
+    "offset": "0x0a",
+    "type": "uint8",
+    "name": "tag",
+    "evidence": "scrVarPub_time & 0xff at suspend; mismatch on restore triggers Scr_SampleTimers [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_017_types.h (cod2_scr_varlist_s)",
+   "chunk_015_types.h (ScrFrameHeader {pad[4],recordCount@4,pad[2],varId@8,pad_0a,records@0xb})"
+  ],
+  "conflicts": "Chunk 015 reads the same block as a 'code frame object' for Scr_GetFrameWeight; offsets 4, 8, 0xb agree. 016 passes it around as an opaque uint32 stringValue of a VAR_STACK value.",
+  "confidence": "high"
+ },
+ {
+  "name": "ScrStackRecord (packed)",
+  "size": "0x05",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint8",
+    "name": "type",
+    "evidence": "value type; 7 marks a nested call frame [observed Scr_RestoreVarList]"
+   },
+   {
+    "offset": "0x01",
+    "type": "uint32",
+    "name": "value",
+    "evidence": "unaligned [observed cod2_load_u32]"
+   }
+  ],
+  "defined_in": [
+   "chunk_017_types.h (cod2_scr_varrec_s)",
+   "chunk_015_types.h (ScrFrameRecord)"
+  ],
+  "conflicts": "None.",
+  "confidence": "high"
+ },
+ {
+  "name": "ScrStringRecord",
+  "size": "0x08",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint8",
+    "name": "length",
+    "evidence": "text length + 1 for interned C strings; chunk 013 [observed ScrStr_FindNulIndex]"
+   },
+   {
+    "offset": "0x01",
+    "type": "uint8",
+    "name": "flags",
+    "evidence": "bit 0x04 permanent; set by ScrStr_SetRefFlag/SetFlagOrDecRef [inferred]"
+   },
+   {
+    "offset": "0x02",
+    "type": "int16",
+    "name": "refcount",
+    "evidence": "ScrStr_AddRef increments the word at +2 [observed disassembly 0x08079b8c]"
+   },
+   {
+    "offset": "0x04",
+    "type": "char[4]",
+    "name": "text",
+    "evidence": "inline text; longer strings continue in following 8-byte units [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_013_types.h (scr_string_s)"
+  ],
+  "conflicts": "Single definition. handle = (record - 0x08206f80)/8; 64K units.",
+  "confidence": "high"
+ },
+ {
+  "name": "ScrStringHashNode",
+  "size": "0x04",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint16",
+    "name": "link",
+    "evidence": "bits0-13 next node index, bits14-15 state (0x8000 head in use, 0x4000 chained); node 0 link is the free-list head [observed chunk 013 ScrStr_Init]"
+   },
+   {
+    "offset": "0x02",
+    "type": "uint16",
+    "name": "handle",
+    "evidence": "string pool handle held by the node [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_013_types.h (sl_hash_node_s)",
+   "chunk_014_types.h (ScrStrSlot {flags (mask 0xc000), stringId})"
+  ],
+  "conflicts": "Same table 0x08287400, 0x4000 entries; 014's 'flags' is 013's 'link', 014's stringId is 013's handle.",
+  "confidence": "high"
+ },
+ {
+  "name": "ScrVectorBlock",
+  "size": "0x10",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint16",
+    "name": "refCount",
+    "evidence": "Scr_VectorAddRef/Release operate on vec-4 [observed]"
+   },
+   {
+    "offset": "0x02",
+    "type": "uint16",
+    "name": "pad",
+    "evidence": "zeroed by *block=0 in Scr_AllocVectorBlock [observed]"
+   },
+   {
+    "offset": "0x03",
+    "type": "uint8",
+    "name": "constFlag (0 = heap block)",
+    "evidence": "byte at vec-1; nonzero for constants embedded in bytecode which are never freed [observed Scr_VectorRelease]"
+   },
+   {
+    "offset": "0x04",
+    "type": "float[3]",
+    "name": "v",
+    "evidence": "the vec3; VariableValue.u.vector points here [observed]"
+   },
+   {
+    "offset": "0x10",
+    "type": "-",
+    "name": "end",
+    "evidence": "16-byte MT allocation (StrPool_AllocBlock(0x10,2))"
+   }
+  ],
+  "defined_in": [
+   "chunk_014_types.h (uses raw unsigned int* and char* in Scr_AllocVectorBlock/Scr_VectorRelease)"
+  ],
+  "conflicts": "No struct is declared in the chunks; this is derived from the accessor offsets. The byte at +3 is derived from `*(vec-1)==0` which is the high byte of the zeroed first dword.",
+  "confidence": "medium"
+ },
+ {
+  "name": "scrVarPub (proposed global block 0x08397500..0x0839754f)",
+  "size": "0x50",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "char *",
+    "name": "fieldRecords",
+    "evidence": "g_08397500; radiant field records list [observed 015]"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "unknownPtr",
+    "evidence": "0x08397504 written by Scr_InitSymbolPools; role unknown"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint16",
+    "name": "maxFieldSlot",
+    "evidence": "g_08397508; last field-name slot (movzx word in disassembly 0x0807c428); chunk 014 declares uint32 [observed]"
+   },
+   {
+    "offset": "0x0a",
+    "type": "uint8",
+    "name": "developer",
+    "evidence": "scr_debug_enabled [observed]"
+   },
+   {
+    "offset": "0x0b",
+    "type": "uint8",
+    "name": "developer_script",
+    "evidence": "[observed Scr_Settings]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint8",
+    "name": "evaluate",
+    "evidence": "= scr_compile_error_deferred in chunks 013/015/017 [observed]"
+   },
+   {
+    "offset": "0x10",
+    "type": "const char *",
+    "name": "error_message",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x14",
+    "type": "int",
+    "name": "error_index",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x18",
+    "type": "uint32",
+    "name": "time",
+    "evidence": "tick, masked 0xffffff [observed]"
+   },
+   {
+    "offset": "0x1c",
+    "type": "uint32",
+    "name": "timeArrayId",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x20",
+    "type": "uint32",
+    "name": "notifyArrayId",
+    "evidence": "unconfirmed name; thread -> registrations reverse index [inferred]"
+   },
+   {
+    "offset": "0x24",
+    "type": "uint32",
+    "name": "levelId",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x28",
+    "type": "uint32",
+    "name": "gameId",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x2c",
+    "type": "uint32",
+    "name": "animId",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x30",
+    "type": "uint32",
+    "name": "freeEntList",
+    "evidence": "entity release chain head [observed]"
+   },
+   {
+    "offset": "0x34",
+    "type": "uint32",
+    "name": "tempVariable",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x38",
+    "type": "uint8",
+    "name": "inited",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x3c",
+    "type": "int",
+    "name": "g_0839753c",
+    "evidence": "compile-side counter; role unknown"
+   },
+   {
+    "offset": "0x40",
+    "type": "uint32",
+    "name": "pendingFieldObject",
+    "evidence": "[observed 014]"
+   },
+   {
+    "offset": "0x44",
+    "type": "uint32",
+    "name": "pendingFieldName",
+    "evidence": "[observed 014]"
+   },
+   {
+    "offset": "0x48",
+    "type": "uint8 *",
+    "name": "codeBase",
+    "evidence": "scr_code_base / g_08397548 [observed]"
+   },
+   {
+    "offset": "0x4c",
+    "type": "uint8 *",
+    "name": "codeEnd",
+    "evidence": "g_0839754c [observed Scr_IsInCodeRange]"
+   }
+  ],
+  "defined_in": [
+   "chunk_013_types.h",
+   "chunk_014_types.h",
+   "chunk_015_types.h",
+   "chunk_016_types.h",
+   "chunk_017_types.h"
+  ],
+  "conflicts": "Not a declared struct in any chunk; the globals are declared separately, with conflicts: 0x08397508 uint32 (014) vs uint16 (code); 0x0839750c scr_compile_error_deferred (013/015/017) vs scrVarPub_evaluate (016); 0x08397520 'field-notify table' (014), 'float-weight root' (015), 'secondary root' (017), notifyArrayId (016). Treat as a proposal for a single block; sizes of unknown gaps unproven.",
+  "confidence": "medium"
+ },
+ {
+  "name": "scrVmGlob (0x083dce78..0x083dce9f)",
+  "size": "0x28",
+  "fields": [
+   {
+    "offset": "0x08",
+    "type": "uint32",
+    "name": "resultFirst",
+    "evidence": "0x083dce80; first word of the static one-entry result stack used by Scr_RunSetup [observed]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint32",
+    "name": "resultSecond",
+    "evidence": "0x083dce84 [observed]"
+   },
+   {
+    "offset": "0x18",
+    "type": "const char *",
+    "name": "dialog_error_message",
+    "evidence": "0x083dce90 [observed]"
+   },
+   {
+    "offset": "0x1c",
+    "type": "int",
+    "name": "loading",
+    "evidence": "0x083dce94, Scr_SetLoading [observed]"
+   },
+   {
+    "offset": "0x20",
+    "type": "uint32",
+    "name": "tsc",
+    "evidence": "0x083dce98 = rdtsc>>16 written by Scr_SampleTimers [observed]"
+   },
+   {
+    "offset": "0x24",
+    "type": "int",
+    "name": "starttime",
+    "evidence": "0x083dce9c = Sys_Milliseconds at last sample; also localVars base [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_016_types.h (separate globals)",
+   "chunk_017_types.h (g_083dce78[], g_083dce98)"
+  ],
+  "conflicts": "Offsets 0x00..0x07 and 0x10..0x17 not touched by any chunk. Proposal only.",
+  "confidence": "low"
+ },
+ {
+  "name": "ScrFileEntry (debug)",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint32",
+    "name": "key",
+    "evidence": "source file key [observed 013]"
+   },
+   {
+    "offset": "0x04",
+    "type": "int32",
+    "name": "first_line",
+    "evidence": "index into line table [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int32",
+    "name": "line_count",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint32[2]",
+    "name": "unk",
+    "evidence": "not touched by chunk 013"
+   }
+  ],
+  "defined_in": [
+   "chunk_013_types.h (scr_file_entry_s)"
+  ],
+  "conflicts": "Single definition.",
+  "confidence": "medium"
+ },
+ {
+  "name": "ScrLineEntry (debug)",
+  "size": "0x08",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int32",
+    "name": "value",
+    "evidence": "line number or -1/-2 pending markers [observed]"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "flags",
+    "evidence": "bit0 resolves pending, bit2 set by SetPendingEntry [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_013_types.h (scr_line_s)"
+  ],
+  "conflicts": "Single definition.",
+  "confidence": "medium"
+ },
+ {
+  "name": "ScrFrameText (debug)",
+  "size": "0x18",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint32",
+    "name": "id",
+    "evidence": "code key"
+   },
+   {
+    "offset": "0x04",
+    "type": "char *",
+    "name": "name",
+    "evidence": "heap copy of file name"
+   },
+   {
+    "offset": "0x08",
+    "type": "char *",
+    "name": "source",
+    "evidence": "source text or NULL"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int32",
+    "name": "source_len",
+    "evidence": "-1 when no text"
+   },
+   {
+    "offset": "0x10",
+    "type": "int32",
+    "name": "current_line",
+    "evidence": "init -1"
+   },
+   {
+    "offset": "0x14",
+    "type": "uint8",
+    "name": "is_debug",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_013_types.h (scr_frame_s)"
+  ],
+  "conflicts": "Single definition.",
+  "confidence": "medium"
+ },
+ {
+  "name": "ScrBuiltinDef",
+  "size": "0x0c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "[observed table dumps 0x08188040,0x08188720,0x08158a40,0x0815e3a0,0x0815a180]"
+   },
+   {
+    "offset": "0x04",
+    "type": "void *",
+    "name": "handler",
+    "evidence": "void(*)(void) for functions, void(*)(uint32 entref) for methods [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "developerOnly",
+    "evidence": "1 for print,println,print3d,line,assert,assertex,assertmsg,getentbynum in the function table; 0 elsewhere; unused by hudelem lookup [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_050_types.h (cod2_scrfunc_s)",
+   "chunk_051_types.h (entityMethodDef_t)",
+   "chunk_046_types.h (playerMethodDef_t)",
+   "chunk_048_types.h (hudelem_method_s)"
+  ],
+  "conflicts": "None. Table sizes: functions 145 (0x91 in 050), entity methods 59 (0x3b in 050), player 59, mover 12, hudelem 18. Chunk 051 says the 12-entry mover table at 0x0815e3a0 is 'the entity method table'; chunk 050 says the 59-entry table at 0x08188720 is; both exist (Scr_GetMethod searches both).",
+  "confidence": "high"
+ },
+ {
+  "name": "EntityFieldDef",
+  "size": "0x10",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "[observed dump 0x0815e820, 10 entries]"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "ofs",
+    "evidence": "byte offset in gentity [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "type",
+    "evidence": "0 int,1 float,2 inline string,3 script string id,4 vec3,5 entity*,6 yaw (0,v,0),7 u16 object,8 model-name byte [observed Scr_AddEntityFieldValue/SetEntityFieldGeneric]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "void (*)(gentity_s*,int)",
+    "name": "setter",
+    "evidence": "null -> Scr_SetEntityFieldGeneric(ent,type,ofs); getters are always generic [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_051_types.h (entityFieldDef_t)"
+  ],
+  "conflicts": "Single definition; same prefix as PlayerFieldDef.",
+  "confidence": "high"
+ },
+ {
+  "name": "PlayerFieldDef",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "[observed dump 0x08157ce0, 13 entries]"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "offset",
+    "evidence": "offset in gclient (0x28a4 bytes), fields tagged 0xc000|index in the class map [observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "type",
+    "evidence": "same codes as EntityFieldDef"
+   },
+   {
+    "offset": "0x0c",
+    "type": "void (*)(int obj,const PlayerFieldDef*)",
+    "name": "setter",
+    "evidence": "0x080f7d90 = read-only handler for name and pers [observed]"
+   },
+   {
+    "offset": "0x10",
+    "type": "void (*)(int obj,const PlayerFieldDef*)",
+    "name": "getter",
+    "evidence": "null -> Scr_AddEntityFieldValue [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_046_types.h (playerFieldDef_t)"
+  ],
+  "conflicts": "Single definition. Note the chunk 051 comment that gentity+0x158 is a 'class-1 script object' is wrong: Scr_SetPlayerField is passed the gclient pointer.",
+  "confidence": "high"
+ },
+ {
+  "name": "HudElemFieldDef",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "[observed dump 0x08159ee0, 15 entries]"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "offset",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "type",
+    "evidence": "0 int,1 float,3 script string,7 packed,-1 handled only by setter/getter [observed]"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint32",
+    "name": "mask",
+    "evidence": "packed-field mask [observed]"
+   },
+   {
+    "offset": "0x10",
+    "type": "uint8",
+    "name": "shift",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x14",
+    "type": "void (*)(hudelem_s*,int)",
+    "name": "setter",
+    "evidence": "script writes the field; e.g. font: 0x081038ea -> 0x081034de, which reads the script parameter; label: 0x08103660 [observed in disassembly]"
+   },
+   {
+    "offset": "0x18",
+    "type": "void (*)(hudelem_s*,int)",
+    "name": "getter",
+    "evidence": "script reads the field; wrappers such as 0x08103924 call HudElem_AddPackedFieldString 0x08103618 which pushes via Scr_AddString [observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_048_types.h (hudelem_field_s: +0x14 getter, +0x18 setter)",
+   "chunk_047_types.h (size 0x14, per game.structs.json)",
+   "analysis/subsystems/game.structs.json (hudelem_field_t: +0x14 getter, +0x18 setter, 'inferred')"
+  ],
+  "conflicts": "CONTRADICTION with chunks 047/048 and game.structs.json on which slot is the getter. Evidence for setter=+0x14, getter=+0x18: rows label/fontscale/foreground/archived have only +0x14 (write-only from script, reads fall to the generic path), font/alignx/aligny/horzalign/vertalign/color/alpha have both; disassembly of the +0x14 entry for font (0x081038ea) calls 0x081034de which reads a script parameter, while the +0x18 entry (0x08103924) calls 0x08103618 which pushes a string with Scr_AddString 0x08085262; callers: Scr_SetObjectField (script writes) calls HudElem_FieldRead 0x08103ba6, which uses +0x14. Both tables otherwise agree.",
+  "confidence": "high"
+ },
+ {
+  "name": "GametypeEntry",
+  "size": "0x84",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "char[0x40]",
+    "name": "name",
+    "evidence": "gametype name, e.g. file name stem [observed chunk 050]"
+   },
+   {
+    "offset": "0x40",
+    "type": "char[0x40]",
+    "name": "description",
+    "evidence": "from maps/mp/gametypes/<name>.txt [observed strings 'GameType description file']"
+   },
+   {
+    "offset": "0x80",
+    "type": "int",
+    "name": "teamBased",
+    "evidence": "[inferred]"
+   }
+  ],
+  "defined_in": [
+   "chunk_050_types.h (cod2_gametype_s)",
+   "chunk_051_types.h (namedEntry_t {name[0x40], data[0x44]})"
+  ],
+  "conflicts": "Same table at 0x0884d72c (0x20 entries, count at 0x0884d728); chunk 051 only knows the name part and uses it for NamedEntryTable_Find/Has (0x08118260/0x081182ca).",
+  "confidence": "medium"
+ },
+ {
+  "name": "ScrObjective",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "state",
+    "evidence": "[observed 050]"
+   },
+   {
+    "offset": "0x04",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "entNum",
+    "evidence": "0x3ff = none [observed]"
+   },
+   {
+    "offset": "0x14",
+    "type": "int",
+    "name": "unk14",
+    "evidence": "unknown"
+   },
+   {
+    "offset": "0x18",
+    "type": "int",
+    "name": "icon",
+    "evidence": "[observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_050_types.h (cod2_objective_s)",
+   "analysis/subsystems/game.structs.json (objective_t)"
+  ],
+  "conflicts": "Single chunk definition; 16 slots at 0x0864c3a4.",
+  "confidence": "medium"
+ },
+ {
+  "name": "ScrThreadDumpRec",
+  "size": "0x8c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int[32]",
+    "name": "stack",
+    "evidence": "code positions, innermost first [observed Scr_DumpScriptThreads]"
+   },
+   {
+    "offset": "0x80",
+    "type": "int",
+    "name": "depth",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x84",
+    "type": "float",
+    "name": "varUsage",
+    "evidence": "Scr_GetVarWeight sum [observed]"
+   },
+   {
+    "offset": "0x88",
+    "type": "float",
+    "name": "endonUsage",
+    "evidence": "[observed]"
+   }
+  ],
+  "defined_in": [
+   "chunk_014_types.h"
+  ],
+  "conflicts": "Single definition.",
+  "confidence": "medium"
+ },
+ {
+  "name": "gentity_s (script-visible fields only)",
+  "size": "0x230",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "int",
+    "name": "number",
+    "evidence": "entity index; Scr_AddEntityParam passes it as the class-0 object index [observed 051/050/103]"
+   },
+   {
+    "offset": "0x138",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "entity field 'origin' [observed field table]"
+   },
+   {
+    "offset": "0x144",
+    "type": "float[3]",
+    "name": "angles",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x158",
+    "type": "gclient_s *",
+    "name": "client",
+    "evidence": "chunk 051 calls it clientData [observed]; player script fields operate on it"
+   },
+   {
+    "offset": "0x164",
+    "type": "uint8",
+    "name": "modelName",
+    "evidence": "field 'model' type 8 [observed]"
+   },
+   {
+    "offset": "0x168",
+    "type": "uint16",
+    "name": "classname",
+    "evidence": "script string id [observed]"
+   },
+   {
+    "offset": "0x16a",
+    "type": "uint16",
+    "name": "target",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x16c",
+    "type": "uint16",
+    "name": "targetname",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x170",
+    "type": "int",
+    "name": "spawnflags",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x194",
+    "type": "int",
+    "name": "health",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x19c",
+    "type": "int",
+    "name": "dmg",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x1a0",
+    "type": "int",
+    "name": "count",
+    "evidence": "[observed]"
+   },
+   {
+    "offset": "0x218",
+    "type": "int16[7]",
+    "name": "scrStrings",
+    "evidence": "script string slots released by G_FreeEntityFields [chunk 051, inferred]"
+   }
+  ],
+  "defined_in": [
+   "chunk_046_types.h",
+   "chunk_048_types.h (number_00)",
+   "chunk_050_types.h (cod2_gentity_s)",
+   "chunk_051_types.h (gentity_s)",
+   "chunk_103_types.h"
+  ],
+  "conflicts": "Only offsets used by the script layer are listed; the full reconciled layout belongs to game.structs.json. 046 names +0x90 clientNum; 048 names +0 number_00; 051 names +0x158 clientData (it is the gclient pointer, same as client in 046/048/050/103).",
+  "confidence": "medium"
+ }
+]

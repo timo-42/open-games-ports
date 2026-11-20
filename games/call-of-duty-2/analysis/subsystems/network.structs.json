@@ -1,0 +1,2872 @@
+[
+ {
+  "name": "msg_s",
+  "size": "0x18",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "int32",
+    "name": "overflowed",
+    "evidence": "MSG_Init memset 0x18; set to 1 by every overflow path (chunk_008 0x08067bd8..)"
+   },
+   {
+    "offset": "0x4",
+    "type": "byte *",
+    "name": "data",
+    "evidence": "MSG_Init stores data; every writer/reader"
+   },
+   {
+    "offset": "0x8",
+    "type": "int32",
+    "name": "maxsize",
+    "evidence": "MSG_Init; MSG_WriteData bound; Sys_GetPacket recvfrom size"
+   },
+   {
+    "offset": "0xc",
+    "type": "int32",
+    "name": "cursize",
+    "evidence": "bytes in use / packet length"
+   },
+   {
+    "offset": "0x10",
+    "type": "int32",
+    "name": "readcount",
+    "evidence": "byte read cursor; Netchan_Process fragment copy"
+   },
+   {
+    "offset": "0x14",
+    "type": "int32",
+    "name": "bit",
+    "evidence": "absolute bit cursor; MSG_WriteBits/ReadBits (chunk_008 0x08067c62, 0x08067e20)"
+   }
+  ],
+  "defined_in": [
+   "chunk_008_types.h",
+   "chunk_038_types.h",
+   "chunk_100_types.h",
+   "chunk_009_types.h",
+   "chunk_006_types.h",
+   "chunk_020_types.h",
+   "chunk_021_types.h"
+  ],
+  "conflicts": "chunk_009/006/021 define only 4-5 fields (no bit); chunk_020 defines it as 0x20 bytes with a 0x0c tail; chunk_021 names offset 0 allowoverflow, chunk_020 w0. Size 0x18 is fixed by MSG_Init's memset(0x18). Offset-0 name 'overflowed' (008) is supported by code that sets it to 1 on overflow, so 'allowoverflow' is wrong.",
+  "confidence": "high"
+ },
+ {
+  "name": "netadr_s",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "int32",
+    "name": "type",
+    "evidence": "NET_CompareBaseAdrSigned/NET_SendPacket switch; 0 bot, 1 bad, 2 loopback, 3 broadcast, 4 IP, 5 IPX, 6 broadcast IPX"
+   },
+   {
+    "offset": "0x4",
+    "type": "uint8[4]",
+    "name": "ip",
+    "evidence": "SockadrToNetadr memcpy 4 bytes (chunk_038 0x080d51de)"
+   },
+   {
+    "offset": "0x8",
+    "type": "uint16",
+    "name": "port",
+    "evidence": "network byte order; SockadrToNetadr; NET_AdrToString BigShort"
+   },
+   {
+    "offset": "0xa",
+    "type": "uint8[10]",
+    "name": "ipx",
+    "evidence": "NET_AdrToString IPX format; NET_CompareAdrSigned memcmp 10"
+   }
+  ],
+  "defined_in": [
+   "chunk_009_types.h",
+   "chunk_038_types.h",
+   "chunk_020_types.h",
+   "chunk_101_types.h",
+   "chunk_006_types.h",
+   "chunk_021_types.h",
+   "chunk_022_types.h"
+  ],
+  "conflicts": "chunk_101 puts ipx[10] at +8 and port at +0x12 (contradicted by Sys_GetPacket/NET_AdrToString and chunk_009/038 asserts). chunk_020 models +4 as uint32 ip, +8 uint16 port, +0xa uint16 pad, +0xc/+0x10 unnamed words (compatible). chunk_006 uses int words[5]. chunk_009 comment omits types 3 and 6. Passed by value as 5 stack dwords.",
+  "confidence": "high"
+ },
+ {
+  "name": "netchan_s",
+  "size": "0x40040",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "int32",
+    "name": "outgoingSequence",
+    "evidence": "Netchan_Transmit writes then ++; SV_Netchan_Encode key; client+0x6e6c4"
+   },
+   {
+    "offset": "0x4",
+    "type": "int32",
+    "name": "sock",
+    "evidence": "0 = client1, 1 = server; Netchan_Setup(1,...); qport written when sock<1, skipped when sock==1"
+   },
+   {
+    "offset": "0x8",
+    "type": "int32",
+    "name": "dropped",
+    "evidence": "Netchan_Process dropped = seq - incoming - 1"
+   },
+   {
+    "offset": "0xc",
+    "type": "int32",
+    "name": "incomingSequence",
+    "evidence": "Netchan_Process"
+   },
+   {
+    "offset": "0x10",
+    "type": "netadr_s",
+    "name": "remoteAddress",
+    "evidence": "client+0x6e6d4"
+   },
+   {
+    "offset": "0x24",
+    "type": "int32",
+    "name": "qport",
+    "evidence": "client+0x6e6e8"
+   },
+   {
+    "offset": "0x28",
+    "type": "int32",
+    "name": "fragmentSequence",
+    "evidence": "Netchan_Process"
+   },
+   {
+    "offset": "0x2c",
+    "type": "int32",
+    "name": "fragmentLength",
+    "evidence": "Netchan_Process"
+   },
+   {
+    "offset": "0x30",
+    "type": "byte[0x20000]",
+    "name": "fragmentBuffer",
+    "evidence": "Netchan_Process memcpy dest"
+   },
+   {
+    "offset": "0x20030",
+    "type": "int32",
+    "name": "unsentFragments",
+    "evidence": "client+0x8e6f4; SV_SendClientMessages tests it"
+   },
+   {
+    "offset": "0x20034",
+    "type": "int32",
+    "name": "unsentFragmentStart",
+    "evidence": "Netchan_TransmitNextFragment"
+   },
+   {
+    "offset": "0x20038",
+    "type": "int32",
+    "name": "unsentLength",
+    "evidence": "Netchan_Transmit"
+   },
+   {
+    "offset": "0x2003c",
+    "type": "byte[0x20000]",
+    "name": "unsentBuffer",
+    "evidence": "Netchan_Transmit Com_Memcpy dest"
+   },
+   {
+    "offset": "0x4003c",
+    "type": "netprof_s *",
+    "name": "profile",
+    "evidence": "NetProfile_Sync(&chan->profile); client+0xae700"
+   }
+  ],
+  "defined_in": [
+   "chunk_009_types.h",
+   "chunk_022_types.h",
+   "chunk_023_types.h"
+  ],
+  "conflicts": "chunk_022 asserts size 0x4003c and hides profile (kept as client_s.netProfile at 0xae700, same address); chunk_023 asserts 0x2003c with a truncated tail; chunk_020 treats the head as 'netchanHead[0x10]' at client+0x6e6c4 and passes it to Netchan_Setup. Consistency check: client+0x6e6c4+0x40040 = 0xae704 = client.guid.",
+  "confidence": "high"
+ },
+ {
+  "name": "netprof_half_s",
+  "size": "0x2f0",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "netprof_sample_s[60]",
+    "name": "samples",
+    "evidence": "NetProfile_AddSample ring (time,bytes,fragmented), 12 bytes each"
+   },
+   {
+    "offset": "0x2d0",
+    "type": "int32",
+    "name": "sampleIndex",
+    "evidence": "NetProfile_AddSample"
+   },
+   {
+    "offset": "0x2d4",
+    "type": "int32",
+    "name": "bytesPerSecond",
+    "evidence": "printed as bps; chunk_022 asserts recv.bytesPerSec at netprof+0x5c4 = 0x2f0+0x2d4"
+   },
+   {
+    "offset": "0x2d8",
+    "type": "int32",
+    "name": "lastUpdateTime",
+    "evidence": "NetProfile_ComputeStats"
+   },
+   {
+    "offset": "0x2dc",
+    "type": "int32",
+    "name": "numPackets",
+    "evidence": "chunk_022 name fragDenominator"
+   },
+   {
+    "offset": "0x2e0",
+    "type": "int32",
+    "name": "numFragmented",
+    "evidence": "chunk_022 name fragNumerator"
+   },
+   {
+    "offset": "0x2e4",
+    "type": "int32",
+    "name": "percentFragmented",
+    "evidence": "chunk_022 name fragPercent"
+   },
+   {
+    "offset": "0x2e8",
+    "type": "int32",
+    "name": "maxPacketSize",
+    "evidence": "chunk_022 name maxBytes"
+   },
+   {
+    "offset": "0x2ec",
+    "type": "int32",
+    "name": "minPacketSize",
+    "evidence": "chunk_022 name minBytes; assert recv.minBytes 0x5dc"
+   }
+  ],
+  "defined_in": [
+   "chunk_009_types.h",
+   "chunk_022_types.h"
+  ],
+  "conflicts": "Same offsets, different names: 009 numPackets/numFragmented/percentFragmented/maxPacketSize/minPacketSize vs 022 fragDenominator/fragNumerator/fragPercent/maxBytes/minBytes. 022 names the denominator at 0x2dc and numerator at 0x2e0 (the stats code computes percent = numFragmented*100/numPackets, consistent with 009).",
+  "confidence": "high"
+ },
+ {
+  "name": "netprof_s",
+  "size": "0x5e0",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "netprof_half_s",
+    "name": "outgoing",
+    "evidence": "Netchan_ProfileSend uses +0; chunk_022 'sent'"
+   },
+   {
+    "offset": "0x2f0",
+    "type": "netprof_half_s",
+    "name": "incoming",
+    "evidence": "Netchan_ProfileRecv; chunk_022 'recv'"
+   }
+  ],
+  "defined_in": [
+   "chunk_009_types.h",
+   "chunk_022_types.h"
+  ],
+  "conflicts": "Allocation size 0x5e0 observed in NetProfile_Sync (malloc/memset).",
+  "confidence": "high"
+ },
+ {
+  "name": "loopback_s",
+  "size": "0x5808",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "loopmsg_s[16]",
+    "name": "msgs",
+    "evidence": "NET_GetLoopPacket slot = counter & 0xf; loopmsg_s = {byte data[0x578]; int datalen@0x578; int source@0x57c}, size 0x580"
+   },
+   {
+    "offset": "0x5800",
+    "type": "int32",
+    "name": "get",
+    "evidence": "NET_GetLoopPacket"
+   },
+   {
+    "offset": "0x5804",
+    "type": "int32",
+    "name": "send",
+    "evidence": "NET_SendLoopPacket"
+   }
+  ],
+  "defined_in": [
+   "chunk_009_types.h"
+  ],
+  "conflicts": "Only defined in chunk_009. Array base address not recovered.",
+  "confidence": "medium"
+ },
+ {
+  "name": "node_s",
+  "size": "0x20",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "node_s *",
+    "name": "left",
+    "evidence": "Huff_addRef"
+   },
+   {
+    "offset": "0x4",
+    "type": "node_s *",
+    "name": "right",
+    "evidence": ""
+   },
+   {
+    "offset": "0x8",
+    "type": "node_s *",
+    "name": "parent",
+    "evidence": ""
+   },
+   {
+    "offset": "0xc",
+    "type": "node_s *",
+    "name": "next",
+    "evidence": "weight-ordered list"
+   },
+   {
+    "offset": "0x10",
+    "type": "node_s *",
+    "name": "prev",
+    "evidence": ""
+   },
+   {
+    "offset": "0x14",
+    "type": "node_s **",
+    "name": "head",
+    "evidence": "slot holding leader of the weight block"
+   },
+   {
+    "offset": "0x18",
+    "type": "int32",
+    "name": "weight",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1c",
+    "type": "int32",
+    "name": "symbol",
+    "evidence": "0x100 NYT, 0x101 internal"
+   }
+  ],
+  "defined_in": [
+   "chunk_008_types.h",
+   "chunk_100_types.h"
+  ],
+  "conflicts": "None between 008 and 100 (100 mirrors 008). Q3-style node.",
+  "confidence": "high"
+ },
+ {
+  "name": "huffman_s",
+  "size": "0x701c",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "int32",
+    "name": "blocNode",
+    "evidence": "Huff_Init/addRef"
+   },
+   {
+    "offset": "0x4",
+    "type": "int32",
+    "name": "blocPtrs",
+    "evidence": ""
+   },
+   {
+    "offset": "0x8",
+    "type": "node_s *",
+    "name": "tree",
+    "evidence": ""
+   },
+   {
+    "offset": "0xc",
+    "type": "node_s *",
+    "name": "lhead",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "node_s *",
+    "name": "ltail",
+    "evidence": ""
+   },
+   {
+    "offset": "0x14",
+    "type": "node_s *[257]",
+    "name": "loc",
+    "evidence": "loc[256] = NYT node"
+   },
+   {
+    "offset": "0x418",
+    "type": "node_s **",
+    "name": "freelist",
+    "evidence": "Huff_allocPtr/freePtr"
+   },
+   {
+    "offset": "0x41c",
+    "type": "node_s[768]",
+    "name": "nodeList",
+    "evidence": "0x20 each"
+   },
+   {
+    "offset": "0x641c",
+    "type": "node_s *[768]",
+    "name": "nodePtrs",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_008_types.h",
+   "chunk_100_types.h"
+  ],
+  "conflicts": "None. Two instances form huff_s (0xe038: compressor@0, decompressor@0x701c) at 0x081e9c60; chunk_009 declares them as opaque byte arrays g_081e9c60 / g_081f0c7c (0x081e9c60+0x701c = 0x081f0c7c, consistent).",
+  "confidence": "high"
+ },
+ {
+  "name": "netField_s",
+  "size": "0xc",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "rodata tables (read directly from the binary)"
+   },
+   {
+    "offset": "0x4",
+    "type": "int32",
+    "name": "offset",
+    "evidence": "byte offset into the state struct"
+   },
+   {
+    "offset": "0x8",
+    "type": "int32",
+    "name": "bits",
+    "evidence": "0 float (+/-0x1000 int fast path), -99 float (+/-0x200 fast path), -100 float angle16, N>0 unsigned N bits, N<0 signed |N| bits"
+   }
+  ],
+  "defined_in": [
+   "chunk_008_types.h",
+   "chunk_009_types.h"
+  ],
+  "conflicts": "Compatible. chunk_009 comment says '-100 = float with zero flag', 008 'int-ish float path'; real semantics from asm 0x080692dc described in network.md section 5.4.",
+  "confidence": "high"
+ },
+ {
+  "name": "usercmd_s",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "int32",
+    "name": "serverTime",
+    "evidence": "MSG_WriteDeltaUsercmdKey/ReadDeltaUsercmdKey"
+   },
+   {
+    "offset": "0x4",
+    "type": "uint32",
+    "name": "buttons",
+    "evidence": "bit0 plus bits 1..18 coded as 18-bit unit"
+   },
+   {
+    "offset": "0x8",
+    "type": "uint8",
+    "name": "weapon",
+    "evidence": "7-bit field; SV_UserMove patches from ps+0xd4"
+   },
+   {
+    "offset": "0x9",
+    "type": "uint8",
+    "name": "offHandIndex",
+    "evidence": "7-bit field; SV_UserMove patches from ps+0xd0 (chunk_008 name unk09; ps field name offHandIndex @ playerStateFields 0xd0)"
+   },
+   {
+    "offset": "0xc",
+    "type": "uint32[3]",
+    "name": "angles",
+    "evidence": "low 16 bits significant; MSG_ReadDeltaKeyShort"
+   },
+   {
+    "offset": "0x18",
+    "type": "int8",
+    "name": "forwardMove",
+    "evidence": "UserCmd_MoveClass"
+   },
+   {
+    "offset": "0x19",
+    "type": "int8",
+    "name": "rightMove",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1a",
+    "type": "uint8[2]",
+    "name": "pad",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_008_types.h",
+   "chunk_020_types.h",
+   "chunk_022_types.h",
+   "chunk_041_types.h",
+   "chunk_042_types.h",
+   "chunk_046_types.h"
+  ],
+  "conflicts": "chunk_020 only knows serverTime, w1, b08, b09 and w0c[4] (compatible subset). Fields at 0xa..0xb unused. The wire writer (MSG_WriteDeltaUsercmdKey) has no callers in this binary.",
+  "confidence": "medium"
+ },
+ {
+  "name": "entityState_s",
+  "size": "0xf0",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "int32",
+    "name": "number",
+    "evidence": "first word; written as 10-bit entity number by MSG_WriteDeltaStruct (not in netField table)"
+   },
+   {
+    "offset": "0x4",
+    "type": "uint8",
+    "name": "eType",
+    "evidence": "entityStateFields[12] bits=8"
+   },
+   {
+    "offset": "0x8",
+    "type": "uint24",
+    "name": "eFlags",
+    "evidence": "entityStateFields[13] bits=24"
+   },
+   {
+    "offset": "0xc",
+    "type": "uint8",
+    "name": "pos.trType",
+    "evidence": "entityStateFields[27] bits=8"
+   },
+   {
+    "offset": "0x10",
+    "type": "uint32",
+    "name": "pos.trTime",
+    "evidence": "entityStateFields[0] bits=32"
+   },
+   {
+    "offset": "0x14",
+    "type": "uint32",
+    "name": "pos.trDuration",
+    "evidence": "entityStateFields[45] bits=32"
+   },
+   {
+    "offset": "0x18",
+    "type": "float32",
+    "name": "pos.trBase[0]",
+    "evidence": "entityStateFields[2] bits=0"
+   },
+   {
+    "offset": "0x1c",
+    "type": "float32",
+    "name": "pos.trBase[1]",
+    "evidence": "entityStateFields[1] bits=0"
+   },
+   {
+    "offset": "0x20",
+    "type": "float32",
+    "name": "pos.trBase[2]",
+    "evidence": "entityStateFields[8] bits=0"
+   },
+   {
+    "offset": "0x24",
+    "type": "float32",
+    "name": "pos.trDelta[0]",
+    "evidence": "entityStateFields[3] bits=0"
+   },
+   {
+    "offset": "0x28",
+    "type": "float32",
+    "name": "pos.trDelta[1]",
+    "evidence": "entityStateFields[4] bits=0"
+   },
+   {
+    "offset": "0x2c",
+    "type": "float32",
+    "name": "pos.trDelta[2]",
+    "evidence": "entityStateFields[7] bits=0"
+   },
+   {
+    "offset": "0x30",
+    "type": "uint8",
+    "name": "apos.trType",
+    "evidence": "entityStateFields[33] bits=8"
+   },
+   {
+    "offset": "0x34",
+    "type": "uint32",
+    "name": "apos.trTime",
+    "evidence": "entityStateFields[30] bits=32"
+   },
+   {
+    "offset": "0x38",
+    "type": "uint32",
+    "name": "apos.trDuration",
+    "evidence": "entityStateFields[57] bits=32"
+   },
+   {
+    "offset": "0x3c",
+    "type": "float32(angle16)",
+    "name": "apos.trBase[0]",
+    "evidence": "entityStateFields[9] bits=-100"
+   },
+   {
+    "offset": "0x40",
+    "type": "float32(angle16)",
+    "name": "apos.trBase[1]",
+    "evidence": "entityStateFields[6] bits=-100"
+   },
+   {
+    "offset": "0x44",
+    "type": "float32(angle16)",
+    "name": "apos.trBase[2]",
+    "evidence": "entityStateFields[26] bits=-100"
+   },
+   {
+    "offset": "0x48",
+    "type": "float32",
+    "name": "apos.trDelta[0]",
+    "evidence": "entityStateFields[32] bits=0"
+   },
+   {
+    "offset": "0x4c",
+    "type": "float32",
+    "name": "apos.trDelta[1]",
+    "evidence": "entityStateFields[39] bits=0"
+   },
+   {
+    "offset": "0x50",
+    "type": "float32",
+    "name": "apos.trDelta[2]",
+    "evidence": "entityStateFields[36] bits=0"
+   },
+   {
+    "offset": "0x54",
+    "type": "uint32",
+    "name": "time",
+    "evidence": "entityStateFields[47] bits=32"
+   },
+   {
+    "offset": "0x58",
+    "type": "uint32",
+    "name": "time2",
+    "evidence": "entityStateFields[50] bits=32"
+   },
+   {
+    "offset": "0x5c",
+    "type": "float32",
+    "name": "origin2[0]",
+    "evidence": "entityStateFields[53] bits=0"
+   },
+   {
+    "offset": "0x60",
+    "type": "float32",
+    "name": "origin2[1]",
+    "evidence": "entityStateFields[54] bits=0"
+   },
+   {
+    "offset": "0x64",
+    "type": "float32",
+    "name": "origin2[2]",
+    "evidence": "entityStateFields[52] bits=0"
+   },
+   {
+    "offset": "0x68",
+    "type": "float32",
+    "name": "angles2[0]",
+    "evidence": "entityStateFields[24] bits=0"
+   },
+   {
+    "offset": "0x6c",
+    "type": "float32",
+    "name": "angles2[1]",
+    "evidence": "entityStateFields[5] bits=0"
+   },
+   {
+    "offset": "0x70",
+    "type": "float32",
+    "name": "angles2[2]",
+    "evidence": "entityStateFields[55] bits=0"
+   },
+   {
+    "offset": "0x74",
+    "type": "uint10",
+    "name": "otherEntityNum",
+    "evidence": "entityStateFields[14] bits=10"
+   },
+   {
+    "offset": "0x78",
+    "type": "uint10",
+    "name": "attackerEntityNum",
+    "evidence": "entityStateFields[49] bits=10"
+   },
+   {
+    "offset": "0x7c",
+    "type": "uint10",
+    "name": "groundEntityNum",
+    "evidence": "entityStateFields[20] bits=10"
+   },
+   {
+    "offset": "0x80",
+    "type": "uint32",
+    "name": "constantLight",
+    "evidence": "entityStateFields[56] bits=32"
+   },
+   {
+    "offset": "0x84",
+    "type": "uint8",
+    "name": "loopSound",
+    "evidence": "entityStateFields[51] bits=8"
+   },
+   {
+    "offset": "0x88",
+    "type": "uint8",
+    "name": "surfType",
+    "evidence": "entityStateFields[15] bits=8"
+   },
+   {
+    "offset": "0x8c",
+    "type": "uint10",
+    "name": "index",
+    "evidence": "entityStateFields[38] bits=10"
+   },
+   {
+    "offset": "0x90",
+    "type": "uint8",
+    "name": "clientNum",
+    "evidence": "entityStateFields[18] bits=8"
+   },
+   {
+    "offset": "0x94",
+    "type": "uint4",
+    "name": "iHeadIcon",
+    "evidence": "entityStateFields[44] bits=4"
+   },
+   {
+    "offset": "0x98",
+    "type": "uint2",
+    "name": "iHeadIconTeam",
+    "evidence": "entityStateFields[46] bits=2"
+   },
+   {
+    "offset": "0x9c",
+    "type": "uint24",
+    "name": "solid",
+    "evidence": "entityStateFields[31] bits=24"
+   },
+   {
+    "offset": "0xa0",
+    "type": "uint8",
+    "name": "eventParm",
+    "evidence": "entityStateFields[16] bits=8"
+   },
+   {
+    "offset": "0xa4",
+    "type": "uint8",
+    "name": "eventSequence",
+    "evidence": "entityStateFields[10] bits=8"
+   },
+   {
+    "offset": "0xa8",
+    "type": "uint8",
+    "name": "events[0]",
+    "evidence": "entityStateFields[21] bits=8"
+   },
+   {
+    "offset": "0xac",
+    "type": "uint8",
+    "name": "events[1]",
+    "evidence": "entityStateFields[22] bits=8"
+   },
+   {
+    "offset": "0xb0",
+    "type": "uint8",
+    "name": "events[2]",
+    "evidence": "entityStateFields[23] bits=8"
+   },
+   {
+    "offset": "0xb4",
+    "type": "uint8",
+    "name": "events[3]",
+    "evidence": "entityStateFields[25] bits=8"
+   },
+   {
+    "offset": "0xb8",
+    "type": "uint8",
+    "name": "eventParms[0]",
+    "evidence": "entityStateFields[40] bits=8"
+   },
+   {
+    "offset": "0xbc",
+    "type": "uint8",
+    "name": "eventParms[1]",
+    "evidence": "entityStateFields[41] bits=8"
+   },
+   {
+    "offset": "0xc0",
+    "type": "uint8",
+    "name": "eventParms[2]",
+    "evidence": "entityStateFields[42] bits=8"
+   },
+   {
+    "offset": "0xc4",
+    "type": "uint8",
+    "name": "eventParms[3]",
+    "evidence": "entityStateFields[43] bits=8"
+   },
+   {
+    "offset": "0xc8",
+    "type": "uint7",
+    "name": "weapon",
+    "evidence": "entityStateFields[37] bits=7"
+   },
+   {
+    "offset": "0xcc",
+    "type": "uint10",
+    "name": "legsAnim",
+    "evidence": "entityStateFields[11] bits=10"
+   },
+   {
+    "offset": "0xd0",
+    "type": "uint10",
+    "name": "torsoAnim",
+    "evidence": "entityStateFields[19] bits=10"
+   },
+   {
+    "offset": "0xd4",
+    "type": "float32",
+    "name": "leanf",
+    "evidence": "entityStateFields[48] bits=0"
+   },
+   {
+    "offset": "0xd8",
+    "type": "uint8",
+    "name": "scale",
+    "evidence": "entityStateFields[17] bits=8"
+   },
+   {
+    "offset": "0xdc",
+    "type": "uint32",
+    "name": "dmgFlags",
+    "evidence": "entityStateFields[58] bits=32"
+   },
+   {
+    "offset": "0xe0",
+    "type": "uint4",
+    "name": "animMovetype",
+    "evidence": "entityStateFields[34] bits=4"
+   },
+   {
+    "offset": "0xe4",
+    "type": "float32",
+    "name": "fTorsoHeight",
+    "evidence": "entityStateFields[35] bits=0"
+   },
+   {
+    "offset": "0xe8",
+    "type": "float32",
+    "name": "fTorsoPitch",
+    "evidence": "entityStateFields[29] bits=0"
+   },
+   {
+    "offset": "0xec",
+    "type": "float32",
+    "name": "fWaistPitch",
+    "evidence": "entityStateFields[28] bits=0"
+   }
+  ],
+  "defined_in": [
+   "chunk_039_types.h",
+   "chunk_041_types.h",
+   "chunk_022_types.h",
+   "chunk_023_types.h",
+   "chunk_008_types.h (table only)",
+   "chunk_009_types.h (table only)"
+  ],
+  "conflicts": "chunk_022 and chunk_023 only know number@0 and size 0xf0. All 59 table offsets lie in 0x4..0xec so size 0xf0 is consistent with MSG_ReadDeltaStruct copying numFields*4+4 = 0xf0. The shared table (68 fields) re-encodes the same offsets but apos.trBase[0..2] use bits=0 (full float) instead of -100 (angle16): same struct, two wire encodings.",
+  "confidence": "high"
+ },
+ {
+  "name": "cachedEntity_s",
+  "size": "0x114",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "entityState_s",
+    "name": "s",
+    "evidence": "offsets 0x0..0xef shared with entity table; apos.trBase uses float32 encoding here"
+   },
+   {
+    "offset": "0xf0",
+    "type": "uint32",
+    "name": "svFlags",
+    "evidence": "sharedEntityFields[11] bits=32"
+   },
+   {
+    "offset": "0xf4",
+    "type": "uint32",
+    "name": "clientMask[0]",
+    "evidence": "sharedEntityFields[51] bits=32"
+   },
+   {
+    "offset": "0xf8",
+    "type": "uint32",
+    "name": "clientMask[1]",
+    "evidence": "sharedEntityFields[52] bits=32"
+   },
+   {
+    "offset": "0xfc",
+    "type": "float32",
+    "name": "absmin[0]",
+    "evidence": "sharedEntityFields[2] bits=0"
+   },
+   {
+    "offset": "0x100",
+    "type": "float32",
+    "name": "absmin[1]",
+    "evidence": "sharedEntityFields[0] bits=0"
+   },
+   {
+    "offset": "0x104",
+    "type": "float32",
+    "name": "absmin[2]",
+    "evidence": "sharedEntityFields[4] bits=0"
+   },
+   {
+    "offset": "0x108",
+    "type": "float32",
+    "name": "absmax[0]",
+    "evidence": "sharedEntityFields[3] bits=0"
+   },
+   {
+    "offset": "0x10c",
+    "type": "float32",
+    "name": "absmax[1]",
+    "evidence": "sharedEntityFields[1] bits=0"
+   },
+   {
+    "offset": "0x110",
+    "type": "float32",
+    "name": "absmax[2]",
+    "evidence": "sharedEntityFields[5] bits=0"
+   }
+  ],
+  "defined_in": [
+   "chunk_023_types.h",
+   "chunk_022_types.h"
+  ],
+  "conflicts": "chunk_023 names 0xf4 'field_f4' (int) and 0xf8 'field_f8' (float): the netField table says clientMask[0]@0xf4 and clientMask[1]@0xf8, 32-bit each. chunk_022 'sharedEntity_s' describes the GAME entity (svFlags byte@0xf2, clientMask@0xf4, broadcastTime@0x100, absmin@0x120): do NOT merge with this cache record, whose absmin/absmax are at 0xfc/0x108. svFlags@0xf0 is a 32-bit field in the wire table but the game entity uses bytes 0xf0/0xf1/0xf2 (linked/bmodel/svFlags); conflict unresolved (wire name vs memory use).",
+  "confidence": "medium"
+ },
+ {
+  "name": "clientState_s",
+  "size": "0x5c",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "int32",
+    "name": "clientNum",
+    "evidence": "first word; 6-bit number on wire (not in table)"
+   },
+   {
+    "offset": "0x4",
+    "type": "uint2",
+    "name": "team",
+    "evidence": "clientStateFields[0] bits=2"
+   },
+   {
+    "offset": "0x8",
+    "type": "uint8",
+    "name": "modelindex",
+    "evidence": "clientStateFields[3] bits=8"
+   },
+   {
+    "offset": "0xc",
+    "type": "uint8",
+    "name": "attachModelIndex[0]",
+    "evidence": "clientStateFields[5] bits=8"
+   },
+   {
+    "offset": "0x10",
+    "type": "uint8",
+    "name": "attachModelIndex[1]",
+    "evidence": "clientStateFields[4] bits=8"
+   },
+   {
+    "offset": "0x14",
+    "type": "uint8",
+    "name": "attachModelIndex[2]",
+    "evidence": "clientStateFields[18] bits=8"
+   },
+   {
+    "offset": "0x18",
+    "type": "uint8",
+    "name": "attachModelIndex[3]",
+    "evidence": "clientStateFields[19] bits=8"
+   },
+   {
+    "offset": "0x1c",
+    "type": "uint8",
+    "name": "attachModelIndex[4]",
+    "evidence": "clientStateFields[20] bits=8"
+   },
+   {
+    "offset": "0x20",
+    "type": "uint8",
+    "name": "attachModelIndex[5]",
+    "evidence": "clientStateFields[21] bits=8"
+   },
+   {
+    "offset": "0x24",
+    "type": "uint5",
+    "name": "attachTagIndex[0]",
+    "evidence": "clientStateFields[13] bits=5"
+   },
+   {
+    "offset": "0x28",
+    "type": "uint5",
+    "name": "attachTagIndex[1]",
+    "evidence": "clientStateFields[14] bits=5"
+   },
+   {
+    "offset": "0x2c",
+    "type": "uint5",
+    "name": "attachTagIndex[2]",
+    "evidence": "clientStateFields[15] bits=5"
+   },
+   {
+    "offset": "0x30",
+    "type": "uint5",
+    "name": "attachTagIndex[3]",
+    "evidence": "clientStateFields[16] bits=5"
+   },
+   {
+    "offset": "0x34",
+    "type": "uint5",
+    "name": "attachTagIndex[4]",
+    "evidence": "clientStateFields[17] bits=5"
+   },
+   {
+    "offset": "0x38",
+    "type": "uint5",
+    "name": "attachTagIndex[5]",
+    "evidence": "clientStateFields[12] bits=5"
+   },
+   {
+    "offset": "0x3c",
+    "type": "uint32",
+    "name": "name[0]",
+    "evidence": "clientStateFields[1] bits=32"
+   },
+   {
+    "offset": "0x40",
+    "type": "uint32",
+    "name": "name[4]",
+    "evidence": "clientStateFields[2] bits=32"
+   },
+   {
+    "offset": "0x44",
+    "type": "uint32",
+    "name": "name[8]",
+    "evidence": "clientStateFields[6] bits=32"
+   },
+   {
+    "offset": "0x48",
+    "type": "uint32",
+    "name": "name[12]",
+    "evidence": "clientStateFields[7] bits=32"
+   },
+   {
+    "offset": "0x4c",
+    "type": "uint32",
+    "name": "name[16]",
+    "evidence": "clientStateFields[8] bits=32"
+   },
+   {
+    "offset": "0x50",
+    "type": "uint32",
+    "name": "name[20]",
+    "evidence": "clientStateFields[9] bits=32"
+   },
+   {
+    "offset": "0x54",
+    "type": "uint32",
+    "name": "name[24]",
+    "evidence": "clientStateFields[10] bits=32"
+   },
+   {
+    "offset": "0x58",
+    "type": "uint32",
+    "name": "name[28]",
+    "evidence": "clientStateFields[11] bits=32"
+   }
+  ],
+  "defined_in": [
+   "chunk_022_types.h",
+   "chunk_023_types.h"
+  ],
+  "conflicts": "chunk_022/023 only declare clientNum@0 and size 0x5c. Table: team@4, modelindex@8, attachModelIndex[6]@0xc..0x20, attachTagIndex[6]@0x24..0x38, name[32]@0x3c..0x5b as 8 x 32-bit words (name[0],name[4]..name[28]). 22*4+4 = 0x5c matches.",
+  "confidence": "high"
+ },
+ {
+  "name": "playerState_s",
+  "size": "0x26a8",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "uint32",
+    "name": "commandTime",
+    "evidence": "playerStateFields[0] bits=32"
+   },
+   {
+    "offset": "0x18",
+    "type": "float32",
+    "name": "origin[1]",
+    "evidence": "playerStateFields[1] bits=0"
+   },
+   {
+    "offset": "0x14",
+    "type": "float32",
+    "name": "origin[0]",
+    "evidence": "playerStateFields[2] bits=0"
+   },
+   {
+    "offset": "0x8",
+    "type": "uint8",
+    "name": "bobCycle",
+    "evidence": "playerStateFields[3] bits=8"
+   },
+   {
+    "offset": "0xec",
+    "type": "float32(angle16)",
+    "name": "viewangles[1]",
+    "evidence": "playerStateFields[4] bits=-100"
+   },
+   {
+    "offset": "0x1c",
+    "type": "float32",
+    "name": "origin[2]",
+    "evidence": "playerStateFields[5] bits=0"
+   },
+   {
+    "offset": "0x24",
+    "type": "float32",
+    "name": "velocity[1]",
+    "evidence": "playerStateFields[6] bits=0"
+   },
+   {
+    "offset": "0x20",
+    "type": "float32",
+    "name": "velocity[0]",
+    "evidence": "playerStateFields[7] bits=0"
+   },
+   {
+    "offset": "0xe8",
+    "type": "float32(angle16)",
+    "name": "viewangles[0]",
+    "evidence": "playerStateFields[8] bits=-100"
+   },
+   {
+    "offset": "0x9c",
+    "type": "int8",
+    "name": "movementDir",
+    "evidence": "playerStateFields[9] bits=-8"
+   },
+   {
+    "offset": "0x28",
+    "type": "float32",
+    "name": "velocity[2]",
+    "evidence": "playerStateFields[10] bits=0"
+   },
+   {
+    "offset": "0xa4",
+    "type": "uint8",
+    "name": "eventSequence",
+    "evidence": "playerStateFields[11] bits=8"
+   },
+   {
+    "offset": "0x7c",
+    "type": "uint10",
+    "name": "legsAnim",
+    "evidence": "playerStateFields[12] bits=10"
+   },
+   {
+    "offset": "0x5d4",
+    "type": "float32",
+    "name": "aimSpreadScale",
+    "evidence": "playerStateFields[13] bits=0"
+   },
+   {
+    "offset": "0x34",
+    "type": "int16",
+    "name": "weaponTime",
+    "evidence": "playerStateFields[14] bits=-16"
+   },
+   {
+    "offset": "0xc",
+    "type": "uint27",
+    "name": "pm_flags",
+    "evidence": "playerStateFields[15] bits=27"
+   },
+   {
+    "offset": "0xa8",
+    "type": "uint8",
+    "name": "events[0]",
+    "evidence": "playerStateFields[16] bits=8"
+   },
+   {
+    "offset": "0xac",
+    "type": "uint8",
+    "name": "events[1]",
+    "evidence": "playerStateFields[17] bits=8"
+   },
+   {
+    "offset": "0xb0",
+    "type": "uint8",
+    "name": "events[2]",
+    "evidence": "playerStateFields[18] bits=8"
+   },
+   {
+    "offset": "0xb4",
+    "type": "uint8",
+    "name": "events[3]",
+    "evidence": "playerStateFields[19] bits=8"
+   },
+   {
+    "offset": "0x5d0",
+    "type": "uint10",
+    "name": "weapAnim",
+    "evidence": "playerStateFields[20] bits=10"
+   },
+   {
+    "offset": "0xf8",
+    "type": "float32",
+    "name": "viewHeightCurrent",
+    "evidence": "playerStateFields[21] bits=0"
+   },
+   {
+    "offset": "0x80",
+    "type": "uint16",
+    "name": "torsoTimer",
+    "evidence": "playerStateFields[22] bits=16"
+   },
+   {
+    "offset": "0x84",
+    "type": "uint10",
+    "name": "torsoAnim",
+    "evidence": "playerStateFields[23] bits=10"
+   },
+   {
+    "offset": "0xa0",
+    "type": "uint24",
+    "name": "eFlags",
+    "evidence": "playerStateFields[24] bits=24"
+   },
+   {
+    "offset": "0xdc",
+    "type": "float32",
+    "name": "fWeaponPosFrac",
+    "evidence": "playerStateFields[25] bits=0"
+   },
+   {
+    "offset": "0x5b4",
+    "type": "float32",
+    "name": "holdBreathScale",
+    "evidence": "playerStateFields[26] bits=0"
+   },
+   {
+    "offset": "0xd8",
+    "type": "uint5",
+    "name": "weaponstate",
+    "evidence": "playerStateFields[27] bits=5"
+   },
+   {
+    "offset": "0xf4",
+    "type": "int8",
+    "name": "viewHeightTarget",
+    "evidence": "playerStateFields[28] bits=-8"
+   },
+   {
+    "offset": "0x38",
+    "type": "int16",
+    "name": "weaponDelay",
+    "evidence": "playerStateFields[29] bits=-16"
+   },
+   {
+    "offset": "0x78",
+    "type": "uint16",
+    "name": "legsTimer",
+    "evidence": "playerStateFields[30] bits=16"
+   },
+   {
+    "offset": "0x100",
+    "type": "int8",
+    "name": "viewHeightLerpTarget",
+    "evidence": "playerStateFields[31] bits=-8"
+   },
+   {
+    "offset": "0x60",
+    "type": "uint10",
+    "name": "groundEntityNum",
+    "evidence": "playerStateFields[32] bits=10"
+   },
+   {
+    "offset": "0x10",
+    "type": "int16",
+    "name": "pm_time",
+    "evidence": "playerStateFields[33] bits=-16"
+   },
+   {
+    "offset": "0xc4",
+    "type": "uint8",
+    "name": "eventParms[3]",
+    "evidence": "playerStateFields[34] bits=8"
+   },
+   {
+    "offset": "0xbc",
+    "type": "uint8",
+    "name": "eventParms[1]",
+    "evidence": "playerStateFields[35] bits=8"
+   },
+   {
+    "offset": "0xb8",
+    "type": "uint8",
+    "name": "eventParms[0]",
+    "evidence": "playerStateFields[36] bits=8"
+   },
+   {
+    "offset": "0xc0",
+    "type": "uint8",
+    "name": "eventParms[2]",
+    "evidence": "playerStateFields[37] bits=8"
+   },
+   {
+    "offset": "0xd4",
+    "type": "uint7",
+    "name": "weapon",
+    "evidence": "playerStateFields[38] bits=7"
+   },
+   {
+    "offset": "0x544",
+    "type": "uint32",
+    "name": "weapons[0]",
+    "evidence": "playerStateFields[39] bits=32"
+   },
+   {
+    "offset": "0x104",
+    "type": "uint1",
+    "name": "viewHeightLerpDown",
+    "evidence": "playerStateFields[40] bits=1"
+   },
+   {
+    "offset": "0x554",
+    "type": "uint32",
+    "name": "weaponslots[0]",
+    "evidence": "playerStateFields[41] bits=32"
+   },
+   {
+    "offset": "0x54",
+    "type": "uint16",
+    "name": "delta_angles[0]",
+    "evidence": "playerStateFields[42] bits=16"
+   },
+   {
+    "offset": "0x58",
+    "type": "uint16",
+    "name": "delta_angles[1]",
+    "evidence": "playerStateFields[43] bits=16"
+   },
+   {
+    "offset": "0x59c",
+    "type": "int8",
+    "name": "cursorHintString",
+    "evidence": "playerStateFields[44] bits=-8"
+   },
+   {
+    "offset": "0xd0",
+    "type": "uint7",
+    "name": "offHandIndex",
+    "evidence": "playerStateFields[45] bits=7"
+   },
+   {
+    "offset": "0xcc",
+    "type": "uint8",
+    "name": "clientNum",
+    "evidence": "playerStateFields[46] bits=8"
+   },
+   {
+    "offset": "0x594",
+    "type": "uint16",
+    "name": "viewlocked_entNum",
+    "evidence": "playerStateFields[47] bits=16"
+   },
+   {
+    "offset": "0xe4",
+    "type": "uint8",
+    "name": "viewmodelIndex",
+    "evidence": "playerStateFields[48] bits=8"
+   },
+   {
+    "offset": "0xfc",
+    "type": "uint32",
+    "name": "viewHeightLerpTime",
+    "evidence": "playerStateFields[49] bits=32"
+   },
+   {
+    "offset": "0x50",
+    "type": "uint16",
+    "name": "speed",
+    "evidence": "playerStateFields[50] bits=16"
+   },
+   {
+    "offset": "0x570",
+    "type": "float32",
+    "name": "mins[1]",
+    "evidence": "playerStateFields[51] bits=0"
+   },
+   {
+    "offset": "0x56c",
+    "type": "float32",
+    "name": "mins[0]",
+    "evidence": "playerStateFields[52] bits=0"
+   },
+   {
+    "offset": "0x580",
+    "type": "float32",
+    "name": "maxs[2]",
+    "evidence": "playerStateFields[53] bits=0"
+   },
+   {
+    "offset": "0x57c",
+    "type": "float32",
+    "name": "maxs[1]",
+    "evidence": "playerStateFields[54] bits=0"
+   },
+   {
+    "offset": "0x578",
+    "type": "float32",
+    "name": "maxs[0]",
+    "evidence": "playerStateFields[55] bits=0"
+   },
+   {
+    "offset": "0x48",
+    "type": "uint16",
+    "name": "gravity",
+    "evidence": "playerStateFields[56] bits=16"
+   },
+   {
+    "offset": "0x90",
+    "type": "uint16",
+    "name": "damageTimer",
+    "evidence": "playerStateFields[57] bits=16"
+   },
+   {
+    "offset": "0x598",
+    "type": "uint8",
+    "name": "cursorHint",
+    "evidence": "playerStateFields[58] bits=8"
+   },
+   {
+    "offset": "0x5c8",
+    "type": "uint4",
+    "name": "mantleState.flags",
+    "evidence": "playerStateFields[59] bits=4"
+   },
+   {
+    "offset": "0x98",
+    "type": "uint16",
+    "name": "flinchYaw",
+    "evidence": "playerStateFields[60] bits=16"
+   },
+   {
+    "offset": "0x5b0",
+    "type": "float32",
+    "name": "fWaistPitch",
+    "evidence": "playerStateFields[61] bits=0"
+   },
+   {
+    "offset": "0x5c0",
+    "type": "uint32",
+    "name": "mantleState.timer",
+    "evidence": "playerStateFields[62] bits=32"
+   },
+   {
+    "offset": "0x5ac",
+    "type": "float32",
+    "name": "fTorsoPitch",
+    "evidence": "playerStateFields[63] bits=0"
+   },
+   {
+    "offset": "0x58c",
+    "type": "float32",
+    "name": "proneTorsoPitch",
+    "evidence": "playerStateFields[64] bits=0"
+   },
+   {
+    "offset": "0x5b8",
+    "type": "uint16",
+    "name": "holdBreathTimer",
+    "evidence": "playerStateFields[65] bits=16"
+   },
+   {
+    "offset": "0x70",
+    "type": "uint32",
+    "name": "jumpTime",
+    "evidence": "playerStateFields[66] bits=32"
+   },
+   {
+    "offset": "0xf0",
+    "type": "float32(angle16)",
+    "name": "viewangles[2]",
+    "evidence": "playerStateFields[67] bits=-100"
+   },
+   {
+    "offset": "0x44",
+    "type": "uint32",
+    "name": "foliageSoundTime",
+    "evidence": "playerStateFields[68] bits=32"
+   },
+   {
+    "offset": "0x548",
+    "type": "uint32",
+    "name": "weapons[1]",
+    "evidence": "playerStateFields[69] bits=32"
+   },
+   {
+    "offset": "0x11c",
+    "type": "uint8",
+    "name": "damageEvent",
+    "evidence": "playerStateFields[70] bits=8"
+   },
+   {
+    "offset": "0x94",
+    "type": "uint16",
+    "name": "damageDuration",
+    "evidence": "playerStateFields[71] bits=16"
+   },
+   {
+    "offset": "0x120",
+    "type": "uint8",
+    "name": "damageYaw",
+    "evidence": "playerStateFields[72] bits=8"
+   },
+   {
+    "offset": "0x584",
+    "type": "float32",
+    "name": "proneDirection",
+    "evidence": "playerStateFields[73] bits=0"
+   },
+   {
+    "offset": "0x588",
+    "type": "float32",
+    "name": "proneDirectionPitch",
+    "evidence": "playerStateFields[74] bits=0"
+   },
+   {
+    "offset": "0x5bc",
+    "type": "float32",
+    "name": "mantleState.yaw",
+    "evidence": "playerStateFields[75] bits=0"
+   },
+   {
+    "offset": "0x5c4",
+    "type": "uint4",
+    "name": "mantleState.transIndex",
+    "evidence": "playerStateFields[76] bits=4"
+   },
+   {
+    "offset": "0x5a8",
+    "type": "float32",
+    "name": "fTorsoHeight",
+    "evidence": "playerStateFields[77] bits=0"
+   },
+   {
+    "offset": "0x124",
+    "type": "uint8",
+    "name": "damagePitch",
+    "evidence": "playerStateFields[78] bits=8"
+   },
+   {
+    "offset": "0x74",
+    "type": "float32",
+    "name": "jumpOriginZ",
+    "evidence": "playerStateFields[79] bits=0"
+   },
+   {
+    "offset": "0x4",
+    "type": "uint8",
+    "name": "pm_type",
+    "evidence": "playerStateFields[80] bits=8"
+   },
+   {
+    "offset": "0x590",
+    "type": "uint8",
+    "name": "viewlocked",
+    "evidence": "playerStateFields[81] bits=8"
+   },
+   {
+    "offset": "0x55c",
+    "type": "uint32",
+    "name": "weaponrechamber[0]",
+    "evidence": "playerStateFields[82] bits=32"
+   },
+   {
+    "offset": "0x64",
+    "type": "float32",
+    "name": "vLadderVec[0]",
+    "evidence": "playerStateFields[83] bits=0"
+   },
+   {
+    "offset": "0x558",
+    "type": "uint32",
+    "name": "weaponslots[4]",
+    "evidence": "playerStateFields[84] bits=32"
+   },
+   {
+    "offset": "0x40",
+    "type": "int16",
+    "name": "weaponRestrictKickTime",
+    "evidence": "playerStateFields[85] bits=-16"
+   },
+   {
+    "offset": "0x68",
+    "type": "float32",
+    "name": "vLadderVec[1]",
+    "evidence": "playerStateFields[86] bits=0"
+   },
+   {
+    "offset": "0x118",
+    "type": "float32",
+    "name": "viewAngleClampRange[1]",
+    "evidence": "playerStateFields[87] bits=0"
+   },
+   {
+    "offset": "0x114",
+    "type": "float32",
+    "name": "viewAngleClampRange[0]",
+    "evidence": "playerStateFields[88] bits=0"
+   },
+   {
+    "offset": "0x110",
+    "type": "float32",
+    "name": "viewAngleClampBase[1]",
+    "evidence": "playerStateFields[89] bits=0"
+   },
+   {
+    "offset": "0x560",
+    "type": "uint32",
+    "name": "weaponrechamber[1]",
+    "evidence": "playerStateFields[90] bits=32"
+   },
+   {
+    "offset": "0x4c",
+    "type": "float32",
+    "name": "leanf",
+    "evidence": "playerStateFields[91] bits=0"
+   },
+   {
+    "offset": "0x128",
+    "type": "uint7",
+    "name": "damageCount",
+    "evidence": "playerStateFields[92] bits=7"
+   },
+   {
+    "offset": "0x3c",
+    "type": "int16",
+    "name": "grenadeTimeLeft",
+    "evidence": "playerStateFields[93] bits=-16"
+   },
+   {
+    "offset": "0x7a4",
+    "type": "uint32",
+    "name": "deltaTime",
+    "evidence": "playerStateFields[94] bits=32"
+   },
+   {
+    "offset": "0x5dc",
+    "type": "uint32",
+    "name": "shellshockTime",
+    "evidence": "playerStateFields[95] bits=32"
+   },
+   {
+    "offset": "0x5d8",
+    "type": "uint4",
+    "name": "shellshockIndex",
+    "evidence": "playerStateFields[96] bits=4"
+   },
+   {
+    "offset": "0x5e0",
+    "type": "uint16",
+    "name": "shellshockDuration",
+    "evidence": "playerStateFields[97] bits=16"
+   },
+   {
+    "offset": "0x6c",
+    "type": "float32",
+    "name": "vLadderVec[2]",
+    "evidence": "playerStateFields[98] bits=0"
+   },
+   {
+    "offset": "0x5c",
+    "type": "uint16",
+    "name": "delta_angles[2]",
+    "evidence": "playerStateFields[99] bits=16"
+   },
+   {
+    "offset": "0x108",
+    "type": "float32",
+    "name": "viewHeightLerpPosAdj",
+    "evidence": "playerStateFields[100] bits=0"
+   },
+   {
+    "offset": "0x574",
+    "type": "float32",
+    "name": "mins[2]",
+    "evidence": "playerStateFields[101] bits=0"
+   },
+   {
+    "offset": "0x10c",
+    "type": "float32",
+    "name": "viewAngleClampBase[0]",
+    "evidence": "playerStateFields[102] bits=0"
+   },
+   {
+    "offset": "0xe0",
+    "type": "uint32",
+    "name": "adsDelayTime",
+    "evidence": "playerStateFields[103] bits=32"
+   },
+   {
+    "offset": "0x5a4",
+    "type": "uint32",
+    "name": "iCompassFriendInfo",
+    "evidence": "playerStateFields[104] bits=32"
+   },
+   {
+    "offset": "0x12c",
+    "type": "int32[6]",
+    "name": "miscWords",
+    "evidence": "6-bit mask group at +0x12c..+0x143: +0x12c/+0x130/+0x134/+0x13c written as shorts, +0x138 as 6 bits, +0x140 as a byte (MSG_WriteDeltaPlayerState, chunk_009 0x0806a200)"
+   },
+   {
+    "offset": "0x144",
+    "type": "int32[64]",
+    "name": "groupA (4x16)",
+    "evidence": "16-bit masks with outer any-bit; DiffMask16"
+   },
+   {
+    "offset": "0x344",
+    "type": "int32[64]",
+    "name": "groupB (4x16)",
+    "evidence": "16-bit masks, per-group bit"
+   },
+   {
+    "offset": "0x5e4",
+    "type": "objective_s[16]",
+    "name": "objectives",
+    "evidence": "memcmp 0x1c0 bytes; 3-bit state word + 6-field group"
+   },
+   {
+    "offset": "0x7a8",
+    "type": "hudelem_s[31]",
+    "name": "hudelems[31] (second array)",
+    "evidence": "MSG_WriteDeltaRecordArray(from+0x7a8,...) second call; array A and B are contiguous: 0x7a8..0x1727 and 0x1728..0x26a7"
+   },
+   {
+    "offset": "0x1728",
+    "type": "hudelem_s[31]",
+    "name": "hudelems[31] (first array)",
+    "evidence": "MSG_WriteDeltaRecordArray first call; 0x1728+0xf80 = 0x26a8 = struct size"
+   }
+  ],
+  "defined_in": [
+   "chunk_008_types.h",
+   "chunk_022_types.h",
+   "chunk_023_types.h",
+   "chunk_039_types.h",
+   "chunk_041_types.h",
+   "chunk_042_types.h",
+   "chunk_044_types.h",
+   "chunk_046_types.h"
+  ],
+  "conflicts": "chunk_008 names offsets read by CL_CreateCmd with different guesses: 0x4c 'moveAxis' (table: leanf), 0x54 deltaAngles[3] (table: delta_angles[0],[1]@0x54,0x58,[2]@0x5c: consistent), 0xa0 buttonBits (table: eFlags@0xa0), 0xd0 field_d0 (table: offHandIndex), 0xd4 field_d4 (table: weapon), 0xdc fieldDc (table: fWeaponPosFrac), 0xe8 viewAngles[3] (table: viewangles[0]@0xe8,[1]@0xec,[2]@0xf0; viewangles are angle16 coded). 008 also names 0x0 commandTime, 0x4 pmType, 0x8 bobCycle, 0xc pmFlags: table agrees (pm_type@4, bobCycle@8, pm_flags@0xc). Hudelem arrays: code does memcmp(from+0x7a8, to+0x7a8, 0x1f00) = 0x7a8..0x26a7, i.e. two contiguous arrays of 31*0x80 = 0xf80; the writer emits the array at 0x1728 first, then 0x7a8. The 'deltaTime@0x7a4' table field lies just before 0x7a8. Ranges 0x244..0x343 and 0x444..0x5e3 are not written by the delta coder (observed); their content/type is unknown.",
+  "confidence": "medium"
+ },
+ {
+  "name": "hudelem_s",
+  "size": "0x80",
+  "fields": [
+   {
+    "offset": "0x8",
+    "type": "float32",
+    "name": "y",
+    "evidence": "hudelemFields[0] bits=-99"
+   },
+   {
+    "offset": "0x0",
+    "type": "uint4",
+    "name": "type",
+    "evidence": "hudelemFields[1] bits=4"
+   },
+   {
+    "offset": "0x20",
+    "type": "uint32",
+    "name": "color.rgba",
+    "evidence": "hudelemFields[2] bits=32"
+   },
+   {
+    "offset": "0x4",
+    "type": "float32",
+    "name": "x",
+    "evidence": "hudelemFields[3] bits=-99"
+   },
+   {
+    "offset": "0x1c",
+    "type": "uint6",
+    "name": "alignScreen",
+    "evidence": "hudelemFields[4] bits=6"
+   },
+   {
+    "offset": "0x10",
+    "type": "float32",
+    "name": "fontScale",
+    "evidence": "hudelemFields[5] bits=0"
+   },
+   {
+    "offset": "0x3c",
+    "type": "uint8",
+    "name": "materialIndex",
+    "evidence": "hudelemFields[6] bits=8"
+   },
+   {
+    "offset": "0x34",
+    "type": "uint10",
+    "name": "width",
+    "evidence": "hudelemFields[7] bits=10"
+   },
+   {
+    "offset": "0x38",
+    "type": "uint10",
+    "name": "height",
+    "evidence": "hudelemFields[8] bits=10"
+   },
+   {
+    "offset": "0x28",
+    "type": "uint32",
+    "name": "fadeStartTime",
+    "evidence": "hudelemFields[9] bits=32"
+   },
+   {
+    "offset": "0x24",
+    "type": "uint32",
+    "name": "fromColor.rgba",
+    "evidence": "hudelemFields[10] bits=32"
+   },
+   {
+    "offset": "0x2c",
+    "type": "uint16",
+    "name": "fadeTime",
+    "evidence": "hudelemFields[11] bits=16"
+   },
+   {
+    "offset": "0x70",
+    "type": "float32",
+    "name": "value",
+    "evidence": "hudelemFields[12] bits=0"
+   },
+   {
+    "offset": "0x68",
+    "type": "uint32",
+    "name": "time",
+    "evidence": "hudelemFields[13] bits=32"
+   },
+   {
+    "offset": "0xc",
+    "type": "float32",
+    "name": "z",
+    "evidence": "hudelemFields[14] bits=-99"
+   },
+   {
+    "offset": "0x18",
+    "type": "uint4",
+    "name": "alignOrg",
+    "evidence": "hudelemFields[15] bits=4"
+   },
+   {
+    "offset": "0x78",
+    "type": "float32",
+    "name": "sort",
+    "evidence": "hudelemFields[16] bits=0"
+   },
+   {
+    "offset": "0x74",
+    "type": "uint8",
+    "name": "text",
+    "evidence": "hudelemFields[17] bits=8"
+   },
+   {
+    "offset": "0x14",
+    "type": "uint4",
+    "name": "font",
+    "evidence": "hudelemFields[18] bits=4"
+   },
+   {
+    "offset": "0x48",
+    "type": "uint32",
+    "name": "scaleStartTime",
+    "evidence": "hudelemFields[19] bits=32"
+   },
+   {
+    "offset": "0x4c",
+    "type": "uint16",
+    "name": "scaleTime",
+    "evidence": "hudelemFields[20] bits=16"
+   },
+   {
+    "offset": "0x44",
+    "type": "uint10",
+    "name": "fromHeight",
+    "evidence": "hudelemFields[21] bits=10"
+   },
+   {
+    "offset": "0x30",
+    "type": "uint8",
+    "name": "label",
+    "evidence": "hudelemFields[22] bits=8"
+   },
+   {
+    "offset": "0x40",
+    "type": "uint10",
+    "name": "fromWidth",
+    "evidence": "hudelemFields[23] bits=10"
+   },
+   {
+    "offset": "0x60",
+    "type": "uint32",
+    "name": "moveStartTime",
+    "evidence": "hudelemFields[24] bits=32"
+   },
+   {
+    "offset": "0x64",
+    "type": "uint16",
+    "name": "moveTime",
+    "evidence": "hudelemFields[25] bits=16"
+   },
+   {
+    "offset": "0x50",
+    "type": "float32",
+    "name": "fromX",
+    "evidence": "hudelemFields[26] bits=-99"
+   },
+   {
+    "offset": "0x54",
+    "type": "float32",
+    "name": "fromY",
+    "evidence": "hudelemFields[27] bits=-99"
+   },
+   {
+    "offset": "0x5c",
+    "type": "uint6",
+    "name": "fromAlignScreen",
+    "evidence": "hudelemFields[28] bits=6"
+   },
+   {
+    "offset": "0x58",
+    "type": "uint4",
+    "name": "fromAlignOrg",
+    "evidence": "hudelemFields[29] bits=4"
+   },
+   {
+    "offset": "0x6c",
+    "type": "uint32",
+    "name": "duration",
+    "evidence": "hudelemFields[30] bits=32"
+   },
+   {
+    "offset": "0x7c",
+    "type": "uint1",
+    "name": "foreground",
+    "evidence": "hudelemFields[31] bits=1"
+   }
+  ],
+  "defined_in": [
+   "chunk_009_types.h (as 'recordFields32', unnamed 0x80 record)"
+  ],
+  "conflicts": "Symbol names say 'recordFields32/record'; field names (x,y,z,type,color,font,fontScale,align*,text,label,fadeTime,moveTime,scaleTime,foreground...) identify a HUD element. -99 bits (x,y,z,fromX,fromY) = float with +/-0x200 fast path.",
+  "confidence": "high"
+ },
+ {
+  "name": "objective_s",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "int32",
+    "name": "state",
+    "evidence": "MSG_WriteBits(state,3) before the field group (not in table)"
+   },
+   {
+    "offset": "0x4",
+    "type": "float32",
+    "name": "origin[0]",
+    "evidence": "objectiveFields[0] bits=0"
+   },
+   {
+    "offset": "0x8",
+    "type": "float32",
+    "name": "origin[1]",
+    "evidence": "objectiveFields[1] bits=0"
+   },
+   {
+    "offset": "0xc",
+    "type": "float32",
+    "name": "origin[2]",
+    "evidence": "objectiveFields[2] bits=0"
+   },
+   {
+    "offset": "0x18",
+    "type": "uint12",
+    "name": "icon",
+    "evidence": "objectiveFields[3] bits=12"
+   },
+   {
+    "offset": "0x10",
+    "type": "uint10",
+    "name": "entNum",
+    "evidence": "objectiveFields[4] bits=10"
+   },
+   {
+    "offset": "0x14",
+    "type": "uint4",
+    "name": "teamNum",
+    "evidence": "objectiveFields[5] bits=4"
+   }
+  ],
+  "defined_in": [
+   "chunk_009_types.h (as 'originFields', 3 entries claimed, 6 used)"
+  ],
+  "conflicts": "symbols.json says originFields has 3 entries; code passes count 6 and stride 0x1c, and the rodata table has 6 entries (origin[0..2], icon, entNum, teamNum). Offsets 0x4,8,0xc origin, 0x10 entNum, 0x14 teamNum, 0x18 icon.",
+  "confidence": "high"
+ },
+ {
+  "name": "client_s (network-relevant fields)",
+  "size": "0xb1064",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "int32",
+    "name": "state",
+    "evidence": "CS_FREE 0, ZOMBIE 1, CONNECTED 2, PRIMED 3, ACTIVE 4 (strings 'Going from CS_x to CS_y')"
+   },
+   {
+    "offset": "0x4",
+    "type": "int32",
+    "name": "snapshotActiveFlag",
+    "evidence": "chunk_022 name; chunk_020/021 unk_004"
+   },
+   {
+    "offset": "0x8",
+    "type": "int32",
+    "name": "pendingDrop/dropReason",
+    "evidence": "chunk_020 pendingDrop (int reason word), chunk_023 'const char *dropReason'; SV_SendMessageToClient passes it to SV_DropClient as a string"
+   },
+   {
+    "offset": "0xc",
+    "type": "char[0x400]",
+    "name": "userinfo",
+    "evidence": ""
+   },
+   {
+    "offset": "0x40c",
+    "type": "serverCommand_s[128]",
+    "name": "reliableCommands",
+    "evidence": "stride 0x408 {text[0x400], time, flags}"
+   },
+   {
+    "offset": "0x2080c",
+    "type": "int32",
+    "name": "reliableSequence",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20810",
+    "type": "int32",
+    "name": "reliableAcknowledge",
+    "evidence": "SV_UpdateServerCommandsToClient objdump 0x80988bb"
+   },
+   {
+    "offset": "0x20814",
+    "type": "int32",
+    "name": "reliableSent",
+    "evidence": "also named reliableSearchCursor (chunk_021) / unk20814 (chunk_020)"
+   },
+   {
+    "offset": "0x20818",
+    "type": "int32",
+    "name": "messageAcknowledge",
+    "evidence": "chunk_022 name; chunk_020 messageSeq"
+   },
+   {
+    "offset": "0x2081c",
+    "type": "int32",
+    "name": "gamestateMessageNum",
+    "evidence": "chunk_020 gamestateSeq; assigned netchan.outgoingSequence in SV_SendClientGameState"
+   },
+   {
+    "offset": "0x20820",
+    "type": "int32",
+    "name": "challenge",
+    "evidence": "SV_Netchan_Encode/Decode key"
+   },
+   {
+    "offset": "0x20824",
+    "type": "usercmd_s",
+    "name": "lastUsercmd",
+    "evidence": "0x1c bytes"
+   },
+   {
+    "offset": "0x20840",
+    "type": "int32",
+    "name": "lastClientCommandSeq",
+    "evidence": "chunk_020; chunk_023 mislabels it reliableAcknowledge"
+   },
+   {
+    "offset": "0x20844",
+    "type": "char[0x400]",
+    "name": "lastClientCommand",
+    "evidence": "SV_Netchan_Encode string source"
+   },
+   {
+    "offset": "0x20c44",
+    "type": "gentity *",
+    "name": "gentity",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20c48",
+    "type": "char[0x20]",
+    "name": "name",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20c68",
+    "type": "char[0x40]",
+    "name": "downloadName",
+    "evidence": "chunk_020/101; chunk_023 byte flag20c68"
+   },
+   {
+    "offset": "0x20ca8",
+    "type": "int32",
+    "name": "downloadHandle",
+    "evidence": "chunk_101 'download'"
+   },
+   {
+    "offset": "0x20cac",
+    "type": "int32",
+    "name": "downloadSize",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20cb0",
+    "type": "int32",
+    "name": "downloadPos",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20cb4",
+    "type": "int32",
+    "name": "downloadAckBlock",
+    "evidence": "chunk_101 downloadClientBlock"
+   },
+   {
+    "offset": "0x20cb8",
+    "type": "int32",
+    "name": "downloadNextBlock",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20cbc",
+    "type": "int32",
+    "name": "downloadSendBlock",
+    "evidence": "chunk_101 downloadXmitBlock"
+   },
+   {
+    "offset": "0x20cc0",
+    "type": "uint8 *[8]",
+    "name": "downloadBlocks",
+    "evidence": "0x800-byte blocks"
+   },
+   {
+    "offset": "0x20ce0",
+    "type": "int32[8]",
+    "name": "downloadBlockLen",
+    "evidence": "chunk_101 downloadBlockSize"
+   },
+   {
+    "offset": "0x20d00",
+    "type": "int32",
+    "name": "downloadQueuedEof",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20d04",
+    "type": "int32",
+    "name": "downloadTime",
+    "evidence": "chunk_101 downloadSendTime"
+   },
+   {
+    "offset": "0x20d08",
+    "type": "char[0x100]",
+    "name": "redirectUrl",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20e08",
+    "type": "int32",
+    "name": "wwwDownloadCapable",
+    "evidence": "set from userinfo cl_wwwDownload (objdump 0x80909ca/f3); absent in chunk_101"
+   },
+   {
+    "offset": "0x20e0c",
+    "type": "int32",
+    "name": "redirectSent",
+    "evidence": "chunk_101 bWWWDl; objdump 0x0808f994"
+   },
+   {
+    "offset": "0x20e10",
+    "type": "int32",
+    "name": "downloadGate",
+    "evidence": "chunk_101 bWWWing"
+   },
+   {
+    "offset": "0x20e14",
+    "type": "int32",
+    "name": "downloadRetry",
+    "evidence": "chunk_101 bFallback"
+   },
+   {
+    "offset": "0x20e18",
+    "type": "int32",
+    "name": "deltaMessage",
+    "evidence": "chunk_022 name; chunk_020 usercmdAckSeq"
+   },
+   {
+    "offset": "0x20e1c",
+    "type": "int32",
+    "name": "textFloodTime",
+    "evidence": "chunk_020"
+   },
+   {
+    "offset": "0x20e20",
+    "type": "int32",
+    "name": "lastPacketTime",
+    "evidence": "chunk_021/022/101 lastPacketTime (set to svs.time per packet; observed); chunk_020 name lastActivityTime"
+   },
+   {
+    "offset": "0x20e24",
+    "type": "int32",
+    "name": "lastConnectTime",
+    "evidence": "chunk_020"
+   },
+   {
+    "offset": "0x20e28",
+    "type": "int32",
+    "name": "nextSnapshotTime",
+    "evidence": "chunk_023 name (SV_SendMessageToClient writes svs.time+delay); chunk_020 calls it enterWorldTime (svs.time at connect/enter-world, -1 on unpure drop). Quake III field order lastPacketTime,lastConnectTime,nextSnapshotTime supports nextSnapshotTime [inferred]"
+   },
+   {
+    "offset": "0x20e2c",
+    "type": "int32",
+    "name": "rateDelayed",
+    "evidence": "chunk_022/023"
+   },
+   {
+    "offset": "0x20e30",
+    "type": "int32",
+    "name": "timeoutCount",
+    "evidence": "chunk_022"
+   },
+   {
+    "offset": "0x20e34",
+    "type": "clientSnapshot_s[32]",
+    "name": "frames",
+    "evidence": "stride 0x26c4: ps(0x26a8), numEntities, numClients, firstEntity, firstClient, messageSent@0x26b8, messageAcked@0x26bc, messageSize@0x26c0; 32*0x26c4 = 0x4d880 -> 0x6e6b4"
+   },
+   {
+    "offset": "0x6e6b4",
+    "type": "int32",
+    "name": "ping",
+    "evidence": "chunk_021/022/101"
+   },
+   {
+    "offset": "0x6e6b8",
+    "type": "int32",
+    "name": "rate",
+    "evidence": "clamp 1000..90000; LAN 99999"
+   },
+   {
+    "offset": "0x6e6bc",
+    "type": "int32",
+    "name": "snapMsec",
+    "evidence": ""
+   },
+   {
+    "offset": "0x6e6c0",
+    "type": "int32",
+    "name": "pureStatus",
+    "evidence": "0/1/2; chunk_101 pureAuthentic"
+   },
+   {
+    "offset": "0x6e6c4",
+    "type": "netchan_s",
+    "name": "netchan",
+    "evidence": "0x40040 bytes"
+   },
+   {
+    "offset": "0xae704",
+    "type": "int32",
+    "name": "guid",
+    "evidence": ""
+   },
+   {
+    "offset": "0xae708",
+    "type": "uint16",
+    "name": "clientRandomId",
+    "evidence": "ScrVar_AllocArray handle; chunk_022 slotHandle"
+   },
+   {
+    "offset": "0xae70c",
+    "type": "int32",
+    "name": "isBot",
+    "evidence": "chunk_022 noTimeout; chunk_021 unk_ae70c"
+   },
+   {
+    "offset": "0xae710",
+    "type": "int32",
+    "name": "serverId",
+    "evidence": "chunk_020 lastCmdSeq"
+   },
+   {
+    "offset": "0xae714",
+    "type": "voicepacket_s[40]",
+    "name": "voicePackets",
+    "evidence": "packed 0x105 each; ends at 0xb0fdc"
+   },
+   {
+    "offset": "0xb0fdc",
+    "type": "int32",
+    "name": "voicePacketCount",
+    "evidence": "chunk_023; chunk_020 unkb0fdc"
+   },
+   {
+    "offset": "0xb0fe0",
+    "type": "uint8[64]",
+    "name": "muteFlags",
+    "evidence": "SV_Mute_f allows index 64 (-> voiceFlag)"
+   },
+   {
+    "offset": "0xb1020",
+    "type": "uint8",
+    "name": "voiceFlag",
+    "evidence": "chunk_020 voiceEnabled"
+   },
+   {
+    "offset": "0xb1021",
+    "type": "char[0x21]",
+    "name": "authKeyA",
+    "evidence": "copied from challenge keyA"
+   },
+   {
+    "offset": "0xb1042",
+    "type": "char[0x21]",
+    "name": "authKeyB",
+    "evidence": "copied from challenge keyB"
+   }
+  ],
+  "defined_in": [
+   "chunk_020_types.h",
+   "chunk_021_types.h",
+   "chunk_022_types.h",
+   "chunk_023_types.h",
+   "chunk_101_types.h"
+  ],
+  "conflicts": "Offsets agree across chunks except: (1) 0x20840 named reliableAcknowledge in chunk_023 (wrong; objdump 0x0809ae4c). (2) 0xae710 lastCmdSeq (020) vs serverId (022). (3) 0xae70c three names (isBot/noTimeout/unk). (4) 0x20e28 enterWorldTime (020) vs nextSnapshotTime (023): same dword; 020 writes svs.time at connect/enter-world and -1 on an unpure drop, 023 uses it as the next send time. Q3 lineage favours nextSnapshotTime (020's writes then mean 'send immediately'); inferred. 0x20e20 lastActivityTime (020) = lastPacketTime (021/022/101, observed). (5) 0x8 pendingDrop int (020) vs const char* dropReason (023). (6) chunk_023 declares `reliableAcknowledge` at 0x20840 and `_pad_c[0x20834]`. (7) chunk_021 puts `unk_20c44` at 0x20c44 (gentity pointer in 020/022/023). (8) 0x20e18 usercmdAckSeq (020) vs deltaMessage (022): SV_UserMove stores messageSeq or -1 there and SV_WriteSnapshotToClient reads it as the delta base, so deltaMessage is the better name. The 0x6e6b4 'ping' lies right after frames[32]. Size 0xb1064 is observed everywhere (stride, memset in SV_DirectConnect).",
+  "confidence": "high"
+ },
+ {
+  "name": "challenge_s",
+  "size": "0x74",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "netadr_s",
+    "name": "adr",
+    "evidence": "SV_RequestIpAuthorize/NET_CompareAdr"
+   },
+   {
+    "offset": "0x14",
+    "type": "int32",
+    "name": "challenge",
+    "evidence": "rand()<<16 ^ rand() ^ svs.time"
+   },
+   {
+    "offset": "0x18",
+    "type": "int32",
+    "name": "firstTime",
+    "evidence": "oldest evicted"
+   },
+   {
+    "offset": "0x1c",
+    "type": "int32",
+    "name": "lastTime",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20",
+    "type": "int32",
+    "name": "createdTime",
+    "evidence": ""
+   },
+   {
+    "offset": "0x24",
+    "type": "int32",
+    "name": "pingCache",
+    "evidence": ""
+   },
+   {
+    "offset": "0x28",
+    "type": "int32",
+    "name": "connecting",
+    "evidence": ""
+   },
+   {
+    "offset": "0x2c",
+    "type": "int32",
+    "name": "guid",
+    "evidence": "from ipAuthorize accept"
+   },
+   {
+    "offset": "0x30",
+    "type": "char[0x21]",
+    "name": "keyA",
+    "evidence": ""
+   },
+   {
+    "offset": "0x51",
+    "type": "char[0x21]",
+    "name": "keyB",
+    "evidence": ""
+   },
+   {
+    "offset": "0x72",
+    "type": "uint8[2]",
+    "name": "pad",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_020_types.h"
+  ],
+  "conflicts": "Only chunk_020 defines it; 1024 entries at 0x084230dc (0x400 loop bound, memset 0x74).",
+  "confidence": "high"
+ },
+ {
+  "name": "tempban_s",
+  "size": "0x8",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "int32",
+    "name": "guid",
+    "evidence": ""
+   },
+   {
+    "offset": "0x4",
+    "type": "int32",
+    "name": "time",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_020_types.h"
+  ],
+  "conflicts": "None.",
+  "confidence": "medium"
+ },
+ {
+  "name": "serverCommand_s",
+  "size": "0x408",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "char[0x400]",
+    "name": "text",
+    "evidence": "command letter + payload"
+   },
+   {
+    "offset": "0x400",
+    "type": "int32",
+    "name": "time",
+    "evidence": "svs.time when queued"
+   },
+   {
+    "offset": "0x404",
+    "type": "int32",
+    "name": "flags",
+    "evidence": "nonzero = valid / reliable"
+   }
+  ],
+  "defined_in": [
+   "chunk_021_types.h",
+   "chunk_020_types.h (reliable_cmd_s)",
+   "chunk_022_types.h (reliableCommand_s)"
+  ],
+  "conflicts": "chunk_020 calls +0x400 padding, chunk_022 'commandTime' + pad404, chunk_021 time/flags. SV_PrintUnackedServerCommands prints +0x400 as the time.",
+  "confidence": "high"
+ },
+ {
+  "name": "voicepacket_s",
+  "size": "0x105",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "uint8",
+    "name": "talker",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1",
+    "type": "uint8[256]",
+    "name": "data",
+    "evidence": ""
+   },
+   {
+    "offset": "0x101",
+    "type": "int32",
+    "name": "len",
+    "evidence": "unaligned; packed struct"
+   }
+  ],
+  "defined_in": [
+   "chunk_023_types.h"
+  ],
+  "conflicts": "Only chunk_023. The wire length is a byte (Local) or a short (relay) but the in-memory len is an int at +0x101.",
+  "confidence": "medium"
+ },
+ {
+  "name": "punkbuster_s",
+  "size": "0x170",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "uint32",
+    "name": "magic",
+    "evidence": "0x357afe24 (PB_Construct)"
+   },
+   {
+    "offset": "0x4",
+    "type": "int32",
+    "name": "state_04",
+    "evidence": ""
+   },
+   {
+    "offset": "0x8",
+    "type": "void *",
+    "name": "dll_sv",
+    "evidence": "pbsv.so"
+   },
+   {
+    "offset": "0xc",
+    "type": "void *",
+    "name": "dll_cl",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "void *",
+    "name": "dll_ag",
+    "evidence": ""
+   },
+   {
+    "offset": "0x14",
+    "type": "char[32]",
+    "name": "name",
+    "evidence": "\"PunkBuster Server\""
+   },
+   {
+    "offset": "0x34",
+    "type": "char[256]",
+    "name": "pb_dir",
+    "evidence": "fs_homepath + pb/"
+   },
+   {
+    "offset": "0x138",
+    "type": "int32",
+    "name": "dll_pending",
+    "evidence": ""
+   },
+   {
+    "offset": "0x13c",
+    "type": "int (*)(char*,char*)",
+    "name": "cmd_handler",
+    "evidence": "PB_HandleCommand 0x0813c28c"
+   },
+   {
+    "offset": "0x140",
+    "type": "char *(*)(int,char*)",
+    "name": "engine_query",
+    "evidence": "0x0813c43a; chunk_061 names cvar_query and types it void"
+   },
+   {
+    "offset": "0x144",
+    "type": "void *",
+    "name": "engine_print",
+    "evidence": "0x0813c524"
+   },
+   {
+    "offset": "0x148",
+    "type": "void *",
+    "name": "engine_send_oob",
+    "evidence": "0x0813c582 -> SV_SendToClients"
+   },
+   {
+    "offset": "0x14c",
+    "type": "int (*)(pb*,int,int,int,int,int)",
+    "name": "proc_sb",
+    "evidence": "dlsym 'sb'"
+   },
+   {
+    "offset": "0x150",
+    "type": "int (*)(pb*,int)",
+    "name": "proc_sa",
+    "evidence": "dlsym 'sa'"
+   },
+   {
+    "offset": "0x154",
+    "type": "void *",
+    "name": "engine_send_udp",
+    "evidence": "0x0813c5a8 -> Sys_SendPacketToHost"
+   },
+   {
+    "offset": "0x158",
+    "type": "void *",
+    "name": "cb_158",
+    "evidence": "called from SV_ConnectionlessPacket connect"
+   },
+   {
+    "offset": "0x15c",
+    "type": "void *",
+    "name": "cb_15c",
+    "evidence": "called from SV_DirectConnect"
+   },
+   {
+    "offset": "0x160",
+    "type": "void *",
+    "name": "cb_160",
+    "evidence": "called from console print"
+   },
+   {
+    "offset": "0x164",
+    "type": "int32",
+    "name": "field_164",
+    "evidence": ""
+   },
+   {
+    "offset": "0x168",
+    "type": "char *",
+    "name": "con_cap_buf",
+    "evidence": ""
+   },
+   {
+    "offset": "0x16c",
+    "type": "int32",
+    "name": "con_cap_len",
+    "evidence": "stores pointer bits (quirk)"
+   }
+  ],
+  "defined_in": [
+   "chunk_061_types.h"
+  ],
+  "conflicts": "chunk_061 labels +0x144/+0x148/+0x154 cb_144/cb_148/cb_154 and types +0x140 as void-returning cvar_query; disassembly of the installed functions shows the roles above (observed). Only one definition.",
+  "confidence": "medium"
+ },
+ {
+  "name": "msgbuf_s",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "uint8 *",
+    "name": "data",
+    "evidence": ""
+   },
+   {
+    "offset": "0x4",
+    "type": "int32",
+    "name": "maxsize",
+    "evidence": ""
+   },
+   {
+    "offset": "0x8",
+    "type": "int32",
+    "name": "cursor",
+    "evidence": ""
+   },
+   {
+    "offset": "0xc",
+    "type": "uint8",
+    "name": "warn_on_overflow",
+    "evidence": ""
+   },
+   {
+    "offset": "0xd",
+    "type": "uint8",
+    "name": "overflowed",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "void (*)(msgbuf_s*,uint32,void*)",
+    "name": "transfer",
+    "evidence": "MsgBuf_ReadData for readers, 0x080b5ae4 (MsgBuf_WriteBytes in chunk_102) for writers"
+   }
+  ],
+  "defined_in": [
+   "chunk_029_types.h"
+  ],
+  "conflicts": "chunk_029 marks the size as unobserved; 0x14 is the end of the last field. Probably not a network structure (see network.md section 9.2). chunk_029 calls the writer transfer fn 'fn_080b5ae4' while chunk_102 reconstructs it as MsgBuf_WriteBytes.",
+  "confidence": "low"
+ },
+ {
+  "name": "sysEvent_s",
+  "size": "0x18",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "int32",
+    "name": "evTime",
+    "evidence": ""
+   },
+   {
+    "offset": "0x4",
+    "type": "int32",
+    "name": "evType",
+    "evidence": "4 console text, 5 packet"
+   },
+   {
+    "offset": "0x8",
+    "type": "int32",
+    "name": "evValue",
+    "evidence": ""
+   },
+   {
+    "offset": "0xc",
+    "type": "int32",
+    "name": "evValue2",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "int32",
+    "name": "evPtrLength",
+    "evidence": "packet: 0x14 + payload length"
+   },
+   {
+    "offset": "0x14",
+    "type": "void *",
+    "name": "evPtr",
+    "evidence": "packet: netadr(0x14) then payload"
+   }
+  ],
+  "defined_in": [
+   "include/cod2_types.h",
+   "chunk_038_types.h",
+   "chunk_006_types.h"
+  ],
+  "conflicts": "None.",
+  "confidence": "high"
+ },
+ {
+  "name": "md4_ctx_s",
+  "size": "0x58",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "uint32[4]",
+    "name": "state",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "uint32[2]",
+    "name": "count",
+    "evidence": "bit count lo/hi"
+   },
+   {
+    "offset": "0x18",
+    "type": "byte[64]",
+    "name": "buffer",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_008_types.h"
+  ],
+  "conflicts": "None.",
+  "confidence": "high"
+ },
+ {
+  "name": "md5_ctx_s",
+  "size": "0x68",
+  "fields": [
+   {
+    "offset": "0x0",
+    "type": "uint32[2]",
+    "name": "count",
+    "evidence": ""
+   },
+   {
+    "offset": "0x8",
+    "type": "uint32[4]",
+    "name": "state",
+    "evidence": "IV + seed*{0xb,0x47,0x25,0x61}"
+   },
+   {
+    "offset": "0x18",
+    "type": "byte[64]",
+    "name": "buffer",
+    "evidence": ""
+   },
+   {
+    "offset": "0x58",
+    "type": "byte[16]",
+    "name": "digest",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_061_types.h"
+  ],
+  "conflicts": "Note md4 has state first (0x00) and md5 has count first - different layouts, not a conflict. No external callers.",
+  "confidence": "medium"
+ }
+]

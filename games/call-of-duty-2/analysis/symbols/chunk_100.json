@@ -1,0 +1,866 @@
+{
+ "chunk": 100,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x0804b3cc",
+   "name": "PC_AddBuiltinDefines",
+   "signature": "void PC_AddBuiltinDefines(struct source_s *source)",
+   "subsystem": "precompiler/defines",
+   "confidence": "inferred",
+   "evidence": "builtin names __LINE__/__FILE__/__DATE__/__TIME__ referenced; botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804bcfe",
+   "name": "PC_Include",
+   "signature": "int PC_Include(struct source_s *source)",
+   "subsystem": "precompiler/include",
+   "confidence": "inferred",
+   "evidence": "strings '#include without file name', '#include missing trailing >', 'file %s not found'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ca12",
+   "name": "PC_AddGlobalDefine",
+   "signature": "int PC_AddGlobalDefine(const char *string)",
+   "subsystem": "precompiler/defines",
+   "confidence": "inferred",
+   "evidence": "parses define via PC_DefineFromString and links at g_08188c84 head (next@0x18)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ca56",
+   "name": "PC_RemoveGlobalDefine",
+   "signature": "int PC_RemoveGlobalDefine(const char *name)",
+   "subsystem": "precompiler/defines",
+   "confidence": "inferred",
+   "evidence": "PC_FindDefine on global list then PC_FreeDefine; list not unlinked (as binary)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ca9a",
+   "name": "PC_RemoveAllGlobalDefines",
+   "signature": "void PC_RemoveAllGlobalDefines(void)",
+   "subsystem": "precompiler/defines",
+   "confidence": "inferred",
+   "evidence": "walks g_08188c84 via next@0x18 freeing each define",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804cd92",
+   "name": "PC_DirectiveIfndef",
+   "signature": "int PC_DirectiveIfndef(struct source_s *source)",
+   "subsystem": "precompiler/directives",
+   "confidence": "inferred",
+   "evidence": "forwards to PC_DirectiveIfdefCommon with type 0x10; Ghidra void, disassembly returns callee value in EAX",
+   "status": "translated",
+   "notes": "return type int chosen to match the EAX leftover"
+  },
+  {
+   "addr": "0x0804cdae",
+   "name": "PC_DirectiveElse",
+   "signature": "int PC_DirectiveElse(struct source_s *source)",
+   "subsystem": "precompiler/directives",
+   "confidence": "inferred",
+   "evidence": "strings 'misplaced #else', '#else after #else'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ce3e",
+   "name": "PC_DirectiveEndif",
+   "signature": "int PC_DirectiveEndif(struct source_s *source)",
+   "subsystem": "precompiler/directives",
+   "confidence": "inferred",
+   "evidence": "string 'misplaced #endif'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804e6c4",
+   "name": "PC_DirectiveIf",
+   "signature": "int PC_DirectiveIf(struct source_s *source)",
+   "subsystem": "precompiler/directives",
+   "confidence": "inferred",
+   "evidence": "PC_Evaluate then PC_PushIndent type 1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804e72c",
+   "name": "PC_DirectiveLine",
+   "signature": "int PC_DirectiveLine(struct source_s *source)",
+   "subsystem": "precompiler/directives",
+   "confidence": "inferred",
+   "evidence": "string '#line directive not supported'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804e74c",
+   "name": "PC_DirectiveError",
+   "signature": "int PC_DirectiveError(struct source_s *source)",
+   "subsystem": "precompiler/directives",
+   "confidence": "inferred",
+   "evidence": "string '#error directive: %s'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804e7a4",
+   "name": "PC_DirectivePragma",
+   "signature": "int PC_DirectivePragma(struct source_s *source)",
+   "subsystem": "precompiler/directives",
+   "confidence": "inferred",
+   "evidence": "string '#pragma directive not supported'; drains line with PC_ReadLine",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f09c",
+   "name": "PC_ExpectTokenString",
+   "signature": "int PC_ExpectTokenString(struct source_s *source, const char *string)",
+   "subsystem": "precompiler/expect",
+   "confidence": "inferred",
+   "evidence": "strings \"couldn't find expected %s\", 'expected %s, found %s'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f140",
+   "name": "PC_ExpectTokenType",
+   "signature": "int PC_ExpectTokenType(struct source_s *source, int type, unsigned int subtype, struct token_s *token)",
+   "subsystem": "precompiler/expect",
+   "confidence": "inferred",
+   "evidence": "strings 'expected a %s, found %s', 'decimal', 'hex', 'octal', 'binary', 'punctuation'",
+   "status": "translated",
+   "notes": "description buffer initialised to '' (binary strcat on uninitialised buffer when no base flag)"
+  },
+  {
+   "addr": "0x0804f420",
+   "name": "PC_ExpectAnyToken",
+   "signature": "int PC_ExpectAnyToken(struct source_s *source, struct token_s *token)",
+   "subsystem": "precompiler/expect",
+   "confidence": "inferred",
+   "evidence": "string \"couldn't read expected token\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f570",
+   "name": "PC_SkipUntilString",
+   "signature": "int PC_SkipUntilString(struct source_s *source, const char *string)",
+   "subsystem": "precompiler/expect",
+   "confidence": "inferred",
+   "evidence": "strcmp loop over PC_ReadToken",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f5cc",
+   "name": "PC_UnreadLastToken",
+   "signature": "void PC_UnreadLastToken(struct source_s *source)",
+   "subsystem": "precompiler/tokens",
+   "confidence": "inferred",
+   "evidence": "pushes back source+0x9c token via PC_UnreadSourceToken",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804f770",
+   "name": "PC_LoadSourceMemory",
+   "signature": "struct source_s *PC_LoadSourceMemory(void *ptr, int length, char *filename)",
+   "subsystem": "precompiler/sources",
+   "confidence": "inferred",
+   "evidence": "LoadScriptMemory, 0x4c8 source record, 0x1000-byte define hash, PC_AddGlobalDefinesToSource",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804fa56",
+   "name": "PC_FreeSourceHandle",
+   "signature": "int PC_FreeSourceHandle(int handle)",
+   "subsystem": "precompiler/handles",
+   "confidence": "inferred",
+   "evidence": "handle range 1..63 on g_08188ca0_sourceFiles, FreeSource then clear",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804fab6",
+   "name": "PC_ReadTokenHandle",
+   "signature": "int PC_ReadTokenHandle(int handle, struct pc_token_s *pc_token)",
+   "subsystem": "precompiler/handles",
+   "confidence": "inferred",
+   "evidence": "copies token to pc_token record (type, subtype, intvalue, float as fstp DWORD at +0x0c, string at +0x10)",
+   "status": "translated",
+   "notes": "token zero-initialised before the read; binary copies indeterminate locals when the read fails"
+  },
+  {
+   "addr": "0x0804fb7c",
+   "name": "PC_ReadLineHandle",
+   "signature": "int PC_ReadLineHandle(int handle, struct pc_token_s *pc_token)",
+   "subsystem": "precompiler/handles",
+   "confidence": "inferred",
+   "evidence": "line-oriented variant of PC_ReadTokenHandle using PC_ReadLine",
+   "status": "translated",
+   "notes": "same zero-initialisation choice as PC_ReadTokenHandle"
+  },
+  {
+   "addr": "0x0804fcdc",
+   "name": "PC_CheckOpenSourceHandles",
+   "signature": "void PC_CheckOpenSourceHandles(void)",
+   "subsystem": "precompiler/handles",
+   "confidence": "inferred",
+   "evidence": "string '^1Error: file %s still open in precompiler'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805173e",
+   "name": "PS_TryReadTokenType",
+   "signature": "int PS_TryReadTokenType(struct script_s *script, int type, unsigned int subtype, struct token_s *out)",
+   "subsystem": "script/tokens",
+   "confidence": "inferred",
+   "evidence": "reads a token, copies 0x42c bytes on match, rewinds script_p (+0x44 <- +0x4c) on mismatch",
+   "status": "translated",
+   "notes": "failed read returns 0 without rewinding (as binary)"
+  },
+  {
+   "addr": "0x080517c6",
+   "name": "PS_SkipUntilString",
+   "signature": "int PS_SkipUntilString(struct script_s *script, const char *string)",
+   "subsystem": "script/tokens",
+   "confidence": "inferred",
+   "evidence": "strcmp loop over PS_ReadToken",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08051928",
+   "name": "PS_ParseFloat",
+   "signature": "long double PS_ParseFloat(struct script_s *script)",
+   "subsystem": "script/numbers",
+   "confidence": "inferred",
+   "evidence": "string 'expected float value, found %s\\n'; optional '-' sign multiplies floatvalue by -1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080519fa",
+   "name": "PS_ParseInt",
+   "signature": "int PS_ParseInt(struct script_s *script)",
+   "subsystem": "script/numbers",
+   "confidence": "inferred",
+   "evidence": "string 'expected integer value, found %s\\n'; optional '-' sign",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805228e",
+   "name": "CM_ReplaceBspLump",
+   "signature": "void CM_ReplaceBspLump(int lumpIndex, const void *lumpData, int lumpLength, uint32 *checksumOut)",
+   "subsystem": "collision/bsp",
+   "confidence": "unknown",
+   "evidence": "strings 'EXE_ERR_COULDNT_LOAD\\x15%s', 'bad bsp version %d', 'Failed to open file %s for writing'; 39 lumps, version 4 or 0x3d",
+   "status": "translated",
+   "notes": "open-for-write is FS_ReturnZeroStub (0x080a0d54, returns 0), so the write path always errors in this build"
+  },
+  {
+   "addr": "0x08056006",
+   "name": "Ray_IntersectTriangle",
+   "signature": "int Ray_IntersectTriangle(float *origin, float *dir, float *v0, float *v1, float *v2, float *t_out, float *u_out, float *v_out)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "edge cross products, barycentric u/v, t; epsilon 0.001f (rodata 0x0813fff8); no name string",
+   "status": "translated",
+   "notes": "det tested one-sided (det < eps rejects)"
+  },
+  {
+   "addr": "0x0805785a",
+   "name": "BaseWindingForPlane",
+   "signature": "int32 *BaseWindingForPlane(float *normal, float dist)",
+   "subsystem": "collision/polygon",
+   "confidence": "observed",
+   "evidence": "string 'BaseWindingForPlane: no axis found' (0x08140060) referenced by this function",
+   "status": "translated",
+   "notes": "builds a 4-point square of half-extent 131072 in the plane"
+  },
+  {
+   "addr": "0x08057ad6",
+   "name": "CM_CloneBlock",
+   "signature": "int32 *CM_CloneBlock(int32 *src)",
+   "subsystem": "collision/polygon",
+   "confidence": "inferred",
+   "evidence": "cm_block_alloc(src[0]) then copy src[0]*12+4 bytes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08057b1e",
+   "name": "ClipWinding",
+   "signature": "void ClipWinding(int32 **blockRef, float *normal, float dist, float epsilon)",
+   "subsystem": "collision/polygon",
+   "confidence": "observed",
+   "evidence": "strings 'ClipWinding: points exceeded estimate' (0x081400a0), 'ClipWinding: MAX_POINTS_ON_WINDING' (0x081400e0)",
+   "status": "translated",
+   "notes": "Sutherland-Hodgman clip keeping the front side; writes g_08188ef8 scratch as in the binary"
+  },
+  {
+   "addr": "0x08058148",
+   "name": "CM_HunkReserveA",
+   "signature": "void CM_HunkReserveA(int size)",
+   "subsystem": "collision/memory",
+   "confidence": "unknown",
+   "evidence": "forwards to Hunk_Alloc and discards the result (reserve only)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805815c",
+   "name": "CM_HunkReserveB",
+   "signature": "void CM_HunkReserveB(int size)",
+   "subsystem": "collision/memory",
+   "confidence": "unknown",
+   "evidence": "identical to CM_HunkReserveA",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fc62",
+   "name": "Cmd_Wait_f",
+   "signature": "void Cmd_Wait_f(void)",
+   "subsystem": "console/commands",
+   "confidence": "inferred",
+   "evidence": "wait counter = atoi(arg 1) or 1; registered as 'wait' by Cmd_Init (merged symbol name)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080600f6",
+   "name": "Cmd_Vstr_f",
+   "signature": "void Cmd_Vstr_f(void)",
+   "subsystem": "console/commands",
+   "confidence": "inferred",
+   "evidence": "strings \"%s doesn't exist\\n\", '%s is not a string-based dvar\\n', 'vstr <variablename> : execute a variable command\\n'; literal name not in binary, registered as 'vstr'",
+   "status": "translated",
+   "notes": "merged symbol had confidence observed; literal name absent from binary, so downgraded here"
+  },
+  {
+   "addr": "0x08060196",
+   "name": "Cmd_PrintArgs_f",
+   "signature": "void Cmd_PrintArgs_f(void)",
+   "subsystem": "console/commands",
+   "confidence": "unknown",
+   "evidence": "prints args 1..argc-1 as '^3%s ' then newline (merged symbol name, confidence unknown)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806031c",
+   "name": "Cmd_CopyArgs",
+   "signature": "void Cmd_CopyArgs(char *dest, int destsize)",
+   "subsystem": "console/commands",
+   "confidence": "inferred",
+   "evidence": "Q_strncpyz of Cmd_ArgsFrom(1)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060808",
+   "name": "Cmd_ForEachName",
+   "signature": "void Cmd_ForEachName(void *callback)",
+   "subsystem": "console/commands",
+   "confidence": "inferred",
+   "evidence": "walks cmd_functions via next, calls callback(name); callback type void (*)(const char *)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060838",
+   "name": "Cmd_FileCompletion",
+   "signature": "char **Cmd_FileCompletion(const char *name, int *numfiles, int unusedArg)",
+   "subsystem": "console/commands",
+   "confidence": "inferred",
+   "evidence": "Cmd_FindCommand then FS_ListFiles with aux8 path and auxC extension",
+   "status": "translated",
+   "notes": "command lookup not NULL-checked (as binary)"
+  },
+  {
+   "addr": "0x080609e0",
+   "name": "Cmd_List_f",
+   "signature": "void Cmd_List_f(void)",
+   "subsystem": "console/commands",
+   "confidence": "inferred",
+   "evidence": "string '%i commands\\n'; registered as 'cmdlist' by Cmd_Init; literal name absent from binary",
+   "status": "translated",
+   "notes": "merged symbol had confidence observed; downgraded here"
+  },
+  {
+   "addr": "0x08061bd2",
+   "name": "Com_DrainSysEvents",
+   "signature": "void Com_DrainSysEvents(void)",
+   "subsystem": "system/events",
+   "confidence": "inferred",
+   "evidence": "loops Sys_GetEvent until evType 0, queuing each event with Com_PushEvent",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08061c22",
+   "name": "Com_Error_f",
+   "signature": "void Com_Error_f(void)",
+   "subsystem": "console/commands",
+   "confidence": "inferred",
+   "evidence": "strings '\\x15Testing fatal error' and '\\x15Testing drop error'; Com_Error code 0 or 1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08061c5e",
+   "name": "Cmd_Freeze_f",
+   "signature": "void Cmd_Freeze_f(void)",
+   "subsystem": "console/commands",
+   "confidence": "inferred",
+   "evidence": "string 'freeze <seconds>\\n'; busy-wait on Com_PumpSysEvents clock with 0.001 scale",
+   "status": "translated",
+   "notes": "Com_PumpSysEvents name from symbols; here its int result is used as a millisecond clock (see open questions)"
+  },
+  {
+   "addr": "0x0806246e",
+   "name": "Cmd_WriteConfig_f",
+   "signature": "void Cmd_WriteConfig_f(void)",
+   "subsystem": "console/commands",
+   "confidence": "inferred",
+   "evidence": "strings 'Usage: writeconfig <filename>\\n', 'Writing %s.\\n'; default extension '.cfg'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080624ea",
+   "name": "Cmd_WriteDefaults_f",
+   "signature": "void Cmd_WriteDefaults_f(void)",
+   "subsystem": "console/commands",
+   "confidence": "inferred",
+   "evidence": "strings 'Usage: writedefaults <filename>\\n', 'Writing %s.\\n'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080627dc",
+   "name": "Com_SetLastFrameTime",
+   "signature": "void Com_SetLastFrameTime(void)",
+   "subsystem": "system/time",
+   "confidence": "inferred",
+   "evidence": "stores Sys_Milliseconds into com_lastFrameTime",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08062964",
+   "name": "XAnim_CreateInstance",
+   "signature": "void XAnim_CreateInstance(int param)",
+   "subsystem": "xanim/instances",
+   "confidence": "unknown",
+   "evidence": "allocates through fn_080bcdbc with allocator fn_08062948; sizes via XAnim_BlockSizeForCount",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08062980",
+   "name": "XAnim_ReleaseInstance",
+   "signature": "void XAnim_ReleaseInstance(int *param)",
+   "subsystem": "xanim/instances",
+   "confidence": "unknown",
+   "evidence": "releases through fn_080bce0e with release callback fn_08077090",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08062d34",
+   "name": "DObj_ClearAllSkel",
+   "signature": "void DObj_ClearAllSkel(void)",
+   "subsystem": "dobj/skeleton",
+   "confidence": "inferred",
+   "evidence": "for each non-zero g_081d7900[i] (0x480 entries) calls DObj_ClearSkel at g_081a5080 + idx*100",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08062f78",
+   "name": "Dvar_ForEachName",
+   "signature": "void Dvar_ForEachName(void *callback)",
+   "subsystem": "dvar/list",
+   "confidence": "inferred",
+   "evidence": "walks dvar_vars via next (+0x1c), callback(name); callback type void (*)(const char *)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08063558",
+   "name": "Cmd_ToggleDvar_f",
+   "signature": "void Cmd_ToggleDvar_f(void)",
+   "subsystem": "dvar/commands",
+   "confidence": "inferred",
+   "evidence": "string '%s toggled to %s\\n'; uses Dvar_Toggle_f",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08063650",
+   "name": "Cmd_RegisterBool_f",
+   "signature": "void Cmd_RegisterBool_f(void)",
+   "subsystem": "dvar/commands",
+   "confidence": "inferred",
+   "evidence": "strings 'USAGE: %s <name> <default>\\n', \"dvar '%s' is not a boolean dvar\\n\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806371c",
+   "name": "Cmd_RegisterInt_f",
+   "signature": "void Cmd_RegisterInt_f(void)",
+   "subsystem": "dvar/commands",
+   "confidence": "inferred",
+   "evidence": "strings 'dvar %s: min %i should not be greater than max %i\\n', \"dvar '%s' is not an integer dvar\\n\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08063856",
+   "name": "Cmd_RegisterFloat_f",
+   "signature": "void Cmd_RegisterFloat_f(void)",
+   "subsystem": "dvar/commands",
+   "confidence": "inferred",
+   "evidence": "strings 'dvar %s: min %g should not be greater than max %g\\n', 'USAGE: %s <name> <default> <min> <max>\\n'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806398c",
+   "name": "Cmd_SetUser_f",
+   "signature": "void Cmd_SetUser_f(void)",
+   "subsystem": "dvar/commands",
+   "confidence": "inferred",
+   "evidence": "string 'USAGE: setu <variable> <value>\\n'; Cmd_Set_f then Dvar_OrFlags(d, 2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080639e4",
+   "name": "Cmd_SetServer_f",
+   "signature": "void Cmd_SetServer_f(void)",
+   "subsystem": "dvar/commands",
+   "confidence": "inferred",
+   "evidence": "string 'USAGE: sets <variable> <value>\\n'; Cmd_Set_f then Dvar_OrFlags(d, 4)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08063a94",
+   "name": "Cmd_SetFromDvar_f",
+   "signature": "void Cmd_SetFromDvar_f(void)",
+   "subsystem": "dvar/commands",
+   "confidence": "inferred",
+   "evidence": "strings \"dvar '%s' doesn't exist\\n\", 'USAGE: setfromdvar <dest_dvar> <source_dvar>\\n'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08063b1a",
+   "name": "Cmd_ResetDvar_f",
+   "signature": "void Cmd_ResetDvar_f(void)",
+   "subsystem": "dvar/commands",
+   "confidence": "inferred",
+   "evidence": "string 'USAGE: reset <variable>\\n'; Dvar_ResetToDefault(d, 1)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08063c62",
+   "name": "Dvar_List_f",
+   "signature": "void Dvar_List_f(void)",
+   "subsystem": "dvar/commands",
+   "confidence": "inferred",
+   "evidence": "strings ' %s \"%s\"\\n', '\\n%i total dvars\\n', flag legend S U R I A L C",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080640b6",
+   "name": "Dvar_FirstOutOfDomainName",
+   "signature": "char *Dvar_FirstOutOfDomainName(char *out)",
+   "subsystem": "dvar/domain",
+   "confidence": "inferred",
+   "evidence": "walks dvar_vars, Dvar_ValueInDomain(type, value, domainLo, domainHi); returns first failing name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080649cc",
+   "name": "FS_ReadThroughHandle",
+   "signature": "int FS_ReadThroughHandle(void *buf, int len, int handle)",
+   "subsystem": "filesystem/handles",
+   "confidence": "inferred",
+   "evidence": "FS_Nop; per-handle stdio flag at stride 0x11c selects Sys_Fread or FS_Read",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080654a0",
+   "name": "FS_BuildMissingIwdList",
+   "signature": "int FS_BuildMissingIwdList(char *out, int outSize, int verbose)",
+   "subsystem": "filesystem/iwd",
+   "confidence": "inferred",
+   "evidence": "strings 'main', '.iwd', '%s.%08x.iwd', '(local file exists with wrong checksum)', 'Need iwds: %s\\n'",
+   "status": "translated",
+   "notes": "g_084a74c0 used as const char * table; merged symbol typed uint32[1024]"
+  },
+  {
+   "addr": "0x080657a4",
+   "name": "FS_UnregisterCommands",
+   "signature": "void FS_UnregisterCommands(void)",
+   "subsystem": "filesystem/commands",
+   "confidence": "inferred",
+   "evidence": "removes commands 'path', 'dir', 'fdir', 'touchFile'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08066a4e",
+   "name": "Huff_Decompress",
+   "signature": "void Huff_Decompress(struct msg_s *msg, int offset)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "adaptive Huffman decode; 16-bit BE length at data+offset, bitstream from bit 16; 0x10000 output + 0x701c tree from pool",
+   "status": "translated",
+   "notes": "Quake III Huff_Decompress counterpart (structure); no name string"
+  },
+  {
+   "addr": "0x08066cf8",
+   "name": "Huff_Compress",
+   "signature": "void Huff_Compress(struct msg_s *msg, int offset)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "adaptive Huffman encode; writes 16-bit BE length then coded bits; bit cursor +8 before byte count",
+   "status": "translated",
+   "notes": "encoder tree leaves ltail NULL (as binary)"
+  },
+  {
+   "addr": "0x0806c5a0",
+   "name": "NET_ReceivePacket",
+   "signature": "void NET_ReceivePacket(struct netadr_s *from, struct msg_s *msg)",
+   "subsystem": "net/packets",
+   "confidence": "inferred",
+   "evidence": "forwards to Sys_GetPacket and discards its result",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075d58",
+   "name": "Scr_CompileTopLevel",
+   "signature": "void Scr_CompileTopLevel(struct cod2_scr_node *node)",
+   "subsystem": "gsc/compiler",
+   "confidence": "inferred",
+   "evidence": "Scr_CompileStmt(node,0,0,0) then EmitOpcode(0x80,0,0)",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188c84",
+   "name": "pc_globaldefines",
+   "type": "struct define_s *",
+   "confidence": "inferred",
+   "evidence": "global define list head; next at +0x18 (PC_AddGlobalDefine, PC_RemoveAllGlobalDefines)"
+  },
+  {
+   "addr": "0x08188ca0",
+   "name": "g_08188ca0_sourceFiles",
+   "type": "struct source_s *[64]",
+   "confidence": "inferred",
+   "evidence": "handles 1..63 (PC_FreeSourceHandle, PC_ReadTokenHandle, PC_CheckOpenSourceHandles)"
+  },
+  {
+   "addr": "0x08188dc0",
+   "name": "g_08188dc0_clipmap",
+   "type": "struct cm_map_s",
+   "confidence": "inferred",
+   "evidence": "first field name pointer read by CM_ReplaceBspLump as the BSP path"
+  },
+  {
+   "addr": "0x08188ef8",
+   "name": "g_08188ef8_clipWindingScratch",
+   "type": "float",
+   "confidence": "inferred",
+   "evidence": "scratch float written and read by ClipWinding (dot minus dist, then interpolation t)"
+  },
+  {
+   "addr": "0x081e9544",
+   "name": "huff_bitCursor",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "Huffman bit cursor set to 0x10 by Huff_Compress and Huff_Decompress"
+  },
+  {
+   "addr": "0x0818f080",
+   "name": "g_cmd_wait",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "written by Cmd_Wait_f"
+  },
+  {
+   "addr": "0x081a1b80",
+   "name": "cmd_functions",
+   "type": "struct cmd_function_s *",
+   "confidence": "inferred",
+   "evidence": "command list walked by Cmd_ForEachName, Cmd_List_f, Cmd_FileCompletion"
+  },
+  {
+   "addr": "0x081a226c",
+   "name": "com_lastFrameTime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "written by Com_SetLastFrameTime from Sys_Milliseconds"
+  },
+  {
+   "addr": "0x085abe00",
+   "name": "dvar_vars",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "dvar list head walked via next at +0x1c"
+  },
+  {
+   "addr": "0x085abe08",
+   "name": "dvar_indexCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "printed as total dvars by Dvar_List_f"
+  },
+  {
+   "addr": "0x0849fd68",
+   "name": "fs_searchpaths",
+   "type": "struct searchpath_s *",
+   "confidence": "inferred",
+   "evidence": "walked via next; pack pointer at +4 gives checksum at pack+0x304 (FS_BuildMissingIwdList)"
+  },
+  {
+   "addr": "0x0849fd98",
+   "name": "g_0849fd98",
+   "type": "uint8[]",
+   "confidence": "unknown",
+   "evidence": "per-handle table, stride 0x11c, int flag at slot+0 (FS_ReadThroughHandle)"
+  },
+  {
+   "addr": "0x084a64a0",
+   "name": "fs_numReferencedIwds",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "iwd count read by FS_BuildMissingIwdList"
+  },
+  {
+   "addr": "0x084a74c0",
+   "name": "fs_referencedIwdNames",
+   "type": "char *[1024]",
+   "confidence": "inferred",
+   "evidence": "iwd name entries used as const char * by FS_BuildMissingIwdList; merged symbol types it uint32 (conflict, see open questions)"
+  },
+  {
+   "addr": "0x084a64c0",
+   "name": "fs_referencedIwdSums",
+   "type": "int32[1024]",
+   "confidence": "inferred",
+   "evidence": "iwd checksum values compared with pack+0x304 and printed as %08x"
+  },
+  {
+   "addr": "0x0814cfc8",
+   "name": "vec3_origin",
+   "type": "float[3]",
+   "confidence": "observed",
+   "evidence": "zero vector in rodata; copied as the seed of BaseWindingForPlane"
+  },
+  {
+   "addr": "0x081a5080",
+   "name": "g_dobjPool",
+   "type": "uint8[]",
+   "confidence": "inferred",
+   "evidence": "DObj slot pool, 100 bytes per slot (DObj_ClearAllSkel)"
+  },
+  {
+   "addr": "0x081d7900",
+   "name": "g_dobjClientHandleToSlot",
+   "type": "int16[]",
+   "confidence": "inferred",
+   "evidence": "0x480-entry DObj slot index table (DObj_ClearAllSkel)"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "token_s",
+   "size": "0x42c",
+   "evidence": "PC/PS token: string[1024], type@0x400, subtype@0x404, intvalue@0x408, long double floatvalue@0x40c, linescrossed@0x424, next@0x428; memcpy 0x42c in PS_TryReadTokenType"
+  },
+  {
+   "name": "script_s",
+   "size": "0x4a4",
+   "evidence": "script_p@0x44, lastscript_p@0x4c, line@0x5c, token@0x74, next@0x4a0; PS_TryReadTokenType rewinds script_p"
+  },
+  {
+   "name": "define_s",
+   "size": "0x20",
+   "evidence": "name@0, flags@4, builtin@8, next@0x18, hashnext@0x1c; name stored after the header in PC_AddBuiltinDefines"
+  },
+  {
+   "name": "source_s",
+   "size": "0x4c8",
+   "evidence": "filename@0, includepath@0x40, scriptstack@0x84, definehash@0x90, skip@0x98, token@0x9c (PC_LoadSourceMemory allocation size)"
+  },
+  {
+   "name": "pc_token_s",
+   "size": "0x410",
+   "evidence": "type@0, subtype@4, intvalue@8, float floatvalue@0x0c (fstp DWORD), string@0x10 (PC_ReadTokenHandle, PC_ReadLineHandle)"
+  },
+  {
+   "name": "dvar_s",
+   "size": "0x20",
+   "evidence": "name@0, flags@4 (u16), type@6, modified@7, current@8, latched@0xc, reset@0x10, domainLo@0x14, domainHi@0x18, next@0x1c"
+  },
+  {
+   "name": "cmd_function_s",
+   "size": "0x14",
+   "evidence": "next@0, name@4, aux8@8 (path), auxC@0xc (extension), function@0x10 (matches chunk_006)"
+  },
+  {
+   "name": "searchpath_s (prefix)",
+   "size": "partial",
+   "evidence": "next@0, pack@4 used by FS_BuildMissingIwdList; pack checksum at pack+0x304"
+  },
+  {
+   "name": "cm_map_s",
+   "size": "0x110",
+   "evidence": "first field name pointer (g_08188dc0_clipmap); matches chunk_002"
+  },
+  {
+   "name": "huffman_s / node_s / msg_s",
+   "size": "0x701c / 0x20 / 0x18",
+   "evidence": "mirrors chunk_008 layouts (loc@0x14, nodeList@0x41c, msg data@4, cursize@0x0c)"
+  }
+ ],
+ "open_questions": [
+  "Com_PumpSysEvents (0x08061b7c, merged name) returns an int that Cmd_Freeze_f uses as a millisecond clock; the merged name may be wrong or the function may be a clock helper with a misleading name.",
+  "CM_ReplaceBspLump can never write: its open-for-write call FS_ReturnZeroStub (0x080a0d54) is a stub returning 0 in this build. Confirm whether the write path is disabled on purpose; the lump writer and its checksum tail are dead.",
+  "g_084a74c0 is typed uint32[1024] in the merged symbols, but FS_BuildMissingIwdList passes its entries to I_strncat as C string pointers. The merge lane should retype it (const char *[1024]).",
+  "Com_PoolTouchAt (0x080ac5d8) is declared void in cod2_prototypes.h but tail-calls Com_PoolAt (0x080ac562), which returns unsigned char *; this chunk calls Com_PoolAt(offset) for the same result. The prototype should be corrected.",
+  "The symbol records for Cmd_Vstr_f and Cmd_List_f were tagged observed, but neither literal name appears in the binary (they are registered as 'vstr' and 'cmdlist'); this chunk tags them inferred.",
+  "dvar_s is recovered here with domainLo/domainHi at +0x14/+0x18 (Dvar_ValueInDomain) while chunk_028 names +0x14 enumCount; the two readings must be reconciled.",
+  "PC_Include copies includepath (64 bytes) and strncat's up to 0x40 bytes into a 64-byte path buffer; overlong include names overflow as in the binary.",
+  "Placeholder callees fn_080bcdbc, fn_080bce0e, fn_08062948, fn_08077090 (XAnim block alloc/free and their callbacks) need their owning chunk names and signatures."
+ ]
+}

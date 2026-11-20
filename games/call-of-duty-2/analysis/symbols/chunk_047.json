@@ -1,0 +1,841 @@
+{
+ "chunk": 47,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080fe9ca",
+   "name": "Cmd_Take_f",
+   "signature": "void Cmd_Take_f(struct gentity_s *ent)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "client command string 'take' dispatched in ClientCommand; args health/weapons/ammo/allammo/all",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080feeba",
+   "name": "Cmd_God_f",
+   "signature": "void Cmd_God_f(struct gentity_s *ent)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "strings GAME_GODMODE_ON/OFF; ClientCommand 'god' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fef4e",
+   "name": "Cmd_DemiGod_f",
+   "signature": "void Cmd_DemiGod_f(struct gentity_s *ent)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "strings GAME_DEMI_GODMODE_ON/OFF; ClientCommand 'demigod' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fefe2",
+   "name": "Cmd_Notarget_f",
+   "signature": "void Cmd_Notarget_f(struct gentity_s *ent)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "strings GAME_NOTARGETON/OFF; ClientCommand 'notarget' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ff070",
+   "name": "Cmd_Noclip_f",
+   "signature": "void Cmd_Noclip_f(struct gentity_s *ent)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "strings GAME_NOCLIPON/OFF; ClientCommand 'noclip' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ff114",
+   "name": "Cmd_UFO_f",
+   "signature": "void Cmd_UFO_f(struct gentity_s *ent)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "strings GAME_UFOON/OFF; ClientCommand 'ufo' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ff1b8",
+   "name": "Cmd_Kill_f",
+   "signature": "void Cmd_Kill_f(struct gentity_s *ent)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "ClientCommand 'kill'; calls player_die with means of death 12 (MOD_SUICIDE)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ff252",
+   "name": "StopFollowing",
+   "signature": "void StopFollowing(struct gentity_s *ent)",
+   "subsystem": "game/spectator",
+   "confidence": "inferred",
+   "evidence": "Quake III StopFollowing structure; clears spectatorClient fields and repositions camera",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ff4ac",
+   "name": "Cmd_FollowCycle_f",
+   "signature": "int Cmd_FollowCycle_f(struct gentity_s *ent, int dir)",
+   "subsystem": "game/spectator",
+   "confidence": "observed",
+   "evidence": "string 'Cmd_FollowCycle_f: bad dir %i'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ff614",
+   "name": "G_IsSessionPlaying",
+   "signature": "bool G_IsSessionPlaying(struct gentity_s *ent)",
+   "subsystem": "game/chat",
+   "confidence": "unknown",
+   "evidence": "no strings; returns client sessionState == 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ff630",
+   "name": "G_SayTo",
+   "signature": "void G_SayTo(struct gentity_s *ent, struct gentity_s *other, int mode, int color, const char *name, const char *text)",
+   "subsystem": "game/chat",
+   "confidence": "inferred",
+   "evidence": "Quake III G_SayTo counterpart; chat server command format at 0x08158edf",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ff734",
+   "name": "G_Say",
+   "signature": "void G_Say(struct gentity_s *ent, struct gentity_s *target, int mode, const char *text)",
+   "subsystem": "game/chat",
+   "confidence": "inferred",
+   "evidence": "strings 'say;%d;%d;%s;%s\\n', 'sayteam;...', GAME_AXIS/GAME_ALLIES",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ffafa",
+   "name": "Cmd_Say_f",
+   "signature": "void Cmd_Say_f(struct gentity_s *ent, int mode, int arg0)",
+   "subsystem": "game/chat",
+   "confidence": "inferred",
+   "evidence": "called from ClientCommand for 'say'/'say_team'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ffb5c",
+   "name": "Cmd_Where_f",
+   "signature": "void Cmd_Where_f(struct gentity_s *ent)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "ClientCommand 'where'; prints entity origin text",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ffbb2",
+   "name": "Cmd_CallVote_f",
+   "signature": "void Cmd_CallVote_f(struct gentity_s *ent)",
+   "subsystem": "game/vote",
+   "confidence": "inferred",
+   "evidence": "strings GAME_VOTINGNOTENABLED/GAME_CALLEDAVOTE/map_restart/typemap etc.; ClientCommand 'callvote' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08100960",
+   "name": "Cmd_Vote_f",
+   "signature": "void Cmd_Vote_f(struct gentity_s *ent)",
+   "subsystem": "game/vote",
+   "confidence": "inferred",
+   "evidence": "strings GAME_NOVOTEINPROGRESS/GAME_VOTECAST; ClientCommand 'vote' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08100b88",
+   "name": "Cmd_SetViewpos_f",
+   "signature": "void Cmd_SetViewpos_f(struct gentity_s *ent)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "string GAME_CHEATSNOTENABLED/GAME_USAGE: setviewpos x y z yaw; ClientCommand 'setviewpos' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08100cec",
+   "name": "Cmd_EntityCount_f",
+   "signature": "void Cmd_EntityCount_f(void)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "string 'entity count = %i\\n'; ClientCommand 'entitycount' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08100d16",
+   "name": "Cmd_MenuResponse_f",
+   "signature": "void Cmd_MenuResponse_f(struct gentity_s *ent)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "strings 'sv_serverId' and 'bad'; ClientCommand 'mr'; pushes two strings and runs a script callback",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08100e54",
+   "name": "Cmd_PrintEntities_f",
+   "signature": "void Cmd_PrintEntities_f(void)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "ClientCommand 'printentities' wrapper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08100e62",
+   "name": "ClientCommand",
+   "signature": "void ClientCommand(int clientNum)",
+   "subsystem": "game/cmds",
+   "confidence": "inferred",
+   "evidence": "Quake III ClientCommand structure; string chain with GAME_UNKNOWNCLIENTCOMMAND fallback",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810127e",
+   "name": "VectorClear_0810127e",
+   "signature": "void VectorClear_0810127e(float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "zeroes 3 floats",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081012a8",
+   "name": "VectorSet_081012a8",
+   "signature": "void VectorSet_081012a8(float *v, float x, float y, float z)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "stores 3 floats",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081012cc",
+   "name": "VectorCopy_081012cc",
+   "signature": "void VectorCopy_081012cc(const float *in, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "copies 3 floats",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081012fc",
+   "name": "VectorMA_081012fc",
+   "signature": "void VectorMA_081012fc(const float *a, float scale, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "a + scale*b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08101350",
+   "name": "G_InfoFieldStrcpyCallback",
+   "signature": "void G_InfoFieldStrcpyCallback(char *dst, const char *src)",
+   "subsystem": "util/string",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): strcpy wrapper whose address is passed as the string-copy callback in G_ParseHitLocDmgTable (0x0810159b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810136a",
+   "name": "G_ParseHitLocDmgTable",
+   "signature": "void G_ParseHitLocDmgTable(void)",
+   "subsystem": "game/damage",
+   "confidence": "inferred",
+   "evidence": "strings 'info/mp_lochit_dmgtable', 'LOCDMGTABLE', hitloc damage table errors [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08101604",
+   "name": "NoOp_08101604",
+   "signature": "void NoOp_08101604(void)",
+   "subsystem": "game/misc",
+   "confidence": "unknown",
+   "evidence": "single ret",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810160a",
+   "name": "G_SetKillerYaw",
+   "signature": "void G_SetKillerYaw(struct gentity_s *self, struct gentity_s *inflictor, struct gentity_s *attacker)",
+   "subsystem": "game/damage",
+   "confidence": "inferred",
+   "evidence": "Quake III LookAtKiller shape; writes client+0x130",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081016fa",
+   "name": "G_MeansOfDeathFromString",
+   "signature": "int G_MeansOfDeathFromString(const char *name)",
+   "subsystem": "game/damage",
+   "confidence": "inferred",
+   "evidence": "string 'Unknown means of death string' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810175a",
+   "name": "player_die",
+   "signature": "void player_die(struct gentity_s *self, struct gentity_s *inflictor, struct gentity_s *attacker, int damage, int mod, int weapon, const float *dir, int hitLoc, int extra)",
+   "subsystem": "game/damage",
+   "confidence": "inferred",
+   "evidence": "Quake III player_die structure; called from Cmd_Kill_f and G_Damage die table",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08101ae2",
+   "name": "G_GetHitLocMultiplier",
+   "signature": "float G_GetHitLocMultiplier(int hitLoc, int weapon)",
+   "subsystem": "game/damage",
+   "confidence": "inferred",
+   "evidence": "reads global hitloc table filled by G_ParseHitLocDmgTable or per-weapon table",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08101b40",
+   "name": "G_DamageClient",
+   "signature": "void G_DamageClient(struct gentity_s *self, struct gentity_s *inflictor, struct gentity_s *attacker, const float *dir, const float *point, int damage, int dflags, int mod, int hitLoc, int extra)",
+   "subsystem": "game/damage",
+   "confidence": "unknown",
+   "evidence": "client branch of G_Damage; descriptive",
+   "status": "translated",
+   "notes": "x87 float multiply then truncating int cast; forwards to fn_081183b8"
+  },
+  {
+   "addr": "0x08101c58",
+   "name": "G_Damage",
+   "signature": "void G_Damage(struct gentity_s *self, struct gentity_s *inflictor, struct gentity_s *attacker, const float *dir, const float *point, int damage, int dflags, int mod, int hitLoc, int extra)",
+   "subsystem": "game/damage",
+   "confidence": "inferred",
+   "evidence": "string 'target:%i health:%i damage:%i\\n'; god/demigod flags; die/pain callbacks",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08101ee6",
+   "name": "G_CanDamage",
+   "signature": "float G_CanDamage(struct gentity_s *ent, const float *origin)",
+   "subsystem": "game/damage",
+   "confidence": "inferred",
+   "evidence": "Quake III CanDamage shape returning visibility fraction; called from G_RadiusDamage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081022a0",
+   "name": "G_RadiusDamage",
+   "signature": "int G_RadiusDamage(const float *origin, struct gentity_s *inflictor, struct gentity_s *attacker, float damageMax, float damageMin, float radius, struct gentity_s *ignore, int mod)",
+   "subsystem": "game/damage",
+   "confidence": "inferred",
+   "evidence": "Quake III G_RadiusDamage structure; calls G_CanDamage and G_Damage with dflags 1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08102876",
+   "name": "G_GetHitLocId",
+   "signature": "short G_GetHitLocId(int index)",
+   "subsystem": "game/damage",
+   "confidence": "unknown",
+   "evidence": "table lookup",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08102886",
+   "name": "G_GetHitLocIndexFromId",
+   "signature": "int G_GetHitLocIndexFromId(short id)",
+   "subsystem": "game/damage",
+   "confidence": "unknown",
+   "evidence": "reverse table lookup",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081028ce",
+   "name": "VectorCopy_081028ce",
+   "signature": "void VectorCopy_081028ce(const float *in, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "copies 3 floats",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081028fe",
+   "name": "VectorAdd_081028fe",
+   "signature": "void VectorAdd_081028fe(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "a+b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08102942",
+   "name": "VectorSubtract_08102942",
+   "signature": "void VectorSubtract_08102942(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "a-b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08102986",
+   "name": "VectorScale_08102986",
+   "signature": "void VectorScale_08102986(const float *v, float scale, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "scale*v",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081029be",
+   "name": "VectorMA_081029be",
+   "signature": "void VectorMA_081029be(const float *a, float scale, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "a + scale*b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08102a12",
+   "name": "VectorLength_08102a12",
+   "signature": "float VectorLength_08102a12(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "sqrt of squared components",
+   "status": "translated",
+   "notes": "decompiler shows void; function returns the float produced by Sqrt_Float_08102a50"
+  },
+  {
+   "addr": "0x08102a50",
+   "name": "Sqrt_Float_08102a50",
+   "signature": "float Sqrt_Float_08102a50(float value)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "float sqrt via double",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08102a70",
+   "name": "G_DebugLine_08102a70",
+   "signature": "void G_DebugLine_08102a70(const float *a, const float *b, uint32 c1, uint32 c2, uint32 c3)",
+   "subsystem": "game/debug",
+   "confidence": "unknown",
+   "evidence": "single ret stub called by circle/arc helpers",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08102d14",
+   "name": "G_DebugCircle_08102d14",
+   "signature": "void G_DebugCircle_08102d14(const float *center, float radius, const float *normal, uint32 c1, uint32 c2, uint32 c3)",
+   "subsystem": "game/debug",
+   "confidence": "unknown",
+   "evidence": "16-point circle draw helper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08102eea",
+   "name": "G_DebugArc_08102eea",
+   "signature": "void G_DebugArc_08102eea(const float *center, float radius, float startAngle, float endAngle, uint32 c1, uint32 c2, uint32 c3)",
+   "subsystem": "game/debug",
+   "confidence": "unknown",
+   "evidence": "16-point arc helper (degrees)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103092",
+   "name": "SinCos_08103092",
+   "signature": "void SinCos_08103092(float angle, float *sinOut, float *cosOut)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "sin/cos wrapper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081030c0",
+   "name": "Vec2Copy_081030c0",
+   "signature": "void Vec2Copy_081030c0(const float *in, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "copies 2 floats",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081030e0",
+   "name": "VectorSet_081030e0",
+   "signature": "void VectorSet_081030e0(float *v, float x, float y, float z)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "stores 3 floats",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103104",
+   "name": "VectorCopy_08103104",
+   "signature": "void VectorCopy_08103104(const float *in, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "copies 3 floats",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103134",
+   "name": "VectorAdd_08103134",
+   "signature": "void VectorAdd_08103134(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "a+b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103178",
+   "name": "VectorSubtract_08103178",
+   "signature": "void VectorSubtract_08103178(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "a-b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081031bc",
+   "name": "VectorMA_081031bc",
+   "signature": "void VectorMA_081031bc(const float *a, float scale, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "a + scale*b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103210",
+   "name": "HudElem_ClearFields",
+   "signature": "void HudElem_ClearFields(struct game_hudelem_s *he)",
+   "subsystem": "game/hudelem",
+   "confidence": "inferred",
+   "evidence": "zeroes dynamic fields of pool entry",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081032ae",
+   "name": "HudElem_Init",
+   "signature": "void HudElem_Init(struct game_hudelem_s *he)",
+   "subsystem": "game/hudelem",
+   "confidence": "inferred",
+   "evidence": "initialises pool entry",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810336a",
+   "name": "HudElem_Alloc",
+   "signature": "struct game_hudelem_s *HudElem_Alloc(int ownerKey, int secondKey)",
+   "subsystem": "game/hudelem",
+   "confidence": "inferred",
+   "evidence": "first-free allocation in 0x400-entry pool at 0x08628f80",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081033f8",
+   "name": "HudElem_Free",
+   "signature": "void HudElem_Free(struct game_hudelem_s *he)",
+   "subsystem": "game/hudelem",
+   "confidence": "inferred",
+   "evidence": "releases refs and clears inUse",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103414",
+   "name": "HudElem_FreeAllForOwner",
+   "signature": "void HudElem_FreeAllForOwner(const struct gentity_s *owner)",
+   "subsystem": "game/hudelem",
+   "confidence": "inferred",
+   "evidence": "frees pool entries matching owner key",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103476",
+   "name": "HudElem_FreeAll",
+   "signature": "void HudElem_FreeAll(void)",
+   "subsystem": "game/hudelem",
+   "confidence": "inferred",
+   "evidence": "frees all and memsets pool 0x23000",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081034de",
+   "name": "HudElem_SetEnumField",
+   "signature": "void HudElem_SetEnumField(char *base, struct hudelem_field_s *field, const char *const *names, int count)",
+   "subsystem": "game/hudelem",
+   "confidence": "inferred",
+   "evidence": "string 'is not a valid value for hudelem field' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "calls address 0x08084bb2 named Scr_ReleaseAnyValue by chunk 017 but this caller uses its return as a char*"
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08716400",
+   "name": "g_entities",
+   "type": "struct gentity_s[]",
+   "confidence": "inferred",
+   "evidence": "entity array stride 0x230; (ent-base)/0x230 used as entity number"
+  },
+  {
+   "addr": "0x0864c380",
+   "name": "level_clients",
+   "type": "struct gclient_s *",
+   "confidence": "inferred",
+   "evidence": "pointer indexed with stride 0x28a4; fields connected(+0x26c4)==2 and name(+0x2784)"
+  },
+  {
+   "addr": "0x0864c564",
+   "name": "level_maxclients",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "loop bound over clients/entities"
+  },
+  {
+   "addr": "0x0864c38c",
+   "name": "level_num_entities",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "printed by 'entity count = %i'"
+  },
+  {
+   "addr": "0x0864c56c",
+   "name": "level_time",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "vote end = this + 30000"
+  },
+  {
+   "addr": "0x0864ce9c",
+   "name": "level_voteTime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "nonzero while a vote is running"
+  },
+  {
+   "addr": "0x0864c69c",
+   "name": "level_voteString",
+   "type": "char[0x400]",
+   "confidence": "inferred",
+   "evidence": "vote command text"
+  },
+  {
+   "addr": "0x0864ca9c",
+   "name": "level_voteDisplayString",
+   "type": "char[0x400]",
+   "confidence": "inferred",
+   "evidence": "display text set to configstring 0x10"
+  },
+  {
+   "addr": "0x0864cea4",
+   "name": "level_voteYes",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "configstring 0x11"
+  },
+  {
+   "addr": "0x0864cea8",
+   "name": "level_voteNo",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "configstring 0x12"
+  },
+  {
+   "addr": "0x0864cea0",
+   "name": "level_pendingVoteExecute",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "cleared and its vote string executed at the next callvote"
+  },
+  {
+   "addr": "0x08628ee0",
+   "name": "g_hitLocMultiplier",
+   "type": "float[19]",
+   "confidence": "inferred",
+   "evidence": "filled by G_ParseHitLocDmgTable"
+  },
+  {
+   "addr": "0x08628f40",
+   "name": "g_hitLocIds",
+   "type": "short[19]",
+   "confidence": "inferred",
+   "evidence": "results of fn_08079e58 per hitloc name"
+  },
+  {
+   "addr": "0x08628f80",
+   "name": "g_hudelems",
+   "type": "struct game_hudelem_s[0x400]",
+   "confidence": "inferred",
+   "evidence": "pool memset with 0x23000 bytes"
+  },
+  {
+   "addr": "0x08187bc0",
+   "name": "g_hitLocNames",
+   "type": "const char *[19]",
+   "confidence": "observed",
+   "evidence": "none, helmet, head, ... gun"
+  },
+  {
+   "addr": "0x08187c40",
+   "name": "g_modNames",
+   "type": "const char *[15]",
+   "confidence": "observed",
+   "evidence": "MOD_UNKNOWN ... MOD_EXPLOSIVE"
+  },
+  {
+   "addr": "0x08187d14",
+   "name": "g_entityHandlers",
+   "type": "struct entity_handler_s[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x28; pain at +0, die at +4 relative to this address; indexed by entity byte +0x166"
+  },
+  {
+   "addr": "0x087a1fa0",
+   "name": "g_dummyEntity",
+   "type": "struct gentity_s",
+   "confidence": "unknown",
+   "evidence": "fallback inflictor/attacker in G_Damage"
+  },
+  {
+   "addr": "0x08853228",
+   "name": "g_scrCallbackDamage",
+   "type": "uint16",
+   "confidence": "unknown",
+   "evidence": "script callback handle used with 2 args in G_Damage"
+  },
+  {
+   "addr": "0x0885322a",
+   "name": "g_scrCallbackDeath",
+   "type": "uint16",
+   "confidence": "unknown",
+   "evidence": "script callback handle used with 1 arg in G_Damage/player_die"
+  },
+  {
+   "addr": "0x08853290",
+   "name": "g_scrCallbackMenuResponse",
+   "type": "uint16",
+   "confidence": "unknown",
+   "evidence": "script callback handle with 2 string args"
+  },
+  {
+   "addr": "0x087a2474",
+   "name": "dvar_g_allowVote",
+   "type": "struct dvar_s *",
+   "confidence": "unknown",
+   "evidence": "GAME_VOTINGNOTENABLED gate"
+  },
+  {
+   "addr": "0x087a24d0",
+   "name": "dvar_voteMode",
+   "type": "struct dvar_s *",
+   "confidence": "unknown",
+   "evidence": "selects built-in vote path vs fn_08118562 path"
+  },
+  {
+   "addr": "0x087a2418",
+   "name": "dvar_cheats",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "GAME_CHEATSNOTENABLED gate"
+  },
+  {
+   "addr": "0x087a2400",
+   "name": "dvar_gametype",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "string compared to typemap argument"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "gentity_s",
+   "size": "0x230",
+   "evidence": "stride from index math (ent-0x8716400)>>4 * inverse(0x23) and *0x230 arithmetic"
+  },
+  {
+   "name": "gclient_s",
+   "size": "0x28a4",
+   "evidence": "level clients stride in vote and death loops"
+  },
+  {
+   "name": "hudelem_s",
+   "size": "0x8c",
+   "evidence": "pool stride 0x23 words, memset 0x23000 / 0x400"
+  },
+  {
+   "name": "entity_handler_s",
+   "size": "0x28",
+   "evidence": "stride 0x28 in pain/die table"
+  },
+  {
+   "name": "InfoField_s",
+   "size": "0xc",
+   "evidence": "3-word entries filled in G_ParseHitLocDmgTable"
+  },
+  {
+   "name": "hudelem_field_s",
+   "size": "0x14",
+   "evidence": "name/offset/mask/shift accesses in HudElem_SetEnumField"
+  }
+ ],
+ "open_questions": [
+  "Callee at 0x08084bb2 is named Scr_ReleaseAnyValue (void) by chunk 017, yet HudElem_SetEnumField uses its return as the argument string; the merge lane should reconcile the signature.",
+  "Meaning of gclient_s fields +0x3c/+0xd0 (drop item), +0x590/+0x594, +0x5d8 and entity +0x74/+0x84/+0x118 is unknown; named neutrally by offset.",
+  "dvar pointers 0x087a24d0 (vote path switch) and 0x087a247c (chat gating), flag 0x0864cea0 and the entity handler table base (pain/die at 0x08187d14/0x08187d18) are inferred only from use.",
+  "Callee semantics of fn_080fe102 (cheat gate), fn_080a45fc (direction conversion, output size 12..24 bytes) and fn_08118492/fn_081183b8 (damage/death backends) are unverified in this chunk."
+ ]
+}

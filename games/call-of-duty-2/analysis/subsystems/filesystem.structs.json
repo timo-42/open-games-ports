@@ -1,0 +1,1132 @@
+[
+ {
+  "name": "fs_handle_s",
+  "size": "0x11c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "void *",
+    "name": "handle",
+    "evidence": "FILE* for loose files, unz_s* for pack entries; FS_FileForHandle (0x0809e892) returns it; cmp [slot+0x849fd80] in FS_HandleForFile (0x0809e7d4) tests it for free slots"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "uniqueFile",
+    "evidence": "FS_FOpenFileReadInternal (0x0809f958) stores arg 3 at 0x0849fd84 right after FS_HandleForFile; FS_FCloseFile unzClose()s when set"
+   },
+   {
+    "offset": "0x08",
+    "type": "int",
+    "name": "handleSync",
+    "evidence": "FSH_FOpenFile (0x080a3562) stores at 0x0849fd88; FS_Write flushes when set; all openers zero 0x0849fd88"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "fileSize",
+    "evidence": "FSH_FOpenFile stores its result at 0x0849fd8c; FS_Shutdown (0x080a2ba8) tests 0x0849fd8c to decide whether to close the slot"
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "zipFilePos",
+    "evidence": "chunk_024 FS_Seek/FS_FOpenFileReadInternal (central-directory position of the open entry); chunk_101 agrees (+0x10)"
+   },
+   {
+    "offset": "0x14",
+    "type": "struct fs_pack_s *",
+    "name": "pack",
+    "evidence": "non-NULL for pack entries: chunk_024 pack, chunk_023/101 zipFile flag, chunk_007 unk14 zeroed by FS_SV_FOpenFile*; FS_filelength reads +0x44 of handle when non-NULL"
+   },
+   {
+    "offset": "0x18",
+    "type": "int",
+    "name": "streamOpen",
+    "evidence": "FS_FCloseFile (0x0809ee68), FS_Seek (0x080a079e), FS_ReadThroughHandle (0x080649f2) test/set 0x0849fd98; FSH_FOpenFile clears it; only transiently 1"
+   },
+   {
+    "offset": "0x1c",
+    "type": "char[256]",
+    "name": "name",
+    "evidence": "FS_HandleForFile dump uses base+0x1c (0x0849fd9c); all openers Q_strncpyz(name, qpath, 0x100)"
+   }
+  ],
+  "defined_in": [
+   "chunk_007_types.h",
+   "chunk_023_types.h",
+   "chunk_024_types.h",
+   "chunk_025_types.h",
+   "chunk_101_types.h",
+   "chunk_100_types.h"
+  ],
+  "conflicts": "chunk_025 (cod2_fsh_s / fsh_table) places handleSync at +0x00, fileSize at +0x04 and 'unknown_10' at +0x10, i.e. every offset is 8 lower than the canonical one (its table base is effectively 0x0849fd88); its fields are the same ones FSH_FOpenFile writes (disasm 0x080a3655/0x080a3666/0x080a3680). chunk_101 places handleSync at +0x04 and baseOffset at +0x08, contradicting chunk_007/024 and the open helpers (+0x04 = uniqueFile, +0x08 = handleSync). chunk_023 and chunk_101 call +0x14 'zipFile' (flag) while chunk_024 stores a pack pointer; both are consistent with a pointer. chunk_007 names +0x04/+0x0c/+0x10/+0x18 unk. chunk_100 reaches +0x18 as g_0849fd98 + handle*0x11c.",
+  "confidence": "high"
+ },
+ {
+  "name": "fs_directory_s",
+  "size": "0x200",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "char[256]",
+    "name": "path",
+    "evidence": "FS_AddGameDirectory (0x080a27ae) Q_strncpyz(newDir->path, path, 0x100); FS_BuildOSPath(dir->path, dir->gamedir, ...)"
+   },
+   {
+    "offset": "0x100",
+    "type": "char[256]",
+    "name": "gamedir",
+    "evidence": "Q_strncpyz(newDir->gamedir, name, 0x100); name is 'dir' or 'dir/language'"
+   }
+  ],
+  "defined_in": [
+   "chunk_024_types.h"
+  ],
+  "conflicts": "chunk_025 references it only as pak_node.owned_name (void*, freed with Com_Free_A); chunk_007 calls the +0x0c word of the node 'dir' (see fs_searchpath_s). Allocation size 0x200 observed (Com_MallocZeroed(0x200)).",
+  "confidence": "high"
+ },
+ {
+  "name": "fs_fileinpack_s",
+  "size": "0xc",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "filePos",
+    "evidence": "FS_LoadPackFile: unzGetOffset(zip, entry) fills it; FS_FOpenFileReadInternal passes it to unzSetOffset"
+   },
+   {
+    "offset": "0x04",
+    "type": "char *",
+    "name": "name",
+    "evidence": "points into the name area appended after the entry array; lower-cased copy of the zip name"
+   },
+   {
+    "offset": "0x08",
+    "type": "struct fs_fileinpack_s *",
+    "name": "next",
+    "evidence": "hash chain: entry->next = hashTable[bucket]; hashTable[bucket] = entry"
+   }
+  ],
+  "defined_in": [
+   "chunk_024_types.h"
+  ],
+  "conflicts": "none. Entry array size numEntries*0xc is observed in the allocation (numEntries*12 + name bytes).",
+  "confidence": "high"
+ },
+ {
+  "name": "fs_pack_s",
+  "size": "0x320 header + hashSize*4 table (single allocation)",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "char[256]",
+    "name": "pakFilename",
+    "evidence": "Q_strncpyz(pack, pakFilename, 0x100) in FS_LoadPackFile; chunk_007 iwd_s.filename; printed by FS_PrintSearchPathInfo"
+   },
+   {
+    "offset": "0x100",
+    "type": "char[256]",
+    "name": "pakBasename",
+    "evidence": "Q_strncpyz(pack+0x100, ...); '.iwd' suffix (last 4 chars) removed; FS_LoadedIwdNames appends it"
+   },
+   {
+    "offset": "0x200",
+    "type": "char[256]",
+    "name": "pakGamename",
+    "evidence": "strcpy(pack->pakGamename, gamedir) in FS_AddIwdFiles; FS_ReferencedIwdNames and the 'main' prefix test read it; value may be 'main/<language>' for localized folders"
+   },
+   {
+    "offset": "0x300",
+    "type": "struct unz_s *",
+    "name": "handle",
+    "evidence": "FS_LoadPackFile stores the unzOpen result; FS_FreePakList unzClose()s it (chunk_025 file_handle)"
+   },
+   {
+    "offset": "0x304",
+    "type": "uint32",
+    "name": "checksum",
+    "evidence": "Com_BlockChecksum of CRC list; read by FS_ChecksumAllowed (chunk_023 fsEntry_s.checksum), FS_LoadedIwdChecksums, FS_ReferencedIwdChecksums, FS_BuildMissingIwdList (chunk_100 cod2_pack_checksum), FS_SetRestrictedDemoMode"
+   },
+   {
+    "offset": "0x308",
+    "type": "uint32",
+    "name": "checksumPure",
+    "evidence": "Com_BlockChecksumKey(crcs, n*4, fs_checksumFeed); read by FS_LoadedIwdPureChecksums and FS_ReferencedIwdPureChecksums"
+   },
+   {
+    "offset": "0x30c",
+    "type": "int",
+    "name": "numfiles",
+    "evidence": "= numEntries; FS_ListFilteredFilesInList iterates it; FS_PrintSearchPathInfo prints '(%i files)'"
+   },
+   {
+    "offset": "0x310",
+    "type": "uint8",
+    "name": "referenced",
+    "evidence": "set to 1 in FS_FOpenFileReadInternal; cleared by FS_ClearPakReferences (chunk_025 reference_flag); chunk_007 iwd_s.referenced"
+   },
+   {
+    "offset": "0x311",
+    "type": "uint8[3]",
+    "name": "pad",
+    "evidence": "alignment only; no access seen"
+   },
+   {
+    "offset": "0x314",
+    "type": "int",
+    "name": "hashSize",
+    "evidence": "power of two, smallest > numEntries, capped 0x800; Ghidra: *(local_14+0x314) = hashSize"
+   },
+   {
+    "offset": "0x318",
+    "type": "struct fs_fileinpack_s **",
+    "name": "hashTable",
+    "evidence": "= (char*)pack + 0x320 (Ghidra: local_14 + 800)"
+   },
+   {
+    "offset": "0x31c",
+    "type": "struct fs_fileinpack_s *",
+    "name": "buildBuffer",
+    "evidence": "entry array (names follow); freed by FS_FreePakList (chunk_025 index_buffer)"
+   }
+  ],
+  "defined_in": [
+   "chunk_007_types.h",
+   "chunk_023_types.h",
+   "chunk_024_types.h",
+   "chunk_025_types.h",
+   "chunk_100_types.h"
+  ],
+  "conflicts": "No numeric conflicts: chunk_007 iwd_s (filename/basename/gamename/checksum/pureChecksum/referenced), chunk_023 fsEntry_s (+0x304), chunk_025 cod2_iwd_s (+0x300/+0x310/+0x31c) and chunk_100 (+0x304) are partial views of the same record. Naming conflicts only: iwd_s / fsEntry_s / cod2_iwd_s / fs_pack_s. chunk_007 labels +0x300 and +0x30c 'unk'. The 0x320 allocation size is confirmed by Ghidra (hashSize*4 + 800) and by chunk_024.",
+  "confidence": "high"
+ },
+ {
+  "name": "fs_searchpath_s",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "struct fs_searchpath_s *",
+    "name": "next",
+    "evidence": "list link; walked by every consumer; FS_InsertSearchPath writes it"
+   },
+   {
+    "offset": "0x04",
+    "type": "struct fs_pack_s *",
+    "name": "pack",
+    "evidence": "non-NULL for iwd nodes; FS_FreePakList frees it (chunk_025 pak_node.iwd; chunk_007 searchpath.iwd; chunk_100 prefix)"
+   },
+   {
+    "offset": "0x08",
+    "type": "struct fs_directory_s *",
+    "name": "dir",
+    "evidence": "non-NULL for loose directory nodes; chunk_025 pak_node.owned_name freed as a 0x200 block"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int",
+    "name": "localized",
+    "evidence": "FS_SearchPathAllowed (0x0809e6a0), FS_InsertSearchPath (cmp [eax+0xc]), FS_LoadedIwdChecksums (disasm 0x08065935)"
+   },
+   {
+    "offset": "0x10",
+    "type": "int",
+    "name": "language",
+    "evidence": "compared with Loc_GetLanguage() when localized; FS_HasLoadedPakWithId compares it with the language id"
+   }
+  ],
+  "defined_in": [
+   "chunk_007_types.h",
+   "chunk_023_types.h",
+   "chunk_024_types.h",
+   "chunk_025_types.h",
+   "chunk_100_types.h"
+  ],
+  "conflicts": "chunk_007 declares 'int dir' at +0x0c and unk08 at +0x08; this is wrong (disassembly of FS_LoadedIwdChecksums tests +0x0c as the localized flag, so the 'sp->dir == 0' checks in chunk_007 actually mean 'localized == 0'). chunk_025 declares only {next, iwd, owned_name} (3 words) and calls the list fs_iwdList. chunk_023 names the last two words field_c/field_10 (consistent). chunk_100 declares a two-word prefix. Size 0x14 is observed (Com_MallocZeroed(0x14) in FS_AddIwdFiles, FS_AddGameDirectory and FS_ListFilesFilteredByGame).",
+  "confidence": "high"
+ },
+ {
+  "name": "unz_s (also fs_packfile_state_s)",
+  "size": "0x80",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "FILE *",
+    "name": "file",
+    "evidence": "unzReOpen copies the state and replaces this word; FS_FOpenFileReadInternal saves/restores 'firstWord' around the 0x80-byte copy (chunk_024 firstWord)"
+   },
+   {
+    "offset": "0x04",
+    "type": "struct unz_global_info_s",
+    "name": "gi",
+    "evidence": "unzOpen reads number_entry (+0x04) and size_comment (+0x08) in the EOCD"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint32",
+    "name": "byte_before_the_zipfile",
+    "evidence": "unzOpen: central_pos - (offset_central_dir + size_central_dir)"
+   },
+   {
+    "offset": "0x10",
+    "type": "uint32",
+    "name": "num_file",
+    "evidence": "unzGoToNextFile"
+   },
+   {
+    "offset": "0x14",
+    "type": "uint32",
+    "name": "pos_in_central_dir",
+    "evidence": "unzGoToFirstFile/NextFile"
+   },
+   {
+    "offset": "0x18",
+    "type": "uint32",
+    "name": "current_file_ok",
+    "evidence": "tested by unzOpenCurrentFile"
+   },
+   {
+    "offset": "0x1c",
+    "type": "uint32",
+    "name": "central_pos",
+    "evidence": "unzGetGlobalComment reads at central_pos+0x16"
+   },
+   {
+    "offset": "0x20",
+    "type": "uint32",
+    "name": "size_central_dir",
+    "evidence": "unzOpen"
+   },
+   {
+    "offset": "0x24",
+    "type": "uint32",
+    "name": "offset_central_dir",
+    "evidence": "unzOpen"
+   },
+   {
+    "offset": "0x28",
+    "type": "struct unz_file_info_s",
+    "name": "cur_file_info",
+    "evidence": "0x50 bytes; uncompressed_size at +0x44 of the whole struct: FS_filelength (0x0809e8a6) reads *(handle+0x44)"
+   },
+   {
+    "offset": "0x78",
+    "type": "uint32",
+    "name": "cur_file_info_internal.offset_curfile",
+    "evidence": "offset of the local header"
+   },
+   {
+    "offset": "0x7c",
+    "type": "struct file_in_zip_read_info_s *",
+    "name": "pfile_in_zip_read",
+    "evidence": "set by unzOpenCurrentFile, cleared by unzCloseCurrentFile"
+   }
+  ],
+  "defined_in": [
+   "chunk_024_types.h",
+   "chunk_037_types.h"
+  ],
+  "conflicts": "chunk_024 models it as fs_packfile_state_s {int firstWord; u8[0x40]; int fileSize @0x44; u8[0x38]} (size 0x80); chunk_037 as unz_s. They agree (0x28 + 0x1c = 0x44 is cur_file_info.uncompressed_size). pack->handle (fs_pack_s +0x300) has type unz_s*, and FS_Seek/FS_FOpenFileReadInternal cast fs_handles[].handle to it. chunk_024 declares unzReOpen(struct fs_pack_s *pack, ...) where chunk_037 declares unzReOpen(const char *path, ...): ABI-identical because pakFilename is at pack+0.",
+  "confidence": "high"
+ },
+ {
+  "name": "unz_file_info_s",
+  "size": "0x50",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint32",
+    "name": "version",
+    "evidence": "chunk_037 unzlocal_GetCurrentFileInfoInternal"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "version_needed",
+    "evidence": ""
+   },
+   {
+    "offset": "0x08",
+    "type": "uint32",
+    "name": "flag",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint32",
+    "name": "compression_method",
+    "evidence": "COD2_ASSERT_OFFSET chunk_037; unzOpenCurrentFile reads it"
+   },
+   {
+    "offset": "0x10",
+    "type": "uint32",
+    "name": "dosDate",
+    "evidence": ""
+   },
+   {
+    "offset": "0x14",
+    "type": "uint32",
+    "name": "crc",
+    "evidence": "FS_LoadPackFile: info.crc collected into the checksum array (Ghidra local_168 = frame base+0x14)"
+   },
+   {
+    "offset": "0x18",
+    "type": "uint32",
+    "name": "compressed_size",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1c",
+    "type": "uint32",
+    "name": "uncompressed_size",
+    "evidence": "FS_LoadPackFile: nonzero test (Ghidra local_160 = +0x1c)"
+   },
+   {
+    "offset": "0x20",
+    "type": "uint32",
+    "name": "size_filename",
+    "evidence": ""
+   },
+   {
+    "offset": "0x24",
+    "type": "uint32",
+    "name": "size_file_extra",
+    "evidence": ""
+   },
+   {
+    "offset": "0x28",
+    "type": "uint32",
+    "name": "size_file_comment",
+    "evidence": ""
+   },
+   {
+    "offset": "0x2c",
+    "type": "uint32",
+    "name": "disk_num_start",
+    "evidence": ""
+   },
+   {
+    "offset": "0x30",
+    "type": "uint32",
+    "name": "internal_fa",
+    "evidence": ""
+   },
+   {
+    "offset": "0x34",
+    "type": "uint32",
+    "name": "external_fa",
+    "evidence": ""
+   },
+   {
+    "offset": "0x38",
+    "type": "struct tm_unz_s",
+    "name": "tmu_date",
+    "evidence": "6 x uint32; DosDateToTmuDate 0x080d22d9 fills it"
+   }
+  ],
+  "defined_in": [
+   "chunk_037_types.h",
+   "chunk_024_types.h"
+  ],
+  "conflicts": "chunk_024 fs_zip_fileinfo_s is only 0x38 bytes (omits tmu_date). The binary's FS_LoadPackFile local buffer for this struct spans 0x50 bytes (Ghidra local_17c .. local_12c), so the 0x38 declaration is too small; unzGetCurrentFileInfo copies the full 0x50 bytes.",
+  "confidence": "high"
+ },
+ {
+  "name": "file_in_zip_read_info_s",
+  "size": "0x64",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint8 *",
+    "name": "read_buffer",
+    "evidence": "unzOpenCurrentFile mallocs 0x4000"
+   },
+   {
+    "offset": "0x04",
+    "type": "struct z_stream_s",
+    "name": "stream",
+    "evidence": "0x38 bytes; inflateInit2_ target; total_out is read by unzTellCurrentFile"
+   },
+   {
+    "offset": "0x3c",
+    "type": "uint32",
+    "name": "pos_in_zipfile",
+    "evidence": ""
+   },
+   {
+    "offset": "0x40",
+    "type": "uint32",
+    "name": "stream_initialised",
+    "evidence": ""
+   },
+   {
+    "offset": "0x44",
+    "type": "uint32",
+    "name": "offset_local_extrafield",
+    "evidence": ""
+   },
+   {
+    "offset": "0x48",
+    "type": "uint32",
+    "name": "size_local_extrafield",
+    "evidence": ""
+   },
+   {
+    "offset": "0x4c",
+    "type": "uint32",
+    "name": "pos_local_extrafield",
+    "evidence": ""
+   },
+   {
+    "offset": "0x50",
+    "type": "uint32",
+    "name": "rest_read_compressed",
+    "evidence": ""
+   },
+   {
+    "offset": "0x54",
+    "type": "uint32",
+    "name": "rest_read_uncompressed",
+    "evidence": "unzeof tests it"
+   },
+   {
+    "offset": "0x58",
+    "type": "FILE *",
+    "name": "file",
+    "evidence": ""
+   },
+   {
+    "offset": "0x5c",
+    "type": "uint32",
+    "name": "compression_method",
+    "evidence": ""
+   },
+   {
+    "offset": "0x60",
+    "type": "uint32",
+    "name": "byte_before_the_zipfile",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_037_types.h"
+  ],
+  "conflicts": "none (single definition; malloc(0x64) observed in unzOpenCurrentFile).",
+  "confidence": "high"
+ },
+ {
+  "name": "z_stream_s",
+  "size": "0x38",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint8 *",
+    "name": "next_in",
+    "evidence": ""
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "avail_in",
+    "evidence": ""
+   },
+   {
+    "offset": "0x08",
+    "type": "uint32",
+    "name": "total_in",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint8 *",
+    "name": "next_out",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "uint32",
+    "name": "avail_out",
+    "evidence": ""
+   },
+   {
+    "offset": "0x14",
+    "type": "uint32",
+    "name": "total_out",
+    "evidence": ""
+   },
+   {
+    "offset": "0x18",
+    "type": "const char *",
+    "name": "msg",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1c",
+    "type": "void *",
+    "name": "state",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20",
+    "type": "void *",
+    "name": "zalloc",
+    "evidence": ""
+   },
+   {
+    "offset": "0x24",
+    "type": "void *",
+    "name": "zfree",
+    "evidence": ""
+   },
+   {
+    "offset": "0x28",
+    "type": "void *",
+    "name": "opaque",
+    "evidence": ""
+   },
+   {
+    "offset": "0x2c",
+    "type": "int",
+    "name": "data_type",
+    "evidence": ""
+   },
+   {
+    "offset": "0x30",
+    "type": "uint32",
+    "name": "adler",
+    "evidence": ""
+   },
+   {
+    "offset": "0x34",
+    "type": "uint32",
+    "name": "reserved",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "cod2_types.h",
+   "chunk_035_types.h",
+   "chunk_036_types.h",
+   "chunk_037_types.h"
+  ],
+  "conflicts": "none; inflateInit_/deflateInit_ are called with stream_size 0x38 and version \"1.1.4\" (observed in unzOpenCurrentFile and zlib_uncompress). chunk_035 names it z_stream, others z_stream_s.",
+  "confidence": "high"
+ },
+ {
+  "name": "inflate_blocks_state_s",
+  "size": "0x40",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint32",
+    "name": "mode",
+    "evidence": ""
+   },
+   {
+    "offset": "0x04",
+    "type": "union{left; trees{table,index,blens,bb,tb}; decode{codes}}",
+    "name": "sub",
+    "evidence": "0x14 bytes"
+   },
+   {
+    "offset": "0x18",
+    "type": "uint32",
+    "name": "last",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1c",
+    "type": "uint32",
+    "name": "bitk",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20",
+    "type": "uint32",
+    "name": "bitb",
+    "evidence": ""
+   },
+   {
+    "offset": "0x24",
+    "type": "void *",
+    "name": "hufts",
+    "evidence": ""
+   },
+   {
+    "offset": "0x28",
+    "type": "uint8 *",
+    "name": "window",
+    "evidence": ""
+   },
+   {
+    "offset": "0x2c",
+    "type": "uint8 *",
+    "name": "end",
+    "evidence": ""
+   },
+   {
+    "offset": "0x30",
+    "type": "uint8 *",
+    "name": "read",
+    "evidence": ""
+   },
+   {
+    "offset": "0x34",
+    "type": "uint8 *",
+    "name": "write",
+    "evidence": ""
+   },
+   {
+    "offset": "0x38",
+    "type": "void *",
+    "name": "checkfn",
+    "evidence": "adler32 for zlib-wrapped streams, NULL for raw inflate (-15) used by unz"
+   },
+   {
+    "offset": "0x3c",
+    "type": "uint32",
+    "name": "check",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_035_types.h",
+   "chunk_036_types.h"
+  ],
+  "conflicts": "none; chunk_035 names it inflate_blocks_state, chunk_036 inflate_blocks_state_s. inflate_flush (0x080ce864) guards memcpy with next_out != NULL.",
+  "confidence": "high"
+ },
+ {
+  "name": "deflate_state_s",
+  "size": "0x16b8",
+  "fields": [
+   {
+    "offset": "0x0000",
+    "type": "struct z_stream_s *",
+    "name": "strm",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0004",
+    "type": "int",
+    "name": "status",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0008",
+    "type": "uint8 *",
+    "name": "pending_buf",
+    "evidence": ""
+   },
+   {
+    "offset": "0x000c",
+    "type": "uint32",
+    "name": "pending_buf_size",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0010",
+    "type": "uint8 *",
+    "name": "pending_out",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0014",
+    "type": "uint32",
+    "name": "pending",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0018",
+    "type": "int",
+    "name": "noheader",
+    "evidence": ""
+   },
+   {
+    "offset": "0x001c",
+    "type": "uint8",
+    "name": "data_type",
+    "evidence": ""
+   },
+   {
+    "offset": "0x007c",
+    "type": "int",
+    "name": "level",
+    "evidence": "chunk_035 and chunk_037 agree"
+   },
+   {
+    "offset": "0x008c",
+    "type": "ct_data[573]",
+    "name": "dyn_ltree",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0980",
+    "type": "ct_data[61]",
+    "name": "dyn_dtree",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0a74",
+    "type": "ct_data[39]",
+    "name": "bl_tree",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0b10",
+    "type": "tree_desc",
+    "name": "l_desc",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0b1c",
+    "type": "tree_desc",
+    "name": "d_desc",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0b28",
+    "type": "tree_desc",
+    "name": "bl_desc",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0b34",
+    "type": "uint16[16]",
+    "name": "bl_count",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0b54",
+    "type": "int[573]",
+    "name": "heap",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1448",
+    "type": "int",
+    "name": "heap_len",
+    "evidence": ""
+   },
+   {
+    "offset": "0x144c",
+    "type": "int",
+    "name": "heap_max",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1450",
+    "type": "uint8[573]",
+    "name": "depth",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1690",
+    "type": "uint8 *",
+    "name": "l_buf",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1694",
+    "type": "uint32",
+    "name": "lit_bufsize",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1698",
+    "type": "uint32",
+    "name": "last_lit",
+    "evidence": ""
+   },
+   {
+    "offset": "0x169c",
+    "type": "uint16 *",
+    "name": "d_buf",
+    "evidence": ""
+   },
+   {
+    "offset": "0x16a0",
+    "type": "uint32",
+    "name": "opt_len",
+    "evidence": ""
+   },
+   {
+    "offset": "0x16a4",
+    "type": "uint32",
+    "name": "static_len",
+    "evidence": ""
+   },
+   {
+    "offset": "0x16a8",
+    "type": "uint32",
+    "name": "matches",
+    "evidence": ""
+   },
+   {
+    "offset": "0x16ac",
+    "type": "int",
+    "name": "last_eob_len",
+    "evidence": ""
+   },
+   {
+    "offset": "0x16b0",
+    "type": "uint16",
+    "name": "bi_buf",
+    "evidence": ""
+   },
+   {
+    "offset": "0x16b4",
+    "type": "int",
+    "name": "bi_valid",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_035_types.h",
+   "chunk_036_types.h",
+   "chunk_037_types.h"
+  ],
+  "conflicts": "none in offsets; chunk_037 elides the match-state fields 0x1d..0x7c and 0x80..0x8c as padding (chunk_035 gives them in full: method 0x1d, last_flush 0x20, w_size 0x24 ... nice_match 0x88). Included for completeness; deflate is not reachable from the server's FS paths.",
+  "confidence": "high"
+ },
+ {
+  "name": "loc_lang_entry_s",
+  "size": "0x8",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "LocLanguage_Name/LocLanguage_Find index it with stride 8; entry 0 = 'english' (table read from the binary at 0x08188ae0)"
+   },
+   {
+    "offset": "0x04",
+    "type": "int",
+    "name": "available",
+    "evidence": "written by Loc_InitLanguages (1 if FS_HasLoadedPakWithId(i)), read by Loc_LoadLanguage and Loc_ClampToAvailableLanguage; 0 in the file image"
+   }
+  ],
+  "defined_in": [
+   "chunk_059_types.h",
+   "chunk_060_types.h"
+  ],
+  "conflicts": "chunk_059 loc_lang_s {field_0, available}; chunk_060 cod2_lang_entry_s {name, reserved} with the comment 'always 0 in the table'. Both are partial views: the second word is statically 0 and runtime-written. 15 entries (0x08188ae0..0x08188b58).",
+  "confidence": "high"
+ },
+ {
+  "name": "loc_table_s",
+  "size": "0x20",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int",
+    "name": "end_marker_seen",
+    "evidence": "set by ENDMARKER, cleared by LocTable_Reset"
+   },
+   {
+    "offset": "0x04",
+    "type": "std::string",
+    "name": "last_keyword",
+    "evidence": "LocTable_LastKeyword returns its c_str; set by REFERENCE"
+   },
+   {
+    "offset": "0x08",
+    "type": "std::string",
+    "name": "last_english",
+    "evidence": "default for '#same'"
+   },
+   {
+    "offset": "0x0c",
+    "type": "std::string",
+    "name": "file_base",
+    "evidence": "upper-cased base name of the .str file"
+   },
+   {
+    "offset": "0x10",
+    "type": "struct loc_str_map_s",
+    "name": "entries",
+    "evidence": "std::map<std::string,std::string>; 0x10 bytes"
+   }
+  ],
+  "defined_in": [
+   "chunk_060_types.h"
+  ],
+  "conflicts": "none (single definition, 0x20 allocation per chunk_060). std::string is the libstdc++ 3.x COW handle (4 bytes).",
+  "confidence": "medium"
+ },
+ {
+  "name": "loc_str_map_s / loc_rb_node_s",
+  "size": "map 0x10, node 0x18",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint32",
+    "name": "allocator_pad",
+    "evidence": "empty node allocator base"
+   },
+   {
+    "offset": "0x04",
+    "type": "struct loc_rb_node_s *",
+    "name": "header",
+    "evidence": "sentinel node, malloc(0x18)"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint32",
+    "name": "node_count",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint8",
+    "name": "key_compare",
+    "evidence": "empty comparator"
+   },
+   {
+    "offset": "node+0x00",
+    "type": "int32",
+    "name": "color",
+    "evidence": "0 = red"
+   },
+   {
+    "offset": "node+0x04",
+    "type": "ptr",
+    "name": "parent",
+    "evidence": ""
+   },
+   {
+    "offset": "node+0x08",
+    "type": "ptr",
+    "name": "left",
+    "evidence": ""
+   },
+   {
+    "offset": "node+0x0c",
+    "type": "ptr",
+    "name": "right",
+    "evidence": ""
+   },
+   {
+    "offset": "node+0x10",
+    "type": "std::string",
+    "name": "key",
+    "evidence": ""
+   },
+   {
+    "offset": "node+0x14",
+    "type": "std::string",
+    "name": "value",
+    "evidence": "LocMap_Subscript returns node+0x14"
+   }
+  ],
+  "defined_in": [
+   "chunk_060_types.h"
+  ],
+  "conflicts": "none.",
+  "confidence": "medium"
+ },
+ {
+  "name": "dvar_s (partial FS views)",
+  "size": "0x20",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "const char *",
+    "name": "name",
+    "evidence": "chunk_007 dvar_s"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint16",
+    "name": "flags",
+    "evidence": ""
+   },
+   {
+    "offset": "0x06",
+    "type": "uint8",
+    "name": "type",
+    "evidence": ""
+   },
+   {
+    "offset": "0x07",
+    "type": "uint8",
+    "name": "modified",
+    "evidence": "chunk_025 reads it in FS_ConditionalRestart; Dvar_ClearModified"
+   },
+   {
+    "offset": "0x08",
+    "type": "union{int;float;const char*;uint8}",
+    "name": "current",
+    "evidence": "chunk_024 cvar_s.value, chunk_025 cod2_dvar_s.value; every fs_* dvar read goes through +0x08"
+   },
+   {
+    "offset": "0x1c",
+    "type": "struct dvar_s *",
+    "name": "next",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_007_types.h",
+   "chunk_024_types.h",
+   "chunk_025_types.h",
+   "chunk_059_types.h"
+  ],
+  "conflicts": "chunk_024 cvar_s (size 0x0c, value at +0x08) and chunk_025 cod2_dvar_s (modified at +0x07, value at +0x08) are truncated views of chunk_007's dvar_s (0x20). Owned by the dvar subsystem; listed so FS code uses one definition. chunk_059 reads the integer through ((int*)g_loc_language)[2] (offset +0x08) in Loc_InitLanguages.",
+  "confidence": "medium"
+ },
+ {
+  "name": "fs_state globals (not a struct, fixed arrays)",
+  "size": "n/a",
+  "fields": [
+   {
+    "offset": "0x084a4480",
+    "type": "int",
+    "name": "fs_numServerIwds",
+    "evidence": "chunk_007/023 name; chunk_024 'fs_pureEnabled'; chunk_025 'fs_listACount'"
+   },
+   {
+    "offset": "0x084a44a0",
+    "type": "int[0x400]",
+    "name": "fs_serverIwds",
+    "evidence": "FS_ChecksumAllowed, FS_PureServerSetLoadedIwds"
+   },
+   {
+    "offset": "0x084a54a0",
+    "type": "char*[0x400]",
+    "name": "fs_serverIwdNames",
+    "evidence": "CopyString pointers; chunk_025 fs_listA"
+   },
+   {
+    "offset": "0x084a64a0",
+    "type": "int",
+    "name": "fs_numReferencedIwds",
+    "evidence": "chunk_008 'g_084a64a0', chunk_025 'fs_listBCount'"
+   },
+   {
+    "offset": "0x084a64c0",
+    "type": "int[0x400]",
+    "name": "fs_referencedIwdSums",
+    "evidence": "chunk_008 / chunk_100"
+   },
+   {
+    "offset": "0x084a74c0",
+    "type": "char*[0x400]",
+    "name": "fs_referencedIwdNames",
+    "evidence": "chunk_008 and symbols.json type it uint32[] 'name hashes'; the entries are CopyString pointers (chunk_100, chunk_025)"
+   }
+  ],
+  "defined_in": [
+   "chunk_007_types.h",
+   "chunk_008_types.h",
+   "chunk_023_types.h",
+   "chunk_024_types.h",
+   "chunk_025_types.h",
+   "chunk_100_types.h"
+  ],
+  "conflicts": "naming only, plus the uint32 vs pointer type of 0x084a74c0 (pointer is correct; the three arrays are contiguous 0x1000-byte blocks).",
+  "confidence": "high"
+ }
+]

@@ -1,0 +1,755 @@
+{
+ "chunk": 11,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0807085e",
+   "name": "ScrCompile_EmitCallPrefix",
+   "signature": "void ScrCompile_EmitCallPrefix(struct ScriptNode *n)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "structure only: emits opcode 0x4e when the node is a function reference",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807088a",
+   "name": "ScrCompile_EmitCallTarget",
+   "signature": "void ScrCompile_EmitCallTarget(struct ScriptNode *n, int argc, char isMethod, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "dispatches on function-reference node kind (plain / file::function)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08070920",
+   "name": "ScrCompile_GetUnresolvedCalleeId",
+   "signature": "int ScrCompile_GetUnresolvedCalleeId(struct ScriptNode *n)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "returns the identifier id of a bare function reference that is not in the user function table (builtin candidate)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080709a6",
+   "name": "ScrCompile_DevBlockEnter",
+   "signature": "void ScrCompile_DevBlockEnter(int *entered, int *savedPos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "developer-block state machine (/# ... #/ comment blocks per sibling error strings)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080709fe",
+   "name": "ScrCompile_DevBlockLeave",
+   "signature": "void ScrCompile_DevBlockLeave(int entered, int *savedPos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "counterpart of DevBlockEnter",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08070a2e",
+   "name": "ScrCompile_DevFlagToFuncKind",
+   "signature": "int ScrCompile_DevFlagToFuncKind(int devFlag)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "maps developer flag to function-kind tag 7 (normal) or 0xc (developer)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08070a52",
+   "name": "ScrCompile_FuncKindIsDeveloper",
+   "signature": "bool ScrCompile_FuncKindIsDeveloper(int kind)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "kind tag != 7 means developer function",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08070a78",
+   "name": "ScrCompile_EmitCallOpcode",
+   "signature": "void ScrCompile_EmitCallOpcode(unsigned argc, int srcPos)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "emits call opcode 0x3e+argc (argc<6) or generic 0x44 with explicit count byte",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08070ade",
+   "name": "ScrCompile_EmitMethodCallOpcode",
+   "signature": "void ScrCompile_EmitMethodCallOpcode(unsigned argc, int srcPos)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "method-call variant: opcode 0x45+argc or 0x4b with explicit count byte",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08070b42",
+   "name": "ScrCompile_FunctionCall",
+   "signature": "void ScrCompile_FunctionCall(struct ScriptNode *funcRef, struct ScriptList *args, char resultUsed, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "strings \"parameter count exceeds 256\" and the developer-command return-value error identify call compilation; builtin lookup via g_08205c90",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08070d66",
+   "name": "ScrCompile_MethodCall",
+   "signature": "void ScrCompile_MethodCall(struct ScriptNode *objExpr, struct ScriptNode *funcRef, struct ScriptList *args, int srcPosObj, char resultUsed, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "method-call twin of FunctionCall using method table g_08205c94 and object expression node",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08070fd4",
+   "name": "ScrCompile_ResolveFunctionRefs",
+   "signature": "void ScrCompile_ResolveFunctionRefs(int refTable, struct VariableValue *res, char devAllowed)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "strings \"normal script cannot reference a function in a /# ... #/ comment\" and \"unknown function\" show forward function-reference resolution",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080710f0",
+   "name": "ScrCompile_ResolveAllFunctionRefs",
+   "signature": "void ScrCompile_ResolveAllFunctionRefs(int root)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "walks every entry of a table and resolves its pending function references",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080711ce",
+   "name": "ScrCompile_DefineFunction",
+   "signature": "int ScrCompile_DefineFunction(int table, int nameId, int srcPos, int tag)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "strings \"function '%s' already defined\" and \"... already defined in '%s'\" (duplicate function definition check) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080712c2",
+   "name": "ScrCompile_RecordFunctionStart",
+   "signature": "void ScrCompile_RecordFunctionStart(int table)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "stores the current code position into the function-start slot of a function table",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080712fa",
+   "name": "ScrCompile_CallNode",
+   "signature": "void ScrCompile_CallNode(struct ScriptNode *n, char resultUsed, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "dispatch on call node kinds 0x17 (plain) and 0x18 (method)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807138e",
+   "name": "ScrCompile_CallAsObject",
+   "signature": "void ScrCompile_CallAsObject(struct ScriptNode *n, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "statement form of a call node: compile the call (result unused) then emit the trailing op with the node's last slot [rename script-compiler: objdump: switch on node kind 0x17/0x18, calls FunctionCall/MethodCall with discard=0 then EmitCastFieldObject (0x0806fd6a): call used as object]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08071440",
+   "name": "ScrCompile_MakeVectorValue",
+   "signature": "void ScrCompile_MakeVectorValue(struct ScriptValue *src3, struct ScriptValue *out)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"type %s is not a float\": builds a vector constant from three int/float values (components stored in reverse order)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807152c",
+   "name": "ScrCompile_FoldVectorList",
+   "signature": "char ScrCompile_FoldVectorList(struct ScriptList *list, int srcPos, struct ScriptValue *out)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"expression list must have 1 or 3 parameters\" appears in the sibling VectorExpr; constant-fold variant",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08071608",
+   "name": "ScrCompile_VectorExpr",
+   "signature": "char ScrCompile_VectorExpr(struct ScriptList *list, int srcPos, struct ScriptValue *out, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"expression list must have 1 or 3 parameters\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08071772",
+   "name": "ScrCompile_ObjectFromList",
+   "signature": "void ScrCompile_ObjectFromList(struct ScriptList *list, int srcPos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"not an object\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080717c8",
+   "name": "ScrCompile_FoldLiteral",
+   "signature": "char ScrCompile_FoldLiteral(struct ScriptNode *n, struct ScriptValue *out)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "literal node kinds (int/float/negated/string/istring/true/false) folded into an output constant",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080719b8",
+   "name": "ScrCompile_PrimaryExpr",
+   "signature": "char ScrCompile_PrimaryExpr(struct ScriptNode *n, struct ScriptValue *out, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "primary-expression dispatch; returns 1 when a constant was produced in out",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08071b9a",
+   "name": "ScrCompile_PrimaryExprPush",
+   "signature": "void ScrCompile_PrimaryExprPush(struct ScriptNode *n, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "compile primary expression and push the folded constant if one was produced",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08071bce",
+   "name": "ScrCompile_OrExpr",
+   "signature": "void ScrCompile_OrExpr(struct ScriptNode *lhs, struct ScriptNode *rhs, int srcPosOp, int srcPosEnd, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "binary node 0x2f: lhs, opcode 0x61 with 16-bit forward jump over rhs [rename script-compiler: objdump: lhs expr, EmitOpcode(0x61,-1) (JumpOnTrueExpr) + u16 jump target, rhs expr, BoolCast (0x0806f57a); jump-if-true == ||]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08071c72",
+   "name": "ScrCompile_AndExpr",
+   "signature": "void ScrCompile_AndExpr(struct ScriptNode *lhs, struct ScriptNode *rhs, int srcPosOp, int srcPosEnd, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "binary node 0x30: same as the 0x61 form with opcode 0x60 [rename script-compiler: same as 0x08071bce with EmitOpcode(0x60,-1) (JumpOnFalseExpr) == &&]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08071d16",
+   "name": "ScrCompile_FoldBinaryConst",
+   "signature": "int ScrCompile_FoldBinaryConst(struct ScriptNode *a, struct ScriptNode *b, int op, int srcPos, struct ScriptValue *out)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "constant folding of a binary operator; error text comes from g_08397510 via \"%s\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08071de4",
+   "name": "ScrCompile_BinaryExpr",
+   "signature": "int ScrCompile_BinaryExpr(struct ScriptNode *a, struct ScriptNode *b, int op, int srcPos, struct ScriptValue *out, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "binary operator expression: folds when both operands are constant, otherwise emits operand code and the operator opcode",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08071ef6",
+   "name": "ScrCompile_CompoundAssign",
+   "signature": "void ScrCompile_CompoundAssign(struct ScriptNode *lvalue, struct ScriptNode *rhs, char op, int srcPos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "lvalue read, rhs, operator opcode, then store back (compound assignment shape)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08071f7c",
+   "name": "ScrCompile_LvalueVariantThunk",
+   "signature": "void ScrCompile_LvalueVariantThunk(struct ScriptNode *lvalue, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Single forward (lvalue,scope) to ScrCompile_LvalueVariant (0x080722f8); Wrapper-style name replaced.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08071f96",
+   "name": "ScrCompile_FoldConstExpr",
+   "signature": "char ScrCompile_FoldConstExpr(struct ScriptNode *n, struct ScriptValue *out)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "constant-only expression evaluation (wrapper node 6 or binary op 0x31)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072020",
+   "name": "ScrCompile_Expr",
+   "signature": "char ScrCompile_Expr(struct ScriptNode *n, struct ScriptValue *out, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "general expression compile; returns 1 if a constant result was left in out",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080721b4",
+   "name": "ScrCompile_ExprPush",
+   "signature": "void ScrCompile_ExprPush(struct ScriptNode *n, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "compile expression and push the folded constant if one was produced",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080721e8",
+   "name": "ScrCompile_StoreLvalue",
+   "signature": "void ScrCompile_StoreLvalue(struct ScriptNode *n, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "strings \"not an lvalue\" and \"$ and self field can only be used in the script debugger\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080722f8",
+   "name": "ScrCompile_LvalueVariant",
+   "signature": "void ScrCompile_LvalueVariant(struct ScriptNode *n, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "lvalue node kinds 4 and 0xd dispatch",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072352",
+   "name": "ScrCompile_StoreLvalueChecked",
+   "signature": "void ScrCompile_StoreLvalueChecked(struct ScriptNode *n, int srcPos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"not an lvalue\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080723ae",
+   "name": "ScrCompile_LvalueFromObjectBase",
+   "signature": "void ScrCompile_LvalueFromObjectBase(struct ScriptNode *n, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "object-base node: forward its child to LvalueVariant",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080723da",
+   "name": "ScrCompile_ObjectExpr",
+   "signature": "void ScrCompile_ObjectExpr(struct ScriptNode *n, int srcPos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"not an object\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080724b2",
+   "name": "ScrCompile_ObjectRefNode",
+   "signature": "void ScrCompile_ObjectRefNode(struct ScriptNode *n, int srcPos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"not an object\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080724fe",
+   "name": "ScrCompile_PatchBreakList",
+   "signature": "void ScrCompile_PatchBreakList(void)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "patches every pending entry of list g_08206cf0 with (current position - recorded position); list is patched at loop end (break targets)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072542",
+   "name": "ScrCompile_PatchContinueList",
+   "signature": "void ScrCompile_PatchContinueList(void)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "same patching for list g_08206cf8 just before the loop back-jump (continue targets)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072586",
+   "name": "ScrNode_IsUndefined",
+   "signature": "bool ScrNode_IsUndefined(struct ScriptNode *n)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "node type test [rename script-compiler: objdump: cmp node->kind,0x1f; kind 0x1f is the `undefined` literal (doc 4.4)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072598",
+   "name": "ScrNode_IsWrappedUndefined",
+   "signature": "int ScrNode_IsWrappedUndefined(struct ScriptNode *n)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "wrapper node whose child is type 0x1f [rename script-compiler: objdump: kind==6 wrapper then recurses into 0x08072586]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080725ce",
+   "name": "ScrCompile_TryClearAssign",
+   "signature": "int ScrCompile_TryClearAssign(struct ScriptNode *lvalue, union ScriptArg a, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "strings \"not an lvalue\" and \"$ and self field can only be used in the script debugger\"; returns 0 for lvalue kind 4, else 1 [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred] [rename script-compiler: doc 12.2: emits ClearArray/ClearFieldVariable for `x.f = undefined`/`a[i] = undefined`; uses ScrNode_IsUndefined]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080726d0",
+   "name": "ScrCompile_Assign",
+   "signature": "void ScrCompile_Assign(struct ScriptNode *lvalue, struct ScriptNode *rhs, int srcPos, union ScriptArg extra, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "assignment statement: fast path when rhs is a wrapped type-0x1f node, otherwise push rhs and store into the lvalue",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072736",
+   "name": "ScrCompile_LvalueVariantThunkSkipArg2",
+   "signature": "void ScrCompile_LvalueVariantThunkSkipArg2(struct ScriptNode *lvalue, int unused, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Forwards args 1 and 3 to ScrCompile_LvalueVariant, ignoring the middle int (signature in chunk_011).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072750",
+   "name": "ScrCompile_CallNodeResultUsed",
+   "signature": "void ScrCompile_CallNodeResultUsed(struct ScriptNode *n, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "call node whose result is used",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072772",
+   "name": "ScrCompile_Return",
+   "signature": "void ScrCompile_Return(struct ScriptNode *n, int srcPos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "marks scope state 3 if unset, compiles expression, emits op 0x532-helper [rename script-compiler: objdump: ExprPush then call 0x0806e532 (EmitReturn, OP_Return) then PushLine]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080727b6",
+   "name": "ScrCompile_ReturnVoid",
+   "signature": "void ScrCompile_ReturnVoid(int srcPos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "marks scope state 3 if unset, emits helper 0x6e50e then position record [rename script-compiler: objdump: calls 0x0806e50e (EmitEnd, OP_End) then PushLine, no expression: bare return;]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080727e8",
+   "name": "ScrCompile_Wait",
+   "signature": "void ScrCompile_Wait(struct ScriptNode *n, int srcPosA, int srcPosB, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "expression then opcode 0x4c with three position records [rename script-compiler: objdump: ExprPush then EmitOpcode(0x4c,-1); 0x4c = wait (doc 5.3)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072858",
+   "name": "ScrCompile_WaittillFrameEnd",
+   "signature": "void ScrCompile_WaittillFrameEnd(int srcPos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "opcode 0x4d with two position records [rename script-compiler: objdump: EmitOpcode(0x4d,0) with no operand; 0x4d = waittillframeend]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080728a2",
+   "name": "ScrCompile_IfStatement",
+   "signature": "void ScrCompile_IfStatement(struct ScriptNode *cond, struct ScriptNode *body, int srcPos, char flagA, int flagB, struct ScriptScope *scope, struct ScriptScope **bodyScope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "if statement: condition, opcode 0x5e forward jump, body, patch 16-bit jump offset",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072982",
+   "name": "ScrScope_AnalyzeBlock",
+   "signature": "void ScrScope_AnalyzeBlock(struct ScriptNode *n, struct ScriptScope *scope, struct ScriptScope **out)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "copies scope, analyses a block against the copy and merges it back",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080729ca",
+   "name": "ScrCompile_IfElseStatement",
+   "signature": "void ScrCompile_IfElseStatement(struct ScriptNode *cond, struct ScriptNode *ifBody, struct ScriptNode *elseBody, int srcPosIf, int srcPosElse, char flagA, int flagB, struct ScriptScope *scope, struct ScriptScope **ifScope, struct ScriptScope **elseScope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "if/else statement: opcode 0x5e jump over the if body, opcode 0x62 (or helpers when flagA set) jump over the else body",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072c0a",
+   "name": "ScrScope_AnalyzeIfElse",
+   "signature": "void ScrScope_AnalyzeIfElse(struct ScriptNode *ifBody, struct ScriptNode *elseBody, struct ScriptScope *scope, struct ScriptScope **ifScope, struct ScriptScope **elseScope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "scope analysis for an if/else pair: merges the fall-through scopes of both branches",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072d08",
+   "name": "ScrScope_PushPrimaryList",
+   "signature": "void ScrScope_PushPrimaryList(struct ScriptScope *s)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "appends a fall-through scope to list g_08206cfc when recording is active",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072d56",
+   "name": "ScrScope_PushSecondaryList",
+   "signature": "void ScrScope_PushSecondaryList(struct ScriptScope *s)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "appends a fall-through scope to list g_08206d08 when recording is active",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08072da4",
+   "name": "ScrCompile_WhileLoop",
+   "signature": "void ScrCompile_WhileLoop(struct ScriptNode *cond, struct ScriptNode *body, int srcPosCond, int srcPosLoop, struct ScriptScope *scope, struct ScriptScope **bodyScope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"conditional expression cannot be always false\" (loop condition folding); while-loop emission with break/continue patch lists [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807312e",
+   "name": "ScrScope_AnalyzeWhile",
+   "signature": "void ScrScope_AnalyzeWhile(struct ScriptNode *cond, struct ScriptNode *body, struct ScriptScope *scope, struct ScriptScope **bodyScope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "scope-analysis pass for a while loop (constant-true condition collects scopes of exits)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080732c6",
+   "name": "ScrCompile_ForLoop",
+   "signature": "void ScrCompile_ForLoop(struct ScriptNode *init, struct ScriptNode *cond, struct ScriptNode *iter, struct ScriptNode *body, int srcPosCond, int srcPosLoop, struct ScriptScope *scope, struct ScriptScope **bodyScope, struct ScriptScope **iterScope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"conditional expression cannot be always false\"; for-loop emission (init, condition, body, iterator, back-jump 99) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080736ec",
+   "name": "ScrScope_AnalyzeFor",
+   "signature": "void ScrScope_AnalyzeFor(struct ScriptNode *init, struct ScriptNode *cond, struct ScriptNode *iter, struct ScriptNode *body, struct ScriptScope *scope, struct ScriptScope **bodyScope, struct ScriptScope **iterScope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "scope-analysis pass for a for loop (init, optional constant-true condition, body, iterator)",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08205c90",
+   "name": "scrCompileFuncCallArrayId",
+   "type": "void *",
+   "confidence": "inferred",
+   "evidence": "builtin function lookup table used by plain calls"
+  },
+  {
+   "addr": "0x08205c94",
+   "name": "g_scr_builtin_method_cache",
+   "type": "void *",
+   "confidence": "inferred",
+   "evidence": "builtin method lookup table used by method calls"
+  },
+  {
+   "addr": "0x08205c80",
+   "name": "g_08205c80",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "constant stack depth decremented by 3 in vector folding"
+  },
+  {
+   "addr": "0x08205ca4",
+   "name": "g_08205ca4",
+   "type": "char",
+   "confidence": "inferred",
+   "evidence": "selects the \"$ and self field\" lvalue error message (script debugger mode)"
+  },
+  {
+   "addr": "0x08205ca8",
+   "name": "g_08205ca8",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "developer-block state set by DevBlockEnter/Leave"
+  },
+  {
+   "addr": "0x08206cc0",
+   "name": "g_08206cc0",
+   "type": "void *",
+   "confidence": "inferred",
+   "evidence": "last emitted forward-jump patch location"
+  },
+  {
+   "addr": "0x08206cc8",
+   "name": "g_scr_current_file_symtab",
+   "type": "void *",
+   "confidence": "inferred",
+   "evidence": "user function table checked before builtin lookup"
+  },
+  {
+   "addr": "0x08206d1c",
+   "name": "g_08206d1c",
+   "type": "struct ScriptValue[]",
+   "confidence": "inferred",
+   "evidence": "constant stack indexed by g_08205c80*12"
+  },
+  {
+   "addr": "0x08206cf0",
+   "name": "g_scr_break_patch_list",
+   "type": "struct ScriptPatchEntry *",
+   "confidence": "inferred",
+   "evidence": "pending patch list resolved at loop end"
+  },
+  {
+   "addr": "0x08206cf8",
+   "name": "g_scr_continue_patch_list",
+   "type": "struct ScriptPatchEntry *",
+   "confidence": "inferred",
+   "evidence": "pending patch list resolved before loop back-jump"
+  },
+  {
+   "addr": "0x08206cfc",
+   "name": "g_scr_scope_list_primary",
+   "type": "struct ScriptScope **",
+   "confidence": "inferred",
+   "evidence": "scope list buffer"
+  },
+  {
+   "addr": "0x08206d08",
+   "name": "g_scr_scope_list_secondary",
+   "type": "struct ScriptScope **",
+   "confidence": "inferred",
+   "evidence": "scope list buffer"
+  },
+  {
+   "addr": "0x08287334",
+   "name": "g_08287334",
+   "type": "struct ScriptFileEntry *",
+   "confidence": "inferred",
+   "evidence": "file table, stride 0x18, name at +4"
+  },
+  {
+   "addr": "0x08397510",
+   "name": "g_scr_compile_error_message",
+   "type": "const char *",
+   "confidence": "inferred",
+   "evidence": "constant-fold error message"
+  },
+  {
+   "addr": "0x0839753c",
+   "name": "g_scr_code_hash",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "counter incremented in if/else emission"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "ScriptNode",
+   "size": "0x18",
+   "evidence": "type tag at +0 plus five slots at +4..+0x14 across all dispatchers"
+  },
+  {
+   "name": "ScriptValue",
+   "size": "0xc",
+   "evidence": "stride 12 in vector folding and constant stack"
+  },
+  {
+   "name": "ScriptScope",
+   "size": ">=0x8",
+   "evidence": "state int at +0, int at +4 copied by loop compilers"
+  },
+  {
+   "name": "ScriptPatchEntry",
+   "size": "0xc",
+   "evidence": "slot,pos,next walked in loop patching"
+  },
+  {
+   "name": "ScriptFileEntry",
+   "size": "0x18",
+   "evidence": "stride 0x18 with name at +4 in duplicate-definition error"
+  }
+ ],
+ "open_questions": [
+  "Exact semantics of ScriptScope.state values (0 fall-through, 3, 4+) are inferred from merge logic only.",
+  "Opcode meanings (0x5e,0x60,0x61,0x62,0x63,0x4c,0x4d,0x4e,0x3e-0x4b) are not named; function names for these are descriptive only.",
+  "ScriptNode type tags other than literals/calls/loops are unnamed (SCR_NODE_* numeric tags only)."
+ ]
+}

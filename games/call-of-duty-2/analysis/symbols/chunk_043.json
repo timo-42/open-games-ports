@@ -1,0 +1,1024 @@
+{
+ "chunk": 43,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080e982e",
+   "name": "VectorNegate_080e982e",
+   "signature": "void VectorNegate_080e982e(const vec_t *in, vec_t *out);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Flips the sign bit of three floats with integer XOR; matches Q3 VectorNegate.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e986c",
+   "name": "VectorAdd_080e986c",
+   "signature": "void VectorAdd_080e986c(const vec_t *a, const vec_t *b, vec_t *out);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out = a + b per component; matches Q3 VectorAdd.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e98b0",
+   "name": "VectorSubtract_080e98b0",
+   "signature": "void VectorSubtract_080e98b0(const vec_t *a, const vec_t *b, vec_t *out);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out = a - b per component; matches Q3 VectorSubtract.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e98f4",
+   "name": "VectorScale_080e98f4",
+   "signature": "void VectorScale_080e98f4(const vec_t *in, float scale, vec_t *out);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out = scale * in; matches Q3 VectorScale.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e992c",
+   "name": "VectorMA_080e992c",
+   "signature": "void VectorMA_080e992c(const vec_t *base, float scale, const vec_t *dir, vec_t *out);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out = base + scale * dir; matches Q3 VectorMA.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9980",
+   "name": "DotProduct3",
+   "signature": "float DotProduct3(const vec_t *a, const vec_t *b);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Three-component dot product returned as float; matches Q3 DotProduct.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e99b4",
+   "name": "VectorLengthSquared_080e99b4",
+   "signature": "float VectorLengthSquared_080e99b4(const vec_t *v);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Squared length; matches Q3 VectorLengthSquared.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e99e8",
+   "name": "VectorLength_080e99e8",
+   "signature": "float VectorLength_080e99e8(const vec_t *v);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Length = fn_080e9590(sum of squares). The callee is the square-root wrapper (not in this chunk); its float result is returned in st0 unchanged.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9a26",
+   "name": "Q_fsel043",
+   "signature": "float Q_fsel043(float comparator, float ifNonNegative, float ifNegative);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Float select: comparator >= 0.0 ? ifNonNegative : ifNegative (NaN selects ifNegative). Counterpart of Q_fsel.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9a50",
+   "name": "Q_isel043",
+   "signature": "int Q_isel043(int comparator, int ifNonNegative, int ifNegative);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Integer select: comparator < 0 ? ifNegative : ifNonNegative. Counterpart of Q_isel.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9a70",
+   "name": "SignBit32",
+   "signature": "unsigned int SignBit32(unsigned int value);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "Returns the sign bit of a 32-bit value (logical shift right by 31).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9a7c",
+   "name": "PM_StepProbeOrRestore",
+   "signature": "int PM_StepProbeOrRestore(struct pmove_s *pm, const vec_t *savedOrigin, const vec_t *savedVelocity);",
+   "subsystem": "game/pmove",
+   "confidence": "unknown",
+   "evidence": "Called by PM_StepSlideMove when the player is on the ground. If pm_flags bit 0 is clear it returns 1. Otherwise it runs fn_080e0e58 (a position/clearance probe, 14 args); a zero result restores ps->origin from savedOrigin and ps->velocity from savedVelocity. Returns the probe result. Evidence: only caller is PM_StepSlideMove; callee identity unknown.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9b7c",
+   "name": "PM_SortPlanesByDot",
+   "signature": "float PM_SortPlanesByDot(const vec_t *velocity, int numPlanes, const vec_t *planes, int *order);",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "Insertion-sorts plane indices by ascending dot(velocity, plane[i]); writes the ordering to order[] and returns the smallest dot product (the dot of order[0]). Used by PM_SlideMove for CoD2's multi-plane clipping (not in Q3).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e9c42",
+   "name": "PM_SlideMove",
+   "signature": "int PM_SlideMove(struct pmove_s *pm, struct pml_s *pml, int gravity);",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "PM_SlideMove: Q3 bump/clip loop (4 bumps, planes, gravity half-step) extended with CoD2's sorted-plane crease handling. Names from the Q3 counterpart structure (velocity/origin offsets 0x20/0x14, trace fraction, clip-velocity helper). Returns (bumpcount != 0), or 1 on the early \"stuck\" exits.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ea3f4",
+   "name": "PM_StepSlideMove",
+   "signature": "void PM_StepSlideMove(struct pmove_s *pm, struct pml_s *pml, int gravity);",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "PM_StepSlideMove: run PM_SlideMove, then try stepping up (stepSize 18, or 10 when pm_flags bit 0 is set) and back down, restore the pre-step state when the step failed, and emit the step event and velocity damping. Names from the Q3 counterpart (slide, step up, trace down, event on step). NaN-aware != 0.0 tests are kept as written. pm_flags masks 0x20/0x80000/0x1 are unnamed bits.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eadf2",
+   "name": "Q_fabs043",
+   "signature": "float Q_fabs043(float x);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Absolute value of a float (x87 fabs); counterpart of Q_fabs.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eae0c",
+   "name": "Q_roundToInt043",
+   "signature": "int Q_roundToInt043(float x);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Rounds to nearest: (int)floor((double)(x + 0.5f)) with truncating float->int conversion.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eae42",
+   "name": "VectorSubtract2D",
+   "signature": "void VectorSubtract2D(const vec_t *a, const vec_t *b, vec_t *out);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "2D subtract: out[0..1] = a - b; out[2] is not written.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eae6e",
+   "name": "DotProduct2D",
+   "signature": "float DotProduct2D(const vec_t *a, const vec_t *b);",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "2D dot product of the first two components.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eae90",
+   "name": "ClearVector3",
+   "signature": "void ClearVector3(vec_t *v);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Zeroes three floats (VectorClear).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eaeba",
+   "name": "VectorSet3",
+   "signature": "void VectorSet3(vec_t *v, vec_t x, vec_t y, vec_t z);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Stores x, y, z into a vector (VectorSet).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eaede",
+   "name": "VectorCopy_080eaede",
+   "signature": "void VectorCopy_080eaede(const vec_t *in, vec_t *out);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Copies three 32-bit words in to out (VectorCopy).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eaf0e",
+   "name": "VectorAdd3_alt",
+   "signature": "void VectorAdd3_alt(const vec_t *a, const vec_t *b, vec_t *out);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Second compiled copy of VectorAdd (identical body to 0x080e986c).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eaf52",
+   "name": "VectorScale3_alt",
+   "signature": "void VectorScale3_alt(const vec_t *in, float scale, vec_t *out);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Second compiled copy of VectorScale (identical body to 0x080e98f4).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eaf8a",
+   "name": "VectorMA3_alt",
+   "signature": "void VectorMA3_alt(const vec_t *base, float scale, const vec_t *dir, vec_t *out);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Second compiled copy of VectorMA (identical body to 0x080e992c).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eafde",
+   "name": "DotProduct3_alt",
+   "signature": "float DotProduct3_alt(const vec_t *a, const vec_t *b);",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Second compiled copy of DotProduct (identical body to 0x080e9980).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb014",
+   "name": "BG_ResetWeaponCount",
+   "signature": "void BG_ResetWeaponCount(void);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "Resets the registered weapon count (global 0x08627080) to 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb024",
+   "name": "BG_FillInWeaponItem",
+   "signature": "void BG_FillInWeaponItem(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Fills the item-table entry for weaponIndex (stride 0x2c, table 0x081850c0) from its WeaponDef: copies defs fields 0x98/0x1b4/0x1b8/0x04/0x1c0/0x1c8/0x1d0 and sets type=1 and weaponIndex. Name guessed from BG_FillInAmmoItems's neighbours.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb0dc",
+   "name": "BG_FillInAmmoItems",
+   "signature": "void BG_FillInAmmoItems(void (*callback)(int));",
+   "subsystem": "game/bg_weapon",
+   "confidence": "observed",
+   "evidence": "String \"\\025BG_FillInAmmoItems: weapon def for default weapon could not be found!\" at 0x081553c0. For item slots 0x81..0x82 with itemType 2, looks up the weapon named by the first word of item->name and stores its index/ammo/clip; falls back to \"defaultweapon_mp\" (index 0 def when missing).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb24a",
+   "name": "BG_FillInAmmoIndex",
+   "signature": "void BG_FillInAmmoIndex(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Error string \"Max ammo mismatch for ... ammo\" at 0x08155420. Registers def's ammo type: finds an equal ammoName (strcmp) among bg_ammoTypes or appends it; on a repeat name with a different maxAmmo it scans earlier weapon defs and raises Com_Error(1, ...) if another weapon already set that max.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb3c0",
+   "name": "BG_FillInSharedAmmoCapIndex",
+   "signature": "void BG_FillInSharedAmmoCapIndex(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Error string \"Shared ammo cap mismatch for ...\" at 0x08155480 and debug print \"%s: %s\\n\". Same registration scheme as BG_FillInAmmoIndex for sharedAmmoCapName/sharedAmmoCap, case-insensitive (Q_stricmp) and skipped when the cap name is empty; index defaults to -1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb578",
+   "name": "BG_FillInClipIndex",
+   "signature": "void BG_FillInClipIndex(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Error string \"Clip Size mismatch for ... clip\" at 0x08155500. Registers def's clip type by clipName (strcmp) in bg_clipTypes; on a repeat name with a different clipSize it scans earlier weapons (Q_stricmp) and raises Com_Error. The first error argument is def->ammoName (not clipName), as compiled.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb6ee",
+   "name": "BG_FillInAltWeaponIndex",
+   "signature": "void BG_FillInAltWeaponIndex(int weaponIndex, void (*callback)(int));",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Error strings \"could not find altWeapon '%s' for weapon '%s'\", \"...same weaponSlot setting as its alt weapon\", \"...same slotStackable setting...\" (0x08155560/0x081555a0/0x08155600). Resolves the alt weapon by name (registering it if needed) into altWeaponIndex and validates weaponSlot and slotStackable.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb7fc",
+   "name": "BG_InitWeaponRegistry",
+   "signature": "void BG_InitWeaponRegistry(void);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "Initialises the registry: slot 0 of every table is the default weapon def returned by fn_080f36d2, counts are set to 1, item types of slots 1..0x80 are cleared, then fn_080f2c1e and fn_080d712c run.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb888",
+   "name": "BG_FillInWeaponIndices",
+   "signature": "void BG_FillInWeaponIndices(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Runs the four index-filling steps for one weapon: ammo, shared ammo cap, clip, item entry.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb8bc",
+   "name": "BG_RegisterWeaponDef",
+   "signature": "int BG_RegisterWeaponDef(struct weaponDef_s *def, void (*callback)(int));",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Appends def to bg_weaponDefs (count pre-incremented), fills its indices and alt weapon, invokes the optional callback with the new index, and returns that index.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb910",
+   "name": "BG_FillInAllWeaponIndices",
+   "signature": "void BG_FillInAllWeaponIndices(void);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Re-runs BG_FillInWeaponIndices for every registered weapon 1..count.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb944",
+   "name": "PlayerState_SetWeapAnim",
+   "signature": "void PlayerState_SetWeapAnim(struct playerState_s *ps, unsigned int bits);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "observed",
+   "evidence": "naming pass 2: netField table 0x08142520 names ps+0x5d0 'weapAnim' (10 bits); body toggles bit 0x200 and ORs the animation index for pm_type<6.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb974",
+   "name": "PlayerState_SetWeapAnimIfChanged",
+   "signature": "void PlayerState_SetWeapAnimIfChanged(struct playerState_s *ps, unsigned int bits);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Calls PlayerState_SetWeapAnim only when (weapAnim & ~0x200) != bits; ps+0x5d0 is 'weapAnim' in the netField table.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb9a4",
+   "name": "BG_GetWeaponDef",
+   "signature": "struct weaponDef_s *BG_GetWeaponDef(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns bg_weaponDefs[weaponIndex].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eba56",
+   "name": "BG_GetNumWeapons",
+   "signature": "int BG_GetNumWeapons(void);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns the registered weapon count.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eba60",
+   "name": "BG_GetNumAmmoTypes",
+   "signature": "int BG_GetNumAmmoTypes(void);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns the number of ammo types.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eba6a",
+   "name": "BG_GetAmmoTypeMax",
+   "signature": "int BG_GetAmmoTypeMax(int ammoIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns maxAmmo of the weapon def that defined ammo type ammoIndex.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eba80",
+   "name": "BG_GetNumClipTypes",
+   "signature": "int BG_GetNumClipTypes(void);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns the number of clip types.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eba8a",
+   "name": "BG_GetClipTypeSize",
+   "signature": "int BG_GetClipTypeSize(int clipIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns clipSize of the weapon def that defined clip type clipIndex.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebaa0",
+   "name": "BG_GetSharedAmmoCapMax",
+   "signature": "int BG_GetSharedAmmoCapMax(int index);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns sharedAmmoCap of shared-ammo-cap entry index.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebab6",
+   "name": "BG_GetSharedAmmoCapName",
+   "signature": "const char *BG_GetSharedAmmoCapName(int index);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns sharedAmmoCapName of shared-ammo-cap entry index (as a raw word, pointer-sized).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebacc",
+   "name": "BG_GetAmmoTypeName",
+   "signature": "const char *BG_GetAmmoTypeName(int ammoIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns the ammoName of ammo type ammoIndex.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebae2",
+   "name": "BG_GetClipTypeName",
+   "signature": "const char *BG_GetClipTypeName(int clipIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns the clipName of clip type clipIndex.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebbd0",
+   "name": "BG_FindWeaponByName",
+   "signature": "int BG_FindWeaponByName(const char *name);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Case-insensitive search of registered weapons 1..count by internalName; returns the index or 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebc24",
+   "name": "BG_RegisterWeapon",
+   "signature": "int BG_RegisterWeapon(const char *name, void (*callback)(int));",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "String \"Couldn't find weapon \\\"%s\\\"\\n\" at 0x081556f4+3. Empty or \"none\" names return 0; an already registered name returns its index; otherwise loads the def via fn_080f2844(\"mp\", name), registers it, and returns the new index (0 and a debug print when loading fails).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebcc0",
+   "name": "BG_RegisterWeaponNoCallback",
+   "signature": "int BG_RegisterWeaponNoCallback(const char *name)",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Registers a weapon by name with no callback.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebcdc",
+   "name": "BG_FindFirstBinocularsWeapon",
+   "signature": "unsigned int BG_FindFirstBinocularsWeapon(void);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Scans bg_weaponDefs for weaponType==3; type name table g_081869e0 reads bullet,grenade,projectile,binoculars so 3 = binoculars. Used by BG_GetCurrentWeapon when pm_flags&0x20000.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebd22",
+   "name": "BG_GetCurrentWeapon",
+   "signature": "int BG_GetCurrentWeapon(struct playerState_s *ps);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Current weapon index for ps: pm_flags & 0x20000 -> first type-3 weapon; else pm_flags & 0x10 -> ps->offHandIndex; else ps->weapon.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebd6e",
+   "name": "BG_FindUsableWeaponOfClass",
+   "signature": "int BG_FindUsableWeaponOfClass(struct playerState_s *ps, int weaponClass);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "First weapon i (1..count) whose def field84 == weaponClass, that ps owns (bit set) and that has non-zero total ammo (ammoclip + ammo). Returns 0 if none.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebdfc",
+   "name": "BG_FindOwnedWeaponOfClass",
+   "signature": "int BG_FindOwnedWeaponOfClass(struct playerState_s *ps, int weaponClass);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "Like BG_FindUsableWeaponOfClass but without the ammo test: first owned weapon with field84 == weaponClass.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebe72",
+   "name": "BG_GetWeaponAimDownSight",
+   "signature": "int BG_GetWeaponAimDownSight(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Returns weaponDef+0x32c; weapon field table g_08186a60 names that offset 'aimDownSight'. Callers: ADS sway/aim offset code and ClientThink_real.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebe8c",
+   "name": "BG_IsValidWeaponIndex",
+   "signature": "int BG_IsValidWeaponIndex(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "True when 0 <= weaponIndex <= registered weapon count.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebeb6",
+   "name": "BG_IsHeldSlotWeapon",
+   "signature": "int BG_IsHeldSlotWeapon(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "True when the weapon's weaponSlot is 1 or 2.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebef2",
+   "name": "PlayerState_HasFreeHeldSlot",
+   "signature": "int PlayerState_HasFreeHeldSlot(struct playerState_s *ps);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "True when at least one of ps->heldSlot[1], heldSlot[2] is empty (0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebf24",
+   "name": "BG_PlayerHasWeapon",
+   "signature": "int BG_PlayerHasWeapon(struct playerState_s *ps, int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "True when weaponIndex is valid and owned by ps, except that a def with field84 == 0 that is neither in a held slot nor the alt of weaponIndex is reported false.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebfb6",
+   "name": "BG_WeaponFlagA",
+   "signature": "int BG_WeaponFlagA(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "0 when field7c == 9, else 1 if field84 == 0, else 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebffe",
+   "name": "BG_TakeWeapon",
+   "signature": "int BG_TakeWeapon(struct playerState_s *ps, int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "Removes weaponIndex (and its alt-weapon chain) from ps->weapons. If it occupied a held slot, the slot is cleared or refilled with another owned slotStackable weapon of the same weaponSlot not already slotted (note: the stackable/slot checks read BG_GetWeaponDef(weaponIndex), not weapon i, as compiled). Clears ps->weapon if it was the removed weapon. Returns 0 when ps does not own it, else 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ec1d2",
+   "name": "BG_SetHeldSlot",
+   "signature": "int BG_SetHeldSlot(struct playerState_s *ps, int slot, int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "Puts an owned weapon with weaponSlot 1 or 2 into held slot 1 or 2. If the slot's previous occupant differs from the weapon and from ps->weapon, ps->weapon is cleared. Returns 1 on success, else 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ec288",
+   "name": "BG_FindWeaponSlot",
+   "signature": "int BG_FindWeaponSlot(struct playerState_s *ps, int weaponIndex, int followAlt);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "Finds which held slot (1 or 2) holds weaponIndex, following altWeaponIndex links when followAlt != 0. Returns 0 for weapons not owned or with weaponSlot outside 1..2. The walk loops until it returns to the start index (it can spin forever on a chain that does not return, as compiled).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ec344",
+   "name": "BG_FindFreeHeldSlot",
+   "signature": "int BG_FindFreeHeldSlot(struct playerState_s *ps, int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "For a weapon with weaponSlot 1..2, returns the first empty held slot (1 or 2), else 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ec39e",
+   "name": "BG_PickStackableSlot",
+   "signature": "int BG_PickStackableSlot(struct playerState_s *ps, int weaponIndex, int preferredSlot);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "Picks a held slot for a slotStackable weapon: the preferred slot if it is empty or its occupant is slotStackable, else slot 1 / slot 2 by the same rule. Returns 0 when slotStackable == 0 or no slot fits.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ec4ae",
+   "name": "BG_IsAltWeaponInChain",
+   "signature": "int BG_IsAltWeaponInChain(int weaponA, int weaponB);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "True when weaponB is reachable from weaponA by following altWeaponIndex links (stops on a cycle back to A).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ec514",
+   "name": "BG_GetWeaponAmmoRoom",
+   "signature": "int BG_GetWeaponAmmoRoom(struct playerState_s *ps, int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "Remaining capacity for the weapon's ammo: for weapons without a shared cap (sharedAmmoCapIndex < 0) it is the type max minus current ammo (field340 == 0) or clip size minus current clip. For shared caps it is the cap minus the ammo/clip counts of every owned weapon with that cap index, counting each ammo or clip type once.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ec8cc",
+   "name": "BG_InterpolateWeaponStanceValues",
+   "signature": "void BG_InterpolateWeaponStanceValues(struct playerState_s *ps, int weaponIndex, float *outA, float *outB);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "Interpolates two value pairs of the weapon def by ps->viewHeight: above 40 it blends fields 0x28c->0x290 and 0x298->0x29c over (viewHeight-40)/20; otherwise 0x290->0x294 and 0x29c->0x2a0 over (viewHeight-11)/29. Outputs go to *outA (first pair) and *outB (second pair).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ec9c2",
+   "name": "Weapon_StateIsBinocularsRaiseOrHold",
+   "signature": "int Weapon_StateIsBinocularsRaiseOrHold(int state);",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Same predicate as PM_WeaponStateIsBinocularsRaiseOrHold taking a raw state; called from PM_WeaponStateAllowsZoom only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ec9ea",
+   "name": "PM_WeaponStateAllowsAds",
+   "signature": "int PM_WeaponStateAllowsAds(struct playerState_s *ps, struct pml_s *pml);",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns 0 for weapons whose aimDownSight (def+0x32c) is 0 and for several weaponstates; sole caller PM_UpdateWeaponFlag40 gates the ADS flag on it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ecb0e",
+   "name": "PM_WeaponStateIsBinocularsRaiseOrHold",
+   "signature": "int PM_WeaponStateIsBinocularsRaiseOrHold(struct playerState_s *ps);",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: True for weaponstate 0x13/0x14 (decimal 19/20), the states entered by PM_Weapon_EnterState19 (raise binoculars, sets pm_flags 0x20000) and 20; the old name reads the hex values as if decimal.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ecb42",
+   "name": "PM_UpdateAdsFlag",
+   "signature": "void PM_UpdateAdsFlag(struct pmove_s *pm, struct pml_s *pml);",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Recomputes pm_flags 0x40 from cmd.buttons 0x1000 plus PM_WeaponStateAllowsZoom; reports to BG_UpdateConditionValue(7); PM_ResetWeaponFlag40 emits event 0x95 (ADS toggle sound per pmove.md). IW lineage: PMF_SIGHT_AIMING.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ecc72",
+   "name": "PM_ClearAdsFlag",
+   "signature": "void PM_ClearAdsFlag(struct playerState_s *ps);",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Clears pm_flags 0x40 (the ADS flag set by PM_UpdateWeaponFlag40) and adds event 0x95.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ecc9c",
+   "name": "PM_UpdateWeaponPosFrac",
+   "signature": "void PM_UpdateWeaponPosFrac(struct pmove_s *pm, struct pml_s *pml);",
+   "subsystem": "game/pmove",
+   "confidence": "inferred",
+   "evidence": "Per-frame update of ps->weaponPosFrac (0..1): moves toward 1 when the zoom condition holds (pm_flags bit 0x40 and weaponstate rules, a dvar-timed hold via ps->field_e0) and toward 0 otherwise, at the weapon def's per-ms rates field588 / field58c, clamped with fn_080f2954. A dvar/field128/field278 combination instead resets the state (PM_ResetWeaponFlag40, fraction and timer 0). Name inferred from the 0..1 fraction with separate rise/fall rates; the gameplay meaning is not established.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ecf6c",
+   "name": "PM_SetHoldingBreathFlag",
+   "signature": "void PM_SetHoldingBreathFlag(struct playerState_s *ps);",
+   "subsystem": "game/pmove",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Sets pm_flags 0x4000 only from PM_UpdateTimer5b8 when button 0x8000 is held and holdBreathTimer==0; dvars player_breath_hold_time/gasp_time govern it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ecf84",
+   "name": "PM_ClearHoldingBreathFlag",
+   "signature": "void PM_ClearHoldingBreathFlag(struct playerState_s *ps);",
+   "subsystem": "game/pmove",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Clears pm_flags 0x4000, the flag set by PM_SetFlag4000; called by the hold-breath updater and the fire-delay path.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ecf9c",
+   "name": "PM_ApplyBreathFireDelay",
+   "signature": "void PM_ApplyBreathFireDelay(struct playerState_s *ps);",
+   "subsystem": "game/pmove",
+   "confidence": "observed",
+   "evidence": "naming pass 2: When fully ADS with a scope-overlay weapon, adds dvar player_breath_fire_delay*1000 to holdBreathTimer (cap hold_time*1000) and clears the holding-breath flag; sole caller PM_Weapon_FireShot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed084",
+   "name": "PM_UpdateHoldBreath",
+   "signature": "void PM_UpdateHoldBreath(struct pmove_s *pm, struct pml_s *pml);",
+   "subsystem": "game/pmove",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Maintains ps->holdBreathTimer (0x5b8) and holdBreathScale (0x5b4) (netField names) using dvars player_breath_hold_time, gasp_time, gasp_scale, hold_lerp, gasp_lerp.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed2de",
+   "name": "PM_WeaponStateHandler",
+   "signature": "int PM_WeaponStateHandler(struct playerState_s *ps);",
+   "subsystem": "game/pmove",
+   "confidence": "unknown",
+   "evidence": "Returns 1 for weaponstate 0,1,2,4..9; 0 for weaponstate 3, 11 and 12..16; for any other state calls fn_080ef946(ps) and returns 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed3ae",
+   "name": "BG_GetWeaponClipIndex",
+   "signature": "int BG_GetWeaponClipIndex(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns the weapon's clipIndex (def + 0x1d0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed3c8",
+   "name": "BG_GetWeaponAmmoIndex",
+   "signature": "int BG_GetWeaponAmmoIndex(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Returns the weapon's ammoIndex (def + 0x1c8).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed3e2",
+   "name": "BG_GetWeaponClipOnly",
+   "signature": "int BG_GetWeaponClipOnly(int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Returns weaponDef+0x340; weapon field table g_08186a60 names that offset 'clipOnly'. Callers: ammo-room/total/give/reload code.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed3fc",
+   "name": "BG_GetWeaponTotalAmmo",
+   "signature": "int BG_GetWeaponTotalAmmo(struct playerState_s *ps, int weaponIndex);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "inferred",
+   "evidence": "Total ammo carried for weaponIndex: ps->ammoclip[clipIndex] + ps->ammo[ammoIndex].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed440",
+   "name": "BG_ReloadClipFromAmmo",
+   "signature": "void BG_ReloadClipFromAmmo(struct playerState_s *ps);",
+   "subsystem": "game/bg_weapon",
+   "confidence": "unknown",
+   "evidence": "Moves ammo from the ammo pool to the clip for ps->weapon: amount = min(ammo, clipSize - clip), capped to def->field364 for weaponstate 7/8 (only when below the clip size) or to def->field360 otherwise (when non-zero and below the clip size). Skips weaponstate 7/8 when field364 == 0.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08627080",
+   "name": "bg_numWeapons",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "incremented by BG_RegisterWeaponDef, used as upper bound of weapon index loops"
+  },
+  {
+   "addr": "0x086270a0",
+   "name": "bg_weaponDefs",
+   "type": "struct WeaponDef043_s *[136]",
+   "confidence": "inferred",
+   "evidence": "indexed by weapon index; slot 0 = default def from fn_080f36d2"
+  },
+  {
+   "addr": "0x086272c0",
+   "name": "bg_ammoTypes",
+   "type": "struct WeaponDef043_s *[128]",
+   "confidence": "inferred",
+   "evidence": "unique ammoName registry, count at 0x086274c0"
+  },
+  {
+   "addr": "0x086274c0",
+   "name": "bg_numAmmoTypes",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "count for bg_ammoTypes"
+  },
+  {
+   "addr": "0x086274e0",
+   "name": "bg_sharedAmmoCaps",
+   "type": "struct WeaponDef043_s *[128]",
+   "confidence": "inferred",
+   "evidence": "unique sharedAmmoCapName registry, count at 0x086276e0"
+  },
+  {
+   "addr": "0x086276e0",
+   "name": "bg_numSharedAmmoCaps",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "count for bg_sharedAmmoCaps"
+  },
+  {
+   "addr": "0x08627700",
+   "name": "bg_clipTypes",
+   "type": "struct WeaponDef043_s *[128]",
+   "confidence": "inferred",
+   "evidence": "unique clipName registry, count at 0x08627900"
+  },
+  {
+   "addr": "0x08627900",
+   "name": "bg_numClipTypes",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "count for bg_clipTypes"
+  },
+  {
+   "addr": "0x081850c0",
+   "name": "bg_itemList",
+   "type": "struct bgItem043_s[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x2c, written by BG_FillInWeaponItem"
+  },
+  {
+   "addr": "0x08627030",
+   "name": "g_08627030",
+   "type": "struct dvar043_s *",
+   "confidence": "inferred",
+   "evidence": "dvar pointer, value at +8 read as char"
+  },
+  {
+   "addr": "0x08627034",
+   "name": "g_08627034",
+   "type": "struct dvar043_s *",
+   "confidence": "inferred",
+   "evidence": "dvar pointer, value at +8 read as int"
+  },
+  {
+   "addr": "0x0862700c",
+   "name": "g_0862700c",
+   "type": "struct dvar043_s *",
+   "confidence": "inferred",
+   "evidence": "dvar pointer, float value *1000 truncated to int"
+  },
+  {
+   "addr": "0x08627010",
+   "name": "g_08627010",
+   "type": "struct dvar043_s *",
+   "confidence": "inferred",
+   "evidence": "dvar pointer, float value *1000"
+  },
+  {
+   "addr": "0x08627014",
+   "name": "g_08627014",
+   "type": "struct dvar043_s *",
+   "confidence": "inferred",
+   "evidence": "dvar pointer, float value *1000"
+  },
+  {
+   "addr": "0x08627018",
+   "name": "g_08627018",
+   "type": "struct dvar043_s *",
+   "confidence": "inferred",
+   "evidence": "dvar pointer, float"
+  },
+  {
+   "addr": "0x0862701c",
+   "name": "g_0862701c",
+   "type": "struct dvar043_s *",
+   "confidence": "inferred",
+   "evidence": "dvar pointer, float"
+  },
+  {
+   "addr": "0x08627020",
+   "name": "g_08627020",
+   "type": "struct dvar043_s *",
+   "confidence": "inferred",
+   "evidence": "dvar pointer, float"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "playerState043_s",
+   "size": "unknown (>=0x5d4)",
+   "evidence": "partial layout, offsets in chunk_043_types.h"
+  },
+  {
+   "name": "pmove043_s",
+   "size": "unknown (>=0xe5)",
+   "evidence": "partial layout"
+  },
+  {
+   "name": "pml043_s",
+   "size": "unknown (>=0x60)",
+   "evidence": "partial layout"
+  },
+  {
+   "name": "pmTrace043_s",
+   "size": ">=0x34",
+   "evidence": "fraction/normal/entityNum/allSolid observed"
+  },
+  {
+   "name": "WeaponDef043_s",
+   "size": "unknown (>=0x590)",
+   "evidence": "partial layout"
+  },
+  {
+   "name": "bgItem043_s",
+   "size": "0x2c",
+   "evidence": "stride observed in item table indexing"
+  }
+ ],
+ "open_questions": [
+  "Real names/meaning of unnamed WeaponDef fields (0x78,0x7c,0x84,0x32c,0x330,0x340,0x348,0x35c-0x364,0x524,0x588/0x58c) and playerState fields (0x34,0x38,0xdc,0xe0,0x128,0x5b4,0x5b8,0x5d0); the zoom/ADS interpretation of PM_UpdateWeaponPosFrac is unproven.",
+  "Callee identities not in this chunk (fn_080e1360 trace, fn_080e14d4 clip velocity, fn_080e129e, fn_080e0e58 14-arg probe, fn_080f2844 weapon loader) were inferred only from call sites; trace struct size and pmove/pml full layouts unknown.",
+  "Whether fn_080e9590 returns float sqrt and whether callers rely on x87 extended results of dot-product helpers (translated as float returns)."
+ ]
+}

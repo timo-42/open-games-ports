@@ -1,0 +1,732 @@
+{
+ "chunk": 24,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x0809eb76",
+   "name": "FS_CopyFile",
+   "signature": "void FS_CopyFile(const char *fromOSPath, const char *toOSPath)",
+   "subsystem": "fs/write",
+   "confidence": "observed",
+   "evidence": "rodata 'Short read in FS_CopyFile()' and 'Short write in FS_CopyFile()' in body; callers FS_Rename (0809ed5a) and 0809f958",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809eccc",
+   "name": "FS_Remove",
+   "signature": "void FS_Remove(const char *osPath)",
+   "subsystem": "fs/write",
+   "confidence": "inferred",
+   "evidence": "single remove() on an OS path; called by FS_Rename and FS_FileExists-style callers",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809ece0",
+   "name": "FS_FileExists",
+   "signature": "qboolean FS_FileExists(const char *filename)",
+   "subsystem": "fs/paths",
+   "confidence": "inferred",
+   "evidence": "homepath OS path + fopen(\"rb\") probe; Q3 FS_FileExists shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809ed5a",
+   "name": "FS_Rename",
+   "signature": "void FS_Rename(const char *from, const char *to)",
+   "subsystem": "fs/write",
+   "confidence": "observed",
+   "evidence": "rodata 'FS_Rename: %s --> %s' in body",
+   "status": "translated",
+   "notes": "rename, then FS_Remove + retry, then FS_CopyFile + FS_Remove fallback"
+  },
+  {
+   "addr": "0x0809ee54",
+   "name": "FS_FCloseFile",
+   "signature": "void FS_FCloseFile(int f)",
+   "subsystem": "fs/handles",
+   "confidence": "inferred",
+   "evidence": "closes a handle slot: zip stream/entry or FILE; clears 0x11c slot; Q3 FS_FCloseFile shape",
+   "status": "translated",
+   "notes": "fn_0809e892 is FS_FileForHandle-like; slot 0 keeps its FILE"
+  },
+  {
+   "addr": "0x0809ef3e",
+   "name": "FS_OpenOSFileHandle",
+   "signature": "int FS_OpenOSFileHandle(const char *qpath, const char *osPath, const char *mode, int uniqueFile)",
+   "subsystem": "fs/handles",
+   "confidence": "unknown",
+   "evidence": "no string; fopen on a caller OS path then allocates and records a slot; descriptive name",
+   "status": "translated",
+   "notes": "called by FS_FOpenFileWrite with mode \"wb\""
+  },
+  {
+   "addr": "0x0809efe0",
+   "name": "FS_FOpenFileWrite",
+   "signature": "int FS_FOpenFileWrite(const char *filename)",
+   "subsystem": "fs/write",
+   "confidence": "observed",
+   "evidence": "rodata 'FS_FOpenFileWrite: %s' in body; builds homepath path then opens \"wb\" via 0809ef3e",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809f08a",
+   "name": "FS_FOpenFileWriteText",
+   "signature": "int FS_FOpenFileWriteText(const char *filename)",
+   "subsystem": "fs/write",
+   "confidence": "inferred",
+   "evidence": "shares the FS_FOpenFileWrite debug string but opens \"wt\" and allocates the slot first",
+   "status": "translated",
+   "notes": "name is descriptive of the text-mode variant"
+  },
+  {
+   "addr": "0x0809f1dc",
+   "name": "FS_FOpenFileAppend",
+   "signature": "int FS_FOpenFileAppend(const char *filename)",
+   "subsystem": "fs/write",
+   "confidence": "observed",
+   "evidence": "rodata 'FS_FOpenFileAppend: %s' in body; opens \"at\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809f32c",
+   "name": "FS_FilenameCompare",
+   "signature": "int FS_FilenameCompare(const char *s1, const char *s2)",
+   "subsystem": "fs/paths",
+   "confidence": "inferred",
+   "evidence": "case-folds and maps '\\\\' and ':' to '/'; returns 0 on equality; Q3 FS_FilenameCompare shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809f3c8",
+   "name": "FS_FileCompare",
+   "signature": "int FS_FileCompare(const char *file1, const char *file2)",
+   "subsystem": "fs/paths",
+   "confidence": "observed",
+   "evidence": "rodata 'FS_FileCompare: %s does not exist' and 'Short read in FS_FileCompare()' in body",
+   "status": "translated",
+   "notes": "buffers from fn_080ab65e are released with libc free(); allocator pairing unverified"
+  },
+  {
+   "addr": "0x0809f626",
+   "name": "FS_ShiftedKeyProbe",
+   "signature": "void FS_ShiftedKeyProbe(char *haystack, const char *key, char shift)",
+   "subsystem": "fs/paths",
+   "confidence": "unknown",
+   "evidence": "no string; builds shifted key and strstr()s it, result discarded",
+   "status": "translated",
+   "notes": "no observable effect beyond the stack buffer; possibly a probe left in the build"
+  },
+  {
+   "addr": "0x0809f69a",
+   "name": "FS_IsUnrestrictedExtension",
+   "signature": "qboolean FS_IsUnrestrictedExtension(const char *ext)",
+   "subsystem": "fs/paths",
+   "confidence": "inferred",
+   "evidence": "rodata 'cfg' (strcasecmp), 'menu', '.dm_NETWORK_PROTOCOL_VERSION'",
+   "status": "translated",
+   "notes": "literal keeps its leading dot after stripping; preserved"
+  },
+  {
+   "addr": "0x0809f718",
+   "name": "FS_IsParentPathPrefix",
+   "signature": "qboolean FS_IsParentPathPrefix(const char *s)",
+   "subsystem": "fs/paths",
+   "confidence": "unknown",
+   "evidence": "tests for a leading '..' or '::' pair; descriptive name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809f75e",
+   "name": "FS_IsPathSeparator",
+   "signature": "qboolean FS_IsPathSeparator(char c)",
+   "subsystem": "fs/paths",
+   "confidence": "unknown",
+   "evidence": "true for '/' and '\\\\'; descriptive name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809f7a0",
+   "name": "FS_SanitizeQpath",
+   "signature": "qboolean FS_SanitizeQpath(const char *in, char *out)",
+   "subsystem": "fs/paths",
+   "confidence": "unknown",
+   "evidence": "collapses separators, drops '.' components, rejects '..' or '::' (returns 0); descriptive name",
+   "status": "translated",
+   "notes": "called by most FS_* entry points"
+  },
+  {
+   "addr": "0x0809f8a4",
+   "name": "FS_HasTextAssetExtension",
+   "signature": "qboolean FS_HasTextAssetExtension(const char *name)",
+   "subsystem": "fs/paths",
+   "confidence": "unknown",
+   "evidence": "rodata list '.hlsl' '.txt' '.cfg' '.levelshots' '.menu' '.arena' '.str' tested as suffixes",
+   "status": "translated",
+   "notes": "used to decide pack referenced-flag"
+  },
+  {
+   "addr": "0x0809f958",
+   "name": "FS_FOpenFileReadInternal",
+   "signature": "int FS_FOpenFileReadInternal(const char *filename, int *file, int uniqueFile, int quiet)",
+   "subsystem": "fs/read",
+   "confidence": "inferred",
+   "evidence": "rodata 'FS_FOpenFileRead: %s (found in ...)', 'Can\\'t find %s', 'Couldn\\'t reopen %s' in body [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "file==NULL is an existence probe; restricted-but-present returns -2; unpure pack raises EXE_UNPURECLIENTDETECTED"
+  },
+  {
+   "addr": "0x080a0266",
+   "name": "FS_OpenFileRead",
+   "signature": "int FS_OpenFileRead(const char *filename, int *file, int uniqueFile)",
+   "subsystem": "fs/read",
+   "confidence": "inferred",
+   "evidence": "sets g_0849fc20 then forwards with quiet=0; wrapper shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a02a0",
+   "name": "FS_SearchFileExists",
+   "signature": "qboolean FS_SearchFileExists(const char *filename)",
+   "subsystem": "fs/read",
+   "confidence": "inferred",
+   "evidence": "opens through FS_OpenFileRead and closes the handle; returns found",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a02e6",
+   "name": "FS_LooseFileGamePath",
+   "signature": "char *FS_LooseFileGamePath(const char *filename)",
+   "subsystem": "fs/paths",
+   "confidence": "unknown",
+   "evidence": "returns 'gamedir/filename' for the first loose directory holding the file; rodata '%s/%s'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a03dc",
+   "name": "FS_DeleteFile",
+   "signature": "qboolean FS_DeleteFile(const char *filename)",
+   "subsystem": "fs/write",
+   "confidence": "inferred",
+   "evidence": "remove() on the homepath OS path; empty name returns 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a0458",
+   "name": "FS_SetOwnerReadBit",
+   "signature": "qboolean FS_SetOwnerReadBit(const char *filename, int clear)",
+   "subsystem": "fs/write",
+   "confidence": "unknown",
+   "evidence": "stat then chmod toggling mode bit 0x100 (owner read); descriptive name",
+   "status": "translated",
+   "notes": "bit meaning inferred only from the mask"
+  },
+  {
+   "addr": "0x080a052a",
+   "name": "FS_Read",
+   "signature": "int FS_Read(void *buffer, int len, int f)",
+   "subsystem": "fs/read",
+   "confidence": "observed",
+   "evidence": "rodata 'FS_Read: -1 bytes read' in body; pack handles delegate to 80d3094",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a0656",
+   "name": "FS_Write",
+   "signature": "int FS_Write(const void *buffer, int len, int f)",
+   "subsystem": "fs/write",
+   "confidence": "inferred",
+   "evidence": "fwrite loop with fflush when handleSync is set; Q3 FS_Write shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a072c",
+   "name": "FS_Printf",
+   "signature": "void FS_Printf(int f, const char *fmt, ...)",
+   "subsystem": "fs/write",
+   "confidence": "inferred",
+   "evidence": "vsnprintf into 4 KiB then FS_Write; Q3 FS_Printf shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a078a",
+   "name": "FS_Seek",
+   "signature": "int FS_Seek(int f, int offset, int origin)",
+   "subsystem": "fs/read",
+   "confidence": "inferred",
+   "evidence": "origin 0=CUR 1=END 2=SET (Q3 fsOrigin_t); pack branch re-opens zip entry to rewind",
+   "status": "translated",
+   "notes": "CUR with negative offset re-skips from tell+offset after reopen (preserved)"
+  },
+  {
+   "addr": "0x080a0a9c",
+   "name": "FS_ReadFile",
+   "signature": "int FS_ReadFile(const char *qpath, void **buffer)",
+   "subsystem": "fs/read",
+   "confidence": "observed",
+   "evidence": "rodata 'FS_ReadFile with empty name' in body; fs_loadStack increment",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a0b7a",
+   "name": "FS_ResetLoadStack",
+   "signature": "void FS_ResetLoadStack(void)",
+   "subsystem": "fs/read",
+   "confidence": "unknown",
+   "evidence": "zeroes fs_loadStack; descriptive name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a0b8a",
+   "name": "FS_FreeFile",
+   "signature": "void FS_FreeFile(void *buffer)",
+   "subsystem": "fs/read",
+   "confidence": "inferred",
+   "evidence": "fs_loadStack decrement and temp-memory free; Q3 FS_FreeFile shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a0ba8",
+   "name": "FS_WriteFile",
+   "signature": "qboolean FS_WriteFile(const char *filename, const void *buffer, int size)",
+   "subsystem": "fs/write",
+   "confidence": "inferred",
+   "evidence": "open for write, write, close; delete on short write; Q3 FS_WriteFile shape",
+   "status": "translated",
+   "notes": "rodata 'Failed to open %s'"
+  },
+  {
+   "addr": "0x080a0c32",
+   "name": "FS_LocateLooseFile",
+   "signature": "int FS_LocateLooseFile(const char *qpath, char *ospath)",
+   "subsystem": "fs/paths",
+   "confidence": "unknown",
+   "evidence": "probes loose directories for the sanitized name and reports the OS path; descriptive name",
+   "status": "translated",
+   "notes": "returns 0 on found, -1 otherwise"
+  },
+  {
+   "addr": "0x080a0d54",
+   "name": "FS_ReturnZeroStub",
+   "signature": "int FS_ReturnZeroStub(void)",
+   "subsystem": "fs/paths",
+   "confidence": "unknown",
+   "evidence": "returns 0 with no other effect",
+   "status": "translated",
+   "notes": "stub; no string evidence"
+  },
+  {
+   "addr": "0x080a0d5e",
+   "name": "FS_LoadPackFile",
+   "signature": "struct iwd_s *FS_LoadPackFile(const char *pakFilename, const char *pakBasename)",
+   "subsystem": "fs/pack",
+   "confidence": "inferred",
+   "evidence": "opens zip, reads central directory, builds hashed entries, CRC checksums with fs_checksumFeed; Q3 FS_LoadZipFile shape",
+   "status": "translated",
+   "notes": "strips '.iwd' from basename; referenced byte not initialised here"
+  },
+  {
+   "addr": "0x080a12a6",
+   "name": "FS_SplitDirectory",
+   "signature": "int FS_SplitDirectory(const char *path, char *dest, int *depth)",
+   "subsystem": "fs/paths",
+   "confidence": "unknown",
+   "evidence": "copies path, cuts at last separator, returns separator index and depth; descriptive name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a1334",
+   "name": "FS_AddFileToList",
+   "signature": "int FS_AddFileToList(const char *name, char **list, int count)",
+   "subsystem": "fs/listing",
+   "confidence": "inferred",
+   "evidence": "duplicate-free append, capped at 0xfff entries; Q3 FS_AddFileToList shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a13bc",
+   "name": "FS_ListFilteredFilesInList",
+   "signature": "char **FS_ListFilteredFilesInList(struct searchpath_s *head, const char *path, const char *extension, const char *filter, int allowNonPure, int *numfiles, int unusedArg)",
+   "subsystem": "fs/listing",
+   "confidence": "inferred",
+   "evidence": "walks search paths, lists loose dirs with fn_080d6198 and pack buckets; Q3 FS_ListFilteredFiles shape",
+   "status": "translated",
+   "notes": "unusedArg is passed by the binary and never read; extension '/' selects directories"
+  },
+  {
+   "addr": "0x080a19bc",
+   "name": "FS_ListFiles",
+   "signature": "char **FS_ListFiles(const char *path, const char *extension, int allowNonPure, int *numfiles, int unusedArg)",
+   "subsystem": "fs/listing",
+   "confidence": "inferred",
+   "evidence": "head list with no filter; Q3 FS_ListFiles shape",
+   "status": "translated",
+   "notes": "binary tail-forwards the result"
+  },
+  {
+   "addr": "0x080a19fc",
+   "name": "FS_ListFilesByGameMask",
+   "signature": "char **FS_ListFilesByGameMask(const char *path, const char *extension, int allowNonPure, int *numfiles, unsigned int mask, int unusedArg)",
+   "subsystem": "fs/listing",
+   "confidence": "unknown",
+   "evidence": "forwards to the game-mask filtered lister; descriptive name",
+   "status": "translated",
+   "notes": "no explicit return in the binary; forwarded value returned"
+  },
+  {
+   "addr": "0x080a1a3a",
+   "name": "FS_GameNameMatchesMask",
+   "signature": "qboolean FS_GameNameMatchesMask(const char *name, unsigned int mask)",
+   "subsystem": "fs/listing",
+   "confidence": "inferred",
+   "evidence": "rodata 'main', 'dev', 'temp', 'raw', 'raw_shared', 'devraw' prefix tests per mask bit; 0x3f matches all",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a1b94",
+   "name": "FS_ListFilesFilteredByGame",
+   "signature": "char **FS_ListFilesFilteredByGame(const char *path, const char *extension, const char *filter, int allowNonPure, int *numfiles, unsigned int mask, int unusedArg)",
+   "subsystem": "fs/listing",
+   "confidence": "unknown",
+   "evidence": "copies search nodes whose game name matches mask, lists them, frees copies; descriptive name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a1cee",
+   "name": "FS_FreeFileList",
+   "signature": "void FS_FreeFileList(char **list, int tag)",
+   "subsystem": "fs/listing",
+   "confidence": "inferred",
+   "evidence": "frees each entry then the list; Q3 FS_FreeFileList shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a1d4a",
+   "name": "FS_GetFileList",
+   "signature": "int FS_GetFileList(const char *path, const char *extension, int allowNonPure, char *out, int outSize)",
+   "subsystem": "fs/listing",
+   "confidence": "inferred",
+   "evidence": "rodata '$modlist' selects mod-list mode; packs NUL-separated names into out [rename filesystem: Q3 FS_GetFileList shape (path, extension, flag, out buf, size); call at 0x080a1d88 delegates to the real FS_GetModList 0x08064bcc for the $modlist path.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a1e58",
+   "name": "FS_NormalizeSeparators",
+   "signature": "void FS_NormalizeSeparators(char *path)",
+   "subsystem": "fs/paths",
+   "confidence": "inferred",
+   "evidence": "rewrites '\\\\' and ':' to '/' in place; Q3 separator-normalisation shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a1e86",
+   "name": "FS_PathCmp",
+   "signature": "int FS_PathCmp(const char *s1, const char *s2)",
+   "subsystem": "fs/listing",
+   "confidence": "inferred",
+   "evidence": "case-folded ordering returning -1/0/1; Q3 FS_PathCmp shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a1f34",
+   "name": "FS_SortFileList",
+   "signature": "void FS_SortFileList(char **list, int count)",
+   "subsystem": "fs/listing",
+   "confidence": "inferred",
+   "evidence": "insertion sort via FS_PathCmp then copy back; Q3 sort shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a204e",
+   "name": "FS_PrintSearchPathInfo",
+   "signature": "void FS_PrintSearchPathInfo(int pureOnly)",
+   "subsystem": "fs/debug",
+   "confidence": "inferred",
+   "evidence": "rodata 'Current search path:', 'Current language: %s', 'File Handles:', 'handle %i: %s'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a2212",
+   "name": "FS_PrintSearchPathsCmd",
+   "signature": "void FS_PrintSearchPathsCmd(void)",
+   "subsystem": "fs/debug",
+   "confidence": "inferred",
+   "evidence": "calls FS_PrintSearchPathInfo(0)",
+   "status": "translated",
+   "notes": "command-style wrapper"
+  },
+  {
+   "addr": "0x080a2226",
+   "name": "FS_PrintPureSearchPaths",
+   "signature": "void FS_PrintPureSearchPaths(void)",
+   "subsystem": "fs/debug",
+   "confidence": "inferred",
+   "evidence": "calls FS_PrintSearchPathInfo(1)",
+   "status": "translated",
+   "notes": "pure-only wrapper"
+  },
+  {
+   "addr": "0x080a223a",
+   "name": "FS_GetLocalizedLanguage",
+   "signature": "char *FS_GetLocalizedLanguage(const char *name)",
+   "subsystem": "fs/localization",
+   "confidence": "inferred",
+   "evidence": "parses the language after 'localized_' (offset 10) into one of two alternating buffers",
+   "status": "translated",
+   "notes": "uses isalpha; buffers are g_084a86e0"
+  },
+  {
+   "addr": "0x080a22ee",
+   "name": "FS_CompareLocalizedIwd",
+   "signature": "int FS_CompareLocalizedIwd(const void *pa, const void *pb)",
+   "subsystem": "fs/localization",
+   "confidence": "inferred",
+   "evidence": "qsort comparator: ignored-prefix names sort 'english' first, then FS_PathCmp",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a23d4",
+   "name": "FS_InsertSearchPath",
+   "signature": "void FS_InsertSearchPath(struct searchpath_s *node)",
+   "subsystem": "fs/paths",
+   "confidence": "inferred",
+   "evidence": "inserts at the head or after leading non-localized nodes; Q3 search-path insertion shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a241c",
+   "name": "FS_AddIwdFiles",
+   "signature": "void FS_AddIwdFiles(const char *base, const char *gamedir)",
+   "subsystem": "fs/pack",
+   "confidence": "inferred",
+   "evidence": "rodata 'WARNING: Exceeded max number of iwd files', 'localized_' names and language warnings; loads iwd packs",
+   "status": "translated",
+   "notes": "trailing-slash cut drops the last character (preserved); names array is 1024 slots"
+  },
+  {
+   "addr": "0x080a27ae",
+   "name": "FS_AddGameDirectory",
+   "signature": "void FS_AddGameDirectory(const char *path, const char *dir, int localized, int language)",
+   "subsystem": "fs/paths",
+   "confidence": "inferred",
+   "evidence": "rodata 'WARNING: game folder ... added as both localized & non-localized', 'game golder ... re-added'; Q3 FS_AddGameDirectory shape",
+   "status": "translated",
+   "notes": "'golder' spelling preserved"
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0849fc20",
+   "name": "fs_openFileReadCalled",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "stored 1 by FS_OpenFileRead; no other use in chunk 024"
+  },
+  {
+   "addr": "0x0849fc24",
+   "name": "fs_loadStack",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "incremented by FS_ReadFile, decremented by FS_FreeFile, zeroed by FS_ResetLoadStack"
+  },
+  {
+   "addr": "0x0849fc40",
+   "name": "fs_gamedir",
+   "type": "char[256]",
+   "confidence": "inferred",
+   "evidence": "written by FS_AddGameDirectory when non-localized; passed as the game argument to the OS-path builder"
+  },
+  {
+   "addr": "0x0849fd40",
+   "name": "fs_debug",
+   "type": "struct cvar_s *",
+   "confidence": "inferred",
+   "evidence": "value.integer gates the FS_* debug prints"
+  },
+  {
+   "addr": "0x0849fd44",
+   "name": "fs_homepath",
+   "type": "struct cvar_s *",
+   "confidence": "inferred",
+   "evidence": "value.string is the base for write, rename, delete and existence probes"
+  },
+  {
+   "addr": "0x0849fd48",
+   "name": "fs_basepath",
+   "type": "struct cvar_s *",
+   "confidence": "inferred",
+   "evidence": "value.string is the copy destination when a file is read from fs_cdpath"
+  },
+  {
+   "addr": "0x0849fd54",
+   "name": "fs_cdpath",
+   "type": "struct cvar_s *",
+   "confidence": "inferred",
+   "evidence": "value.string compared with the search-directory path before copying"
+  },
+  {
+   "addr": "0x0849fd58",
+   "name": "fs_copyfiles",
+   "type": "struct cvar_s *",
+   "confidence": "inferred",
+   "evidence": "value.flag enables the copy from fs_cdpath to fs_basepath"
+  },
+  {
+   "addr": "0x0849fd60",
+   "name": "fs_restrict",
+   "type": "struct cvar_s *",
+   "confidence": "unknown",
+   "evidence": "value.flag gates restricted loads together with fs_pureEnabled; name is a guess from the gate"
+  },
+  {
+   "addr": "0x0849fd64",
+   "name": "fs_ignoreLocalized",
+   "type": "struct cvar_s *",
+   "confidence": "inferred",
+   "evidence": "value.flag; FS_PrintSearchPathInfo prints 'localized assets are being ignored'"
+  },
+  {
+   "addr": "0x0849fd68",
+   "name": "fs_searchpaths",
+   "type": "struct fs_searchpath_s *",
+   "confidence": "inferred",
+   "evidence": "head of the search-path list; Q3 fs_searchpaths shape"
+  },
+  {
+   "addr": "0x0849fd6c",
+   "name": "fs_packFiles",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "incremented by the entry count in FS_LoadPackFile"
+  },
+  {
+   "addr": "0x0849fd70",
+   "name": "fs_unpureFileToken",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "set to rand()+1 on non-localized, non-unpure loads; role not identified"
+  },
+  {
+   "addr": "0x0849fd74",
+   "name": "fs_checksumFeed",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "fed (after LittleLong) to the pure checksum of the pack CRC list"
+  },
+  {
+   "addr": "0x0849fd80",
+   "name": "fs_handles",
+   "type": "struct fs_handle_s[64]",
+   "confidence": "inferred",
+   "evidence": "64 slots, stride 0x11c, slot 0 reserved; 0x84a4480 is the first byte after the array"
+  },
+  {
+   "addr": "0x084a4480",
+   "name": "fs_pureEnabled",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "non-zero enables pure-list checks and the pure-list report lines"
+  },
+  {
+   "addr": "0x084a8760",
+   "name": "fs_languageNameBufIndex",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "toggled by FS_GetLocalizedLanguage to select one of two buffers"
+  },
+  {
+   "addr": "0x084a86e0",
+   "name": "fs_languageNameBuf",
+   "type": "char[2][64]",
+   "confidence": "inferred",
+   "evidence": "language name buffers returned by FS_GetLocalizedLanguage"
+  },
+  {
+   "addr": "0x084a8764",
+   "name": "fs_supportedLanguagesPrinted",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "set once after 'Supported languages are:' has been printed"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "fs_searchpath_s",
+   "size": "0x14",
+   "evidence": "20-byte list node: next(+0), pack(+4), dir(+8), localized(+0xc), language(+0x10); allocated as 0x14 in several functions"
+  },
+  {
+   "name": "fs_pack_s",
+   "size": "0x320 + hashSize*4",
+   "evidence": "pakFilename(+0), pakBasename(+0x100), pakGamename(+0x200), handle(+0x300), checksums(+0x304/+0x308), numfiles(+0x30c), referenced(+0x310), hashSize(+0x314), hashTable(+0x318, inline after header), buildBuffer(+0x31c)"
+  },
+  {
+   "name": "fs_fileinpack_s",
+   "size": "0x0c",
+   "evidence": "filePos(+0, written by the zip position getter), name(+4), next(+8); 12-byte stride entry array"
+  },
+  {
+   "name": "fs_directory_s",
+   "size": "0x200",
+   "evidence": "path(+0), gamedir(+0x100); dir pointer is a 0x200 allocation in FS_AddGameDirectory"
+  },
+  {
+   "name": "fs_handle_s",
+   "size": "0x11c",
+   "evidence": "handle(+0), uniqueFile(+4), handleSync(+8), zipFilePos(+0x10), pack(+0x14), streamOpen(+0x18), name(+0x1c); 64 slots"
+  },
+  {
+   "name": "fs_packfile_state_s",
+   "size": "0x80",
+   "evidence": "zip read object copied as 0x80 bytes; fileSize read at +0x44; firstWord at +0"
+  },
+  {
+   "name": "fs_zip_fileinfo_s",
+   "size": "0x38",
+   "evidence": "14 x uint32; crc at +0x14 and uncompressedSize at +0x1c as read by FS_LoadPackFile"
+  },
+  {
+   "name": "cvar_s",
+   "size": "partial (only +0x08 used)",
+   "evidence": "value at +0x08 read as string, int, or byte; other fields not observed in this chunk"
+  }
+ ],
+ "open_questions": [
+  "Allocator pairing: fn_080ab65e (0x080ab65e) is not a plain malloc (it calls a helper at 0x080ab624). FS_FileCompare (0x0809f3c8) releases its buffers with libc free(), and FS_LoadPackFile uses fn_080ab65e memory with the Z_Free-style fn_080ab5b8 elsewhere. Confirm whether the helper prepends a header, which would make the raw free() wrong.",
+  "Zip-reader placeholders (fn_080d1f69, fn_080d22a1, fn_080d2821, fn_080d2a03, fn_080d2a35, fn_080d2e9e, fn_080d3094, fn_080d3384, fn_080d3506, fn_080d224e, fn_080d1ef8) are assumed to be minizip-style unzip operations; the handle object is typed void * here. Confirm with chunk owners of 0x080d1xxx-0x080d4xxx.",
+  "Dead trailing arguments: several call sites pass an extra argument the callee never reads (for example FS_ListFiles and FS_ListFilteredFilesInList take unusedArg; FS_AddFileToList is called with four arguments at its caller). The binary's frame layout confirms the push, but the real parameter count of 0x080a13bc and 0x080a1b94 should be checked against callers in other chunks.",
+  "FS_AddIwdFiles: the binary's name array is declared with 1023 slots but written up to index 1023. Reconstruction uses 1024 slots; verify the stack layout to see whether the extra slot overlaps another local.",
+  "FS_ShiftedKeyProbe (0x0809f626): the strstr() result is discarded and the key copy has no bound. Confirm whether this is a dead probe in the shipped binary or the tail of a larger check.",
+  "Global roles still uncertain: g_0849fd70 (rand()+1 seed), g_084a8760, g_0849fc20 and fs_restrict (0x0849fd60). Their names are placeholders or guesses.",
+  "Pack referenced byte (+0x310) is not initialised in FS_LoadPackFile; correctness relies on the allocator zeroing memory. Verify fn_080ab65e zero-fills."
+ ]
+}

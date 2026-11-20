@@ -1,0 +1,16 @@
+{"renames":[
+{"addr":"0x080e25a6","old":"PM_Move","new":"PM_WalkMove","confidence":"inferred","evidence":"Dispatcher in PM_SingleStep calls 0x080e25a6 when pml.walking (cmp [ebp-0x7c],0 ; jne) at 0x80e92e4. 0x080e25a6 calls Player_TryJump 0x080dcca8 at 0x80e25e8 and on success tail-calls 0x080e23f8 (0x80e25fe), exactly Q3 PM_WalkMove (jump -> PM_AirMove). Current name PM_Move is a non-lineage name. Apply together with the swap of 0x080e23f8."},
+{"addr":"0x080e23f8","old":"PM_WalkMove","new":"PM_AirMove","confidence":"inferred","evidence":"Called from the PM_SingleStep dispatcher when pml.walking == 0 (0x80e92fb), from PM_WalkMove after a successful jump (0x80e25fe), and from PM_LadderMove after Player_TryJump succeeds (0x80e84b2). No jump check itself; matches Q3 PM_AirMove. Current name PM_WalkMove is swapped; must be applied in the same step as 0x080e25a6 so names stay unique."},
+{"addr":"0x080de088","old":"Mantle_Debug","new":"Mantle_TryStart","confidence":"inferred","evidence":"Called every frame as Mantle_Debug(pm,&pml) from PM_Pmove path at 0x80e9189. Function body prints 'mantle_debug'-gated strings (incl. '====== Mantle Debug ======' at 0x8153820 area) but its calls are Mantle_FindSurface/CheckLedge/Start per pmove.md section 2.5; it is the attempt, debug output is only incidental."},
+{"addr":"0x080f5c34","old":"G_SpawnPmoveEventEntity","new":"G_SpawnMantleBlocker","confidence":"inferred","evidence":"Function lies in the g_mantleBlockTimeBuffer user (string 'g_mantleBlockTimeBuffer' present in binary; chunk_048 line 1551); spawns a short-lived temp entity owned by the player when pm.spawnEvent (mantle) is set, expiry level.time + buffer. Behaviour per pmove.md 2.5 item 6."}
+],
+"rejected":[
+{"addr":"0x080e302a","old":"PM_GroundSoundIndexPlus18","suggested":"PM_LandEventBase_*","reason":"Suggested names are explicitly speculative; the exact event enum is unknown (pmove.md 8.3), so the current names are at least literal."},
+{"addr":"0x080e30a8","old":"PM_GroundSoundIndexPlus74","suggested":"PM_LandEventBase_Damage","reason":"Speculative; also 0x080e3052/70/90 are unnamed in symbols.json so the family cannot be renamed consistently."},
+{"addr":"0x080ecb0e","old":"PM_WeaponStateIs13or14","suggested":"PM_WeaponStateIsBinocsUp","reason":"Binocular semantics are only inferred; the current name is literal and the 0x13/0x14 values are verified, no clear improvement. 0x080ec9c2 Weapon_StateIs13or14 is the same duplicate."},
+{"addr":"0x080ec9ea","old":"PM_WeaponStateAllowsZoom","suggested":"","reason":"No better evidence-backed name."},
+{"addr":"0x080ee6fc","old":"PM_Weapon_SetReadyState_Alt","suggested":"","reason":"Duplicate of the non-Alt variant; renaming would only add arbitrary names. Suffix Alt is a duplicate marker, not a semantic name."},
+{"addr":"0x080ecb42","old":"PM_UpdateWeaponFlag40","suggested":"PM_UpdateAdsFlag","reason":"ADS role of flag 0x40 is inferred only; not clearly better."},
+{"addr":"0x080ecf6c","old":"PM_SetFlag4000","suggested":"PM_SetHoldBreath","reason":"Inferred hold-breath bit; not cross-verified in binary strings."},
+{"addr":"0x080e0000","old":"PM_Pmove/other","suggested":"","reason":"Struct field naming problems in 8.1 are struct fields, not function symbols; out of scope for this lane."}
+]}

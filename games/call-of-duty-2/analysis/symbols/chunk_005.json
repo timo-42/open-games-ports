@@ -1,0 +1,739 @@
+{
+ "chunk": 5,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x0805ac12",
+   "name": "Sweep_ClipBoxHalves",
+   "signature": "void Sweep_ClipBoxHalves(struct traceWork_s *tr, struct trace_s *result)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "no strings; clips the swept box against the two world-box halves via 0x805a768/0x805a95e",
+   "status": "translated",
+   "notes": "reads tr->world_bounds (+0xb4) which 805b414 never sets; reachable only via the entity-model branch"
+  },
+  {
+   "addr": "0x0805b058",
+   "name": "CM_RecursiveHullCheck",
+   "signature": "void CM_RecursiveHullCheck(struct traceWork_s *tr, int node_index, const float *start4, const float *end4, struct trace_s *result)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "BSP walk with plane pointer and int16 children (node stride 8), leaf = -1-index, result->fraction <= start[3] stop; shape matches id Tech 3 CM_RecursiveHullCheck (not confirmed by string)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805b39c",
+   "name": "Sweep_UpdateCullFlag",
+   "signature": "void Sweep_UpdateCullFlag(struct traceWork_s *tr)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "writes tr+0x88 from box2 volume vs extents*length volume",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805b414",
+   "name": "CM_BoxTraceBody",
+   "signature": "void CM_BoxTraceBody(struct trace_s *result, const float *start, const float *end, const float *mins, const float *maxs, int type, uint32 mask)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "dispatch on type 0 / 0x3ff / other, mirrors 805cefe [rename collision: N18: the CM_BoxTrace body (builds trace work, dispatches brush/terrain/static-model traversal) called by the initialising wrapper 0x0805b894; has no Q3 equivalent name]",
+   "status": "partial",
+   "notes": "entity-model (0x3ff) branch depends on an entity pointer in a frame slot the decompiled function never writes; treated as NULL so that branch is not taken; shares setup with 805cefe via inline Sweep_BuildSegment"
+  },
+  {
+   "addr": "0x0805b894",
+   "name": "CM_BoxTrace",
+   "signature": "void CM_BoxTrace(struct trace_s *result, const float *start, const float *end, const float *mins, const float *maxs, int type, uint32 mask)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "memset 0x24 then fraction = 1.0 [rename collision: per N18/call graph: memset result 0x24 bytes and fraction=1.0 then calls the trace body 0x0805b414; this is the public entry used by game/server trace calls (chunks 023/045/056); Q3 CM_BoxTrace]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805b8f6",
+   "name": "Sweep_TraceBoxWithOffset",
+   "signature": "void Sweep_TraceBoxWithOffset(struct trace_s *result, const float *start, const float *end, const float *mins, const float *maxs, int type, uint32 mask, const float *offset, float *angles)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "offset subtraction, optional rotation of segment, normal rotated back when fraction decreases",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805bb76",
+   "name": "Sweep_TraceBoxWithOffsetInit",
+   "signature": "void Sweep_TraceBoxWithOffsetInit(struct trace_s *result, const float *start, const float *end, const float *mins, const float *maxs, int type, uint32 mask, const float *offset, float *angles)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "memset 0x24 then fraction = 1.0 then 805b8f6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805bbe6",
+   "name": "CM_TraceBrushBounds",
+   "signature": "int CM_TraceBrushBounds(struct traceWork_s *tr, const struct cbrush_s *brush)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "enter/leave fractions over brush bounds then side planes with radius+skin; returns brush index+1 on hit; shape of id Tech 3 CM_TraceThroughBrush",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805bef2",
+   "name": "CM_TraceKdTree",
+   "signature": "int CM_TraceKdTree(struct traceWork_s *tr, const struct cbrushnode_s *node, const float *start, const float *end)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "kd-tree of 0x14 records with brush lists at leaves and relative child offsets",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805c2c0",
+   "name": "Sweep_TraceLeafKdTree",
+   "signature": "int Sweep_TraceLeafKdTree(struct traceWork_s *tr, const struct cLeaf_s *leaf)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "leaf bounds expanded by extents, slab test, then kd-tree at leaf+0x24",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805c372",
+   "name": "CM_TraceLeafItems",
+   "signature": "int CM_TraceLeafItems(struct traceWork_s *tr, const struct cLeaf_s *leaf, struct trace_s *result)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "leaf masks, leaf kd test, then 0x20-byte item list; returns item index + brush count + 1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805c440",
+   "name": "Sweep_SphereSegmentReject",
+   "signature": "int Sweep_SphereSegmentReject(struct traceWork_s *tr, const float *a, const float *unused, const float *b, float radius, float *t)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "quadratic sphere-segment test with extended-precision sqrt; returns 1 when clear up to *t",
+   "status": "translated",
+   "notes": "third argument is never read by the binary"
+  },
+  {
+   "addr": "0x0805c574",
+   "name": "Sweep_SphereRangeTest",
+   "signature": "int Sweep_SphereRangeTest(struct traceWork_s *tr, const float *a, float extra, float radius, float *t)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "2D sphere test with z-range check; decompiler local_14 alias resolved from disassembly to the v.z component",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805c738",
+   "name": "Sweep_TraceClipToBounds",
+   "signature": "int Sweep_TraceClipToBounds(struct traceWork_s *tr, struct trace_s *result)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "world-box reject, two vertical sphere ends, vertical range test; returns 0 miss, -1 hit",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805cbe2",
+   "name": "CM_RecursiveHullCheckEntities",
+   "signature": "int CM_RecursiveHullCheckEntities(struct traceWork_s *tr, int node_index, const float *start3, const float *end3, struct trace_s *result)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "vec3 variant of 805b058; leaves go to 805c372 and the first nonzero result is returned",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805cefe",
+   "name": "Sweep_TraceEntityDispatch",
+   "signature": "int Sweep_TraceEntityDispatch(int brush_hint, const float *start, const float *end, const float *mins, const float *maxs, int type, uint32 mask)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "type 0: one brush then BSP walk; 0x3ff: box2 clip; other: leaf test",
+   "status": "partial",
+   "notes": "entity-model branch depends on an entity pointer in an unwritten frame slot; treated as NULL"
+  },
+  {
+   "addr": "0x0805d328",
+   "name": "Sweep_TraceEntityWithOffset",
+   "signature": "int Sweep_TraceEntityWithOffset(int brush_hint, const float *start, const float *end, const float *mins, const float *maxs, int type, uint32 mask, const float *offset, float *angles)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "offset and optional rotation, then 805cefe",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d552",
+   "name": "Sweep_FloatSelect",
+   "signature": "float Sweep_FloatSelect(float test, float if_nonneg, float if_neg)",
+   "subsystem": "collision/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): fucompp vs 0: returns arg2 if arg1>=0 else arg3; only callers are Float_Max/Min_0805d5ce/0805d5f2 in the Sweep TU (0x0805..d5xx). Drops address suffix, TU prefix disambiguates from Float_Select_0805fafc.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d57c",
+   "name": "Sweep_FloatAbs",
+   "signature": "float Sweep_FloatAbs(float x)",
+   "subsystem": "collision/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): fabs on x87 stack; Sweep TU copy (other TU copies exist).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d596",
+   "name": "Sweep_FloatSqrt",
+   "signature": "float Sweep_FloatSqrt(float x)",
+   "subsystem": "collision/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Calls sqrt@plt on widened double and rounds to float; Sweep TU copy.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d5b6",
+   "name": "Sweep_FloatIsNonNegative",
+   "signature": "int Sweep_FloatIsNonNegative(float x)",
+   "subsystem": "collision/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): setae after compare with 0.0: returns 1 if x>=0 (0 for NaN); TU prefix added for consistency with Sweep_Float* siblings.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d5ce",
+   "name": "Sweep_FloatMax",
+   "signature": "float Sweep_FloatMax(float a, float b)",
+   "subsystem": "collision/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Tail-calls Sweep_FloatSelect(a-b,a,b) = max(a,b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d5f2",
+   "name": "Sweep_FloatMin",
+   "signature": "float Sweep_FloatMin(float a, float b)",
+   "subsystem": "collision/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Tail-calls Sweep_FloatSelect(b-a,a,b) = min(a,b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d616",
+   "name": "Vec2_Dot",
+   "signature": "long double Vec2_Dot(const float *a, const float *b)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "x and y products in extended precision",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d638",
+   "name": "Vec3_Clear",
+   "signature": "void Vec3_Clear(float *v)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "zeroes three words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d662",
+   "name": "Vec3_Copy",
+   "signature": "void Vec3_Copy(const float *src, float *dst)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "copies three words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d692",
+   "name": "Vec3_Negate",
+   "signature": "void Vec3_Negate(uint32 *bits)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "flips the sign bit of three words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d6d0",
+   "name": "Vec3_Add",
+   "signature": "void Vec3_Add(const float *a, const float *b, float *out)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "component-wise sum",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d714",
+   "name": "Vec3_Subtract",
+   "signature": "void Vec3_Subtract(const float *a, const float *b, float *out)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "component-wise difference",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d758",
+   "name": "Vec3_Dot",
+   "signature": "long double Vec3_Dot(const float *a, const float *b)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "dot product, extended precision, z term first",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d78c",
+   "name": "Vec3_Equal",
+   "signature": "int Vec3_Equal(const float *a, const float *b)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "exact component equality",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d7f6",
+   "name": "Vec3_LengthSquared",
+   "signature": "long double Vec3_LengthSquared(const float *v)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "self dot product, extended precision",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d82a",
+   "name": "Vec4_Copy",
+   "signature": "void Vec4_Copy(const float *src, float *dst)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "copies four words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d86c",
+   "name": "Box_ComputeInverseExtents",
+   "signature": "void Box_ComputeInverseExtents(float *box)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "box[6+c] = 1/(box[c]-box[c+3]), 0 when the difference is zero",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805d8e0",
+   "name": "Box_SegmentSlabTest",
+   "signature": "int Box_SegmentSlabTest(const struct cod2_box_s *box, const float *p0, const float *p1, float max_t)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "Liang-Barsky style slab test; returns 1 on miss",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805da56",
+   "name": "Float_MaxAlias",
+   "signature": "float Float_MaxAlias(float a, float b)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "same as Float_Max (separate binary function)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805da7a",
+   "name": "Float_MinAlias",
+   "signature": "float Float_MinAlias(float a, float b)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "same as Float_Min (separate binary function)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805da9e",
+   "name": "Float_SelectNonNegativeAlias",
+   "signature": "float Float_SelectNonNegativeAlias(float test, float if_nonneg, float if_neg)",
+   "subsystem": "collision/math",
+   "confidence": "inferred",
+   "evidence": "same as Float_SelectNonNegative",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805dac8",
+   "name": "Area_AllocSplitNode",
+   "signature": "uint16 Area_AllocSplitNode(const float *a, const float *b)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "pops the free list; axis = larger extent; midpoint split; 512-unit minimum",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805dbac",
+   "name": "Area_Init",
+   "signature": "void Area_Init(void)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "clears 0x601c bytes, free list from node 2, root node 1 split",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805dc92",
+   "name": "Area_ResetAndRelinkAll",
+   "signature": "void Area_ResetAndRelinkAll(void)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "Area_Init then Area_RelinkAllBoxes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805dca4",
+   "name": "Area_UnlinkEntity",
+   "signature": "void Area_UnlinkEntity(struct svEntity_s *link)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "unlinks from node list, frees empty nodes toward the root, recomputes entity contents",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805decc",
+   "name": "Area_InsertEntityIntoNode",
+   "signature": "void Area_InsertEntityIntoNode(struct svEntity_s *link, uint16 node)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "sorted insert by entity number (record index - 1)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805df54",
+   "name": "Area_InsertBoxIntoNode",
+   "signature": "void Area_InsertBoxIntoNode(struct cm_static_model_s *box, uint16 node)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "sorted insert by box index",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805dfd4",
+   "name": "Area_LinkIntoSubtree",
+   "signature": "void Area_LinkIntoSubtree(uint16 node, const float *mins, const float *maxs)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "moves one-sided entities and boxes into children; allocates children",
+   "status": "translated",
+   "notes": "entity records read mins at +0x164 and maxs at +0x16c; maxs[2] (+0x174) reaches past the 0x174-byte record, see open questions"
+  },
+  {
+   "addr": "0x0805e390",
+   "name": "Area_LinkEntity",
+   "signature": "void Area_LinkEntity(struct svEntity_s *link, const float *mins, const float *maxs, int type)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "contents from type info block; locate node; relink or refresh stored bounds",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805e5dc",
+   "name": "Area_LinkBoxRecord",
+   "signature": "void Area_LinkBoxRecord(struct cm_static_model_s *box)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "descends to the node that contains the box, inserts, splits downwards",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805e71e",
+   "name": "Area_RelinkAllBoxes",
+   "signature": "void Area_RelinkAllBoxes(void)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "relinks every box with nonzero contents",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805e76e",
+   "name": "CM_AreaEntities_r",
+   "signature": "void CM_AreaEntities_r(uint32 node_index, struct cod2_area_query_s *query)",
+   "subsystem": "collision/area",
+   "confidence": "inferred",
+   "evidence": "string 'CM_AreaEntities: MAXCOUNT\\n' at 0x805e76e [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "recursive worker; the string names the public entry point"
+  },
+  {
+   "addr": "0x0805e986",
+   "name": "CM_AreaEntities",
+   "signature": "int CM_AreaEntities(const float *mins, const float *maxs, int *list, int maxcount, uint32 mask)",
+   "subsystem": "collision/area",
+   "confidence": "inferred",
+   "evidence": "wrapper building the query struct and calling the recursive worker; returns the count; name from the string in 805e76e",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805e9ca",
+   "name": "Area_SweepBoxRecords",
+   "signature": "void Area_SweepBoxRecords(struct cod2_area_query_box_s *query, uint16 node_index, const float *start4, const float *end4, float *frac)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "sweeps a vec4 segment through the area tree, tests boxes per node, recurses at straddling nodes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805ec2c",
+   "name": "Area_SweepBoxFromPoints",
+   "signature": "void Area_SweepBoxFromPoints(float *result, const float *a, const float *b, uint32 mask)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "builds the query box from two corners and sweeps the segment",
+   "status": "translated",
+   "notes": "Ghidra local_40 = 0 store has no reader and is omitted"
+  },
+  {
+   "addr": "0x0805ecd4",
+   "name": "Area_TraceSegmentRecords",
+   "signature": "int Area_TraceSegmentRecords(struct SegQueryB *query, uint16 node_index, const float *start3, const float *end3)",
+   "subsystem": "collision/area",
+   "confidence": "unknown",
+   "evidence": "returns 1 when the segment misses all area boxes and entities, 0 at the first hit",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188de0",
+   "name": "g_08188de0_nodes",
+   "type": "struct cnode_s *",
+   "confidence": "inferred",
+   "evidence": "base of BSP node records indexed by node_index*8 in 805b058/805cbe2"
+  },
+  {
+   "addr": "0x08188de8",
+   "name": "g_08188de8_leafs",
+   "type": "struct cLeaf_s *",
+   "confidence": "inferred",
+   "evidence": "leaf base, (-1-node)*0x2c in 805b058/805cbe2"
+  },
+  {
+   "addr": "0x08188e30",
+   "name": "g_08188e30_aabbTrees",
+   "type": "struct CollisionAabbTree_s *",
+   "confidence": "inferred",
+   "evidence": "leaf item base, index*0x20 in 805c372"
+  },
+  {
+   "addr": "0x08188e40",
+   "name": "g_08188e40_brushes",
+   "type": "struct cbrush_s *",
+   "confidence": "inferred",
+   "evidence": "brush base, index*0x30 in 805bbe6/805bef2"
+  },
+  {
+   "addr": "0x08188e3c",
+   "name": "g_08188e3c_numBrushes",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "brush count, bounds check in 805cefe and item index offset in 805c372"
+  },
+  {
+   "addr": "0x08188df0",
+   "name": "g_08188df0_brushNodes",
+   "type": "struct cbrushnode_s *",
+   "confidence": "inferred",
+   "evidence": "kd-node base, index*0x14 in 805c2c0"
+  },
+  {
+   "addr": "0x08188dc8",
+   "name": "g_08188dc8_staticModels",
+   "type": "struct cm_static_model_s *",
+   "confidence": "inferred",
+   "evidence": "brush-box base, 1-based index*0x50 in 805df54/805dfd4/805e9ca"
+  },
+  {
+   "addr": "0x08188dc4",
+   "name": "g_08188dc4_numStaticModels",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "brush-box count in 805e71e"
+  },
+  {
+   "addr": "0x0818901c",
+   "name": "g_0818901c_areaNodes",
+   "type": "struct cod2_area_node_s[1024]",
+   "confidence": "observed",
+   "evidence": "area node table, stride 0x18, 0x18-byte fields at 0x0818901c+0x18*i; root = node 1 (805dbac)"
+  },
+  {
+   "addr": "0x0818901a",
+   "name": "g_0818901a_areaNodeFreeHead",
+   "type": "uint16",
+   "confidence": "observed",
+   "evidence": "free-list head, set to 2 in 805dbac"
+  },
+  {
+   "addr": "0x08189018",
+   "name": "g_08189018_areaLinkDisabled",
+   "type": "byte",
+   "confidence": "observed",
+   "evidence": "flag that disables Area_LinkIntoSubtree when set (805dfd4)"
+  },
+  {
+   "addr": "0x0818f016",
+   "name": "g_0818f016_areaNodes3ffParent",
+   "type": "uint16",
+   "confidence": "observed",
+   "evidence": "word cleared in 805dbac (mov WORD PTR 0x818f016,0)"
+  },
+  {
+   "addr": "0x08189000",
+   "name": "g_08189000_areaWorldMins",
+   "type": "float[3]",
+   "confidence": "observed",
+   "evidence": "world mins, copied by 805e390/805e5dc and cleared by memset in 805dbac"
+  },
+  {
+   "addr": "0x0818900c",
+   "name": "g_0818900c_areaWorldMaxs",
+   "type": "float[3]",
+   "confidence": "observed",
+   "evidence": "world maxs, paired with g_08189000"
+  },
+  {
+   "addr": "0x084424a4",
+   "name": "g_084424a4_areaEntityLinkRecords",
+   "type": "byte[]",
+   "confidence": "inferred",
+   "evidence": "entity link record table, stride 0x174, 1-based index (record n+1 = entity n) in 805decc/805e76e"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "cod2_plane_s",
+   "size": "0x14",
+   "evidence": "cplane_t layout: normal, dist @0x0c, type @0x10 (805b058, 805bbe6)"
+  },
+  {
+   "name": "cod2_bsp_node_s",
+   "size": "0x08",
+   "evidence": "plane pointer + int16 children at +4/+6 (805b058)"
+  },
+  {
+   "name": "cod2_brush_s",
+   "size": "0x30",
+   "evidence": "mins @0, contents @0x0c, maxs @0x10, num_sides @0x1c, sides @0x20 (805bbe6, 805bef2)"
+  },
+  {
+   "name": "cod2_leaf_s",
+   "size": "0x2c",
+   "evidence": "u16 first, u16 count, masks @4 and @8, mins @0x0c, maxs @0x18, kd index @0x24 (805c372, 805c2c0)"
+  },
+  {
+   "name": "cod2_kdnode_s",
+   "size": "0x14",
+   "evidence": "axis byte, int16 count @2, contents @4, split/list @8, radius @0x0c, children @0x10 (805bef2)"
+  },
+  {
+   "name": "cod2_trace_s",
+   "size": "0xb8",
+   "evidence": "segment start/end @0/0x0c, inv @0x18, delta @0x24, extents @0x5c, box2 @0x68/0x74, contents @0x80, is_point @0x84, radius @0x8c, skin @0x90, offset @0x94, world ptr @0xb4 (805b414 frame, 805ac12, 805b058)"
+  },
+  {
+   "name": "cod2_trace_result_s",
+   "size": "0x24",
+   "evidence": "fraction @0, normal @4 (805b8f6), flag byte @0x22 (805b414)"
+  },
+  {
+   "name": "cod2_area_node_s",
+   "size": "0x18",
+   "evidence": "masks @0/@4, lists @8/@0xa, split dist @0xc, axis @0x10, parent @0x12, children @0x14/@0x16 (805dfd4, 805dca4)"
+  },
+  {
+   "name": "cod2_area_link_s",
+   "size": "0x174",
+   "evidence": "node @0, next @2, contents @0x160, mins @0x164, maxs @0x16c (805e390, 805dfd4); see open questions on maxs overlap"
+  },
+  {
+   "name": "cod2_area_box_s",
+   "size": "0x50",
+   "evidence": "next @0, contents @4, mins @0x38, maxs @0x44 (805df54, 805dfd4, 805e9ca)"
+  },
+  {
+   "name": "cod2_gentity_s",
+   "size": "partial >= 0x138",
+   "evidence": "contents @0x11c, absmin @0x120, absmax @0x12c (805e76e, 805dca4)"
+  },
+  {
+   "name": "cod2_area_query_s",
+   "size": "0x1c",
+   "evidence": "mins @4, maxs @8, list @0xc, count @0x10, maxcount @0x14, mask @0x18 (805e986 frame)"
+  },
+  {
+   "name": "cod2_area_query_box_s",
+   "size": "0x28",
+   "evidence": "mask @0, box at +4 (805e9ca, 805ec2c)"
+  },
+  {
+   "name": "cod2_query_s",
+   "size": "0x28",
+   "evidence": "box @0, mask @0x24 (805ecd4)"
+  },
+  {
+   "name": "cod2_box_s",
+   "size": "0x24",
+   "evidence": "mins @0, maxs @0x0c, inv @0x18 (805d8e0)"
+  },
+  {
+   "name": "cod2_leaf_item_s",
+   "size": "0x20",
+   "evidence": "item stride 0x20 (805c372), contents not recovered"
+  },
+  {
+   "name": "cod2_brush_side_s",
+   "size": "0x08",
+   "evidence": "plane pointer and surface flags, stride 8 (805bbe6)"
+  }
+ ],
+ "open_questions": [
+  "805b414 and 805cefe read an entity pointer (decompiler local_2c, +0xc mask) from a frame slot that is never written in those functions; the entity-model branch (type 0x3ff) is therefore translated as not taken. Confirm the producer of that slot before calling the branch reachable.",
+  "tr->world_bounds (+0xb4) is dereferenced by 805ac12 and 805c738 but is not set by 805b414/805cefe in the decompiled code; confirm the caller that owns it.",
+  "Area_LinkEntity and Area_LinkIntoSubtree write maxs at record +0x16c with three floats; maxs[2] lands on +0x174, the next record's header. Confirm the copy width of 0x805fba0 and whether the record stride or the maxs offset is off by one field.",
+  "Entity numbering in CM_AreaEntities uses (record index - 1) via the multiplicative inverse 0x3f4fd3f5 of 93; confirm with a link/unlink pair against a known entity.",
+  "Sweep_BuildSegment (shared prologue of 805b414 and 805cefe, not a separate Ghidra function) writes the larger z back into the end point's z slot as the decompiled frame indicates; confirm the frame layout before relying on the end z after the call.",
+  "Placeholder callees fn_08059270, fn_08059358, fn_080593e2, fn_080594ba, fn_0805944e, fn_08059878, fn_080598de, fn_08059c4c, fn_0805a6ae, fn_0805a768, fn_0805a95e, fn_08055f02, fn_080a45fc, fn_08060e3a, fn_0809177c, fn_080c59a6, fn_0805829e, fn_08058194, fn_0805fb40, fn_0805fb7c, fn_0805fc1c, fn_0805fbec, fn_0805fba0, fn_0805fbc0, fn_0805271c have unknown signatures beyond their call sites.",
+  "Most trace functions (805b414 family, 805c2c0 family) are named by role only; no strings in the chunk name them. Counterpart names beyond CM_RecursiveHullCheck/CM_TraceBrushBounds are unverified."
+ ]
+}

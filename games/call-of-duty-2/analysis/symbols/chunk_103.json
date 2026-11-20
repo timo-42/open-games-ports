@@ -1,0 +1,538 @@
+{
+ "chunk": 103,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080fa2ac",
+   "name": "PlayerCmd_switchtooffhand",
+   "signature": "void PlayerCmd_switchtooffhand(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"switchtooffhand\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fa3a2",
+   "name": "PlayerCmd_givestartammo",
+   "signature": "void PlayerCmd_givestartammo(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"givestartammo\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fa49e",
+   "name": "PlayerCmd_givemaxammo",
+   "signature": "void PlayerCmd_givemaxammo(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"givemaxammo\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fa5a4",
+   "name": "PlayerCmd_getfractionstartammo",
+   "signature": "void PlayerCmd_getfractionstartammo(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"getfractionstartammo\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fa6de",
+   "name": "PlayerCmd_getfractionmaxammo",
+   "signature": "void PlayerCmd_getfractionmaxammo(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"getfractionmaxammo\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fa838",
+   "name": "PlayerCmd_setorigin",
+   "signature": "void PlayerCmd_setorigin(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setorigin\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fa964",
+   "name": "PlayerCmd_setplayerangles",
+   "signature": "void PlayerCmd_setplayerangles(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setplayerangles\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fa9ec",
+   "name": "PlayerCmd_getplayerangles",
+   "signature": "void PlayerCmd_getplayerangles(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"getplayerangles\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080faa64",
+   "name": "PlayerCmd_usebuttonpressed",
+   "signature": "void PlayerCmd_usebuttonpressed(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"usebuttonpressed\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fab06",
+   "name": "PlayerCmd_attackbuttonpressed",
+   "signature": "void PlayerCmd_attackbuttonpressed(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"attackbuttonpressed\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080faba8",
+   "name": "PlayerCmd_meleebuttonpressed",
+   "signature": "void PlayerCmd_meleebuttonpressed(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"meleebuttonpressed\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fac4a",
+   "name": "PlayerCmd_playerads",
+   "signature": "void PlayerCmd_playerads(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"playerads\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080facc4",
+   "name": "PlayerCmd_isonground",
+   "signature": "void PlayerCmd_isonground(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"isonground\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fad52",
+   "name": "PlayerCmd_pingplayer",
+   "signature": "void PlayerCmd_pingplayer(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"pingplayer\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fadf0",
+   "name": "PlayerCmd_setviewmodel",
+   "signature": "void PlayerCmd_setviewmodel(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setviewmodel\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080faea4",
+   "name": "PlayerCmd_getviewmodel",
+   "signature": "void PlayerCmd_getviewmodel(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"getviewmodel\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080faf2c",
+   "name": "PlayerCmd_showscoreboard",
+   "signature": "void PlayerCmd_showscoreboard(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"showscoreboard\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080faf9a",
+   "name": "PlayerCmd_setspawnweapon",
+   "signature": "void PlayerCmd_setspawnweapon(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setspawnweapon\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fb05a",
+   "name": "PlayerCmd_dropitem",
+   "signature": "void PlayerCmd_dropitem(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"dropitem\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fb170",
+   "name": "PlayerCmd_finishplayerdamage",
+   "signature": "void PlayerCmd_finishplayerdamage(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"finishplayerdamage\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fbbb4",
+   "name": "PlayerCmd_suicide",
+   "signature": "void PlayerCmd_suicide(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"suicide\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fbc94",
+   "name": "PlayerCmd_openmenu",
+   "signature": "void PlayerCmd_openmenu(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"openmenu\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fbd6c",
+   "name": "PlayerCmd_openmenunomouse",
+   "signature": "void PlayerCmd_openmenunomouse(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"openmenunomouse\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fbe44",
+   "name": "PlayerCmd_closemenu",
+   "signature": "void PlayerCmd_closemenu(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"closemenu\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fbed2",
+   "name": "PlayerCmd_closeingamemenu",
+   "signature": "void PlayerCmd_closeingamemenu(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"closeingamemenu\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fbf60",
+   "name": "PlayerCmd_getweaponslotweapon",
+   "signature": "void PlayerCmd_getweaponslotweapon(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"getweaponslotweapon\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fc088",
+   "name": "PlayerCmd_setweaponslotweapon",
+   "signature": "void PlayerCmd_setweaponslotweapon(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setweaponslotweapon\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fc36e",
+   "name": "PlayerCmd_getweaponslotammo",
+   "signature": "void PlayerCmd_getweaponslotammo(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"getweaponslotammo\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fc4d8",
+   "name": "PlayerCmd_setweaponslotammo",
+   "signature": "void PlayerCmd_setweaponslotammo(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setweaponslotammo\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fc68c",
+   "name": "PlayerCmd_getweaponslotclipammo",
+   "signature": "void PlayerCmd_getweaponslotclipammo(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"getweaponslotclipammo\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fc7d0",
+   "name": "PlayerCmd_setweaponslotclipammo",
+   "signature": "void PlayerCmd_setweaponslotclipammo(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setweaponslotclipammo\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fc91e",
+   "name": "PlayerCmd_setweaponclipammo",
+   "signature": "void PlayerCmd_setweaponclipammo(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setweaponclipammo\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fca18",
+   "name": "PlayerCmd_iprintln",
+   "signature": "void PlayerCmd_iprintln(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"iprintln\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fca9e",
+   "name": "PlayerCmd_iprintlnbold",
+   "signature": "void PlayerCmd_iprintlnbold(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"iprintlnbold\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fcb24",
+   "name": "PlayerCmd_spawn",
+   "signature": "void PlayerCmd_spawn(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"spawn\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fcbc6",
+   "name": "PlayerCmd_setentertime",
+   "signature": "void PlayerCmd_setentertime(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setentertime\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fcc76",
+   "name": "PlayerCmd_cloneplayer",
+   "signature": "void PlayerCmd_cloneplayer(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"cloneplayer\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fcf8c",
+   "name": "PlayerCmd_setclientcvar",
+   "signature": "void PlayerCmd_setclientcvar(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setclientcvar\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fd15a",
+   "name": "PlayerCmd_istalking",
+   "signature": "void PlayerCmd_istalking(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"istalking\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fd204",
+   "name": "PlayerCmd_freezecontrols",
+   "signature": "void PlayerCmd_freezecontrols(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"freezecontrols\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fd286",
+   "name": "PlayerCmd_disableweapon",
+   "signature": "void PlayerCmd_disableweapon(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"disableweapon\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fd306",
+   "name": "PlayerCmd_enableweapon",
+   "signature": "void PlayerCmd_enableweapon(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"enableweapon\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fd386",
+   "name": "PlayerCmd_setreverb",
+   "signature": "void PlayerCmd_setreverb(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setreverb\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fd518",
+   "name": "PlayerCmd_deactivatereverb",
+   "signature": "void PlayerCmd_deactivatereverb(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"deactivatereverb\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fd642",
+   "name": "PlayerCmd_setchannelvolumes",
+   "signature": "void PlayerCmd_setchannelvolumes(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"setchannelvolumes\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fd7c0",
+   "name": "PlayerCmd_deactivatechannelvolumes",
+   "signature": "void PlayerCmd_deactivatechannelvolumes(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"deactivatechannelvolumes\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fd900",
+   "name": "PlayerCmd_islookingat",
+   "signature": "void PlayerCmd_islookingat(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"islookingat\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fd990",
+   "name": "PlayerCmd_playlocalsound",
+   "signature": "void PlayerCmd_playlocalsound(uint32 entref)",
+   "subsystem": "game/script-player-methods",
+   "confidence": "inferred",
+   "evidence": "script method table in .rodata pairs string \"playlocalsound\" with this function address (stride 0xc entries); function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC method lineage",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08716400",
+   "name": "g_entities",
+   "type": "struct gentity_s[0x400]",
+   "confidence": "inferred",
+   "evidence": "indexed entref*0x230 with client pointer at +0x158 in every handler"
+  },
+  {
+   "addr": "0x0864c56c",
+   "name": "level_time",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "used as current time in pingplayer/cloneplayer/clone trTime"
+  },
+  {
+   "addr": "0x08187d00",
+   "name": "entClassCallbacks",
+   "type": "struct entClass103_s[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x28 indexed by gentity byte +0x166; pain at +0x14, die at +0x18 called from finishplayerdamage"
+  },
+  {
+   "addr": "0x0884e7b8",
+   "name": "cloneRecords",
+   "type": "struct corpse103_s[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x4c8 indexed by fn_0811ed0c in cloneplayer"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "gentity_s",
+   "size": "0x230",
+   "evidence": "stride of 0x08716400 array"
+  },
+  {
+   "name": "gclient_s",
+   "size": "0x28a4",
+   "evidence": "size per chunk 049; client pointer at gentity+0x158"
+  },
+  {
+   "name": "weapondef103_s",
+   "size": "unknown",
+   "evidence": "fields at 0x78,0x80,0x1c0,0x1c8,0x31c"
+  }
+ ],
+ "open_questions": [
+  "0x08084bb2 (named Scr_ReleaseAnyValue, declared void) returns the string text (EAX from ScrStr_TextFromHandle); every handler uses it as a Scr_GetString-like accessor.",
+  "deactivatereverb (0x80fd518) and deactivatechannelvolumes (0x80fd7c0) pass a 6-field format with only 3 varargs; preserved as in the binary, actual wire output reads stack garbage.",
+  "Unnamed out-of-chunk callees (weapon-by-name 0x8120dd0, weapondef 0x80eb9a4, G_Damage 0x810175a, G_TempEntity 0x811efc4 etc.) still use fn_ placeholders; gclient/gentity field meanings beyond those touched here are unknown."
+ ]
+}

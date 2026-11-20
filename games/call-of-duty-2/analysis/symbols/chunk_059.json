@@ -1,0 +1,1262 @@
+{
+ "chunk": 59,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x08135d72",
+   "name": "FxSpawner_SpawnLine",
+   "signature": "void FxSpawner_SpawnLine(struct FxSpawner *ctx, const float *dir, const float *origin)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: FX_DispatchPrimitive case 2 (\"line\" in the observed type-name table); allocates 0x258 bytes from pool 0x08a533a8 and runs Line_ConstructBase.",
+   "status": "translated",
+   "notes": "ctx->ref extent and fn_ callee semantics unknown"
+  },
+  {
+   "addr": "0x0813604c",
+   "name": "FxSpawner_SpawnTail",
+   "signature": "void FxSpawner_SpawnTail(struct FxSpawner *ctx, const float *dir, const float *origin, int arg4, int arg5)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: FX_DispatchPrimitive case 3 (\"tail\"); allocates 0x278 bytes from pool 0x08a533b8, Tail_ConstructBase.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081361e6",
+   "name": "FxSpawner_SpawnCylinder",
+   "signature": "void FxSpawner_SpawnCylinder(struct FxSpawner *ctx, const float *dir, const float *origin, int arg4, int arg5)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: FX_DispatchPrimitive case 4 (\"cylinder\"); allocates 0x278 bytes from pool 0x08a533c0, Cylinder_ConstructBase.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813638c",
+   "name": "FxSpawner_SpawnEmitter",
+   "signature": "void FxSpawner_SpawnEmitter(struct FxSpawner *ctx, const float *dir, const float *origin, int arg4, int arg5)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: FX_DispatchPrimitive case 5 (\"emitter\"); allocates 0x29c bytes from pool 0x08a533c8, Emitter_ConstructBase.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08136762",
+   "name": "FxSpawner_QueueDecalEvent",
+   "signature": "void FxSpawner_QueueDecalEvent(struct FxSpawner *ctx, const float *dir, const float *origin)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: FX_DispatchPrimitive case 6 (\"decal\" in observed type-name table); computes the transform then calls the empty FX_DecalEvent_Stub; no object class exists for type 6.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081367b0",
+   "name": "FxSpawner_QueueFxRunnerEvent",
+   "signature": "void FxSpawner_QueueFxRunnerEvent(struct FxSpawner *ctx, const float *dir, const float *origin)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: FX_DispatchPrimitive case 8 (\"fxrunner\"); picks dir or bound target+0x3c and calls FxScheduler_PlayEffect (runs a nested effect); no object class for type 8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813687a",
+   "name": "FxSpawner_QueueCameraShakeEvent",
+   "signature": "void FxSpawner_QueueCameraShakeEvent(struct FxSpawner *ctx, const float *dir, const float *origin)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: FX_DispatchPrimitive case 10 (\"cameraShake\"); only rolls three prim ranges (+0x58,+0xe8,+0x280) and discards them in this build (no object class for type 10). Role per type name only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08136936",
+   "name": "FxSpawner_SpawnLight",
+   "signature": "void FxSpawner_SpawnLight(struct FxSpawner *ctx, const float *dir, const float *origin)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: FX_DispatchPrimitive case 9 (\"light\"); allocates 0xfc bytes from pool 0x08a53398, Light_ConstructBase.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08136a8a",
+   "name": "FxSpawner_SpawnOrientedParticle",
+   "signature": "void FxSpawner_SpawnOrientedParticle(struct FxSpawner *ctx, const float *dir, const float *origin, int arg4, int arg5)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: FX_DispatchPrimitive case 7 (\"orientedparticle\"); allocates 0x258 bytes from pool 0x08a533b0, OrientedParticle_ConstructBase.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08136c44",
+   "name": "FxSpawner_SpawnFlash",
+   "signature": "void FxSpawner_SpawnFlash(struct FxSpawner *ctx, const float *dir, const float *origin)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: FX_DispatchPrimitive case 11 (\"flash\"); allocates 0xfc bytes from pool 0x08a53398 and constructs Flash.",
+   "status": "translated",
+   "notes": "dir parameter unused"
+  },
+  {
+   "addr": "0x08136d84",
+   "name": "FxSpawner_SpawnCloud",
+   "signature": "void FxSpawner_SpawnCloud(struct FxSpawner *ctx, const float *dir, const float *origin, int arg4, int arg5)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: FX_DispatchPrimitive case 12 (\"cloud\"); allocates 0x27c bytes from pool 0x08a533d0, Cloud_Construct.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08136ef6",
+   "name": "Fx_ProcessPendingEvents",
+   "signature": "void Fx_ProcessPendingEvents(void)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "walks time-ordered pending list gated by a bool dvar; compares against clock time at g_08188ac0+4; no strings",
+   "status": "translated",
+   "notes": "semantic of pending node fields 0x0c..0x44 unknown (field_0c sign selects path)"
+  },
+  {
+   "addr": "0x08137154",
+   "name": "Fx_ResetSlots",
+   "signature": "void Fx_ResetSlots(int a, int b)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "loop of 2 slots of 0xfc bytes (original: pointer advanced by 0xfc, counter 0 down to -1)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081371a4",
+   "name": "Float_Abs_081371a4",
+   "signature": "float Float_Abs_081371a4(float x)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body fabs stored to float; same shape as Float_Abs_080aaea4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Float_Abs_080551fc, Float_Abs_0805618c, Float_Abs_0805d57c; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081371be",
+   "name": "Math_SinCos_081371be",
+   "signature": "void Math_SinCos_081371be(float angle, float *sin_out, float *cos_out)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "calls libm sin then cos on the double-extended angle",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081371ec",
+   "name": "Vec3_Set_081371ec",
+   "signature": "void Vec3_Set_081371ec(float *v, float x, float y, float z)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "three stores of args into a vec3",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137210",
+   "name": "Vec3_Copy_08137210",
+   "signature": "void Vec3_Copy_08137210(const float *src, float *dst)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "copies 3 dwords; 14 callers",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137240",
+   "name": "Vec3_Add_08137240",
+   "signature": "void Vec3_Add_08137240(const float *a, const float *b, float *out)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "component add",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137284",
+   "name": "Vec3_Sub_08137284",
+   "signature": "void Vec3_Sub_08137284(const float *a, const float *b, float *out)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "component subtract",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081372c8",
+   "name": "Vec3_Scale_081372c8",
+   "signature": "void Vec3_Scale_081372c8(const float *v, float s, float *out)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "scalar multiply",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137300",
+   "name": "Vec3_MA_08137300",
+   "signature": "void Vec3_MA_08137300(const float *base, float s, const float *dir, float *out)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "base + s*dir (multiply-add)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137354",
+   "name": "Vec3_Dot_08137354",
+   "signature": "float Vec3_Dot_08137354(const float *a, const float *b)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "x,y,z products summed in that order (disassembly)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137388",
+   "name": "Vec3_Length_08137388",
+   "signature": "float Vec3_Length_08137388(const float *v)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "sqrt of dot with itself",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081373c6",
+   "name": "FX_ListA_SwapEntries",
+   "signature": "void FX_ListA_SwapEntries(int i, int j)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Swaps two dwords of the array at g_08188ab8 (effect list A); caller FX_RemoveFromListA-style swap-remove (chunk 058 line 774).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137424",
+   "name": "FX_ListB_SwapEntries",
+   "signature": "void FX_ListB_SwapEntries(int i, int j)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Swaps two dwords of the array at g_08188abc (effect list B).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137482",
+   "name": "Math_SqrtF",
+   "signature": "float Math_SqrtF(float x)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "libm sqrt via double",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081374a2",
+   "name": "Vec3_Clear_081374a2",
+   "signature": "void Vec3_Clear_081374a2(float *v)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "stores 3 zero dwords",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081374cc",
+   "name": "Vec3_CopyOrClear",
+   "signature": "void Vec3_CopyOrClear(const float *src, float *dst)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "NULL source zeroes destination",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081374fa",
+   "name": "Fx_ResetAllSlots",
+   "signature": "void Fx_ResetAllSlots(void)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "forwards constants (1, 0xffff) to Fx_ResetSlots",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137516",
+   "name": "FxObj_ClearFlagsA8",
+   "signature": "void FxObj_ClearFlagsA8(struct Effect *obj, unsigned int mask)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "clears bits in +0xa8; Fx_SpawnD clears 0x10",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137532",
+   "name": "FxObj_SetVec14OrClear",
+   "signature": "void FxObj_SetVec14OrClear(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to vec_14, or zeroes it when the source pointer is NULL",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137566",
+   "name": "FxObj_SetVec20OrClear",
+   "signature": "void FxObj_SetVec20OrClear(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to vec_20, or zeroes it when the source pointer is NULL",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813759a",
+   "name": "FxObj_SetOrigin",
+   "signature": "void FxObj_SetOrigin(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to origin, or zeroes it when the source pointer is NULL",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081375ce",
+   "name": "FxObj_SetFlagsA8",
+   "signature": "void FxObj_SetFlagsA8(struct Effect *obj, unsigned int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field flags_a8; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081375e0",
+   "name": "FxObj_SetField10",
+   "signature": "void FxObj_SetField10(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_10; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081375ee",
+   "name": "FxObj_SetField2c",
+   "signature": "void FxObj_SetField2c(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_2c; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081375fc",
+   "name": "FxObj_SetField30",
+   "signature": "void FxObj_SetField30(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_30; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813760a",
+   "name": "FxObj_SetField34",
+   "signature": "void FxObj_SetField34(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_34; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137618",
+   "name": "FxObj_SetField38",
+   "signature": "void FxObj_SetField38(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_38; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137626",
+   "name": "FxObj_GetFieldB8",
+   "signature": "int FxObj_GetFieldB8(struct Effect *obj)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "returns object field field_b8; no strings",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137634",
+   "name": "FxObj_GetField34",
+   "signature": "int FxObj_GetField34(struct Effect *obj)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "returns object field field_34; no strings",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137640",
+   "name": "FxObj_GetField38",
+   "signature": "int FxObj_GetField38(struct Effect *obj)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "returns object field field_38; no strings",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813764c",
+   "name": "FxObj_SetFieldC4",
+   "signature": "void FxObj_SetFieldC4(struct Effect *obj, float value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_c4; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813765e",
+   "name": "FxObj_SetFieldC8",
+   "signature": "void FxObj_SetFieldC8(struct Effect *obj, float value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_c8; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137670",
+   "name": "FxPool_AllocLightFlashObj",
+   "signature": "void *FxPool_AllocLightFlashObj(unsigned int size)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Wrapper calling Fx_PoolAllocFc (0x08137a38) on pool 0x08a53398 (element 0xfc: Light/Flash per md 4.3).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813768c",
+   "name": "Flash_Construct",
+   "signature": "void Flash_Construct(struct Effect *obj)",
+   "subsystem": "client/fx",
+   "confidence": "observed",
+   "evidence": "calls base constructor fn_08128ba0 then stores vtable pointer 0x815f308 [rename fx-anim: objdump: calls Light ctor 0x08128ba0 then stores vptr 0x0815f308 (Flash vtable, RTTI 5Flash).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081376a8",
+   "name": "FxObj_SetField40_A",
+   "signature": "void FxObj_SetField40_A(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_40; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081376b6",
+   "name": "FxObj_SetField40_B",
+   "signature": "void FxObj_SetField40_B(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_40; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081376c4",
+   "name": "FxObj_SetFieldF4",
+   "signature": "void FxObj_SetFieldF4(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_f4; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081376d6",
+   "name": "FxObj_SetField44",
+   "signature": "void FxObj_SetField44(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_44; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081376e4",
+   "name": "FxObj_SetField100",
+   "signature": "void FxObj_SetField100(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_100; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081376f6",
+   "name": "FxObj_SetField104",
+   "signature": "void FxObj_SetField104(struct Effect *obj, unsigned char value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single byte store at +0x104",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137712",
+   "name": "FxObj_SetField108",
+   "signature": "void FxObj_SetField108(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_108; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137724",
+   "name": "FxObj_SetField10c",
+   "signature": "void FxObj_SetField10c(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_10c; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137736",
+   "name": "FxObj_SetField110",
+   "signature": "void FxObj_SetField110(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_110; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137748",
+   "name": "FxObj_SetField114",
+   "signature": "void FxObj_SetField114(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_114; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813775a",
+   "name": "FxObj_SetField118",
+   "signature": "void FxObj_SetField118(struct Effect *obj, float value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_118; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813776c",
+   "name": "FxObj_SetField11c",
+   "signature": "void FxObj_SetField11c(struct Effect *obj, float value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_11c; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813777e",
+   "name": "FxObj_SetField120",
+   "signature": "void FxObj_SetField120(struct Effect *obj, float value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_120; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137790",
+   "name": "FxObj_SetField124",
+   "signature": "void FxObj_SetField124(struct Effect *obj, float value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_124; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081377a2",
+   "name": "FxObj_SetField128",
+   "signature": "void FxObj_SetField128(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_128; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081377b4",
+   "name": "FxObj_SetFieldF8",
+   "signature": "void FxObj_SetFieldF8(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_f8; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081377c6",
+   "name": "FxPool_AllocParticleObj",
+   "signature": "void *FxPool_AllocParticleObj(unsigned int size)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Wrapper calling Fx_PoolAlloc24c on pool 0x08a533a0 (element 0x24c = Particle).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081377e2",
+   "name": "FxPool_AllocCloudObj",
+   "signature": "void *FxPool_AllocCloudObj(unsigned int size)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Wrapper calling Fx_PoolAlloc27c on pool 0x08a533d0 (element 0x27c = Cloud).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081377fe",
+   "name": "FxObj_SetVec24c",
+   "signature": "void FxObj_SetVec24c(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to vec_24c (no NULL check)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813781e",
+   "name": "FxPool_AllocLineObj",
+   "signature": "void *FxPool_AllocLineObj(unsigned int size)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Wrapper calling Fx_PoolAlloc258a on pool 0x08a533a8 (element 0x258 = Line).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813783a",
+   "name": "FxObj_SetVec24cB",
+   "signature": "void FxObj_SetVec24cB(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to vec_24c (no NULL check)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813785a",
+   "name": "FxPool_AllocOrientedParticleObj",
+   "signature": "void *FxPool_AllocOrientedParticleObj(unsigned int size)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Wrapper calling Fx_PoolAlloc258b on pool 0x08a533b0 (element 0x258 = OrientedParticle).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137876",
+   "name": "FxObj_SetVec24cC",
+   "signature": "void FxObj_SetVec24cC(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to vec_24c (no NULL check)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137896",
+   "name": "FxPool_AllocTailObj",
+   "signature": "void *FxPool_AllocTailObj(unsigned int size)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Wrapper calling Fx_PoolAlloc278a on pool 0x08a533b8 (element 0x278 = Tail).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081378b2",
+   "name": "FxObj_SetVec48",
+   "signature": "void FxObj_SetVec48(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to vec_48 (no NULL check)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081378d0",
+   "name": "FxPool_AllocCylinderObj",
+   "signature": "void *FxPool_AllocCylinderObj(unsigned int size)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Wrapper calling Fx_PoolAlloc278b on pool 0x08a533c0 (element 0x278 = Cylinder).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081378ec",
+   "name": "FxObj_SetFieldB4",
+   "signature": "void FxObj_SetFieldB4(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_b4; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081378fe",
+   "name": "FxObj_SetVec278OrClear",
+   "signature": "void FxObj_SetVec278OrClear(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to vec_278, or zeroes it when the source pointer is NULL",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813791e",
+   "name": "FxObj_SetVec284OrClear",
+   "signature": "void FxObj_SetVec284OrClear(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to vec_284, or zeroes it when the source pointer is NULL",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813793e",
+   "name": "FxObj_SetField290",
+   "signature": "void FxObj_SetField290(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_290; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137950",
+   "name": "FxObj_SetField294",
+   "signature": "void FxObj_SetField294(struct Effect *obj, float value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_294; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137962",
+   "name": "FxObj_SetField298",
+   "signature": "void FxObj_SetField298(struct Effect *obj, float value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_298; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137974",
+   "name": "FxObj_SetField270",
+   "signature": "void FxObj_SetField270(struct Effect *obj, int value)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "single store to object field field_270; no strings; callers are the Fx_Spawn* functions of this chunk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137986",
+   "name": "FxObj_SetVec24cOrClear",
+   "signature": "void FxObj_SetVec24cOrClear(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to vec_24c, or zeroes it when the source pointer is NULL",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081379a6",
+   "name": "FxObj_SetVec258OrClear",
+   "signature": "void FxObj_SetVec258OrClear(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to vec_258, or zeroes it when the source pointer is NULL",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081379c6",
+   "name": "FxObj_SetVec264OrClear",
+   "signature": "void FxObj_SetVec264OrClear(struct Effect *obj, const float *v)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "copies vec3 to vec_264, or zeroes it when the source pointer is NULL",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081379e6",
+   "name": "FxPool_AllocEmitterObj",
+   "signature": "void *FxPool_AllocEmitterObj(unsigned int size)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Wrapper calling Fx_PoolAlloc29c on pool 0x08a533c8 (element 0x29c = Emitter).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137a02",
+   "name": "Handle_GetTargetField8",
+   "signature": "int Handle_GetTargetField8(int **handle)",
+   "subsystem": "client/fx",
+   "confidence": "unknown",
+   "evidence": "double indirection: returns word at +8 of the object the handle points to",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137a10",
+   "name": "Fx_AllocSmall",
+   "signature": "void *Fx_AllocSmall(void)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "allocates 12 bytes via merged Com_MallocZeroed; return value passed through in eax (disassembly)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137a24",
+   "name": "Fx_FreeSmall",
+   "signature": "void Fx_FreeSmall(void *p)",
+   "subsystem": "client/fx",
+   "confidence": "inferred",
+   "evidence": "forwards to merged Com_Free_A",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137a38",
+   "name": "FxPool_PopFree_LightFlash",
+   "signature": "void *FxPool_PopFree_LightFlash(struct FxPool *pool, int request)",
+   "subsystem": "client/fx_pool",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Free-list block allocator, memsets 0xfc bytes; called only by FxPool_AllocLightFlashObj (disassembly: call at 0x08137684).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137b16",
+   "name": "FxPool_PopFree_Particle",
+   "signature": "void *FxPool_PopFree_Particle(struct FxPool *pool, int request)",
+   "subsystem": "client/fx_pool",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Free-list allocator memsetting 0x24c bytes; called only from the Particle pool wrapper (call at 0x081377da).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137bf4",
+   "name": "FxPool_PopFree_Cloud",
+   "signature": "void *FxPool_PopFree_Cloud(struct FxPool *pool, int request)",
+   "subsystem": "client/fx_pool",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Free-list allocator memsetting 0x27c bytes; called only from the Cloud pool wrapper (call at 0x081377f6).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137cd2",
+   "name": "FxPool_PopFree_Line",
+   "signature": "void *FxPool_PopFree_Line(struct FxPool *pool, int request)",
+   "subsystem": "client/fx_pool",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Free-list allocator memsetting 0x258 bytes; called only from the Line pool wrapper (call at 0x08137832).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137db0",
+   "name": "FxPool_PopFree_OrientedParticle",
+   "signature": "void *FxPool_PopFree_OrientedParticle(struct FxPool *pool, int request)",
+   "subsystem": "client/fx_pool",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Free-list allocator memsetting 0x258 bytes; called only from the OrientedParticle pool wrapper (call at 0x0813786e).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137e8e",
+   "name": "FxPool_PopFree_Tail",
+   "signature": "void *FxPool_PopFree_Tail(struct FxPool *pool, int request)",
+   "subsystem": "client/fx_pool",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Free-list allocator memsetting 0x278 bytes; called only from the Tail pool wrapper (call at 0x081378aa).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137f6c",
+   "name": "FxPool_PopFree_Cylinder",
+   "signature": "void *FxPool_PopFree_Cylinder(struct FxPool *pool, int request)",
+   "subsystem": "client/fx_pool",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Free-list allocator memsetting 0x278 bytes; called only from the Cylinder pool wrapper (call at 0x081378e4).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813804a",
+   "name": "FxPool_PopFree_Emitter",
+   "signature": "void *FxPool_PopFree_Emitter(struct FxPool *pool, int request)",
+   "subsystem": "client/fx_pool",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Free-list allocator memsetting 0x29c bytes; called only from the Emitter pool wrapper (call at 0x081379fa).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138128",
+   "name": "Loc_UpdateDoubleByteFlag",
+   "signature": "void Loc_UpdateDoubleByteFlag(void)",
+   "subsystem": "common/localization",
+   "confidence": "inferred",
+   "evidence": "sets flag when loc_language is in 8..12 (unsigned compare); string loc_language in same module; consumers are CJK code-page helpers",
+   "status": "translated",
+   "notes": "meaning of languages 8..12 not verified against a language table"
+  },
+  {
+   "addr": "0x08138154",
+   "name": "Loc_GetLanguage",
+   "signature": "int Loc_GetLanguage(void)",
+   "subsystem": "common/localization",
+   "confidence": "inferred",
+   "evidence": "returns loc_language dvar integer value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138162",
+   "name": "Loc_RegisterDvars",
+   "signature": "void Loc_RegisterDvars(void)",
+   "subsystem": "common/localization",
+   "confidence": "inferred",
+   "evidence": "string dvar names loc_language, loc_forceEnglish, loc_translate, loc_warnings, loc_warningsAsErrors [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138224",
+   "name": "Loc_InitLanguages",
+   "signature": "void Loc_InitLanguages(void)",
+   "subsystem": "common/localization",
+   "confidence": "inferred",
+   "evidence": "string \"^1ERROR: No languages available because no localized assets were found\"; re-registers loc dvars by name, scans 15 language pak ids [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "table base at 0x8188ae0 inferred from stride 8 and +4 availability flag (accesses at 0x8188ae4+8*i)"
+  },
+  {
+   "addr": "0x08138350",
+   "name": "Loc_ClampToAvailableLanguage",
+   "signature": "int Loc_ClampToAvailableLanguage(int lang)",
+   "subsystem": "common/localization",
+   "confidence": "inferred",
+   "evidence": "reads the same 15-entry availability table as Loc_InitLanguages; returns first available language starting at lang (wrapping), else 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081383ee",
+   "name": "Loc_CreateStringTable",
+   "signature": "void Loc_CreateStringTable(void)",
+   "subsystem": "common/localization",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): 13-byte tail wrapper to LocTable_Create 0x0813a768 (filesystem.md section 1 step 4: allocates the global localized string table, followed by Loc_InitLanguages).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081383fc",
+   "name": "LocTable_DestroyThunk",
+   "signature": "void LocTable_DestroyThunk(void)",
+   "subsystem": "common/localization",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Tail thunk to LocTable_Destroy; caller FS_Shutdown.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813840a",
+   "name": "Loc_LoadLanguage",
+   "signature": "int Loc_LoadLanguage(int lang)",
+   "subsystem": "common/localization",
+   "confidence": "inferred",
+   "evidence": "strings \"Could not load localization strings for %s: %s\" (warning and error variants) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081384cc",
+   "name": "Loc_TranslateString",
+   "signature": "char *Loc_TranslateString(char *s)",
+   "subsystem": "common/localization",
+   "confidence": "inferred",
+   "evidence": "guarded by loc_translate dvar; empty and one-character strings returned unchanged; lookup done by fn_0813a650; same module as the \"Could not translate\" warnings",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138522",
+   "name": "Loc_TranslateExeString",
+   "signature": "char *Loc_TranslateExeString(char *s)",
+   "subsystem": "common/localization",
+   "confidence": "inferred",
+   "evidence": "string \"Could not translate exe string \\\"%s\\\"\" and the \"^1UNLOCALIZED(^7\" wrapper [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081385fe",
+   "name": "Loc_TranslatePart",
+   "signature": "int Loc_TranslatePart(char *dest, char *src, const char *context, int mode)",
+   "subsystem": "common/localization",
+   "confidence": "inferred",
+   "evidence": "string \"Could not translate part of %s: \\\"%s\\\"\"; \"%s\" format at 0x8160a09 (rodata dump) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138b7e",
+   "name": "EucKr_CharIndex",
+   "signature": "int EucKr_CharIndex(int c)",
+   "subsystem": "common/charset",
+   "confidence": "inferred",
+   "evidence": "base 0xb0a0, row stride 0x60 matches GB2312 level-1 hanzi starting at 0xB0A1; validity delegated to fn_0813926c [rename filesystem: Disassembly: sub 0xb0a0, (hi byte*3)<<5 stride 0x60 after validator 0x0813926c shared with the Korean branch of LocText_ReadChar; EUC-KR layout.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138bcc",
+   "name": "Big5_IsValidChar",
+   "signature": "int Big5_IsValidChar(unsigned int c)",
+   "subsystem": "common/charset",
+   "confidence": "inferred",
+   "evidence": "lead 0xa1-0xc6/0xc9-0xf9, trail 0x40-0x7e/0xa1-0xfe are Big5 ranges",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138c2c",
+   "name": "Big5_IsSymbolChar",
+   "signature": "int Big5_IsSymbolChar(unsigned int c)",
+   "subsystem": "common/charset",
+   "confidence": "inferred",
+   "evidence": "range 0xa140..0xa153 (Big5 punctuation block start)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138c5a",
+   "name": "Big5_CharIndex",
+   "signature": "int Big5_CharIndex(unsigned int c)",
+   "subsystem": "common/charset",
+   "confidence": "inferred",
+   "evidence": "base 0xa140; 0x5f trail-low-range then skip to 0xa1 gives 0xa0 stride; matches Big5 layout",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138cb6",
+   "name": "ShiftJis_IsValidChar",
+   "signature": "int ShiftJis_IsValidChar(unsigned char lead, unsigned char trail)",
+   "subsystem": "common/charset",
+   "confidence": "inferred",
+   "evidence": "lead 0x81-0x9f/0xe0-0xef, trail 0x40-0x7e/0x80-0xfc are Shift-JIS ranges",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138d12",
+   "name": "ShiftJis_IsSymbolChar",
+   "signature": "int ShiftJis_IsSymbolChar(unsigned int c)",
+   "subsystem": "common/charset",
+   "confidence": "inferred",
+   "evidence": "range 0x8140..0x8151 (start of Shift-JIS symbol block)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138d40",
+   "name": "ShiftJis_CharIndex",
+   "signature": "int ShiftJis_CharIndex(unsigned int c)",
+   "subsystem": "common/charset",
+   "confidence": "inferred",
+   "evidence": "base 0x8140, stride 0xbc (188 trail bytes) and 0x4000 gap skip match Shift-JIS; validity via fn_08139290",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138dac",
+   "name": "Dbcs_IsLeadTrailPair",
+   "signature": "int Dbcs_IsLeadTrailPair(unsigned char lead, unsigned char trail)",
+   "subsystem": "common/charset",
+   "confidence": "unknown",
+   "evidence": "loose double-byte check: lead 0x81-0xfe, trail 0x41-0xfe; code page not identified",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138dea",
+   "name": "Dbcs8140_IsSymbolChar",
+   "signature": "int Dbcs8140_IsSymbolChar(unsigned int c)",
+   "subsystem": "common/charset",
+   "confidence": "unknown",
+   "evidence": "range 0x8141..0x814d; code page not identified",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08138e18",
+   "name": "Dbcs8140_CharIndex",
+   "signature": "int Dbcs8140_CharIndex(int c)",
+   "subsystem": "common/charset",
+   "confidence": "unknown",
+   "evidence": "base 0x8140, stride 0x5f; code page not identified; validity via fn_081392b4",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08a53804",
+   "name": "g_fxScheduler",
+   "type": "struct fx_mgr_s *",
+   "confidence": "inferred",
+   "evidence": "pending-event manager: +4 list head, +8 count (Fx_ProcessPendingEvents)"
+  },
+  {
+   "addr": "0x08188ac0",
+   "name": "g_fxSystem",
+   "type": "struct fx_clock_s *",
+   "confidence": "inferred",
+   "evidence": "pointer to clock-like struct with int time at +4"
+  },
+  {
+   "addr": "0x08a533a8",
+   "name": "g_fxPoolLine",
+   "type": "struct fx_pool_s",
+   "confidence": "inferred",
+   "evidence": "object pool (0x258-byte objects) used by Fx_SpawnA"
+  },
+  {
+   "addr": "0x08a6e540",
+   "name": "g_loc_language",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "registered from string loc_language"
+  },
+  {
+   "addr": "0x08a6e544",
+   "name": "g_loc_forceEnglish",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "registered from string loc_forceEnglish"
+  },
+  {
+   "addr": "0x08a6e548",
+   "name": "g_loc_translate",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "registered from string loc_translate"
+  },
+  {
+   "addr": "0x08a6e54c",
+   "name": "g_loc_warnings",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "registered from string loc_warnings"
+  },
+  {
+   "addr": "0x08a6e550",
+   "name": "g_loc_warningsAsErrors",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "registered from string loc_warningsAsErrors"
+  },
+  {
+   "addr": "0x08a6e554",
+   "name": "g_loc_isDoubleByteLanguage",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "set from loc_language in 8..12"
+  },
+  {
+   "addr": "0x08a6e560",
+   "name": "g_loc_unlocalizedBuffer",
+   "type": "char[0x400]",
+   "confidence": "inferred",
+   "evidence": "0x400-byte buffer filled by Loc_TranslateExeString"
+  },
+  {
+   "addr": "0x08188ae0",
+   "name": "g_loc_languageTable",
+   "type": "struct loc_lang_s[15]",
+   "confidence": "inferred",
+   "evidence": "stride 8 availability table; base inferred from +4 flag accesses at 0x8188ae4+8*i"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "Effect",
+   "size": "0x29c",
+   "evidence": "largest pooled alloc size; field offsets from setters (flat union of several classes)"
+  },
+  {
+   "name": "fx_def_s",
+   "size": "unknown (>= 0x288)",
+   "evidence": "offsets read by spawners"
+  },
+  {
+   "name": "fx_pending_s",
+   "size": "0x50",
+   "evidence": "list node stride (next at +0x4c)"
+  },
+  {
+   "name": "fx_pool_block_s",
+   "size": "0x8000",
+   "evidence": "bookkeeping at +0x7ff0/+0x7ff4/+0x7ff8"
+  }
+ ],
+ "open_questions": [
+  "Identify the effect/emitter class names for the eight spawners (Fx_SpawnA..H) and the 8 pool ctors; no RTTI names resolved in this chunk.",
+  "Code pages of Dbcs_IsLeadTrailPair/Dbcs8140_* (0x8138dac..0x8138e18) and meaning of languages 8..12 in Loc_UpdateDoubleByteFlag are not verified.",
+  "fx_pending_s fields 0x0c..0x44 and fx_ref_s/fx_xform_s extents are unknown; field_0c sign selects between two fn_0812b8a8 call paths."
+ ]
+}

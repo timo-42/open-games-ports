@@ -23,7 +23,6 @@ need their `.bin` slices: `Inno::open` finds them beside a file, and
 cargo test -p open-games-vfs-inno        # synthetic hook lists and zlib parts
 ```
 
-Real installers: the four supplied Anno 1602 GOG editions
-([gog-editions.md](../../games/anno-1602/analysis/gog-editions.md)). Galaxy
-language conditions (`check_if_install`) are not evaluated; other Inno
+Real installers must be supplied by the user; no installer media is included.
+Galaxy language conditions (`check_if_install`) are not evaluated; other Inno
 features (encryption, `[Code]`-driven layouts) are not covered.

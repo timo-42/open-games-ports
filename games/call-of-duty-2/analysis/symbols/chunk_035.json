@@ -1,0 +1,446 @@
+{
+ "chunk": 35,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080c79fe",
+   "name": "XModel_GetFlags",
+   "signature": "unsigned char XModel_GetFlags(const struct XModel *model)",
+   "subsystem": "model/xmodel",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Reads byte +0x8c; XModel_LoadFile stores model->flags = hdr.flags there (chunk 034 line 1411; header u8 flags per XModel_ReadHeader).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7a5e",
+   "name": "XModel_GetLodSurfaces",
+   "signature": "int XModel_GetLodSurfaces(struct XModel *model, unsigned int *outLeadingWord, int lod, unsigned int **outSurfRecords)",
+   "subsystem": "model/xmodel",
+   "confidence": "inferred",
+   "evidence": "caller 0x080bad96 prints 'model %s lod %i has %i surfaces' with the return value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7a9e",
+   "name": "XModel_GetNumLods",
+   "signature": "int XModel_GetNumLods(const struct XModel *model)",
+   "subsystem": "model/xmodel",
+   "confidence": "inferred",
+   "evidence": "short at +0x7c bounds the LOD loops in 0x080c7ae2/0x080c7b32",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7aaa",
+   "name": "XModelRef_GetHeaderShort",
+   "signature": "int XModelRef_GetHeaderShort(const struct XModelRef *ref)",
+   "subsystem": "model/xmodel",
+   "confidence": "unknown",
+   "evidence": "returns short at start of *ref; called from 0x080c59da",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7ab8",
+   "name": "XModelRef_GetBlock44",
+   "signature": "unsigned char *XModelRef_GetBlock44(const struct XModelRef *ref)",
+   "subsystem": "model/xmodel",
+   "confidence": "unknown",
+   "evidence": "returns *ref + 0x44",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7ac6",
+   "name": "XModelRef_GetBlock44Entry",
+   "signature": "unsigned char *XModelRef_GetBlock44Entry(const struct XModelRef *ref, unsigned int index)",
+   "subsystem": "model/xmodel",
+   "confidence": "unknown",
+   "evidence": "returns *ref + 0x44 + index/2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7ae2",
+   "name": "XModel_GetLastLodDistance",
+   "signature": "float XModel_GetLastLodDistance(const struct XModel *model)",
+   "subsystem": "model/xmodel",
+   "confidence": "inferred",
+   "evidence": "lod[numLods-1].dist or g_085e5020 override",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7b32",
+   "name": "XModel_GetLodIndexForDistance",
+   "signature": "int XModel_GetLodIndexForDistance(const struct XModel *model, float distance)",
+   "subsystem": "model/xmodel",
+   "confidence": "inferred",
+   "evidence": "first LOD with cutoff 0 or > distance, else -1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7bd6",
+   "name": "XModel_SetLodDistanceOverride",
+   "signature": "void XModel_SetLodDistanceOverride(int lod, float dist)",
+   "subsystem": "model/xmodel",
+   "confidence": "inferred",
+   "evidence": "writes g_085e5020[lod]; valid = dist >= 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7c04",
+   "name": "adler32",
+   "signature": "unsigned long adler32(unsigned long adler, const unsigned char *buf, unsigned int len)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "BASE 65521 / NMAX 5552 structure; called by deflateSetDictionary and read_buf",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7e50",
+   "name": "compress2",
+   "signature": "int compress2(unsigned char *dest, unsigned long *destLen, const unsigned char *source, unsigned long sourceLen, int level)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "passes \"1.1.4\" and sizeof(z_stream_s)=0x38 to deflateInit_, then deflate(Z_FINISH), deflateEnd",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7f31",
+   "name": "compress",
+   "signature": "int compress(unsigned char *dest, unsigned long *destLen, const unsigned char *source, unsigned long sourceLen)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "compress2 with level -1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7f64",
+   "name": "deflateInit_",
+   "signature": "int deflateInit_(struct z_stream_s *strm, int level, const char *version, int stream_size)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "deflateInit2_(8,15,8,0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7fac",
+   "name": "deflateInit2_",
+   "signature": "int deflateInit2_(struct z_stream_s *strm, int level, int method, int windowBits, int memLevel, int strategy, const char *version, int stream_size)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "version/size 0x38 check, state size 0x16b8, 'insufficient memory' failure path",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c82de",
+   "name": "deflateSetDictionary",
+   "signature": "int deflateSetDictionary(struct z_stream_s *strm, const unsigned char *dictionary, unsigned int dictLength)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "requires status 0x2a, adler32 over dictionary, hash priming",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c84aa",
+   "name": "deflateReset",
+   "signature": "int deflateReset(struct z_stream_s *strm)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "zeroes totals, data_type 2, calls tree init then lm_init",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c8595",
+   "name": "deflateParams",
+   "signature": "int deflateParams(struct z_stream_s *strm, int level, int strategy)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "compares configuration_table func pointers; partial flush",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c86e0",
+   "name": "putShortMSB",
+   "signature": "void putShortMSB(struct deflate_state_s *s, unsigned int b)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "big-endian 16-bit append to pending_buf",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c8719",
+   "name": "flush_pending",
+   "signature": "void flush_pending(struct z_stream_s *strm)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "copies pending bytes to next_out bounded by avail_out",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c87e7",
+   "name": "deflate",
+   "signature": "int deflate(struct z_stream_s *strm, int flush)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "states 0x2a/0x71/0x29a, stream/buffer error messages, level function dispatch",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c8bd0",
+   "name": "deflateEnd",
+   "signature": "int deflateEnd(struct z_stream_s *strm)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "frees pending_buf/head/prev/window/state; -3 when status 0x71",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c8d0c",
+   "name": "deflateCopy",
+   "signature": "int deflateCopy(struct z_stream_s *dest, struct z_stream_s *source)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "copies 0x38-byte stream and 0x16b8-byte state, reallocates buffers",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c8fe8",
+   "name": "read_buf",
+   "signature": "int read_buf(struct z_stream_s *strm, unsigned char *buf, unsigned int size)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "copies input, adler32 unless noheader",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c909c",
+   "name": "lm_init",
+   "signature": "void lm_init(struct deflate_state_s *s)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "loads configuration_table params, clears hash",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c91a9",
+   "name": "longest_match",
+   "signature": "unsigned int longest_match(struct deflate_state_s *s, unsigned int cur_match)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "MAX_MATCH 258 unrolled compare, good_match>>2 chain reduction",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c9433",
+   "name": "fill_window",
+   "signature": "void fill_window(struct deflate_state_s *s)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "slides window by w_size, read_buf, hash priming",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c9684",
+   "name": "deflate_stored",
+   "signature": "int deflate_stored(struct deflate_state_s *s, int flush)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "0xffff / pending_buf_size-5 block size; configuration_table level 0 func",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c991b",
+   "name": "deflate_fast",
+   "signature": "int deflate_fast(struct deflate_state_s *s, int flush)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "greedy match, inline tally",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c9eda",
+   "name": "deflate_slow",
+   "signature": "int deflate_slow(struct deflate_state_s *s, int flush)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "lazy match, TOO_FAR 4096",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ca620",
+   "name": "inflate_blocks_reset",
+   "signature": "void inflate_blocks_reset(struct inflate_blocks_state_s *s, struct z_stream_s *z, unsigned long *c)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "modes 4/5/6 free blens / codes; resets window",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ca6f0",
+   "name": "inflate_blocks_new",
+   "signature": "struct inflate_blocks_state_s *inflate_blocks_new(struct z_stream_s *z, unsigned long (*c)(unsigned long, const unsigned char *, unsigned int), unsigned int w)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "allocs 0x40 state, 8x0x5a0 hufts, window of w bytes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ca832",
+   "name": "inflate_blocks",
+   "signature": "int inflate_blocks(struct inflate_blocks_state_s *s, struct z_stream_s *z, int r)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "error strings 'invalid block type' etc., mode switch 0..9",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cbc79",
+   "name": "inflate_blocks_free",
+   "signature": "int inflate_blocks_free(struct inflate_blocks_state_s *s, struct z_stream_s *z)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "reset then free window/hufts/state",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cbcee",
+   "name": "inflate_set_dictionary",
+   "signature": "void inflate_set_dictionary(struct inflate_blocks_state_s *s, const unsigned char *d, unsigned int n)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "copy into window, read=write=window+n",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cbd2f",
+   "name": "inflate_blocks_sync_point",
+   "signature": "int inflate_blocks_sync_point(struct inflate_blocks_state_s *s)",
+   "subsystem": "zlib",
+   "confidence": "inferred",
+   "evidence": "mode == 1 (LENS)",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x085e5020",
+   "name": "g_xmodelLodDistanceOverrides",
+   "type": "struct LodDistanceOverride[]",
+   "confidence": "inferred",
+   "evidence": "8-byte {valid flag, float dist} entries indexed by LOD, read by 0x080c7ae2/0x080c7b32, written by 0x080c7bd6"
+  },
+  {
+   "addr": "0x08183224",
+   "name": "zlib_version",
+   "type": "const char *",
+   "confidence": "inferred",
+   "evidence": "pointer to \"1.1.4\"; first char compared in deflateInit2_"
+  },
+  {
+   "addr": "0x081843e0",
+   "name": "z_errmsg",
+   "type": "const char *[]",
+   "confidence": "inferred",
+   "evidence": "indices 4/6/7 used as stream error / insufficient memory / buffer error"
+  },
+  {
+   "addr": "0x08150900",
+   "name": "configuration_table",
+   "type": "struct deflate_config[10]",
+   "confidence": "inferred",
+   "evidence": "12-byte entries; lm_init/deflateParams read fields, deflate calls func"
+  },
+  {
+   "addr": "0x081515a0",
+   "name": "_dist_code",
+   "type": "unsigned char[512]",
+   "confidence": "inferred",
+   "evidence": "indexed dist or 256+(dist>>7) in tally"
+  },
+  {
+   "addr": "0x081517a0",
+   "name": "_length_code",
+   "type": "unsigned char[256]",
+   "confidence": "inferred",
+   "evidence": "indexed by match length-3 in tally"
+  },
+  {
+   "addr": "0x08150980",
+   "name": "inflate_border",
+   "type": "unsigned int[19]",
+   "confidence": "inferred",
+   "evidence": "values 16,17,18,0,8,7,... used in BTREE state"
+  },
+  {
+   "addr": "0x08184360",
+   "name": "inflate_mask",
+   "type": "unsigned int[17]",
+   "confidence": "inferred",
+   "evidence": "bit masks used in DTREE state"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "z_stream_s",
+   "size": "0x38",
+   "evidence": "offsets 0x18 msg, 0x1c state, 0x20 zalloc, 0x24 zfree, 0x30 adler; size check 0x38 in deflateInit2_"
+  },
+  {
+   "name": "deflate_state_s",
+   "size": "0x16b8",
+   "evidence": "allocation size in deflateInit2_/deflateCopy; field offsets match zlib 1.1.4 deflate_state_s"
+  },
+  {
+   "name": "inflate_blocks_state_s",
+   "size": "0x40",
+   "evidence": "allocation size in inflate_blocks_new"
+  },
+  {
+   "name": "inflate_huft",
+   "size": "0x8",
+   "evidence": "hufts alloc 8 x 0x5a0; exop/bits/base offsets 0/1/4"
+  },
+  {
+   "name": "XModel",
+   "size": "0x90+",
+   "evidence": "partial: lod[] at +4 stride 0x14, numLods at +0x7c, byte at +0x8c"
+  }
+ ],
+ "open_questions": [
+  "Meaning of XModel byte at +0x8c and of XModelRef (header short, block at +0x44); max LOD count (lod[4]) unvalidated.",
+  "Callees fn_080cbd40/080cbda5/080ccb14/080ce566/080ce64f/080ce832/080ce864/080cea69/080d0b69/080d05cd/080d06fb are assumed to be zlib 1.1.4 inflate_codes*, inflate_trees_*, inflate_flush, _tr_* from call shapes only.",
+  "Whether zlib 1.1.4 version is verified by string only (\"1.1.4\"); deflate_state_s/inflate layouts inferred from offsets, not from source."
+ ]
+}

@@ -1,0 +1,680 @@
+{
+ "chunk": 44,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080ed5c0",
+   "name": "PM_Weapon_SubClipAmmo",
+   "signature": "void PM_Weapon_SubClipAmmo(struct playerState_s *ps, int32 weapon, int32 count)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "PM_Weapon_* from pmove_s/pml_s layout (see file header); body is clip-ammo subtraction for the weapon's clip slot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed5fc",
+   "name": "PM_Weapon_GetClipAmmo",
+   "signature": "int32 PM_Weapon_GetClipAmmo(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "PM_Weapon_* (pmove layout); returns the magazine count of the current weapon's clip slot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed626",
+   "name": "PM_Weapon_ClipEmpty",
+   "signature": "bool PM_Weapon_ClipEmpty(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "PM_Weapon_* (pmove layout); true when the current weapon's magazine is empty.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed664",
+   "name": "PM_Weapon_ClearToReady",
+   "signature": "void PM_Weapon_ClearToReady(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; clears the state timer through fn_080eb974 and returns the state to READY.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed68c",
+   "name": "PM_Weapon_TryStartRechamber",
+   "signature": "int32 PM_Weapon_TryStartRechamber(struct playerState_s *ps, int32 triggerHeld)",
+   "subsystem": "player/pmove",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Bolt-action path: requires boltAction!=0 and the weaponrechamber bit for the weapon; sets weaponstate 4 with weaponTime=rechamberTime, weaponDelay=rechamberBoltTime, event 0xa1 (0xa2 on release). weapon-def field names read from the weapon field table g_08186a60 (observed).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ed8b4",
+   "name": "PM_Weapon_ComputeReloadStep",
+   "signature": "void PM_Weapon_ComputeReloadStep(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; computes the per-step count for the current load/reload phase and stores it in weaponDelay.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eda1c",
+   "name": "PM_Weapon_BeginReloadState",
+   "signature": "void PM_Weapon_BeginReloadState(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; enters the load/reload phase (state 5 or 6), selecting the timer by magazine state, then recomputes the step.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080edb04",
+   "name": "PM_Weapon_TryBeginReload",
+   "signature": "void PM_Weapon_TryBeginReload(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; starts a reload from ready/firing/recharge states when ammo allows; otherwise uses the BeginReloadState path.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080edc30",
+   "name": "PM_Weapon_SelectWeapon",
+   "signature": "void PM_Weapon_SelectWeapon(struct playerState_s *ps, int32 newWeapon)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; weapon-switch state entry. Newly selected weapon is checked against the weaponsHeld bitset; state 2 is the lowering phase.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ede6c",
+   "name": "PM_Weapon_ChangeWeapon",
+   "signature": "void PM_Weapon_ChangeWeapon(struct pmove_s *pm)",
+   "subsystem": "player/pmove",
+   "confidence": "inferred",
+   "evidence": "PM_Weapon_* from pmove layout; applies a weapon-slot change from cmd.weapon, with the ammo, lock and selection gates of this function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ee1aa",
+   "name": "PM_Weapon_SetReadyState",
+   "signature": "void PM_Weapon_SetReadyState(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; returns the weapon state to READY and sends the idle animation.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ee1d2",
+   "name": "PM_Weapon_NeedsAutoReload",
+   "signature": "int32 PM_Weapon_NeedsAutoReload(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; reports whether the current weapon has reserve ammo and a magazine deficit that warrants an automatic reload.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ee2dc",
+   "name": "PM_Weapon_ApplyReloadStep",
+   "signature": "void PM_Weapon_ApplyReloadStep(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; consumes one pending reload step for the current weapon and updates weaponDelay with the step size.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ee4b4",
+   "name": "PM_Weapon_FinishFireCycle",
+   "signature": "void PM_Weapon_FinishFireCycle(struct playerState_s *ps, int32 fireHeld)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; finishes a fire cycle. Applies a reload step when the fire input is held, then either re-enters the reload path or returns to READY / state 9.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ee5ca",
+   "name": "PM_Weapon_FinishReloadCycle",
+   "signature": "void PM_Weapon_FinishReloadCycle(struct playerState_s *ps, int32 fireHeld)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; finishes a reload cycle once the timer has run out, choosing READY, state 9 or a new reload phase.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ee6fc",
+   "name": "PM_Weapon_SetReadyState_Alt",
+   "signature": "void PM_Weapon_SetReadyState_Alt(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; same body as PM_Weapon_SetReadyState (kept as a separate entry point).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ee724",
+   "name": "PM_Weapon_UpdateInputState",
+   "signature": "void PM_Weapon_UpdateInputState(struct pmove_s *pm)",
+   "subsystem": "player/pmove",
+   "confidence": "inferred",
+   "evidence": "PM_Weapon_* from pmove layout; per-frame input edge handling and reload-trigger logic (cmd buttons, oldcmd buttons, cmd movement bytes).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ee95e",
+   "name": "PM_Weapon_TakeEmptyClipOnlyWeapon",
+   "signature": "void PM_Weapon_TakeEmptyClipOnlyWeapon(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: If def.clipOnly!=0 and both ammoclip and ammo for the weapon are 0, calls BG_TakeWeapon and adds event 0x92 (empty); sole caller PM_Weapon_FireShot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ee9ee",
+   "name": "PM_Weapon_UpdateAimSpread",
+   "signature": "void PM_Weapon_UpdateAimSpread(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "player/pmove",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Writes ps->aimSpreadScale (netField 'aimSpreadScale' at 0x5d4) from weapon fields hipSpreadDecayRate/TurnAdd/MoveAdd/DuckedDecay/ProneDecay and dvar bg_aimSpreadMoveSpeedThreshold.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eec94",
+   "name": "PM_Weapon_TickTimers",
+   "signature": "int32 PM_Weapon_TickTimers(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "player/pmove",
+   "confidence": "inferred",
+   "evidence": "PM_Weapon_* from pmove layout; decrements the shot delay, weapon timer and weapon delay by frame msec and returns 1 when the delay count expires.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eef06",
+   "name": "PM_Weapon_ChangeSlot",
+   "signature": "void PM_Weapon_ChangeSlot(struct pmove_s *pm)",
+   "subsystem": "player/pmove",
+   "confidence": "inferred",
+   "evidence": "PM_Weapon_* from pmove layout; decides whether the cmd weapon slot differs from the current weapon and requests a weapon change.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef148",
+   "name": "PM_Weapon_ReleaseFireHold",
+   "signature": "int32 PM_Weapon_ReleaseFireHold(struct pmove_s *pm, int32 fireHeld)",
+   "subsystem": "player/pmove",
+   "confidence": "unknown",
+   "evidence": "descriptive; releases a fire hold when the trigger is up and no hold-override is set; returns 1 when the release was taken.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef1ac",
+   "name": "PM_Weapon_BeginFire",
+   "signature": "void PM_Weapon_BeginFire(struct playerState_s *ps, int32 altFire)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; enters the FIRING state, starts the shot timers from the weapon definition, and sets the fire flag bit.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef376",
+   "name": "PM_Weapon_AmmoPerShot",
+   "signature": "int32 PM_Weapon_AmmoPerShot(int32 weapon)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; constant one-unit ammo cost per shot. The weapon argument is ignored (the caller pushes it).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef380",
+   "name": "PM_Weapon_CheckClipOrReload",
+   "signature": "int32 PM_Weapon_CheckClipOrReload(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; when the magazine is below one shot, either notifies empty and clears the reserve bit, or starts a reload.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef496",
+   "name": "PM_Weapon_SetFireAnimState",
+   "signature": "void PM_Weapon_SetFireAnimState(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; picks the fire animation (2/3 below 0.75 blend, 5/6 above) from whether the magazine is empty.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef50a",
+   "name": "PM_Weapon_AddFireAimSpread",
+   "signature": "void PM_Weapon_AddFireAimSpread(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Adds weapon field hipSpreadFireAdd*255 to ps->aimSpreadScale when not fully ADS (fWeaponPosFrac!=1), clamped to 255; sole caller PM_Weapon_FireShot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef58a",
+   "name": "PM_Weapon_FireShot",
+   "signature": "void PM_Weapon_FireShot(struct playerState_s *ps, int32 altFire)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; full shot: begin fire, check clip, consume ammo, then notify the fire animation and the empty check.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef6a4",
+   "name": "PM_Weapon_BeginMeleeStrike",
+   "signature": "void PM_Weapon_BeginMeleeStrike(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Enters weaponstate 11 with floor weaponTime=meleeTime-meleeDelay and event 0xa4; reached from state 10 (case 10 of PM_Weapon_Frame) or directly when meleeDelay==0. weapon-def field names read from the weapon field table g_08186a60 (observed).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef726",
+   "name": "PM_Weapon_ClearToReady_Alt",
+   "signature": "void PM_Weapon_ClearToReady_Alt(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; same body as PM_Weapon_ClearToReady (kept as a separate entry point), clears the timer first then sets READY.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef74e",
+   "name": "PM_Weapon_TryStartMelee",
+   "signature": "void PM_Weapon_TryStartMelee(struct pmove_s *pm, int32 fireHeld)",
+   "subsystem": "player/pmove",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Requires meleeDamage!=0 and cmd.buttons&4; emits event 0xa3, sets weapAnim 8 and enters state 10 (meleeTime/meleeDelay) or 11. weapon-def field names read from the weapon field table g_08186a60 (observed).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef946",
+   "name": "PM_Weapon_ForceReady",
+   "signature": "void PM_Weapon_ForceReady(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; forces the weapon back to READY, clearing timers, the 0x810 pmFlags bits and the ADS reset for states 17..22.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ef9b6",
+   "name": "PM_Weapon_BeginOffhandLower",
+   "signature": "void PM_Weapon_BeginOffhandLower(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Enters weaponstate 12 with weaponTime=quickDropTime (anim 0x11), clears pm_flags 0x10; sole caller PM_Weapon_HandleOffhandButtons; case 12 of PM_Weapon_Frame advances to PM_Weapon_EnterOffhandState13.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080efa26",
+   "name": "PM_Weapon_EnterOffhandState13",
+   "signature": "void PM_Weapon_EnterOffhandState13(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "inferred offhand entry; enters state 13 for the offhand weapon (event 0xa5 and flag 0x10). Offhand from the grenade-only diagnostics in PM_Weapon_HandleOffhandButtons.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080efab6",
+   "name": "PM_Weapon_EnterOffhandState14",
+   "signature": "void PM_Weapon_EnterOffhandState14(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "inferred offhand; enters state 14 with the offhand timer loaded from the weapon definition (0x248).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080efb12",
+   "name": "PM_Weapon_ThrowOffhand",
+   "signature": "void PM_Weapon_ThrowOffhand(struct pmove_s *pm)",
+   "subsystem": "player/pmove",
+   "confidence": "inferred",
+   "evidence": "inferred offhand throw; state 15, consumes one offhand unit and notifies 0x94 when the offhand weapon has no ammo left.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080efc3e",
+   "name": "PM_Weapon_BeginOffhandRaise",
+   "signature": "void PM_Weapon_BeginOffhandRaise(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Case 15 of PM_Weapon_Frame; enters state 16 with weaponTime=quickRaiseTime (anim 0x12); state 16 then PM_Weapon_ForceReady. Closes the offhand 12..16 sequence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080efcc6",
+   "name": "PM_Weapon_OffhandDenied",
+   "signature": "void PM_Weapon_OffhandDenied(struct playerState_s *ps, int32 hand)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; sends event 0x94. The second argument (1 or 2) is pushed by the caller and ignored by this body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080efce2",
+   "name": "PM_Weapon_HandleOffhandButtons",
+   "signature": "void PM_Weapon_HandleOffhandButtons(struct pmove_s *pm)",
+   "subsystem": "player/pmove",
+   "confidence": "inferred",
+   "evidence": "inferred offhand handler from the grenade-only and \"No offhand class set\" diagnostics in this body.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080efeb4",
+   "name": "PM_Weapon_TickOffhandTimer",
+   "signature": "int32 PM_Weapon_TickOffhandTimer(struct playerState_s *ps, struct pml_s *pml)",
+   "subsystem": "player/pmove",
+   "confidence": "inferred",
+   "evidence": "inferred offhand timer; while the offhand flag is set, counts the offhand timer down by frame msec and throws (consumes one unit, event 0xc5) when it expires.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eff82",
+   "name": "PM_Weapon_SetBinocularsActive",
+   "signature": "void PM_Weapon_SetBinocularsActive(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Sets pm_flags 0x20000 and adds event 0xa8; BG_GetCurrentWeapon returns the first binoculars weapon when 0x20000 is set. Sole caller is the binoculars raise state.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080effae",
+   "name": "PM_Weapon_ClearBinocularsActive",
+   "signature": "void PM_Weapon_ClearBinocularsActive(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Clears pm_flags 0x20000 (binoculars-active flag); callers PM_Weapon_ResetAdsState and the binoculars restore state.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080effda",
+   "name": "PM_Weapon_ResetAdsState",
+   "signature": "void PM_Weapon_ResetAdsState(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "unknown",
+   "evidence": "descriptive; resets the ADS blend to zero, clears the view-state through fn_080ecc72 and clears flag 0x20000.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f0006",
+   "name": "PM_Weapon_BinocularsEnterBegin",
+   "signature": "void PM_Weapon_BinocularsEnterBegin(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Enters weaponstate 17 with delay adsExitDelay+adsTransOutTime; called from PM_Weapon_HandleButtonEdges; state 17 leads to 18 (quick drop of the held weapon) then 19 (binoculars raise). States 17-22 use BG_FindFirstType3Weapon (weaponType 3 = 'binoculars').",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f005c",
+   "name": "PM_Weapon_BinocularsLowerWeapon",
+   "signature": "void PM_Weapon_BinocularsLowerWeapon(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Case 17 of PM_Weapon_Frame; enters state 18 with weaponTime=quickDropTime and weapAnim 0x11; also called from HandleButtonEdges.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f00b2",
+   "name": "PM_Weapon_BinocularsRaise",
+   "signature": "void PM_Weapon_BinocularsRaise(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Enters state 19 using the first binoculars weapon def, weaponTime=adsTransInTime, sets 0x20000 via PM_Weapon_SetFlag20000.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f0114",
+   "name": "PM_Weapon_BinocularsHold",
+   "signature": "void PM_Weapon_BinocularsHold(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Enters state 20 with no timers; state 20 has an empty case in PM_Weapon_Frame (held until exit).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f013a",
+   "name": "PM_Weapon_BinocularsExitBegin",
+   "signature": "void PM_Weapon_BinocularsExitBegin(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Enters state 21 with timer adsExitDelay+adsTransOutTime of the binoculars def and event 0xac; called from PM_Weapon_HandleButtonEdges; state 21 leads to 22.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f01ac",
+   "name": "PM_Weapon_BinocularsRestoreWeapon",
+   "signature": "void PM_Weapon_BinocularsRestoreWeapon(struct pmove_s *pm)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Enters state 22, clears 0x20000, loads quickRaiseTime (weapAnim 0x12) or a one-tick delay when cmd.weapon==0; state 22 then ForceReady.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f0234",
+   "name": "PM_Weapon_HandleButtonEdges",
+   "signature": "void PM_Weapon_HandleButtonEdges(struct pmove_s *pm)",
+   "subsystem": "player/pmove",
+   "confidence": "inferred",
+   "evidence": "inferred pmove button-edge handler (cmd.buttons vs oldcmd.buttons, weapon/offhand slot changes, state 0x14 and 0x11..0x15 transitions).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f066e",
+   "name": "PM_Weapon_Frame",
+   "signature": "void PM_Weapon_Frame(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "player/pmove",
+   "confidence": "inferred",
+   "evidence": "PM_Weapon_Frame, inferred from pmove/pml layout; per-frame weapon dispatch (offhand timer, timers, button edges, slot change, input, fire) and the state switch.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f0946",
+   "name": "PM_Weapon_ForceReady_Entry",
+   "signature": "void PM_Weapon_ForceReady_Entry(struct playerState_s *ps)",
+   "subsystem": "player/weapon",
+   "confidence": "inferred",
+   "evidence": "entry wrapper that forwards to PM_Weapon_ForceReady (wrapper body only, no extra behavior).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f095a",
+   "name": "BG_WeaponRandomFireKick",
+   "signature": "void BG_WeaponRandomFireKick(struct playerState_s *ps, float *angles, float *out)",
+   "subsystem": "player/view-sway",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Random view kick (adsViewKick*/hipViewKick* pitch/yaw ranges) and gun kick (adsGunKick*/hipGunKick*) from the weapon def, scaled by reduced-kick percent while weaponRestrictKickTime>0; only caller is G_HandleClientEvent. weapon-def field names read from the weapon field table g_08186a60 (observed).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f0bde",
+   "name": "BG_BobCyclePhase",
+   "signature": "long double BG_BobCyclePhase(const struct playerState_s *ps)",
+   "subsystem": "player/view-sway",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns 2*pi*(byte)bobCycle/255 + 2*pi: the bob phase from ps->bobCycle (netField 'bobCycle', ps+8); consumed with the sine sway helpers by G_GetPlayerViewOrigin.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f0c3a",
+   "name": "BG_BobSinePair",
+   "signature": "long double BG_BobSinePair(struct playerState_s *ps, float phase, float amp, float limit)",
+   "subsystem": "player/view-sway",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: (sin(2p)+0.2*sin(4p+pi/2))*0.75*amp where amp is scaled by dvar bg_bobAmplitudeStanding/Ducked/Prone chosen from viewHeightTarget 0x3c/0x28/0x0b and clamped by limit.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f0cfa",
+   "name": "BG_BobSine",
+   "signature": "long double BG_BobSine(struct playerState_s *ps, float phase, float amp, float limit)",
+   "subsystem": "player/view-sway",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: sin(phase)*amp with amp scaled by dvar bg_bobAmplitude{Standing,Ducked,Prone} by viewHeightTarget and clamped by limit.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f0d74",
+   "name": "WeaponView_UpdateMoveRotation",
+   "signature": "void WeaponView_UpdateMoveRotation(struct view_motion_s *view, float *out)",
+   "subsystem": "player/view-sway",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Eases view->offset[] toward standRotP/duckedRotP/proneRotP scaled by speed between *RotMinSpeed and ps->speed, at posRotRate/posProneRotRate (weapon field names observed in g_08186a60); only caller PM_Weapon_ComputeAimOffset.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f1140",
+   "name": "WeaponView_ComputeAdsAimOffset",
+   "signature": "void WeaponView_ComputeAdsAimOffset(struct view_motion_s *view, float *out)",
+   "subsystem": "player/view-sway",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Adds fWeaponPosFrac*adsAimPitch to out[0] when aimDownSight!=0 then runs the move-rotation spring; sole caller WeaponView_ComputeOffset.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f11b0",
+   "name": "WeaponView_ComputeIdleSway",
+   "signature": "void WeaponView_ComputeIdleSway(struct view_motion_s *view, float *out)",
+   "subsystem": "player/view-sway",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Blends hipIdleAmount/adsIdleAmount and hipIdleSpeed/adsIdleSpeed by fWeaponPosFrac, scales by idleCrouchFactor/idleProneFactor, adds three sines (phase*0.0005/0.0007/0.001) to out[]; sole caller WeaponView_ComputeOffset.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08627000",
+   "name": "g_08627000",
+   "type": "struct cvar_value8_s *",
+   "confidence": "unknown",
+   "evidence": "float cvar at +8, selected when playerState field_f4 == 0x0b (PM_Weapon_SineSway/SineSwayPair)"
+  },
+  {
+   "addr": "0x08626ffc",
+   "name": "g_08626ffc",
+   "type": "struct cvar_value8_s *",
+   "confidence": "unknown",
+   "evidence": "float cvar at +8, selected when field_f4 == 0x28"
+  },
+  {
+   "addr": "0x08626ff8",
+   "name": "g_08626ff8",
+   "type": "struct cvar_value8_s *",
+   "confidence": "unknown",
+   "evidence": "float cvar at +8, default kind"
+  },
+  {
+   "addr": "0x08627008",
+   "name": "g_08627008",
+   "type": "struct cvar_value8_s *",
+   "confidence": "unknown",
+   "evidence": "float cvar at +8, read as the velocity threshold scale in PM_Weapon_UpdateAttackMeter"
+  },
+  {
+   "addr": "0x0862702c",
+   "name": "g_0862702c",
+   "type": "struct cvar_value8_s *",
+   "confidence": "unknown",
+   "evidence": "boolean cvar (first byte at +8) gating the alt-fire button bit choice in PM_Weapon_HandleButtonEdges"
+  },
+  {
+   "addr": "0x08627034",
+   "name": "g_08627034",
+   "type": "struct cvar_value8_s *",
+   "confidence": "inferred",
+   "evidence": "integer value at +8 added to weapon-def delay fields in PM_Weapon_EnterState17/21 (level-time-like value); meaning not confirmed"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "playerState_s",
+   "size": "0x26a8 (total, from chunk_023); 0x5d8 lower bound in chunk_044_types.h",
+   "evidence": "fields used by chunk 044: pmType 0x04, pmFlags 0x0c (matches chunk_023 pmFlags), velocity 0x20, weaponTimer 0x34, weaponDelay 0x38, offhandTimer 0x3c, shotDelay 0x40, groundEntityNum 0x60, buttonBits 0xa0 (matches chunk_023), clientNum 0xcc (matches chunk_023), offhandWeapon 0xd0, weapon 0xd4, weaponState 0xd8, fWeaponPosFrac 0xdc (matches chunk_023 fieldDc), viewheight 0xf8 (matches chunk_023), reserveAmmo[128] 0x144, clipAmmo[128] 0x344, weaponsHeld[6] 0x544, weaponBits2[6] 0x55c, weaponMeter 0x5d4"
+  },
+  {
+   "name": "pmove_s",
+   "size": "0xe4 lower bound",
+   "evidence": "wrapper: [0] playerState, usercmd-shaped cmd at +4 (buttons +8, weapon +0x0c, angles +0x10, forward +0x1c, right +0x1d), oldcmd at +0x20 (buttons +0x24, weapon +0x28, angles +0x2c), field_e0 at +0xe0; layout matches Quake III-lineage pmove_t usage in this chunk"
+  },
+  {
+   "name": "pml_s",
+   "size": "0x2c",
+   "evidence": "frame axes forward/right/up, frametime float at +0x24 and msec int at +0x28, as read by PM_Weapon_UpdateAttackMeter and PM_Weapon_TickTimers"
+  },
+  {
+   "name": "view_motion_s",
+   "size": "0x54 lower bound",
+   "evidence": "view-sway record: ps at +0, elapsedMs +4, deltaMs +8, offset[3] +0x0c (int-typed), blend +0x18 (int-typed), phase pointer +0x50"
+  },
+  {
+   "name": "weapon_def_s",
+   "size": "0x58c lower bound",
+   "evidence": "per-weapon definition: name +0, field_74/field_7c (sound/anim args), weaponType +0x78, offhandClass +0x84, vec3 at +0x138/+0x15c/+0x180, timing fields 0x1fc..0x248, float tables 0x2a4..0x2dc, 0x46c, 0x47c..0x4f4, 0x588; many fields are usage-named only"
+  },
+  {
+   "name": "cvar_value8_s",
+   "size": "0x0c lower bound",
+   "evidence": "console variable view with the value union at +0x08 (float, int, or first byte as bool)"
+  }
+ ],
+ "open_questions": [
+  "weapon_def_s stateTimeNNN / stateCountNNN / fFieldNNN / fieldNNN names are offset-usage names only; their gameplay meaning (reload, rechamber, offhand timers) is not established by this chunk and needs the weapon-def owner chunk",
+  "PM_Weapon_* names are inferred from the pmove_t/pml_t-shaped argument layout, with no string naming any of these functions; a second chunk that reads the same playerState fields (weaponTimer/weaponDelay at 0x34/0x38) should confirm or rename them",
+  "PM_Weapon_SpringView passes int-typed view->offset[] to the float helpers fn_080f2a1a/fn_080f2a96 (raw bit reinterpretation as observed); whether the original intends this is unknown, preserved as-is",
+  "fn_080ebd22 and fn_080ebcdc are used as weapon-id providers (passed to fn_080eb9a4); their exact semantics (owner slot vs current weapon) are not confirmed here",
+  "AngleSubtract (merged from chunk_026) is assumed to be float AngleSubtract(float, float) in the call from PM_Weapon_UpdateAttackMeter; the merge lane should confirm the signature matches the callee's behavior",
+  "ROUND in the decompiler is FPU truncation (fnstcw/or 0xc00/fistp in the disassembly); translated as a C (int) cast, verified against the control-word setup at 0x080ef281 and 0x080f13da"
+ ]
+}

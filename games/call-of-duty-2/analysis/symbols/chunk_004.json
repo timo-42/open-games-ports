@@ -1,0 +1,917 @@
+{
+ "chunk": 4,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x0805631a",
+   "name": "cm_wedge_edge_sweep",
+   "signature": "void cm_wedge_edge_sweep(struct traceWork_s *trace, struct CollisionTriangle_s *wedge, struct trace_s *hit)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "wedge plane tests with 0.125 offset and 0.001/1.001 band; no string or callee name; Ghidra FUN_0805631a, size 374",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08056490",
+   "name": "cm_wedge_sphere_sweep",
+   "signature": "void cm_wedge_sphere_sweep(struct traceWork_s *trace, struct CollisionTriangle_s *wedge, float offset, struct trace_s *hit)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "sphere sweep vs wedge planes, vertex and edge contacts; no string; Ghidra FUN_08056490, size 2998",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08057046",
+   "name": "cm_wall_circle_sweep",
+   "signature": "void cm_wall_circle_sweep(struct traceWork_s *trace, struct CollisionBorder_s *wall, struct trace_s *hit)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "2D wall sweep with z slope and radius+0.125; no string; Ghidra FUN_08057046, size 1369",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080575a0",
+   "name": "Float_Sqrt_080575a0",
+   "signature": "float Float_Sqrt_080575a0(float x)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body (float)sqrt((double)x) through libm; same shape as Float_Sqrt_080aaebe. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080575c0",
+   "name": "Float_Max_080575c0",
+   "signature": "float Float_Max_080575c0(float a, float b)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body tail-jumps to the sign select with (a-b,a,b), i.e. Float_Max. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": "Ghidra void return corrected: result is the tail-call return value (float)."
+  },
+  {
+   "addr": "0x080575e4",
+   "name": "Vec2_Subtract_080575e4",
+   "signature": "void Vec2_Subtract_080575e4(float *a, float *b, float *out)",
+   "subsystem": "math/vec2",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body 2-component subtract; same byte family as Vec2Subtract_080f9ada. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec2_Subtract, VectorSubtract2D, Vec2Subtract_080f9ada; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08057610",
+   "name": "Vec2_Dot_08057610",
+   "signature": "float Vec2_Dot_08057610(float *a, float *b)",
+   "subsystem": "math/vec2",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body a0*b0+a1*b1; same byte family as Vec2_Dot_080ab03c. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec2_Dot_080ab03c, Vec2_Dot_080bc094, DotProduct2D; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08057632",
+   "name": "Vec2_LengthSq_08057632",
+   "signature": "float Vec2_LengthSq_08057632(float *a)",
+   "subsystem": "math/vec2",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body x*x+y*y of one 2-vector. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08057654",
+   "name": "Vec3_Set_08057654",
+   "signature": "void Vec3_Set_08057654(float *dst, float x, float y, float z)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body stores three scalar arguments into dst[0..2]; same byte family as Vec3_Set_080b5810/080bc0e0. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec3_SetBits, Vec3_Set_080b5810, Vec3_Set_b_080b934c; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08057678",
+   "name": "Vec3_Scale_08057678",
+   "signature": "void Vec3_Scale_08057678(float *v, float s, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_scale_copy, cm_vec3_scale_local, Vec3_Scale_080ab190; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080576b0",
+   "name": "Float_SelectNonNegative_080576b0",
+   "signature": "float Float_SelectNonNegative_080576b0(float x, float a, float b)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body returns a when x>=0 else b (fucompp/sahf); same family as Float_SelectNonNegative_080982de. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Float_SelectNonNegative_0805d552, Float_Select_0805fafc, Float_SelectNonNegative_080982de; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080576dc",
+   "name": "AllocWinding",
+   "signature": "void *AllocWinding(uint32 count)",
+   "subsystem": "alloc",
+   "confidence": "inferred",
+   "evidence": "live/peak counters around an allocation of count*12+4 bytes; Ghidra FUN_080576dc, size 72 [rename collision: asm: increments live-count 0x8188eec with high-water 0x8188ef0, allocates 4+12*n bytes (n points of vec3 + count word); sibling free at 0x8057724 names FreeWinding by string; Q3 AllocWinding]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08057724",
+   "name": "FreeWinding",
+   "signature": "void FreeWinding(int32 *block)",
+   "subsystem": "alloc",
+   "confidence": "observed",
+   "evidence": "0xDEADDEAD marker on free, double-free message via 0x08140020; Ghidra FUN_08057724, size 65 [rename collision: asm: checks magic 0xdeaddead and calls error with string at 0x8140020 'FreeWinding: freed a freed winding' (rodata), then marks magic, decrements count, frees]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08057766",
+   "name": "cm_vertex_block_bounds",
+   "signature": "void cm_vertex_block_bounds(int32 *block, float *mins, float *maxs)",
+   "subsystem": "collision/bounds",
+   "confidence": "unknown",
+   "evidence": "min/max over float triples; initial +/-131072 (0x48000000/0xc8000000); Ghidra FUN_08057766, size 243",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08057fb6",
+   "name": "cm_fabs",
+   "signature": "float cm_fabs(float x)",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "absolute value (ABS); Ghidra FUN_08057fb6, size 25",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08057fd0",
+   "name": "Vec3_CopyBits_08057fd0",
+   "signature": "void Vec3_CopyBits_08057fd0(float *src, float *dst)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058000",
+   "name": "Vec3_Add_08058000",
+   "signature": "void Vec3_Add_08058000(float *a, float *b, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a+b per component; same byte family as Vec3_Add_080ab108. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_add_b, Vec3_Add_0809e502, Vec3_Add_080ab108; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058044",
+   "name": "Vec3_Sub_08058044",
+   "signature": "void Vec3_Sub_08058044(float *a, float *b, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub_b, cm_vec3_sub_c, Vec3_Subtract_0809e546; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058088",
+   "name": "Vec3_Scale_08058088",
+   "signature": "void Vec3_Scale_08058088(float *v, float s, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_scale, cm_vec3_scale_local, Vec3_Scale_080ab190; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080580c0",
+   "name": "Vec3_MA_080580c0",
+   "signature": "void Vec3_MA_080580c0(float *base, float s, float *dir, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a + s*dir per component (VectorMA); same byte family as Vec3_MA_080bc1f4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec3_MA_b, Vec3_MA_080bc1f4, Vec3_MA_080c5efc; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058114",
+   "name": "Vec3_Dot_08058114",
+   "signature": "float Vec3_Dot_08058114(float *a, float *b)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body ((a0*b0+a1*b1)+a2*b2) in st(0); same byte family as Vec3_Dot_080ab260. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_dot_b, Vec3_Dot_080ab260, Vec3_Dot_080b93c4; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058170",
+   "name": "cm_static_model_load_handle",
+   "signature": "int cm_static_model_load_handle(char *name)",
+   "subsystem": "collision/static-model",
+   "confidence": "inferred",
+   "evidence": "calls registry load with two callbacks; Ghidra void, caller uses result; Ghidra FUN_08058170, size 35",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058194",
+   "name": "cm_static_model_trace",
+   "signature": "void cm_static_model_trace(struct cm_static_model_s *model, struct trace_s *hit, float *start, float *end, uint32 arg5)",
+   "subsystem": "collision/static-model",
+   "confidence": "unknown",
+   "evidence": "model-space transform, trace, world normal with flag 0x3fe; Ghidra FUN_08058194, size 266",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805829e",
+   "name": "cm_static_model_test",
+   "signature": "uint32 cm_static_model_test(struct cm_static_model_s *model, float *start, float *end, uint32 arg4)",
+   "subsystem": "collision/static-model",
+   "confidence": "unknown",
+   "evidence": "seeds fraction 1.0, returns sign bit of model result; Ghidra FUN_0805829e, size 200",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058366",
+   "name": "Vec3_CopyBits_08058366",
+   "signature": "void Vec3_CopyBits_08058366(float *src, float *dst)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058396",
+   "name": "Vec3_Sub_08058396",
+   "signature": "void Vec3_Sub_08058396(float *a, float *b, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub, cm_vec3_sub_c, Vec3_Subtract_0809e546; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080583dc",
+   "name": "cm_static_model_set_transform",
+   "signature": "void cm_static_model_set_transform(struct cm_static_model_s *model, float *origin, float *angles, float *scale)",
+   "subsystem": "collision/static-model",
+   "confidence": "inferred",
+   "evidence": "origin copy, angles to axes, per-axis scale, bounds update; Ghidra FUN_080583dc, size 276",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080584f0",
+   "name": "cm_static_model_init",
+   "signature": "int cm_static_model_init(struct cm_static_model_s *model, char *name, float *origin, float *angles, float *scale)",
+   "subsystem": "collision/static-model",
+   "confidence": "inferred",
+   "evidence": "zero-scale warnings via format strings, load then set transform; Ghidra FUN_080584f0, size 269",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080585fe",
+   "name": "cm_load_static_models",
+   "signature": "void cm_load_static_models(void)",
+   "subsystem": "collision/static-model",
+   "confidence": "inferred",
+   "evidence": "string \"CM_CreateStaticModel\" (alloc tag, line 0x17); misc_model entity parse; Ghidra FUN_080585fe, size 1254 [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Quirk preserved: static model name is model_buf+7; unbounded strcpy into 64-byte buffers."
+  },
+  {
+   "addr": "0x08058ae4",
+   "name": "Vec3_CopyBits_08058ae4",
+   "signature": "void Vec3_CopyBits_08058ae4(float *src, float *dst)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058b14",
+   "name": "Vec3_Add_08058b14",
+   "signature": "void Vec3_Add_08058b14(float *a, float *b, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a+b per component; same byte family as Vec3_Add_080ab108. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_add, Vec3_Add_0809e502, Vec3_Add_080ab108; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058b58",
+   "name": "Vec3_Scale_08058b58",
+   "signature": "void Vec3_Scale_08058b58(float *v, float s, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_scale, cm_vec3_scale_copy, Vec3_Scale_080ab190; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058b90",
+   "name": "CM_PointLeafnum_r",
+   "signature": "int CM_PointLeafnum_r(float *point, int node)",
+   "subsystem": "collision/bsp",
+   "confidence": "inferred",
+   "evidence": "plane-tree walk; returns -1 - leaf; Ghidra FUN_08058b90, size 159 [rename collision: walks 8-byte plane-tree nodes until node<0, returns -1-leaf (chunk_004 comment); Q3 CM_PointLeafnum_r]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058c30",
+   "name": "CM_PointLeafnum",
+   "signature": "int CM_PointLeafnum(float *point)",
+   "subsystem": "collision/bsp",
+   "confidence": "inferred",
+   "evidence": "root query; tail-calls find_leaf; Ghidra FUN_08058c30, size 27 [rename collision: root wrapper of 0x08058b90 starting at the tree root; Q3 CM_PointLeafnum]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058c4c",
+   "name": "CM_StoreLeafs",
+   "signature": "void CM_StoreLeafs(struct cm_leaf_list_s *list, int node)",
+   "subsystem": "collision/bsp",
+   "confidence": "inferred",
+   "evidence": "appends leaf index, sets overflow; Ghidra FUN_08058c4c, size 118 [rename collision: appends leaf (-1-node) to the leaf list and records last leaf (chunk_004 comment); Q3 CM_StoreLeafs]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058cc2",
+   "name": "CM_BoxLeafnums_r",
+   "signature": "void CM_BoxLeafnums_r(struct cm_leaf_list_s *list, int node)",
+   "subsystem": "collision/bsp",
+   "confidence": "inferred",
+   "evidence": "box vs plane recursion collecting leaves; Ghidra FUN_08058cc2, size 168 [rename collision: box-vs-plane recursive traversal of plane tree collecting touched leaves via the store function; Q3 CM_BoxLeafnums_r]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058d6a",
+   "name": "CM_BoxLeafnums",
+   "signature": "int CM_BoxLeafnums(float *mins, float *maxs, int32 *items, int32 capacity, int32 *last_leaf_out)",
+   "subsystem": "collision/bsp",
+   "confidence": "inferred",
+   "evidence": "builds leaf list over a box, returns count; Ghidra FUN_08058d6a, size 113 [rename collision: sets up leaf list (items, capacity, last_leaf_out), calls the _r traversal from root, returns count; Q3 CM_BoxLeafnums signature (mins,maxs,list,max,lastLeaf); callers chunks 022/023 are area/snapshot leaf queries]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058ddc",
+   "name": "cm_node_point_contents",
+   "signature": "uint32 cm_node_point_contents(float *point, struct cbrushnode_s *node)",
+   "subsystem": "collision/bsp",
+   "confidence": "unknown",
+   "evidence": "point query OR of brush contents, AABB then planes; Ghidra FUN_08058ddc, size 432",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08058f8c",
+   "name": "CM_PointContents",
+   "signature": "uint32 CM_PointContents(float *point, int model_index)",
+   "subsystem": "collision/bsp",
+   "confidence": "inferred",
+   "evidence": "world leaf or model leaf bounds check then node query; Ghidra FUN_08058f8c, size 268 [rename collision: returns contents bitmask for a point in a model's leaf/brush set (0 when outside leaf bounds); Q3 CM_PointContents]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08059098",
+   "name": "CM_TransformedPointContents",
+   "signature": "uint32 CM_TransformedPointContents(const float *point, int model_index, const float *origin, const float *angles)",
+   "subsystem": "collision/static-model",
+   "confidence": "inferred",
+   "evidence": "model-local point, angle vectors when non-zero or NaN; Ghidra FUN_08059098, size 237 [rename collision: transforms point by origin and, when angles non-zero/NaN, by model axes then queries model contents; Q3 CM_TransformedPointContents]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08059186",
+   "name": "CM_ClusterPVS",
+   "signature": "const unsigned char *CM_ClusterPVS(int index)",
+   "subsystem": "collision/table",
+   "confidence": "inferred",
+   "evidence": "base + index*stride with range and enable check; Ghidra FUN_08059186, size 66 [rename collision: asm: cluster bounds check vs 0x8188e44 (numClusters), stride 0x8188e48 (clusterBytes), base 0x8188e4c (visibility), 0x8188e50 flag; returns all-visible/base ptr when invalid; callers pass CM_LeafCluster result; Q3 CM_ClusterPVS]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080591c8",
+   "name": "Vec3_CopyBits_080591c8",
+   "signature": "void Vec3_CopyBits_080591c8(float *src, float *dst)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080591f8",
+   "name": "Vec3_Sub_080591f8",
+   "signature": "void Vec3_Sub_080591f8(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub, cm_vec3_sub_b, Vec3_Subtract_0809e546; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805923c",
+   "name": "Vec3_Dot_0805923c",
+   "signature": "float Vec3_Dot_0805923c(float *a, float *b)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body ((a0*b0+a1*b1)+a2*b2) in st(0); same byte family as Vec3_Dot_080ab260. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_dot, Vec3_Dot_080ab260, Vec3_Dot_080b93c4; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08059270",
+   "name": "cm_scratch_acquire",
+   "signature": "void cm_scratch_acquire(int *state)",
+   "subsystem": "collision/scratch",
+   "confidence": "unknown",
+   "evidence": "increments scratch slot counter, copies six words; Ghidra FUN_08059270, size 68",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080592b4",
+   "name": "cm_scratch_get_pair",
+   "signature": "void cm_scratch_get_pair(int *a, int *b)",
+   "subsystem": "collision/scratch",
+   "confidence": "unknown",
+   "evidence": "two words from scratch slot; Ghidra FUN_080592b4, size 45",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080592e2",
+   "name": "CM_TempBoxModel",
+   "signature": "uint32 CM_TempBoxModel(float *a, float *b, uint32 tag)",
+   "subsystem": "collision/scratch",
+   "confidence": "inferred",
+   "evidence": "stages two segments and a tag word, returns 0x3ff; Ghidra FUN_080592e2, size 118 [rename collision: asm: fetches per-thread slot pair, copies mins/maxs into slot box, stores contents at +0xc, returns handle 0x3ff (the temp-box model handle); callers chunks 023/045 use it for entity bounds clip; Q3 CM_TempBoxModel]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08059358",
+   "name": "cm_model_get",
+   "signature": "struct cmodel_s *cm_model_get(int index)",
+   "subsystem": "collision/static-model",
+   "confidence": "unknown",
+   "evidence": "model table element or scratch model; Ghidra FUN_08059358, size 70",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805939e",
+   "name": "cm_model_surface_mask",
+   "signature": "uint32 cm_model_surface_mask(int index)",
+   "subsystem": "collision/static-model",
+   "confidence": "unknown",
+   "evidence": "OR of leaf surface and brush masks; Ghidra FUN_0805939e, size 34",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080593c0",
+   "name": "cm_model_radius",
+   "signature": "float cm_model_radius(int index)",
+   "subsystem": "collision/static-model",
+   "confidence": "unknown",
+   "evidence": "model header float at +0x18; Ghidra FUN_080593c0, size 34",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080593e2",
+   "name": "Mat3_TransformVecInPlace_080593e2",
+   "signature": "void Mat3_TransformVecInPlace_080593e2(float *v, float *m)",
+   "subsystem": "math/mat3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body copies v to tmp then v[i]=Vec3_Dot(row i of m, tmp) with rows at m, m+3, m+6 (chunk_004 reconstruction, 107-byte body): in-place 3x3 matrix times vector. Observed in disassembly and reconstructed source; no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805944e",
+   "name": "Mat3_TransposeBits_0805944e",
+   "signature": "void Mat3_TransposeBits_0805944e(float *in, float *out)",
+   "subsystem": "math/mat3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Nested 3x3 loop copying words out[c*3+r]=in[r*3+c] with integer moves (chunk_004); suffixed because Mat3_Transpose_080a9394 exists. Observed in disassembly and reconstructed source; no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080594ba",
+   "name": "Angles_ToVectorsNegRight_080594ba",
+   "signature": "void Angles_ToVectorsNegRight_080594ba(float *angles, float *axes)",
+   "subsystem": "math/angles",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Calls Angles_ToVectors(angles, axes, axes+3, axes+6) then negates the second row (right vector) via Vec3_Negate; collision-module local wrapper. Observed in disassembly and reconstructed source; no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080594f6",
+   "name": "cm_brush_box_test",
+   "signature": "void cm_brush_box_test(struct traceWork_s *trace, struct cbrush_s *brush, struct trace_s *hit)",
+   "subsystem": "collision/brush",
+   "confidence": "unknown",
+   "evidence": "box overlap then per-plane separation, all-solid fallback; Ghidra FUN_080594f6, size 319",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08059636",
+   "name": "cm_node_trace",
+   "signature": "void cm_node_trace(struct traceWork_s *trace, struct cbrushnode_s *node, struct trace_s *hit)",
+   "subsystem": "collision/bsp",
+   "confidence": "unknown",
+   "evidence": "recursive BSP trace over leaf brushes and split planes; Ghidra FUN_08059636, size 408",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080597ce",
+   "name": "cm_leaf_box_brush_trace",
+   "signature": "uint8 cm_leaf_box_brush_trace(struct traceWork_s *trace, struct cLeaf_s *leaf, struct trace_s *hit)",
+   "subsystem": "collision/leaf",
+   "confidence": "unknown",
+   "evidence": "leaf bounds overlap then node trace; Ghidra FUN_080597ce, size 170",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08059878",
+   "name": "cm_leaf_trace",
+   "signature": "void cm_leaf_trace(struct traceWork_s *trace, struct cLeaf_s *leaf, struct trace_s *hit)",
+   "subsystem": "collision/leaf",
+   "confidence": "unknown",
+   "evidence": "brush mask then surface trace; Ghidra FUN_08059878, size 102",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080598de",
+   "name": "cm_trace_aabb_bounds",
+   "signature": "void cm_trace_aabb_bounds(struct traceWork_s *trace, struct trace_s *hit)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "top and bottom points against expanded bounds circle; Ghidra FUN_080598de, size 878",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08059c4c",
+   "name": "cm_trace_leaves",
+   "signature": "void cm_trace_leaves(struct traceWork_s *trace, struct trace_s *hit)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "expanded box leaf collection then leaf traces; Ghidra FUN_08059c4c, size 371",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08059dc0",
+   "name": "cm_brush_trace_planes",
+   "signature": "void cm_brush_trace_planes(struct traceWork_s *trace, struct cbrush_s *brush, struct trace_s *hit)",
+   "subsystem": "collision/brush",
+   "confidence": "unknown",
+   "evidence": "axis faces then brush planes, best entry side; Ghidra FUN_08059dc0, size 1056",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805a1e0",
+   "name": "cm_trace_node_ray",
+   "signature": "void cm_trace_node_ray(struct traceWork_s *trace, struct cbrushnode_s *node, float *seg_start, float *seg_end, struct trace_s *hit)",
+   "subsystem": "collision/bsp",
+   "confidence": "unknown",
+   "evidence": "recursive ray traversal splitting the segment at node planes; Ghidra FUN_0805a1e0, size 968",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805a5a8",
+   "name": "cm_leaf_ray_trace",
+   "signature": "bool cm_leaf_ray_trace(struct traceWork_s *trace, struct cLeaf_s *leaf, struct trace_s *hit)",
+   "subsystem": "collision/leaf",
+   "confidence": "unknown",
+   "evidence": "leaf bounds vs sweep box, then node ray trace; Ghidra FUN_0805a5a8, size 262",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805a6ae",
+   "name": "cm_leaf_surface_trace",
+   "signature": "void cm_leaf_surface_trace(struct traceWork_s *trace, struct cLeaf_s *leaf, struct trace_s *hit)",
+   "subsystem": "collision/leaf",
+   "confidence": "unknown",
+   "evidence": "surface entries of a leaf while fraction non-zero; Ghidra FUN_0805a6ae, size 185",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805a768",
+   "name": "cm_trace_endpoint_sphere",
+   "signature": "int cm_trace_endpoint_sphere(struct traceWork_s *trace, float *a, float *b, float *c, float radius, struct trace_s *hit)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "sphere-vs-segment quadratic at a point, returns 1 when no contact; Ghidra FUN_0805a768, size 502",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805a95e",
+   "name": "cm_trace_vertical_capsule",
+   "signature": "int cm_trace_vertical_capsule(struct traceWork_s *trace, float *center, float height, float radius, struct trace_s *hit)",
+   "subsystem": "collision/trace",
+   "confidence": "unknown",
+   "evidence": "capsule quadratic with z-range check; partial (uninitialised local_14 on inside path); Ghidra FUN_0805a95e, size 691",
+   "status": "partial",
+   "notes": "PARTIAL: reads uninitialised stack word (Ghidra local_14) on the inside path; translated with 0.0."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188e08",
+   "name": "g_08188e08_verts",
+   "type": "vec3_t *",
+   "confidence": "unknown",
+   "evidence": "vertex array, 12-byte stride; indexed by vertex id in wedge sphere sweep"
+  },
+  {
+   "addr": "0x08188e10",
+   "name": "g_08188e10_edges",
+   "type": "struct CollisionEdge_s *",
+   "confidence": "unknown",
+   "evidence": "edge array, 0x30 stride"
+  },
+  {
+   "addr": "0x08188e30",
+   "name": "g_08188e30_aabbTrees",
+   "type": "struct CollisionAabbTree_s *",
+   "confidence": "unknown",
+   "evidence": "surface table, 0x20 stride, used by leaf surface trace"
+  },
+  {
+   "addr": "0x08188e40",
+   "name": "g_08188e40_brushes",
+   "type": "struct cbrush_s *",
+   "confidence": "inferred",
+   "evidence": "brush array 0x30 stride; contents at +0x0c, planes at +0x20"
+  },
+  {
+   "addr": "0x08188e34",
+   "name": "g_08188e34_numSubModels",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "model count for cm_model_get"
+  },
+  {
+   "addr": "0x08188e38",
+   "name": "g_08188e38_cmodels",
+   "type": "struct cmodel_s *",
+   "confidence": "inferred",
+   "evidence": "model table 0x48 stride, embedded leaf at +0x1c"
+  },
+  {
+   "addr": "0x08188e44",
+   "name": "g_08188e44_numClusters",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "table bound (cm_table_entry_address)"
+  },
+  {
+   "addr": "0x08188e48",
+   "name": "g_08188e48_clusterBytes",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "table stride"
+  },
+  {
+   "addr": "0x08188e4c",
+   "name": "g_08188e4c_visibility",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "table base"
+  },
+  {
+   "addr": "0x08188e50",
+   "name": "g_08188e50_vised",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "table enable flag"
+  },
+  {
+   "addr": "0x08188de0",
+   "name": "g_08188de0_nodes",
+   "type": "struct cnode_s *",
+   "confidence": "inferred",
+   "evidence": "plane-tree nodes, 8-byte stride"
+  },
+  {
+   "addr": "0x08188de8",
+   "name": "g_08188de8_leafs",
+   "type": "struct cLeaf_s *",
+   "confidence": "inferred",
+   "evidence": "leaves, 0x2c stride"
+  },
+  {
+   "addr": "0x08188df0",
+   "name": "g_08188df0_brushNodes",
+   "type": "struct cbrushnode_s *",
+   "confidence": "inferred",
+   "evidence": "BSP nodes, 0x14 stride"
+  },
+  {
+   "addr": "0x08188dd0",
+   "name": "g_08188dd0_materials",
+   "type": "struct cmodel_s *",
+   "confidence": "inferred",
+   "evidence": "second model table, 0x48 stride; side tag indexes it"
+  },
+  {
+   "addr": "0x08188dc4",
+   "name": "g_08188dc4_numStaticModels",
+   "type": "int",
+   "confidence": "observed",
+   "evidence": "static model count in cm_load_static_models"
+  },
+  {
+   "addr": "0x08188dc8",
+   "name": "g_08188dc8_staticModels",
+   "type": "struct cm_static_model_s *",
+   "confidence": "observed",
+   "evidence": "static model array allocated as CM_CreateStaticModel, 0x50 stride"
+  },
+  {
+   "addr": "0x08188e58",
+   "name": "g_08188e58_entityString",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "entity string cursor"
+  },
+  {
+   "addr": "0x08188eec",
+   "name": "g_08188eec_liveWindingCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "live block count (cm_block_alloc/free)"
+  },
+  {
+   "addr": "0x08188ef0",
+   "name": "g_08188ef0_peakWindingCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "peak block count"
+  },
+  {
+   "addr": "0x08140020",
+   "name": "g_08140020",
+   "type": "const char[]",
+   "confidence": "observed",
+   "evidence": "message string, double-free"
+  },
+  {
+   "addr": "0x08140120",
+   "name": "g_msgInvalidStaticModelName",
+   "type": "const char[]",
+   "confidence": "observed",
+   "evidence": "message string, empty model name"
+  },
+  {
+   "addr": "0x08140140",
+   "name": "g_msgStaticModelZeroScaleX",
+   "type": "const char[]",
+   "confidence": "observed",
+   "evidence": "message string, zero scale x"
+  },
+  {
+   "addr": "0x08140180",
+   "name": "g_msgStaticModelZeroScaleY",
+   "type": "const char[]",
+   "confidence": "observed",
+   "evidence": "message string, zero scale y"
+  },
+  {
+   "addr": "0x081401c0",
+   "name": "g_msgStaticModelZeroScaleZ",
+   "type": "const char[]",
+   "confidence": "observed",
+   "evidence": "message string, zero scale z"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "cm_plane_s",
+   "size": "unknown (type byte at 0x10)",
+   "evidence": "plane normal/dist at 0x00/0x0c; axis type at 0x10 in cm_plane_tree_find_leaf and brush planes"
+  },
+  {
+   "name": "cm_plane_node_s",
+   "size": "0x08",
+   "evidence": "plane-tree node: plane*, front at +4, back at +6"
+  },
+  {
+   "name": "cm_brush_side_s",
+   "size": "0x08",
+   "evidence": "brush side: plane*, model tag at +4"
+  },
+  {
+   "name": "cm_brush_s",
+   "size": "0x30",
+   "evidence": "mins 0x00, contents 0x0c, maxs 0x10, side count 0x1c, sides 0x20, face tags 0x24"
+  },
+  {
+   "name": "cm_leaf_s",
+   "size": "0x2c",
+   "evidence": "first surface/count, brush/surface masks at +4/+8, bounds 0x0c/0x18, node index 0x24, aux 0x28"
+  },
+  {
+   "name": "cm_node_s",
+   "size": "0x14",
+   "evidence": "axis, count, mask, split/brush-ref union at 0x08, extent 0x0c, child offsets 0x10"
+  },
+  {
+   "name": "cm_surface_s",
+   "size": "0x20",
+   "evidence": "surface table stride"
+  },
+  {
+   "name": "cm_wedge_s",
+   "size": "0x48",
+   "evidence": "three 16-byte planes, vertex indices at 0x30, edge indices at 0x3c"
+  },
+  {
+   "name": "cm_edge_s",
+   "size": "0x30",
+   "evidence": "p0 at 0x0c, p1 at 0x18, normal at 0x24"
+  },
+  {
+   "name": "cm_wall_s",
+   "size": "0x1c",
+   "evidence": "2D normal, dist, z base/slope, tangent range"
+  },
+  {
+   "name": "cm_aabb_s",
+   "size": "0x18",
+   "evidence": "mins/maxs pair via trace bounds_ref"
+  },
+  {
+   "name": "cm_trace_s",
+   "size": "partial (>= 0xb8)",
+   "evidence": "start 0x00, end 0x0c, inv_delta 0x18, delta 0x24, box_bias 0x5c, bounds 0x68/0x74, mask 0x80, radius 0x8c, tolerance 0x90, half_extent 0x94, stamps 0xa0/0xa4/0xa8, surface_ref 0xb0, bounds_ref 0xb4"
+  },
+  {
+   "name": "cm_hit_s",
+   "size": "0x24",
+   "evidence": "fraction 0x00, normal 0x04, surface value 0x14, surface 0x18, flags 0x1c, all_solid 0x22, start_solid 0x23"
+  },
+  {
+   "name": "cm_model_s",
+   "size": "0x48",
+   "evidence": "radius at 0x18, embedded leaf at 0x1c"
+  },
+  {
+   "name": "cm_leaf_list_s",
+   "size": "0x2c",
+   "evidence": "count/capacity/overflow/items, box 0x10/0x1c, last leaf 0x28"
+  },
+  {
+   "name": "cm_static_model_s",
+   "size": "0x50",
+   "evidence": "handle 0x04, origin 0x08, 3x3 axes 0x14, bounds 0x38/0x44"
+  }
+ ],
+ "open_questions": [
+  "0x0805a95e cm_trace_vertical_capsule reads an uninitialised stack word (Ghidra local_14) on the inside path; the binary's value is unknown, translated with 0.0 (partial).",
+  "The x87 longdouble intermediates in the decompiled code are reproduced with float/double arithmetic; bit-exact parity needs an objdump-level rounding check on the long chains (notably 0x08056490 and 0x0805a768).",
+  "0x080585fe passes model_buf+7 to cm_static_model_init and copies unbounded tokens with strcpy into 64-byte buffers; the preserved overflow behaviour must be reviewed before any hardening.",
+  "Ghidra shows 0x080575c0, 0x08058170 and 0x08058c30 as void; the binary returns the tail-call result, so they are typed with a return value. Confirm against callers in other chunks.",
+  "LAB_08058148 and LAB_0805815c (callbacks passed to the model registry) are not in this chunk's function list; referenced as fn_08058148 and fn_0805815c. Their owning chunk should provide them.",
+  "Model field +0x40 is read as float in cm_brush_trace_planes but is the leaf node index (int) in cm_point_contents; this aliasing is unresolved. The hit surface pointer (0x18) may be stored via an int-to-float conversion in the binary; unverified.",
+  "Out-of-chunk callee semantics (fn_0805d552, fn_0805621a, fn_080a6922, fn_080a71b6/738c, fn_080c59da, fn_080c75f6, fn_080c7ab8) are inferred from call sites only; their prototypes in chunk_004_types.h need the owning chunks to confirm."
+ ]
+}

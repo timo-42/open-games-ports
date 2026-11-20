@@ -1,0 +1,708 @@
+{
+ "chunk": 37,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080d006a",
+   "name": "build_bl_tree",
+   "signature": "int build_bl_tree(struct deflate_state_s *s)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c build_bl_tree: scan_tree(ltree), scan_tree(dtree), build_tree(bl_desc), bl_order table at 0x815108c; no string, name from the structure",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d0129",
+   "name": "send_all_trees",
+   "signature": "void send_all_trees(struct deflate_state_s *s, int lcodes, int dcodes, int blcodes)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c send_all_trees: writes lcodes-257 (5 bits), dcodes-1 (5), blcodes-4 (4), the bit-length code lengths in bl_order, then send_tree for ltree and dtree",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d05cd",
+   "name": "tr_stored_block",
+   "signature": "void tr_stored_block(struct deflate_state_s *s, byte *buf, uint32 stored_len, int last)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c _tr_stored_block: 3-bit block header (STORED_BLOCK << 1 | last), then copy_block with header",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d06fb",
+   "name": "tr_align",
+   "signature": "void tr_align(struct deflate_state_s *s)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c _tr_align: static-tree empty block (END_BLOCK code 0, length 7 from static_ltree[256]), flushed, sent twice when last_eob_len is short",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d0b69",
+   "name": "tr_flush_block",
+   "signature": "void tr_flush_block(struct deflate_state_s *s, byte *buf, uint32 stored_len, int eof)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c _tr_flush_block: builds trees when level > 0, picks stored / static / dynamic block by length, then init_block and optional bi_windup",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d0efb",
+   "name": "tr_tally",
+   "signature": "bool tr_tally(struct deflate_state_s *s, uint32 dist, uint32 lc)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c _tr_tally: stores one literal or (distance, length) pair and bumps the frequency counts; returns true when the literal buffer is full",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d1077",
+   "name": "compress_block",
+   "signature": "void compress_block(struct deflate_state_s *s, const struct ct_data *ltree, const struct ct_data *dtree)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c compress_block: emits the buffered literals and matches with the given trees, then END_BLOCK and last_eob_len",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d1822",
+   "name": "set_data_type",
+   "signature": "void set_data_type(struct deflate_state_s *s)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c set_data_type: classifies the block as binary or ascii from literal frequencies (bytes 0..6 and 128..255 count as binary; 7..127 as ascii)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d18bc",
+   "name": "bi_reverse",
+   "signature": "uint32 bi_reverse(uint32 code, int len)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c bi_reverse: reverses the low len bits of code",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d18ea",
+   "name": "bi_flush",
+   "signature": "void bi_flush(struct deflate_state_s *s)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c bi_flush: writes out whole bytes from the 16-bit bit buffer, keeps the remainder",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d19ad",
+   "name": "bi_windup",
+   "signature": "void bi_windup(struct deflate_state_s *s)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c bi_windup: flushes the bit buffer to a byte boundary and clears it",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d1a44",
+   "name": "copy_block",
+   "signature": "void copy_block(struct deflate_state_s *s, byte *buf, int len, int header)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 trees.c copy_block: byte-aligns, optionally writes LEN and NLEN, then copies len raw bytes into pending output",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d1b14",
+   "name": "zlib_uncompress",
+   "signature": "int zlib_uncompress(byte *dest, uint32 *destLen, const byte *source, uint32 sourceLen)",
+   "subsystem": "compression/zlib",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 uncompress(): inflateInit_ with version \"1.1.4\", inflate(Z_FINISH) into the caller's buffer, total_out to *destLen, inflateEnd",
+   "status": "translated",
+   "notes": "Redundant avail_in/avail_out equality checks are kept; they are always true on ILP32."
+  },
+  {
+   "addr": "0x080d1bfc",
+   "name": "unzlocal_getShort",
+   "signature": "int unzlocal_getShort(void *fp, uint32 *out)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzlocal_getShort: reads a little-endian 16-bit ZIP field, sign-extended into *out; always returns 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d1c34",
+   "name": "unzlocal_getLong",
+   "signature": "int unzlocal_getLong(void *fp, uint32 *out)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzlocal_getLong: reads a little-endian 32-bit ZIP field into *out; always returns 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d1c6b",
+   "name": "unzlocal_strcmpcasenosensitive_internal",
+   "signature": "int unzlocal_strcmpcasenosensitive_internal(const char *fileName1, const char *fileName2)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c strcmpcasenosensitive_internal: ASCII case-folded string compare (folds 'a'..'z' only), returns -1, 0 or 1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d1d10",
+   "name": "unzStringFileNameCompare",
+   "signature": "int unzStringFileNameCompare(const char *fileName1, const char *fileName2, int iCaseSensitivity)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzStringFileNameCompare: iCaseSensitivity 0 or 1 selects strcmp, any other value selects the case-folded compare",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d1d5a",
+   "name": "unzlocal_SearchCentralDir",
+   "signature": "uint32 unzlocal_SearchCentralDir(void *fp)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzlocal_SearchCentralDir: scans back up to 0xffff bytes from EOF in 1 KiB steps for the end-of-central-directory signature \"PK\\5\\6\"; returns its file offset or 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d1ef8",
+   "name": "unzReOpen",
+   "signature": "struct unz_s *unzReOpen(const char *path, struct unz_s *file_to_reopen)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzReOpen: opens the archive path again and clones the state of an already open unzFile (0x80 bytes) with the new handle and no open entry",
+   "status": "translated",
+   "notes": "malloc result is not checked before the 0x80-byte copy, as in the binary."
+  },
+  {
+   "addr": "0x080d1f69",
+   "name": "unzOpen",
+   "signature": "struct unz_s *unzOpen(const char *path)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzOpen: opens \"rb\", locates the end-of-central-directory record, validates the disk and entry counts and offsets, then clones the 0x80-byte state and positions on the first entry",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d224e",
+   "name": "unzClose",
+   "signature": "int unzClose(struct unz_s *file)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzClose: closes the open entry (if any), closes the archive handle, frees the state",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d22a1",
+   "name": "unzGetGlobalInfo",
+   "signature": "int unzGetGlobalInfo(struct unz_s *file, struct unz_global_info_s *pglobal_info)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzGetGlobalInfo: copies number_entry and size_comment of the archive",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d22d9",
+   "name": "DosDateToTmuDate",
+   "signature": "void DosDateToTmuDate(uint32 ulDosDate, struct tm_unz_s *ptm)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c DosDateToTmuDate: unpacks a 32-bit MS-DOS date/time (years from 1980)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d234d",
+   "name": "unzlocal_GetCurrentFileInfoInternal",
+   "signature": "int unzlocal_GetCurrentFileInfoInternal(struct unz_s *file, struct unz_file_info_s *pfile_info, uint32 *pfile_info_internal, char *szFileName, uint32 fileNameBufferSize, void *extraField, uint32 extraFieldBufferSize, char *szComment, uint32 commentBufferSize)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzlocal_GetCurrentFileInfoInternal: seeks to the current central-directory entry, reads its fields into pfile_info, copies name/extra/comment into the caller's buffers (skipping what does not fit), and returns the offset of the local header",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d2821",
+   "name": "unzGetCurrentFileInfo",
+   "signature": "int unzGetCurrentFileInfo(struct unz_s *file, struct unz_file_info_s *pfile_info, char *szFileName, uint32 fileNameBufferSize, void *extraField, uint32 extraFieldBufferSize, char *szComment, uint32 commentBufferSize)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzGetCurrentFileInfo: the public wrapper with no internal-info output",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d286d",
+   "name": "unzGoToFirstFile",
+   "signature": "int unzGoToFirstFile(struct unz_s *file)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzGoToFirstFile: positions on the first central-directory entry and loads its info",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d2915",
+   "name": "unzGoToNextFile",
+   "signature": "int unzGoToNextFile(struct unz_s *file)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzGoToNextFile: advances past the current entry (header 0x2e + name + extra + comment) and loads it; UNZ_END_OF_LIST_OF_FILE at the end",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d2a03",
+   "name": "unzGetOffset",
+   "signature": "int unzGetOffset(struct unz_s *file, uint32 *pos)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzGetOffset: returns the current central-directory position",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d2a35",
+   "name": "unzSetOffset",
+   "signature": "int unzSetOffset(struct unz_s *file, uint32 pos)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzSetOffset: moves to a central-directory position and reloads that entry's info",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d2ac7",
+   "name": "unzLocateFile",
+   "signature": "int unzLocateFile(struct unz_s *file, const char *szFileName, int iCaseSensitivity)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzLocateFile: walks the central directory for a name (names of 255 bytes or more are rejected); restores the position when not found",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d2bf6",
+   "name": "unzlocal_CheckCurrentFileCoherencyHeader",
+   "signature": "int unzlocal_CheckCurrentFileCoherencyHeader(struct unz_s *s, uint32 *piSizeVar, uint32 *poffset_local_extrafield, uint32 *psize_local_extrafield)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzlocal_CheckCurrentFileCoherencyHeader: re-reads the local header of the current entry and cross-checks it with the central directory; reports the variable-size block and the local extra-field location",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d2e9e",
+   "name": "unzOpenCurrentFile",
+   "signature": "int unzOpenCurrentFile(struct unz_s *file)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzOpenCurrentFile: validates the local header, allocates the 100-byte read state with a 16 KiB buffer, and starts inflate (raw deflate, windowBits -15) for compressed entries",
+   "status": "translated",
+   "notes": "UNZ_BADZIPFILE for a method other than 0 or 8 is computed and discarded by the original; the entry still opens."
+  },
+  {
+   "addr": "0x080d3094",
+   "name": "unzReadCurrentFile",
+   "signature": "int unzReadCurrentFile(struct unz_s *file, void *buf, uint32 len)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzReadCurrentFile: returns bytes read from the open entry; stored entries are copied directly, deflated ones go through inflate(Z_SYNC_FLUSH) with 16 KiB refills",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d3384",
+   "name": "unzTellCurrentFile",
+   "signature": "int unzTellCurrentFile(struct unz_s *file)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzTellCurrentFile: uncompressed bytes already delivered from the open entry",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d33c5",
+   "name": "unzeof",
+   "signature": "int unzeof(struct unz_s *file)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzeof: 1 when the open entry has no uncompressed bytes left, 0 otherwise",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d3416",
+   "name": "unzReadLocalExtraField",
+   "signature": "uint32 unzReadLocalExtraField(struct unz_s *file, void *buf, uint32 len)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzReadLocalExtraField: with buf NULL returns the unread local extra-field length; otherwise reads from it (the original reads the whole remainder into buf) and returns the count copied",
+   "status": "translated",
+   "notes": "Reads the whole remaining local extra field (not len) into buf; can overrun a short buffer. Faithful to the binary."
+  },
+  {
+   "addr": "0x080d3506",
+   "name": "unzCloseCurrentFile",
+   "signature": "int unzCloseCurrentFile(struct unz_s *file)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzCloseCurrentFile: frees the read buffer, ends inflate if it was started, frees the state",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d3597",
+   "name": "unzGetGlobalComment",
+   "signature": "uint32 unzGetGlobalComment(struct unz_s *file, char *szComment, uint32 commentBufferSize)",
+   "subsystem": "archive/zip",
+   "confidence": "inferred",
+   "evidence": "minizip unzip.c unzGetGlobalComment: reads the archive comment at end-of-central-directory + 22; returns its length or -1 on a failed read",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d3664",
+   "name": "zlibVersion",
+   "signature": "const char *zlibVersion(void)",
+   "subsystem": "compression/zlib",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 zlibVersion: returns the library version string",
+   "status": "translated",
+   "notes": "Returns the zlib version string 1.1.4 (same literal as used by inflateInit)."
+  },
+  {
+   "addr": "0x080d366e",
+   "name": "zError",
+   "signature": "const char *zError(int err)",
+   "subsystem": "compression/zlib",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 zError: maps a zlib return code to its message through the z_errmsg table (index 2 - err)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d3682",
+   "name": "zcalloc",
+   "signature": "void *zcalloc(void *opaque, uint32 items, uint32 size)",
+   "subsystem": "compression/zlib",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 zcalloc allocator hook: items * size bytes through the zeroed allocator; the result is returned unchanged",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d3699",
+   "name": "zcfree",
+   "signature": "void zcfree(void *opaque, void *ptr)",
+   "subsystem": "compression/zlib",
+   "confidence": "inferred",
+   "evidence": "zlib 1.1.4 zcfree deallocator hook: frees the block through the allocator wrapper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d36ac",
+   "name": "Dir_HasNonDotEntries",
+   "signature": "int Dir_HasNonDotEntries(const char *path)",
+   "subsystem": "platform/fs",
+   "confidence": "inferred",
+   "evidence": "directory probe: 1 if the directory opens and holds an entry other than \".\" and \"..\", else 0 (strings \".\" and \"..\" identify the skipped entries)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d3740",
+   "name": "Tty_StubReturnZero",
+   "signature": "int Tty_StubReturnZero(void)",
+   "subsystem": "platform/tty",
+   "confidence": "unknown",
+   "evidence": "returns 0; no string or caller evidence identifies the platform hook it stands in for",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d374a",
+   "name": "Tty_StubReturnOne",
+   "signature": "int Tty_StubReturnOne(void)",
+   "subsystem": "platform/tty",
+   "confidence": "unknown",
+   "evidence": "returns 1; no string or caller evidence identifies the platform hook it stands in for",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d3754",
+   "name": "Tty_StubReturnZeroAlt",
+   "signature": "int Tty_StubReturnZeroAlt(void)",
+   "subsystem": "platform/tty",
+   "confidence": "unknown",
+   "evidence": "returns 0; second instance of the same stub shape as Tty_StubReturnZero",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d375e",
+   "name": "Tty_StubNoopA",
+   "signature": "void Tty_StubNoopA(void)",
+   "subsystem": "platform/tty",
+   "confidence": "unknown",
+   "evidence": "empty body; no caller evidence identifies it",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d3764",
+   "name": "Sys_In_Restart_f",
+   "signature": "void Sys_In_Restart_f(void)",
+   "subsystem": "platform/tty",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Empty handler registered with Cmd_AddCommand(\"in_restart\") in Sys_InitCvars (0x080d3adc); Q3 unix_main Sys_In_Restart_f counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d376a",
+   "name": "Tty_DrainStdin",
+   "signature": "void Tty_DrainStdin(void)",
+   "subsystem": "platform/tty",
+   "confidence": "inferred",
+   "evidence": "reads stdin one byte at a time until read() reports an error (-1); a zero-byte read at EOF is not treated as the end",
+   "status": "translated",
+   "notes": "Loops until read() returns -1; a zero-byte read at EOF does not stop it. Faithful to the binary."
+  },
+  {
+   "addr": "0x080d3794",
+   "name": "Tty_EraseChar",
+   "signature": "void Tty_EraseChar(void)",
+   "subsystem": "platform/tty",
+   "confidence": "inferred",
+   "evidence": "writes the terminal sequence backspace, space, backspace to stdout to erase one echoed character",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d37fa",
+   "name": "Tty_HideInput",
+   "signature": "void Tty_HideInput(void)",
+   "subsystem": "platform/tty",
+   "confidence": "inferred",
+   "evidence": "hides the echoed input: on the first nested hide, erases the tty_con.cursor echoed characters; increments the hide depth",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d3842",
+   "name": "Tty_ShowInput",
+   "signature": "void Tty_ShowInput(void)",
+   "subsystem": "platform/tty",
+   "confidence": "inferred",
+   "evidence": "unhides the echoed input: decrements the hide depth and, when it returns to zero, rewrites the tty_con.cursor buffered characters",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d389e",
+   "name": "Tty_Shutdown",
+   "signature": "void Tty_Shutdown(void)",
+   "subsystem": "platform/tty",
+   "confidence": "inferred",
+   "evidence": "string \"Shutdown tty console\\n\" at 0x80d389e's call site identifies the shutdown; restores the saved termios with TCSADRAIN when the console is active [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Calls Com_Printf with the shutdown message and restores the saved termios with TCSADRAIN."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0815108c",
+   "name": "bl_order",
+   "type": "unsigned char[19]",
+   "confidence": "inferred",
+   "evidence": "bl_order: index of the bit-length code lengths in send_all_trees and build_bl_tree"
+  },
+  {
+   "addr": "0x081510a0",
+   "name": "static_ltree",
+   "type": "struct ct_data[288]",
+   "confidence": "inferred",
+   "evidence": "static_ltree: passed as the static literal tree in tr_flush_block; END_BLOCK entry folded to code 0 len 7 in tr_align"
+  },
+  {
+   "addr": "0x08151520",
+   "name": "static_dtree",
+   "type": "struct ct_data[30]",
+   "confidence": "inferred",
+   "evidence": "static_dtree: passed as the static distance tree in tr_flush_block"
+  },
+  {
+   "addr": "0x0815159f",
+   "name": "zlib_dist_code_low",
+   "type": "unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "dist_code table shifted one byte down; indexed with the unmodified distance for distances up to 256"
+  },
+  {
+   "addr": "0x081516a0",
+   "name": "zlib_dist_code_high",
+   "type": "unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "dist_code high half; indexed by (distance - 1) >> 7 for larger distances"
+  },
+  {
+   "addr": "0x081517a0",
+   "name": "_length_code",
+   "type": "unsigned char[256]",
+   "confidence": "inferred",
+   "evidence": "merged name from chunk_035; indexed by match length - 3 in tr_tally and compress_block"
+  },
+  {
+   "addr": "0x08150f40",
+   "name": "extra_lbits",
+   "type": "int[29]",
+   "confidence": "inferred",
+   "evidence": "extra_lbits: extra length bits per length code in compress_block"
+  },
+  {
+   "addr": "0x081518a0",
+   "name": "base_length",
+   "type": "int[29]",
+   "confidence": "inferred",
+   "evidence": "base_length: subtracted from the match length before sending its extra bits"
+  },
+  {
+   "addr": "0x08150fc0",
+   "name": "extra_dbits",
+   "type": "int[30]",
+   "confidence": "inferred",
+   "evidence": "extra_dbits: extra distance bits per distance code in compress_block"
+  },
+  {
+   "addr": "0x08151920",
+   "name": "base_dist",
+   "type": "int[30]",
+   "confidence": "inferred",
+   "evidence": "base_dist: subtracted from distance - 1 before sending its extra bits"
+  },
+  {
+   "addr": "0x081843e0",
+   "name": "z_errmsg",
+   "type": "const char *[]",
+   "confidence": "inferred",
+   "evidence": "merged name from chunk_035; zError indexes it by 2 - err"
+  },
+  {
+   "addr": "0x08606884",
+   "name": "ttycon_on",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "merged name from chunk_038; tested by Tty_Shutdown before restoring the terminal"
+  },
+  {
+   "addr": "0x086068a0",
+   "name": "tty_tc",
+   "type": "struct termios (0x3c)",
+   "confidence": "inferred",
+   "evidence": "merged name from chunk_038; saved termios restored by Tty_Shutdown"
+  },
+  {
+   "addr": "0x08606888",
+   "name": "tty_hideDepth",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "console input hide depth: incremented by Tty_HideInput, decremented by Tty_ShowInput"
+  },
+  {
+   "addr": "0x086068e0",
+   "name": "tty_con",
+   "type": "struct field_s",
+   "confidence": "inferred",
+   "evidence": "merged name from chunk_038; cursor (offset 0) is the echoed count and buffer (offset 0x18) the echoed text used by Tty_HideInput and Tty_ShowInput"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "z_stream_s",
+   "size": "0x38",
+   "evidence": "zlib z_stream field offsets used by zlib_uncompress, unzOpenCurrentFile, unzReadCurrentFile; same layout as chunk_036_types.h"
+  },
+  {
+   "name": "ct_data",
+   "size": "0x4",
+   "evidence": "tree element: fc (freq/code) at 0, dl (dad/len) at 2; used by all tree code here"
+  },
+  {
+   "name": "tree_desc",
+   "size": "0xc",
+   "evidence": "l_desc/d_desc/bl_desc at deflate_state offsets 0xb10/0xb1c/0xb28; same as chunk_036_types.h"
+  },
+  {
+   "name": "deflate_state_s",
+   "size": "unknown (fields recovered through 0x16b8)",
+   "evidence": "zlib 1.1.4 internal_state offsets: level 0x7c, dyn_ltree 0x8c, l_buf 0x1690, bi_valid 0x16b4; total size not established in this chunk"
+  },
+  {
+   "name": "field_s",
+   "size": "unknown (buffer at 0x18 of 256 bytes)",
+   "evidence": "console input field: cursor at 0, buffer at 0x18; same as chunk_038_types.h field_s"
+  },
+  {
+   "name": "unz_s",
+   "size": "0x80",
+   "evidence": "malloc(0x80) and 0x20-dword clone in unzOpen and unzReOpen; cur_file_info at 0x28 and pfile_in_zip_read at 0x7c"
+  },
+  {
+   "name": "unz_file_info_s",
+   "size": "0x50",
+   "evidence": "20-dword copy in unzlocal_GetCurrentFileInfoInternal; field offsets match unz_s cur_file_info uses (compression_method 0x34, crc 0x3c, sizes 0x40/0x44, name/extra/comment lengths 0x48/0x4c/0x50)"
+  },
+  {
+   "name": "file_in_zip_read_info_s",
+   "size": "0x64",
+   "evidence": "malloc(0x64) in unzOpenCurrentFile; stream at 4, pos_in_zipfile 0x3c, rest counts 0x50/0x54, file 0x58"
+  },
+  {
+   "name": "tm_unz_s",
+   "size": "0x18",
+   "evidence": "six uint32 fields written by DosDateToTmuDate"
+  },
+  {
+   "name": "unz_global_info_s",
+   "size": "0x8",
+   "evidence": "number_entry and size_comment copied by unzGetGlobalInfo"
+  },
+  {
+   "name": "unz_file_info_internal_s",
+   "size": "0x4",
+   "evidence": "offset_curfile written through the internal pointer in unzlocal_GetCurrentFileInfoInternal"
+  }
+ ],
+ "open_questions": [
+  "Duplicate definitions: z_stream_s, ct_data, static_tree_desc, tree_desc and deflate_state_s duplicate chunk_036_types.h (deflate_state_s here names l_buf and lit_bufsize that 036 leaves as padding); field_s duplicates chunk_038_types.h. The merge lane must keep one definition each before compiling chunks 036/037/038 together.",
+  "Placeholders are now merged names (inflateEnd, inflateInit2_, inflateInit_, inflate, init_block, build_tree, scan_tree, send_tree); the merge lane should confirm chunk_036 keeps these signatures. g_08606888 (tty hide depth) and the stub bodies at 0x080d3740..0x080d3764 have no merged name or caller evidence.",
+  "Total size of deflate_state_s is not asserted: the binary allocates it in deflateInit2 (outside this chunk), so only offsets are checked. Confirm the size from that allocation.",
+  "Rodata tables (g_0815108c, g_081510a0, g_08151520, g_0815159f, g_081516a0, g_08150f40, g_081518a0, g_08150fc0, g_08151920) are declared extern; their contents were not dumped and are assumed to match zlib 1.1.4 trees.c. Verify with objdump -s on .rodata before relying on the distance-code offset.",
+  "The stub and tty helpers (Tty_StubReturnZero, Tty_StubReturnOne, Tty_StubReturnZeroAlt, Tty_StubNoopA, Tty_StubNoopB) are named only by shape; the platform hook they stand in for is unknown.",
+  "Dead or faithful-but-odd behaviour is kept on purpose: unzReadLocalExtraField reads the full remaining length, zlib_uncompress keeps ILP32 equality checks, and Tty_DrainStdin never ends on EOF. Confirm whether the owner wants these preserved."
+ ]
+}

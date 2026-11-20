@@ -1,0 +1,1145 @@
+{
+ "chunk": 56,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x0812b5fe",
+   "name": "FX_SpinAxes",
+   "signature": "void FX_SpinAxes(struct fx_primitive_s *prim, struct fx_xform_s *xform, const struct fx_source_s *src);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "spins the transform axes by a random angle in [0,360) when primitive flags2 bit 0x100 is set; uses RotatePointAroundVector and CrossProduct callees (no string).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812b670",
+   "name": "FX_DispatchPrimitive",
+   "signature": "void FX_DispatchPrimitive(struct fx_draw_ctx_s *ctx, struct fx_xform_s *xform, uint32 a3, uint32 a4, uint32 a5);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "switch on the primitive segment type (prim+0x40, values 1..12 in the FX_BuildTemplate name table) choosing one of twelve per-type handlers.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812b8a8",
+   "name": "FX_DrawPrimitive",
+   "signature": "void FX_DrawPrimitive(uint32 unused, struct fx_emitter_s *emitter, struct fx_primitive_s *prim, uint32 a4, uint32 a5, const struct fx_source_s *src, uint32 a7, uint32 a8);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "builds the draw context (placement transform, spin, cull test) and dispatches to FX_DispatchPrimitive; the C++ EH cleanup landing pad (0x0812b947) is not modelled, only the normal exit path.",
+   "status": "partial",
+   "notes": "Partial: the C++ EH cleanup path (landing pad 0x0812b947) that runs the cull-state destructor before rethrow is not modelled; the normal exit path is complete."
+  },
+  {
+   "addr": "0x0812b978",
+   "name": "FX_SerializePlaybackList",
+   "signature": "void FX_SerializePlaybackList(struct FxScheduler *list, struct fx_stream_s *st);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "serialises a playback list. Read mode (0x08129e6c nonzero) rebuilds the list and drops invalid records; write mode writes the global list at 0x08a53804. Name follows the record fields (template, prim index).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ba8c",
+   "name": "FX_SerializePlayback",
+   "signature": "void FX_SerializePlayback(struct FxScheduledEffect *rec, struct fx_stream_s *st);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "field-by-field serialisation of a 0x50-byte playback record (template ref, prim index, 8 timing bytes, origin and three axes); field order fixed by the call sequence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bb56",
+   "name": "FX_ResetTemplateCount",
+   "signature": "void FX_ResetTemplateCount(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "clears the template registry count (0x08a53800); single store.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bb66",
+   "name": "FX_FindTemplate",
+   "signature": "struct FxEffectTemplate *FX_FindTemplate(const char *name);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "linear search of the 256-entry registry comparing template name (+0) with strcmp; returns NULL when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bbc0",
+   "name": "FX_RegisterTemplate",
+   "signature": "int FX_RegisterTemplate(struct FxEffectTemplate *tpl);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "appends to the registry; the overflow message \"^1Max effect templates of '%i' exceeded\" names the 0x100 capacity.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bc12",
+   "name": "FX_LoadTemplate",
+   "signature": "struct FxEffectTemplate *FX_LoadTemplate(const char *name);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "find-or-build wrapper around the effect parser, with a parse-tree RAII object (ctor 0x0813311e, dtor 0x08133196); the EH landing pad at 0x0812bcb3 is not modelled.",
+   "status": "partial",
+   "notes": "Partial: the EH landing pad (0x0812bcb3) that runs the parse-tree destructor before rethrow is not modelled; normal paths are complete."
+  },
+  {
+   "addr": "0x0812bcdc",
+   "name": "FX_ReleaseTemplatesExcept",
+   "signature": "void FX_ReleaseTemplatesExcept(struct FxEffectTemplate *keep);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "releases every registry template except the argument (its prims are released, the template kept); if the argument was present it is moved to slot 0 and the count becomes 1, otherwise the count becomes 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bd5e",
+   "name": "FX_OnEvent",
+   "signature": "void FX_OnEvent(int type, int value);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "on event (type 1, value 0xffff) resets both pools (capacity 0x30 and 0x199) without freeing blocks; called from FX_ResetAll.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bd9c",
+   "name": "FX_Fabs",
+   "signature": "float FX_Fabs(float v);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "single fabs on a float; result is rounded to float before return.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bdb6",
+   "name": "FX_ClampF",
+   "signature": "float FX_ClampF(float v, float lo, float hi);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "clamps v to [lo, hi] with lo tested first (v < lo gives lo; hi < v gives hi).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bdf8",
+   "name": "Vec3_Clear_0812bdf8",
+   "signature": "void Vec3_Clear_0812bdf8(float *v);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "zeroes a three-float vector.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812be22",
+   "name": "Vec3_Set_0812be22",
+   "signature": "void Vec3_Set_0812be22(float *v, float x, float y, float z);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "stores three floats into a vector (x, y, z).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812be46",
+   "name": "Vec3_Copy_0812be46",
+   "signature": "void Vec3_Copy_0812be46(const float *src, float *dst);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "copies a vector from src to dst.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812be76",
+   "name": "Vec3_Sub_0812be76",
+   "signature": "void Vec3_Sub_0812be76(const float *a, const float *b, float *out);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "out = a - b, component-wise.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812beba",
+   "name": "Vec3_Scale_0812beba",
+   "signature": "void Vec3_Scale_0812beba(const float *v, float s, float *out);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "out = s * v, component-wise (scalar times vector).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bef2",
+   "name": "Vec3_MultAdd_0812bef2",
+   "signature": "void Vec3_MultAdd_0812bef2(const float *base, float scale, const float *dir, float *out);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "out = base + scale * dir (VectorMA shape).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bf46",
+   "name": "Vec3_Lerp",
+   "signature": "void Vec3_Lerp(const float *a, const float *b, float t, float *out);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "out = a + (b - a) * t (linear interpolation).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bfb0",
+   "name": "FX_ResetAll",
+   "signature": "void FX_ResetAll(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "calls the reset event (1, 0xffff); a shutdown wrapper.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bfcc",
+   "name": "FX_DrawCtxInit",
+   "signature": "void FX_DrawCtxInit(struct fx_draw_ctx_s *ctx);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "constructs the 8-byte cull state at ctx+0x08 (0x08129bac, dtor 0x08129bd8 in FX_DrawCtxFree).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bfe2",
+   "name": "FX_DrawCtxFree",
+   "signature": "void FX_DrawCtxFree(struct fx_draw_ctx_s *ctx);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "destroys the cull state at ctx+0x08.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812bff8",
+   "name": "FX_PlaybackAlloc",
+   "signature": "void *FX_PlaybackAlloc(uint32 size);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "allocates one playback record from the large pool (0x08a533e8).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c014",
+   "name": "FX_PlaybackFree",
+   "signature": "void FX_PlaybackFree(void *rec);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "returns a playback record to the large pool.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c030",
+   "name": "FX_PoolInitSmall",
+   "signature": "void FX_PoolInitSmall(struct FxPool *pool);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "pool config reset with capacity 0x30 and an empty block list.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c048",
+   "name": "FX_PoolInitLarge",
+   "signature": "void FX_PoolInitLarge(struct FxPool *pool);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "pool config reset with capacity 0x199 (409 elements per block) and an empty block list.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c060",
+   "name": "FX_PoolAlloc",
+   "signature": "void *FX_PoolAlloc(struct FxPool *pool, uint32 elemSize);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "block-pool allocator. Scans blocks for a free element, moves that block to the head, creates a block when none has one, pops the free list and zeroes 0x50 bytes. Block geometry (409 x 0x50 elements, header at 0x7ff0) inferred from this function and 0x0812c186.",
+   "status": "translated",
+   "notes": "Depends on out-of-chunk fn_0812411a (new block: prev head, capacity, elem size) for the block layout contract."
+  },
+  {
+   "addr": "0x0812c13e",
+   "name": "FX_PoolBlockMoveToFront",
+   "signature": "void FX_PoolBlockMoveToFront(struct FxPool *pool, struct FxPoolBlock *block);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "unlinks a block and prepends it to the pool block list.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c186",
+   "name": "FX_PoolFree",
+   "signature": "void FX_PoolFree(struct FxPool *pool, void *elem);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "returns an element to its block (0x081242b2 finds the block and returns the element). Blocks with all elements free are released, except the head with no spare neighbour.",
+   "status": "translated",
+   "notes": "Depends on out-of-chunk fn_081242b2 (block owning an element) and fn_08124292 (release block); whether fn_081242b2 also pushes the element onto the free list is unverified."
+  },
+  {
+   "addr": "0x0812c220",
+   "name": "FX_Alloc",
+   "signature": "void *FX_Alloc(uint32 size);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "allocation wrapper, tag 4, used for templates (0x68), primitives (0x2a4) and name strings; callers rely on zeroed fields.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c23c",
+   "name": "FX_TemplateReleasePrims",
+   "signature": "void FX_TemplateReleasePrims(struct FxEffectTemplate *tpl);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "releases the primitive lists of every primitive in a template (the primitives themselves are kept).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c272",
+   "name": "FX_LoadEffectFile",
+   "signature": "int FX_LoadEffectFile(struct ParseNode *tree, const char *name);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "format \"fx/%s.efx\" and \"Effect file load failed: %s: file not found\"; loads the file, copies it, parses it into the tree and frees the copy.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c34c",
+   "name": "FX_LoadMissingEffect",
+   "signature": "void FX_LoadMissingEffect(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "loads the default effect \"misc/missing_fx\" and reports a fatal error (level 1) when it is missing.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c38a",
+   "name": "FX_GetEffectByName",
+   "signature": "struct FxEffectTemplate *FX_GetEffectByName(const char *name);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "message \"Effect file '%s' must start with fx/.\"; strips a leading slash, requires the \"fx/\" prefix (case-insensitive), loads the rest and falls back to the missing-effect template.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c424",
+   "name": "FX_TemplateAddPrim",
+   "signature": "void FX_TemplateAddPrim(struct FxEffectTemplate *tpl, struct fx_primitive_s *prim);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "appends a primitive to a template; capacity 0x18 and message \"FxScheduler:  Error--too many primitives in an effect\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c45c",
+   "name": "FX_PrimHasMaterials",
+   "signature": "int FX_PrimHasMaterials(const struct fx_primitive_s *prim);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "when the material-requirement flag (0x08188ab0) is set, reports whether the shader list (lists[0], count at +0x6c) is non-empty.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c494",
+   "name": "FX_PrimValidate",
+   "signature": "int FX_PrimValidate(struct fx_primitive_s *prim);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "message \"^1FX Error, no materials defined for primitive template of type '%i'\"; segment types 1, 3 and 7 require materials.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c4f2",
+   "name": "FX_BuildTemplate",
+   "signature": "struct FxEffectTemplate *FX_BuildTemplate(struct ParseNode *root, const char *name);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "strings \"particle\", \"line\", \"tail\", \"cylinder\", \"emitter\", \"decal\", \"orientedparticle\", \"fxrunner\", \"light\", \"cameraShake\", \"flash\", \"cloud\" (segment types 1..12), \"^1FX Error while parsing segment type\", \"^1FX Error, invalid primitive template for effect\". Builds a template from the parse tree. The C++ EH landing pad is not in this function's body (no try regions), so status is translated; the partial mark is for the caller-side RAII contract only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c838",
+   "name": "FX_PtrListFree",
+   "signature": "void FX_PtrListFree(struct fx_ptr_list_s *list);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "frees a pointer list's storage; count and capacity are cleared only when storage existed.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c872",
+   "name": "FX_PtrListPush",
+   "signature": "void FX_PtrListPush(struct fx_ptr_list_s *list, int value);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "appends an int to a growable array (initial capacity 4, doubling); capacity is a 16-bit field.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c92c",
+   "name": "FX_PtrListAdd",
+   "signature": "void FX_PtrListAdd(struct fx_ptr_list_s *list, int value);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "thin wrapper around FX_PtrListPush.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c94c",
+   "name": "FX_CopyEffectName",
+   "signature": "void FX_CopyEffectName(const char *src, char *dst);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "copies an effect name (0x080b7470) and then strips its extension (0x080d6792).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812c972",
+   "name": "FX_StrNCaseCmp",
+   "signature": "int FX_StrNCaseCmp(const char *a, const char *b, int n);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "case-insensitive bounded string compare (tolower per char, signed char comparisons); returns -1, 0 or 1 like strncasecmp. Equal-length tail uses a raw byte compare, as in the binary.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ca0a",
+   "name": "ConfigBlock_GetName",
+   "signature": "char *ConfigBlock_GetName(struct ParseNode *node);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "parse-node accessor for the name field (offset 0x00). [rename fx-anim: objdump: returns [node+0]; ConfigTree name field (section 10).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ca14",
+   "name": "ConfigNode_GetNext",
+   "signature": "struct ParseNode *ConfigNode_GetNext(struct ParseNode *node);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "parse-node accessor for the sibling link (offset 0x04). [rename fx-anim: objdump: returns [node+4] (next link of ConfigTree list).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ca20",
+   "name": "ConfigBlock_GetFirstChild",
+   "signature": "struct ParseNode *ConfigBlock_GetFirstChild(struct ParseNode *node);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "parse-node accessor for the first child (offset 0x1c). [rename fx-anim: objdump: returns [node+0x1c] = ConfigBlock.firstChild.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ca2c",
+   "name": "ConfigNode_Self",
+   "signature": "struct ParseNode *ConfigNode_Self(struct ParseNode *node);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "identity on the tree root; used to pass the root to the builder. [rename fx-anim: objdump: returns its argument unchanged (identity accessor).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ca34",
+   "name": "FX_ClearFour",
+   "signature": "void FX_ClearFour(int *p);",
+   "subsystem": "fx/effects",
+   "confidence": "unknown",
+   "evidence": "zeroes four ints starting at +4; no caller in this chunk and the role is not identified.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ca62",
+   "name": "FX_ClearFourB",
+   "signature": "void FX_ClearFourB(int *p);",
+   "subsystem": "fx/effects",
+   "confidence": "unknown",
+   "evidence": "byte-identical duplicate of FX_ClearFour at 0x0812ca34; kept as a separate function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ca90",
+   "name": "FX_ClockReset",
+   "signature": "void FX_ClockReset(struct fx_clock_s *clock);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "resets the clock's time fields and its saved time (offset 0xf4).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812cad4",
+   "name": "FX_ClockAdvance",
+   "signature": "void FX_ClockAdvance(struct fx_clock_s *clock, int now);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "advances the clock; delta = now - time clamped to 0..200 ms unless time is paused (0x08a53c98+8). Copies the current 28-int state into the saved block.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812cb96",
+   "name": "FX_ClockAdvanceFixedStep",
+   "signature": "void FX_ClockAdvanceFixedStep(struct fx_clock_s *clock, int now);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "advances the clock in fixed 200 ms steps (0x08136ef6(200) plus two follow-up ticks) when the accumulated time lags the new time. The comparison uses accumTime (not time) as in the binary.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812cca2",
+   "name": "FX_BuildFrustumPlanes",
+   "signature": "void FX_BuildFrustumPlanes(struct FxSystem *sc, const struct fx_view_s *view, float farDelta);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "builds five (or six) frustum planes from the view's forward/right/up vectors and the half field-of-view angles (degrees * pi/360, double constant 0.008726646); the sixth (far) plane is the negated forward and is used when farDelta > 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812cef2",
+   "name": "FX_SetupFrustum",
+   "signature": "void FX_SetupFrustum(struct FxSystem *sc, const struct fx_view_s *view, float farDelta);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "copies the view origin, builds the frustum planes and sets the zoom scale tan(40 deg) / tan(fovX/2) (1.0 when fovX == 80). Constants 0.6981317007977318 (40 deg) and 0.017453292 (pi/180) are double literals.",
+   "status": "translated",
+   "notes": "Division done in double rather than x87 long double; last-bit difference possible."
+  },
+  {
+   "addr": "0x0812cf94",
+   "name": "FX_IsCulledByPlanes",
+   "signature": "int FX_IsCulledByPlanes(uint32 unused, const float *point, float radius, int count);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "sphere-vs-planes test over the first `count` planes of the frustum (dot(normal, point) - dist < -radius means outside). Returns 1 when outside a plane.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d014",
+   "name": "FX_IsCulledByPlanes2",
+   "signature": "int FX_IsCulledByPlanes2(uint32 unused, const float *point, float radius);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "the same sphere test over the second plane set (planes2 at +0x90, count at +0xf0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d0a2",
+   "name": "FX_IsSegmentCulled",
+   "signature": "int FX_IsSegmentCulled(uint32 unused, const float *a, const float *b, float marginA, float marginB, int count);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "segment-vs-planes test: returns 1 when some plane has both endpoints behind it by their margins (marginA for a, marginB for b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d16e",
+   "name": "FX_InitSampleRecord",
+   "signature": "void FX_InitSampleRecord(struct FxSystem *sc, float *rec, const float *start, const float *mins, const float *maxs, const float *end, int a7, uint32 mask);",
+   "subsystem": "fx/effects",
+   "confidence": "unknown",
+   "evidence": "calls an out-of-chunk initialiser (0x0805b894) on a float record and stores a 16-bit tag at +0x1c (0x3ff if rec[0] == 1.0, else 0x3fe). Role not identified.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d1e0",
+   "name": "FX_RendererSubmit_Stub",
+   "signature": "void FX_RendererSubmit_Stub(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Empty function; sole caller is Effect::SubmitToRenderer 0x08124a90 (passes FxSystem, 0x74-byte descriptor, fieldB4); renderer back end absent from the dedicated build.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d1e6",
+   "name": "FX_NoopB",
+   "signature": "void FX_NoopB(void);",
+   "subsystem": "fx/effects",
+   "confidence": "unknown",
+   "evidence": "empty function in the binary (return only).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d1f4",
+   "name": "FX_ScriptStringToText_Stub",
+   "signature": "int FX_ScriptStringToText_Stub(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns 0; caller MsgStream_WriteScrString passes (FxSystem, script string handle) and strlen()s the result, i.e. a handle-to-text lookup that the dedicated build stubs out.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d1fe",
+   "name": "FX_SerializeSlot",
+   "signature": "void FX_SerializeSlot(int *slot, struct fx_stream_s *st);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "serialises a 5-int slot (valid flag at 0, four values at 1..4) and clears the valid flag when reading.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d272",
+   "name": "FX_GetSpriteFrameCount_Stub",
+   "signature": "int FX_GetSpriteFrameCount_Stub(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns 0; callers Particle::UpdateFrame 0x0812672e and the sequence-frame code in chunk 058 pass (FxSystem, template id/seq) and compare the result with 1 to decide frame index 0 (sprite sequence frame count query).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d27c",
+   "name": "FX_IsEffectFlagged_Stub",
+   "signature": "int FX_IsEffectFlagged_Stub(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns 0; sole caller FxEffect_ResetSortKey 0x08135790 uses it to set sortKey = -1 for a flagged sortKey2 id; client query stubbed out.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d286",
+   "name": "FX_SubmitLight_Stub",
+   "signature": "void FX_SubmitLight_Stub(void);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Empty function; Light::Draw 0x08128d2a hands (world origin, size, colour rgb) to it (recon chunk 055 note).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d28c",
+   "name": "FX_NoopD",
+   "signature": "void FX_NoopD(void);",
+   "subsystem": "fx/effects",
+   "confidence": "unknown",
+   "evidence": "empty function in the binary (return only).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d292",
+   "name": "FX_NoopE",
+   "signature": "void FX_NoopE(void);",
+   "subsystem": "fx/effects",
+   "confidence": "unknown",
+   "evidence": "empty function in the binary (return only).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d298",
+   "name": "FX_RandomStep",
+   "signature": "uint32 FX_RandomStep(struct FxSystem *sc);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "returns the scene's random seed (+0xf4) and advances it by the multiplier 0x0369d035 (mod 2^32).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d2c8",
+   "name": "FX_SinCos",
+   "signature": "void FX_SinCos(float angle, float *s, float *c);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "sin and cos of a float angle, each computed in double and stored as float.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d2f6",
+   "name": "FX_Vec3Copy",
+   "signature": "void FX_Vec3Copy(const float *src, float *dst);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vector copy; identical to Vec3_Copy (0x0812be46).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d326",
+   "name": "FX_Vec3Negate",
+   "signature": "void FX_Vec3Negate(const float *src, float *dst);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vector negation by flipping the sign bit of each component.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d364",
+   "name": "Vec3_ScaleDup",
+   "signature": "void Vec3_ScaleDup(const float *v, float s, float *out);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "scalar-times-vector; identical to Vec3_Scale (0x0812beba).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d39c",
+   "name": "Vec3_MultAddDup",
+   "signature": "void Vec3_MultAddDup(const float *base, float scale, const float *dir, float *out);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "out = base + scale * dir; identical to Vec3_MultAdd (0x0812bef2).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d3f0",
+   "name": "Vec3_Dot_0812d3f0",
+   "signature": "float Vec3_Dot_0812d3f0(const float *a, const float *b);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "three-component dot product, accumulated left to right in x87 extended precision and returned unrounded (as the binary does).",
+   "status": "translated",
+   "notes": "Returns the x87 extended-precision sum unrounded, as the binary does."
+  },
+  {
+   "addr": "0x0812d424",
+   "name": "FX_PrimSetDefaults",
+   "signature": "void FX_PrimSetDefaults(struct fx_primitive_s *prim);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "default values for a new primitive (life, count, radius, height = (1,1); curves 0..1 count 3, 2..9 value 1, 10..23 value 0; defaults260 = (10,10),(1,1),(1,1),(1,1); sequence fields 0,1,0,1.0,0,1,0). Field roles from the key dispatcher at 0x08130248.",
+   "status": "translated",
+   "notes": "defaults260 (0x260..0x27f) role unidentified; sequence field names follow key order in 0x08130248 and are unverified."
+  },
+  {
+   "addr": "0x0812d986",
+   "name": "FX_PrimReleaseLists",
+   "signature": "void FX_PrimReleaseLists(struct fx_primitive_s *prim);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "releases the five pointer lists of a primitive (offsets 0x68..0x88).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812d9d6",
+   "name": "FX_ChannelTableInit",
+   "signature": "void FX_ChannelTableInit(uint32 unused, struct FxChannelInit *channels);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "zeroes the 0x600-byte channel table (24 x 0x40) and sets every vec2 slot used by the channels to (1,1) (extra slot (10,10) is not set here).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812daac",
+   "name": "FX_PrimBuildCurves",
+   "signature": "void FX_PrimBuildCurves(struct fx_primitive_s *prim, struct FxChannelInit *channels);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "for each active channel builds one sampled curve, sampling the life range at 0.5 (0x08131600); channel 0 uses 3 samples, others 1; channel 2 passes the flag.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812db5a",
+   "name": "FX_ParseVec2",
+   "signature": "int FX_ParseVec2(uint32 unused, const char *text, float *a, float *b);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "format \"%f %f\"; a single value is copied to the second output. Returns 1 when at least one number is read.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812dbc4",
+   "name": "FX_ParseVec3Pair",
+   "signature": "int FX_ParseVec3Pair(uint32 unused, const char *text, float *a, float *b);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "format \"%f %f %f   %f %f %f\"; accepts 3 numbers (copied to the second vector) or 6; counts 4 and 5 are rejected.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812dc70",
+   "name": "FX_ParseWaveFlags",
+   "signature": "uint8 FX_ParseWaveFlags(uint32 unused, const char *text, uint32 *flags);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "strings \"linear\", \"nonlinear\", \"wave\", \"random\", \"clamp\" (flags 1, 4, 8, 2, 0xc). Word slots are initialised from a 128-byte rodata block (0x0815fd76). Unknown words clear the return flag; a short token list returns 1 (binary behaviour).",
+   "status": "translated",
+   "notes": "The unbounded %s conversions write into 32-byte word slots, as in the binary; overlong input overflows the same way."
+  },
+  {
+   "addr": "0x0812de62",
+   "name": "FX_PrimParseMin",
+   "signature": "int FX_PrimParseMin(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"min\": parses a vec3 pair (both halves into one buffer) and stores the first vector as boundsMin (+0xa0); sets flags 0x60.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ded2",
+   "name": "FX_PrimParseMax",
+   "signature": "int FX_PrimParseMax(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"max\": same shape as FX_PrimParseMin, storing boundsMax (+0xac); sets flags 0x60.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812df42",
+   "name": "FX_PrimParseLife",
+   "signature": "int FX_PrimParseLife(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"life\" (dispatcher 0x08130248): parses a vec2 into prim->life (+0x58).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812df9e",
+   "name": "FX_PrimParseSpawnRange",
+   "signature": "int FX_PrimParseSpawnRange(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"spawnRange\": parses a vec2 and rejects a reversed pair (b < a) before storing it at +0x60.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e014",
+   "name": "FX_PrimParseDelay",
+   "signature": "int FX_PrimParseDelay(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"delay\": parses a vec2 into +0x48.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e070",
+   "name": "FX_PrimParseCount",
+   "signature": "int FX_PrimParseCount(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"count\": parses a vec2 into +0x50.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e0cc",
+   "name": "FX_PrimParseIntensity",
+   "signature": "int FX_PrimParseIntensity(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "keys \"bounce\" and \"intensity\": vec2 in [0,1] with a <= b; stored at +0x280 and sets flag 0x20.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e1c2",
+   "name": "FX_PrimParseOrigin",
+   "signature": "int FX_PrimParseOrigin(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"origin\": two vec3 values (min and max per axis); each axis pair is stored as a vec2 at +0xb8, +0xc0, +0xc8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e260",
+   "name": "FX_PrimParseOrigin2",
+   "signature": "int FX_PrimParseOrigin2(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"origin2\": same layout as FX_PrimParseOrigin, stored at +0xd0, +0xd8, +0xe0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e2fe",
+   "name": "FX_PrimParseRadius",
+   "signature": "int FX_PrimParseRadius(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"radius\": vec2 at +0xe8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e35c",
+   "name": "FX_PrimParseHeight",
+   "signature": "int FX_PrimParseHeight(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"height\": vec2 at +0xf0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e3ba",
+   "name": "FX_PrimParseWind",
+   "signature": "int FX_PrimParseWind(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"wind\": vec2 at +0xf8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e418",
+   "name": "FX_PrimParseRotation",
+   "signature": "int FX_PrimParseRotation(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"rotation\": vec2 at +0x220.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e476",
+   "name": "FX_MaxAbsFloor",
+   "signature": "float FX_MaxAbsFloor(uint32 unused, float a, float b);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "returns max(|a|, b) (the first argument is unused); used by FX_PrimParseRotationDelta.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e4aa",
+   "name": "FX_BuildEnvelopeCurve",
+   "signature": "void FX_BuildEnvelopeCurve(struct fx_primitive_s *prim, float start, float divisor, float rate, int slot, float weight);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "builds a 20-sample envelope (times i/19, values decaying by the factor 1 - w(rate/20*0.00065), w clamped by 0x0813163c) and stores it as curve slot `slot`, with weight vec2 (weight, weight). Table layout: [t0,v0,t1,v1,...] of 40 floats.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e616",
+   "name": "FX_BuildCurveRatio",
+   "signature": "void FX_BuildCurveRatio(struct fx_primitive_s *prim, float a, float b, int slot, float weight);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "builds a constant two-point curve (0, r), (1, r) with r = a / b (0 when b == 0) into curve slot `slot`, weight vec2 (weight, weight).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e6c4",
+   "name": "FX_BuildCurveRate",
+   "signature": "void FX_BuildCurveRate(struct fx_primitive_s *prim, float a, float b, float c, int slot, float weight);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "builds a two-point ramp (0,0), (1, v) with v = (a * c * 0.001f) / b (0 when b == 0) into curve slot `slot`, weight vec2 (weight, weight).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e784",
+   "name": "FX_PrimParseRotationDelta",
+   "signature": "int FX_PrimParseRotationDelta(struct fx_primitive_s *prim, const char *text);",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "key \"rotationDelta\" (dispatcher 0x08130248 string compare through 0x080b7bf8). Parses a vec2 (swapping a reversed pair), builds curve slot 10 from the life x-rate, and when the pair is not equal or NaN also sets flag 0x40000 and builds curve slot 11 from the life y-rate.",
+   "status": "translated",
+   "notes": "Uses the key name rotationDelta, matched via fn_080b7bf8 in 0x08130248 (outside this chunk)."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08a53400",
+   "name": "g_fxTemplates",
+   "type": "struct FxEffectTemplate *[0x100]",
+   "confidence": "inferred",
+   "evidence": "0x0812bb66 scans it by template name; 0x0812bbc0 appends with the 0x100 overflow message; 0x0812bcdc compacts it."
+  },
+  {
+   "addr": "0x08a53800",
+   "name": "g_fxTemplateCount",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "Count of valid entries in g_fxTemplates (0x0812bb56, 0x0812bbc0, 0x0812bcdc)."
+  },
+  {
+   "addr": "0x08a53804",
+   "name": "g_fxScheduler",
+   "type": "struct FxScheduler *",
+   "confidence": "inferred",
+   "evidence": "0x0812b978 reads its head at +4 for the write path."
+  },
+  {
+   "addr": "0x08a53808",
+   "name": "g_fxMissingTemplate",
+   "type": "struct FxEffectTemplate *",
+   "confidence": "observed",
+   "evidence": "0x0812c34c loads \"misc/missing_fx\" into it and reports \"ERROR: could not load default effect file\"; 0x0812c38a falls back to it."
+  },
+  {
+   "addr": "0x08a533e0",
+   "name": "g_fxPoolSmall",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "0x0812c030 sets its capacity to 0x30; reset from 0x0812bd5e."
+  },
+  {
+   "addr": "0x08a533e8",
+   "name": "g_fxPoolLarge",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "0x0812c048 sets capacity 0x199; playback records (0x50 bytes) come from 0x0812bff8."
+  },
+  {
+   "addr": "0x08188ab0",
+   "name": "g_fxRequireMaterials",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "0x0812c45c returns 1 unconditionally when this byte is zero."
+  },
+  {
+   "addr": "0x08188ac0",
+   "name": "g_fxSystem",
+   "type": "struct FxSystem *",
+   "confidence": "inferred",
+   "evidence": "0x0812cf94, 0x0812d014 and 0x0812d0a2 test planes at +0x20 and +0x90; 0x0812cef2 writes fovScale at +0xf8."
+  },
+  {
+   "addr": "0x08a53c98",
+   "name": "g_08a53c98",
+   "type": "struct FxFlagVar *",
+   "confidence": "inferred",
+   "evidence": "0x0812cad4 and 0x0812cb96 read byte +8 as the time-pause flag."
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "FxEffectTemplate",
+   "size": "0x68",
+   "evidence": "0x0812c220(0x68) in 0x0812c4f2; name at +0, primCount at +4 (cap 0x18), prims[24] at +8; 0x0812c424, 0x0812c23c."
+  },
+  {
+   "name": "fx_primitive_s",
+   "size": "0x2a4",
+   "evidence": "0x0812c220(0x2a4) in 0x0812c4f2; type at +0x40, index at +0x44, lists at +0x68, flags at +0x90, curves[24] at +0x100; field roles from key dispatcher 0x08130248."
+  },
+  {
+   "name": "FxPool / FxPoolBlock",
+   "size": "0x8 / 0x8000",
+   "evidence": "0x0812c060 and 0x0812c186: 409 elements of 0x50 per block, header freeCount at 0x7ff0, freeList 0x7ff4, next 0x7ff8, prev 0x7ffc (inferred)."
+  },
+  {
+   "name": "fx_ptr_list_s",
+   "size": "0x8",
+   "evidence": "0x0812c872 growable array (items, uint16 count, uint16 capacity)."
+  },
+  {
+   "name": "FxCurveSrc",
+   "size": "0xc",
+   "evidence": "curves at prim+0x100 + 0xc*k: table handle then vec2 range (0x0812e4aa, 0x0812d424)."
+  },
+  {
+   "name": "FxChannelInit",
+   "size": "0x40",
+   "evidence": "0x0812d9d6 and 0x0812daac: active byte at +0x3c, vec2 slots at +0, +0x18, +0x30."
+  },
+  {
+   "name": "FxScheduledEffect / FxScheduler",
+   "size": "0x50 / 0xc",
+   "evidence": "0x0812ba8c and 0x0812b978: effect ref, prim index, timing, origin, axes, next at +0x4c."
+  },
+  {
+   "name": "fx_cull_state_s",
+   "size": "0x8",
+   "evidence": "ctor 0x08129bac / dtor 0x08129bd8 applied at draw-context +8 (0x0812bfcc, 0x0812bfe2)."
+  },
+  {
+   "name": "fx_xform_s / fx_draw_ctx_s",
+   "size": "0x34 / 0x44",
+   "evidence": "0x0812b8a8 local frame: emitter, prim, cull state, 52-byte transform."
+  },
+  {
+   "name": "fx_view_s",
+   "size": "0x48",
+   "evidence": "0x0812cca2 and 0x0812cef2: fovX at +0x10, fovY at +0x14, origin +0x18, forward +0x24, right +0x30, up +0x3c."
+  },
+  {
+   "name": "FxSystem",
+   "size": "0xfc",
+   "evidence": "global at 0x08188ac0: origin +0x14, planes[6] at +0x20 (planeCount +0x80), planes2[6] at +0x90 (count +0xf0), rngSeed +0xf4, fovScale +0xf8."
+  },
+  {
+   "name": "fx_clock_s",
+   "size": "0xf8",
+   "evidence": "0x0812ca90, 0x0812cad4, 0x0812cb96: time, accum, prevAccum, delta, 28-int state copied to +0x84, savedTime +0xf4."
+  },
+  {
+   "name": "ParseNode",
+   "size": "0x48",
+   "evidence": "0x0812ca0a..0x0812ca2c accessors: name +0, next +4, child +0x1c."
+  }
+ ],
+ "open_questions": [
+  "Pool block contract: confirm fn_081242b2 (block owning an element) pushes the element onto the block free list and bumps freeCount, and that fn_0812411a creates 0x8000-byte blocks with 409 slots (0x0812c060, 0x0812c186).",
+  "Key overlap: the \"cullrange\" key (0x08130248) writes a float at prim+0x64, which is spawnRange[1] from the \"spawnRange\" key at +0x60. Confirm whether this is an original overlap or the layout is wrong.",
+  "Sequence fields prim+0x288..0x2a0 are named by key order in 0x08130248 but not verified against the parsers 0x0812f1e4..0x0812f378 (other chunk); defaults260 (0x260..0x27f) and 0x228..0x25f have no identified role.",
+  "Placeholder roles inferred only from call shape: fn_080aaa84 (random range), fn_0813163c (clamp), fn_08131600 (sample in range), fn_0805b894, fn_0812b52a (cull test), fn_08123f3c (curve table build), fn_08123b5e (channel to curve).",
+  "EH landing pads at 0x0812b947 and 0x0812bcb3 (for 0x0812b8a8 and 0x0812bc12) are not modelled; confirm no call on those paths throws."
+ ]
+}

@@ -1,0 +1,1227 @@
+{
+ "chunk": 10,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0806da84",
+   "name": "Scr_RegisterAnimTree",
+   "signature": "unsigned int Scr_RegisterAnimTree(const char *name, int *outIndex, int group)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "looks the tree name up in scrAnimTreeRoot, or adds it; callers: Scr_UsingAnimTree (string \"bad anim tree name\"), 0x806dfca",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806dba2",
+   "name": "Scr_UsingAnimTree",
+   "signature": "void Scr_UsingAnimTree(const char *name, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"bad anim tree name\"; sets scrUsingAnimTreeIndex which Emit_GetAnimTree reports as \"#using_animtree was not specified\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806dbee",
+   "name": "Scr_LoadAnimTreeFile",
+   "signature": "bool Scr_LoadAnimTreeFile(const char *name, unsigned int treeObject, unsigned int rootVar)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"animtrees/%s.atr\" passed to sprintf then opened",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806dcb0",
+   "name": "Scr_LoadAnimTree",
+   "signature": "void Scr_LoadAnimTree(int index, unsigned int arg, int group)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"unknown anim tree '%s'\" raised via fn_08061124 when Scr_LoadAnimTreeFile fails; fills scrAnimTreeObjects[group][index]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806df16",
+   "name": "Scr_GetAnimTreeValue",
+   "signature": "struct ScrAnimTreeRef *Scr_GetAnimTreeValue(struct ScrAnimTreeRef *ret, const char *name)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "looks the name up in scrAnimTreeRoot and returns the value stored under child 1 (0 if absent); returned through hidden pointer (ret 4)",
+   "status": "translated",
+   "notes": "C++ return of a 4-byte struct uses the hidden-pointer convention (ret 4) as in the binary; jsig lists the explicit form."
+  },
+  {
+   "addr": "0x0806dfca",
+   "name": "Scr_AddAnimTreeEntry",
+   "signature": "void Scr_AddAnimTreeEntry(const char *name, const char *rootName, unsigned int obj, int group)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "creates a string for rootName, registers the tree and passes both to fn_0806d05a",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e034",
+   "name": "Compile_ReleaseStringRef",
+   "signature": "void Compile_ReleaseStringRef(unsigned int stringId)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "releases a string reference unless scrCompileKeepStringRefs is set; used by every string-emitting path",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e052",
+   "name": "EmitCanonicalString",
+   "signature": "void EmitCanonicalString(unsigned int stringId)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "allocates 2 code bytes and stores the canonical string handle (fn_08076034) unless compile mode is 2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e0ae",
+   "name": "EmitCanonicalStringKeepRef",
+   "signature": "void EmitCanonicalStringKeepRef(unsigned int stringId)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitCanonicalString with scrCompileKeepStringRefs forced to 1 around the call",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e0dc",
+   "name": "EmitStringRef",
+   "signature": "void EmitStringRef(unsigned int stringId, int arg)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "tracks a string reference (fn_08079b28) unless mode 2; releases it in mode 2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e120",
+   "name": "EmitOpcode",
+   "signature": "void EmitOpcode(int opcode, int stackDelta, int callKind)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "single sink for every opcode byte: flushes the deferred value stack, tracks stack depth, rolls a code hash and peephole-merges with the previous opcode; same shape as the IW script compiler EmitOpcode",
+   "status": "translated",
+   "notes": "peephole fuse table kept literally; opcode ids unnamed because only structure is observed"
+  },
+  {
+   "addr": "0x0806e50e",
+   "name": "EmitEnd",
+   "signature": "void EmitEnd(void)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0,0,0) [rename script-compiler: objdump: EmitOpcode(0,0,0): OP_End; named by address-of-opcode, opcode 0 is End]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e532",
+   "name": "EmitReturn",
+   "signature": "void EmitReturn(void)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(1,-1,0) [rename script-compiler: objdump: EmitOpcode(1,-1,0): OP_Return, consumes one stack value]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e556",
+   "name": "EmitInt32",
+   "signature": "void EmitInt32(int value)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "allocates 4 code bytes (fn_0807a318) and stores a dword",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e57a",
+   "name": "EmitShort",
+   "signature": "void EmitShort(short value)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "allocates 2 code bytes and stores a word",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e5a8",
+   "name": "EmitUnsignedShort",
+   "signature": "void EmitUnsignedShort(unsigned short value)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "same body as EmitShort; used for 16-bit magnitudes in EmitGetInteger",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e5d6",
+   "name": "EmitByte",
+   "signature": "void EmitByte(unsigned char value)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "allocates 1 code byte (fn_0807a2e4) and stores it",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e602",
+   "name": "EmitFloat",
+   "signature": "void EmitFloat(int floatBits)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "allocates 4 bytes through fn_0807a32c (distinct allocator from EmitInt32); callers pass raw float words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e626",
+   "name": "EmitStringIndex",
+   "signature": "void EmitStringIndex(unsigned short value)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "same body as EmitShort; emitted after the string opcodes 10/11",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e64c",
+   "name": "EmitCodePos",
+   "signature": "void EmitCodePos(int value)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "same body as EmitInt32; used to emit function addresses in EmitFunctionRef",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e670",
+   "name": "ScrDeferred_SetUndefined",
+   "signature": "void ScrDeferred_SetUndefined(unsigned int sourcePos, struct ScriptValue *entry)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "fills a deferred-value entry with type 0; counterpart of EmitGetUndefined in FlushDeferredValue",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e68a",
+   "name": "EmitGetUndefined",
+   "signature": "void EmitGetUndefined(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(2,1,0) + source pos; dispatched from FlushDeferredValue case 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e6c2",
+   "name": "ScrDeferred_SetInteger",
+   "signature": "void ScrDeferred_SetInteger(int value, unsigned int sourcePos, struct ScriptValue *entry)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "fills a deferred-value entry with type 6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e6e4",
+   "name": "EmitGetInteger",
+   "signature": "void EmitGetInteger(int value, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "picks the narrowest of zero/byte/neg byte/word/neg word/dword encodings (opcodes 3..8)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e898",
+   "name": "ScrDeferred_SetFloat",
+   "signature": "void ScrDeferred_SetFloat(int floatBits, unsigned int sourcePos, struct ScriptValue *entry)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "fills a deferred-value entry with type 5",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e8ba",
+   "name": "EmitGetFloat",
+   "signature": "void EmitGetFloat(int floatBits, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(9,1,0), pos, EmitFloat",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e8fc",
+   "name": "EmitGetAnimTree",
+   "signature": "void EmitGetAnimTree(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"#using_animtree was not specified\"; otherwise emits the registered tree index as an integer [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e936",
+   "name": "EmitSetVariableField",
+   "signature": "void EmitSetVariableField(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x39,-1,0) + pos(0); 0x39 is a fusion target in EmitOpcode [rename script-compiler: objdump: EmitOpcode(0x39,-1) then PushLine; OP_SetVariableField (fusion table in doc 5.2)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e96e",
+   "name": "ScrLocalBlock_FindVar",
+   "signature": "int ScrLocalBlock_FindVar(struct ScriptScope *block, int start, int stringId)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "linear search of block->vars[start..varCount) for stringId; -1 if absent",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806e9b2",
+   "name": "Compile_LookupLocalVar",
+   "signature": "int Compile_LookupLocalVar(int stringId, unsigned int sourcePos, char markInitialised, struct ScriptScope *block)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "strings \"uninitialised variable '%s'\" and \"unreachable code\"; returns stack offset of the local from the top [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "the in-loop break and the post-loop test are the same condition; kept as in the binary"
+  },
+  {
+   "addr": "0x0806eb12",
+   "name": "ScrLocalBlock_EmitPendingVars",
+   "signature": "void ScrLocalBlock_EmitPendingVars(struct ScriptScope *block)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "emits opcode 0x16 + name for every var in [emittedCount, targetCount) then sets emittedCount = targetCount",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806eb82",
+   "name": "EmitRemoveLocalVars",
+   "signature": "void EmitRemoveLocalVars(struct ScriptScope *block, struct ScriptScope *target)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "emits opcode 0x17 with the byte count of locals above target->targetCount, then block->emittedCount = block->targetCount (only when block->inactive==0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806ebe2",
+   "name": "EmitFunctionEpilogue",
+   "signature": "void EmitFunctionEpilogue(char emitEnd, unsigned int sourcePos, struct ScriptScope *block)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "emits either the local cleanup or opcode 0 + pos; restores g_0839753c to saved+1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806ec34",
+   "name": "Compile_CheckSwitchCaseCount",
+   "signature": "void Compile_CheckSwitchCaseCount(int count)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"MAX_SWITCH_CASES exceeded\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806ec5c",
+   "name": "Compile_CheckLocalVarCount",
+   "signature": "void Compile_CheckLocalVarCount(int count)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"LOCAL_VAR_STACK_SIZE exceeded\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806ec80",
+   "name": "ScrLocalBlock_AddVar",
+   "signature": "void ScrLocalBlock_AddVar(int stringId, unsigned int sourcePos, struct ScriptScope *block)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "appends stringId to block->vars if not present and block is active (inactive==0); checks LOCAL_VAR_STACK_SIZE",
+   "status": "translated",
+   "notes": "sourcePos unused"
+  },
+  {
+   "addr": "0x0806ece2",
+   "name": "ScrLocalBlock_Copy",
+   "signature": "void ScrLocalBlock_Copy(struct ScriptScope *src, struct ScriptScope **dst)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "allocates a 0x118-byte block when *dst is null (fn_080ac088) and copies src into it, then clears targetCount",
+   "status": "translated",
+   "notes": "original uses an inlined dword copy loop (rep movs equivalent), memcpy is behaviourally identical"
+  },
+  {
+   "addr": "0x0806ed5c",
+   "name": "ScrLocalBlock_IntersectInit",
+   "signature": "void ScrLocalBlock_IntersectInit(struct ScriptScope **blocks, int count, struct ScriptScope *dst)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "dst->emittedCount = min(blocks[i]->targetCount); initBits[i] set only if set in every block",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806ee8e",
+   "name": "ScrLocalBlock_MergeVars",
+   "signature": "void ScrLocalBlock_MergeVars(struct ScriptScope **blocks, int count, struct ScriptScope *merged)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "resets each block->inactive, then appends to merged every variable of blocks[0] present in all other blocks",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806ef96",
+   "name": "ScrLocalBlock_ApplyMerged",
+   "signature": "void ScrLocalBlock_ApplyMerged(struct ScriptScope **blocks, int count, struct ScriptScope *merged)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "for every block sets targetCount = merged->varCount and reorders the block var list so merged vars come first in merged order",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f0a2",
+   "name": "ScrLocalBlock_RebaseInto",
+   "signature": "void ScrLocalBlock_RebaseInto(struct ScriptScope *src, struct ScriptScope *dst)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "merges src vars/init bits into dst ordering, sets dst->emittedCount = src->emittedCount and dst->inactive = 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f1dc",
+   "name": "EmitSafeSetVariableFieldCached",
+   "signature": "void EmitSafeSetVariableFieldCached(int stringId, unsigned int sourcePos, struct ScriptScope *block)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "opcode 0x31 (offset 0) / 0x32 + byte offset, offset from Compile_LookupLocalVar; 0x31 is fused with a preceding 0x16 in EmitOpcode [rename script-compiler: objdump: opcode chosen from {0x31,0x32} ([ebp-8]=0x31/0x32) + u8 offset; 0x31 = SafeSetVariableFieldCached0 in fusion table]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f25e",
+   "name": "ScrLocalBlock_AddVarThunk1",
+   "signature": "void ScrLocalBlock_AddVarThunk1(int stringId, unsigned int sourcePos, struct ScriptScope *block)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Single forward to ScrLocalBlock_AddVar; identical duplicate at 0x0806f8fa (A/B suffix replaced by ordinal).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f280",
+   "name": "EmitSafeSetWaittillVariableFieldCached",
+   "signature": "void EmitSafeSetWaittillVariableFieldCached(int stringId, unsigned int sourcePos, struct ScriptScope *block)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "opcode 0x33 + byte offset from Compile_LookupLocalVar [rename script-compiler: objdump: emits opcode 0x33 + u8 offset; used only by waittill variable list (Scr_ForEachPairEmit_3)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f2e8",
+   "name": "ScrDeferred_SetString",
+   "signature": "void ScrDeferred_SetString(unsigned int stringId, unsigned int sourcePos, struct ScriptValue *entry)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "fills a deferred entry with type 2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f30a",
+   "name": "EmitGetString",
+   "signature": "void EmitGetString(unsigned int stringId, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "opcode 10 + string index word + string ref tracking; dispatched from FlushDeferredValue case 2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f360",
+   "name": "ScrDeferred_SetIString",
+   "signature": "void ScrDeferred_SetIString(unsigned int stringId, unsigned int sourcePos, struct ScriptValue *entry)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "fills a deferred entry with type 3",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f382",
+   "name": "EmitGetIString",
+   "signature": "void EmitGetIString(unsigned int stringId, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "opcode 11, same layout as EmitGetString; dispatched from FlushDeferredValue case 3",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f3d8",
+   "name": "EmitGetVector",
+   "signature": "void EmitGetVector(int *vec3Bits, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "opcode 12 + three float words, then frees the temporary vector (fn_0807c01a); dispatched from FlushDeferredValue case 4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f448",
+   "name": "FlushDeferredValue",
+   "signature": "void FlushDeferredValue(struct ScriptValue *entry)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "switch on entry->type to the EmitGet* functions; called from EmitOpcode for each pending value-stack entry",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f50e",
+   "name": "PushDeferredValue",
+   "signature": "void PushDeferredValue(const struct ScriptValue *entry)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"VALUE_STACK_SIZE exceeded\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f56e",
+   "name": "PopDeferredValue",
+   "signature": "void PopDeferredValue(void)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "decrements scrValueStackCount",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f57a",
+   "name": "EmitCastBool",
+   "signature": "void EmitCastBool(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x5b,0,0) + source pos(flag 0); name from opcode id [rename script-compiler: objdump: EmitOpcode(0x5b,0)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f5b2",
+   "name": "EmitBoolNot",
+   "signature": "void EmitBoolNot(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x5c,0,0) + source pos(flag 0); name from opcode id [rename script-compiler: objdump: EmitOpcode(0x5c,0); fusion with JumpOnFalse->JumpOnTrue per doc 5.2]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f5ea",
+   "name": "EmitBoolComplement",
+   "signature": "void EmitBoolComplement(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x5d,0,0) + source pos(flag 0); name from opcode id [rename script-compiler: objdump: EmitOpcode(0x5d,0)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f622",
+   "name": "EmitSize",
+   "signature": "void EmitSize(unsigned int exprNode, unsigned int sourcePos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "compiles one expression (fn_08071b9a) then EmitOpcode(0x76,0,0) [rename script-compiler: objdump: compiles operand then EmitOpcode(0x76,0): the .size operator]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f66c",
+   "name": "EmitGetSelf",
+   "signature": "void EmitGetSelf(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "EmitOpcode(0xf,1,0) + source pos(flag 1); name from opcode id",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f6a4",
+   "name": "EmitGetLevel",
+   "signature": "void EmitGetLevel(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "EmitOpcode(0x10,1,0) + source pos(flag 1); name from opcode id",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f6dc",
+   "name": "EmitGetGame",
+   "signature": "void EmitGetGame(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "EmitOpcode(0x11,1,0) + source pos(flag 1); name from opcode id",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f714",
+   "name": "EmitGetAnim",
+   "signature": "void EmitGetAnim(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "EmitOpcode(0x12,1,0) + source pos(flag 1); name from opcode id",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f74c",
+   "name": "EmitGetSelfObject",
+   "signature": "void EmitGetSelfObject(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x26,0,0) + source pos(flag 1); name from opcode id [rename script-compiler: objdump: EmitOpcode(0x26,+1); fusion table: 0x26 is the object form of self used by field ops]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f784",
+   "name": "EmitGetLevelObject",
+   "signature": "void EmitGetLevelObject(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "EmitOpcode(0xd,0,0) + source pos(flag 1); name from opcode id",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f7bc",
+   "name": "EmitGetAnimObject",
+   "signature": "void EmitGetAnimObject(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "EmitOpcode(0xe,0,0) + source pos(flag 1); name from opcode id",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f7f4",
+   "name": "EmitEvalLocalVariableCached",
+   "signature": "void EmitEvalLocalVariableCached(int stringId, unsigned int sourcePos, struct ScriptScope *block)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "offsets 0..5 map to opcodes 0x18..0x1d, otherwise opcode 0x1e + byte offset; fusion targets in EmitOpcode (cases 0x20, 0x59)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f878",
+   "name": "EmitEvalLocalVariableRefCached",
+   "signature": "void EmitEvalLocalVariableRefCached(int stringId, unsigned int sourcePos, struct ScriptScope *block)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "opcode 0x36 (offset 0) / 0x37 + byte offset; fusion targets of opcodes 0x23/0x39 in EmitOpcode [rename script-compiler: objdump: opcode chosen from {0x36,0x37} + u8 offset; 0x36/0x37 = EvalLocalVariableRefCached; always followed by SetVariableField]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f8fa",
+   "name": "ScrLocalBlock_AddVarThunk2",
+   "signature": "void ScrLocalBlock_AddVarThunk2(int stringId, unsigned int sourcePos, struct ScriptScope *block)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Second byte-identical forwarder to ScrLocalBlock_AddVar.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f91c",
+   "name": "EmitGetGameRef",
+   "signature": "void EmitGetGameRef(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x14,0,0) + source pos(flag 1); name from opcode id [rename script-compiler: objdump: EmitOpcode(0x14,+1); 0x14 = GetGameRef per doc 5.3 (name of opcode inferred from VM enum)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f954",
+   "name": "EmitEvalArray",
+   "signature": "void EmitEvalArray(unsigned int srcPosA, unsigned int srcPosB)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x20,-1,0), pos(B,0), pos(A,1); 0x20 is fused with preceding local eval opcodes [rename script-compiler: objdump: EmitOpcode(0x20,-1) + two PushLine; fusion table names 0x20 EvalArray]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f99e",
+   "name": "EmitEvalArrayRef",
+   "signature": "void EmitEvalArrayRef(unsigned int srcPosA, unsigned int srcPosB)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x23,-1,0), pos(B,0), pos(A,1) [rename script-compiler: objdump: EmitOpcode(0x23,-1)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806f9e8",
+   "name": "EmitClearArray",
+   "signature": "void EmitClearArray(unsigned int srcPosA, unsigned int srcPosB)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x24,-1,0), pos(B,0), pos(A,0) [rename script-compiler: objdump: EmitOpcode(0x24,-1)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fa32",
+   "name": "EmitEmptyArray",
+   "signature": "void EmitEmptyArray(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x25,1,0) + source pos(flag 1); name from opcode id [rename script-compiler: objdump: EmitOpcode(0x25,+1)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fa6a",
+   "name": "EmitGetAnimation",
+   "signature": "void EmitGetAnimation(unsigned int animName, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "opcode 0x13 + int placeholder -1 patched via fn_0806d0dc (anim reference fixup) and the name string released",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fad4",
+   "name": "EmitEvalFieldVariable",
+   "signature": "void EmitEvalFieldVariable(unsigned int exprA, unsigned int stringId, unsigned int sourcePos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "compiles (fn_080723da) then EmitOpcode(0x2a,1,0), pos, canonical string; 0x2a is a fusion target [rename script-compiler: objdump: compiles object expr then EmitOpcode(0x2a,+1), then field slot via EmitCanonicalString]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fb30",
+   "name": "EmitEvalFieldVariableRef",
+   "signature": "void EmitEvalFieldVariableRef(unsigned int exprA, unsigned int stringId, unsigned int sourcePos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "compiles (fn_080723da) then EmitOpcode(0x2e,0,0), canonical string [rename script-compiler: objdump: EmitOpcode(0x2e,0) + field slot]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fb78",
+   "name": "EmitClearFieldVariable",
+   "signature": "void EmitClearFieldVariable(unsigned int exprA, unsigned int stringId, unsigned int sourcePos, unsigned int sourcePos2, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "compiles (fn_080723da) then EmitOpcode(0x2f,0,0), pos2, canonical string [rename script-compiler: objdump: EmitOpcode(0x2f,0) + field slot]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fbd4",
+   "name": "EmitDebuggerVariable",
+   "signature": "void EmitDebuggerVariable(unsigned int stringId, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "strings \"bad expression\" and \"$ can only be used in the script debugger\"; parses a $tNNN or $<letter>NNN token [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fd46",
+   "name": "EmitDecTop",
+   "signature": "void EmitDecTop(void)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x58,-1,0) [rename script-compiler: objdump: EmitOpcode(0x58,-1) with no position record: discards top of stack after statement call (OP_DecTop)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fd6a",
+   "name": "EmitCastFieldObject",
+   "signature": "void EmitCastFieldObject(unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x59,-1,0) + pos(0); 0x59 is fused with preceding local eval opcodes [rename script-compiler: objdump: EmitOpcode(0x59,-1); emitted after call-as-object in ScrCompile_CallStatement (0x0807138e)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fda2",
+   "name": "ScrCompile_EmitEvalArrayExpr",
+   "signature": "void ScrCompile_EmitEvalArrayExpr(unsigned int lhs, unsigned int rhs, unsigned int srcPosA, unsigned int srcPosB, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body: ScrCompile_ExprPush(rhs); ScrCompile_PrimaryExprPush(lhs); EmitEvalArray(srcPosA,srcPosB) (chunk_010). Opcode-numbered placeholder replaced by the emitted operation; not an assignment.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fde0",
+   "name": "ScrCompile_EmitEvalArrayRefExpr",
+   "signature": "void ScrCompile_EmitEvalArrayRefExpr(unsigned int lhs, unsigned int rhs, unsigned int srcPosA, unsigned int srcPosB, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body: ExprPush(rhs); ScrCompile_StoreLvalueChecked(lhs); EmitEvalArrayRef (chunk_010).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fe26",
+   "name": "ScrCompile_LvalueFromObjectBaseThunk",
+   "signature": "void ScrCompile_LvalueFromObjectBaseThunk(struct ScriptNode *a, struct ScriptScope *b)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body is a single tail call to ScrCompile_LvalueFromObjectBase(a,b) (0x080723ae); the address suffix was a placeholder.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fe40",
+   "name": "ScrCompile_EmitClearArrayExpr",
+   "signature": "void ScrCompile_EmitClearArrayExpr(unsigned int lhs, unsigned int rhs, unsigned int srcPosA, unsigned int srcPosB, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body: ExprPush(rhs); StoreLvalueChecked(lhs); EmitClearArray (chunk_010).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806fe86",
+   "name": "EmitAssignTarget",
+   "signature": "void EmitAssignTarget(struct ScriptNode *node, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "strings \"self field in assignment expression not currently supported\" / \"self field can only be used in the script debugger\"; dispatch on node->type [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "node field meaning inferred from forwarded args; type 4 forwards (a,b,scope) into the local-variable eval emitter"
+  },
+  {
+   "addr": "0x0806ffb4",
+   "name": "ScrNodeList_Count",
+   "signature": "int ScrNodeList_Count(struct ScriptList *list)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "counts links from list->head",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806ffe8",
+   "name": "ScrNodeList_CompileExprs",
+   "signature": "int ScrNodeList_CompileExprs(struct ScriptList *list, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "compiles each item (fn_080721b4(first dword of item)) and returns the item count",
+   "status": "translated",
+   "notes": "original reads the first dword of the item (*item); modelled as node->type, but the item may be a different type of record: the item pointer is dereferenced once and the loaded dword passed on"
+  },
+  {
+   "addr": "0x08070032",
+   "name": "ScrNodeList_GetSingle",
+   "signature": "struct ScriptListItem *ScrNodeList_GetSingle(struct ScriptList *list)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "returns list->head when it is the only link, else 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807006e",
+   "name": "ScrNodeList_AddDebugPositions",
+   "signature": "void ScrNodeList_AddDebugPositions(struct ScriptList *list)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "when g_0839750a is set, registers item->a as a source position for every link",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080700b8",
+   "name": "Compile_AddFuncRecord",
+   "signature": "unsigned int Compile_AddFuncRecord(unsigned int stringId, unsigned int sourcePos, unsigned char flag)",
+   "subsystem": "script/compiler",
+   "confidence": "unknown",
+   "evidence": "appends a 12-byte record at scrFuncRecordPtr and returns the variable object under g_08205c8c[stringId]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08070124",
+   "name": "EmitFunctionRef",
+   "signature": "void EmitFunctionRef(struct ScriptNode *node, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "strings \"unknown function\" (0x8143ad3) and \"normal script cannot reference a function in a /# ... #/ comment\"; resolves a function name (optionally file::func), emits its code position and records a fixup [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Ghidra decompile did not settle; reconstructed from disassembly 0x8070124..0x807047b. Names of fn_0807* variable-system callees unknown. In the file::func branch the lookup of the file entry is fn_0807ccba(fn_0807c184(g_08205c88, nameId)); the code reads its type field only (u stored in a dead local)."
+  },
+  {
+   "addr": "0x0807047c",
+   "name": "EmitGetFunction",
+   "signature": "void EmitGetFunction(struct ScriptNode *node, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "EmitOpcode(0x15,1,0) then pos(3) then EmitFunctionRef; 0x15 is the opcode whose operand is a function reference (node type 0x15 handled in EmitFunctionRef)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080704c6",
+   "name": "Scr_FindOrAddFuncTableEntry",
+   "signature": "int Scr_FindOrAddFuncTableEntry(int value)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "string \"SCR_FUNC_TABLE_SIZE exceeded\" (prefixed by a 0x15 byte in rodata); linear search in a 0x400-entry table, appending on miss [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807053e",
+   "name": "EmitCallFunction",
+   "signature": "void EmitCallFunction(struct ScriptNode *funcNode, int argCount, char threaded, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "opcode 0x50 (stack -argc) or 0x52 (-1-argc) with call kind 3, pos(3), then EmitFunctionRef; 0x50 is a peephole fusion target of 0x4e->0x4f",
+   "status": "translated",
+   "notes": "param 3 was `char`; true when the call variant with an extra stack slot (opcode 0x52) is wanted"
+  },
+  {
+   "addr": "0x080705b4",
+   "name": "EmitCallFunctionPtr",
+   "signature": "void EmitCallFunctionPtr(unsigned int ptrExpr, int argCount, char threaded, unsigned int sourcePos, unsigned int srcPosB, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "compiles the function-pointer expression then opcode 0x51 (-1-argc) or 0x53 (-2-argc) with call kind 3",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08070640",
+   "name": "EmitThreadCallFunction",
+   "signature": "void EmitThreadCallFunction(struct ScriptNode *funcNode, int argCount, char threaded, unsigned int sourcePos)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "opcode 0x54 (1-argc) or 0x56 (-argc) with call kind 2, pos(3), EmitFunctionRef, then argCount as dword [rename script-compiler: objdump: emits opcode 0x54 / 0x56 (ScriptThreadCall/MethodThreadCall), not a method call]",
+   "status": "translated",
+   "notes": "0x54/0x56 are the targets of the 0xf-fusions in EmitOpcode (cases 0x52 -> 0x50, 0x56 -> 0x54)"
+  },
+  {
+   "addr": "0x080706c4",
+   "name": "EmitThreadCallFunctionPtr",
+   "signature": "void EmitThreadCallFunctionPtr(unsigned int ptrExpr, int argCount, char threaded, unsigned int sourcePos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "compiles the pointer expression then opcode 0x55 (-argc) or 0x57 (-1-argc) with call kind 2, pos(1), argCount as dword [rename script-compiler: objdump: emits opcodes 0x55 / 0x57 (thread call through function pointer)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08070746",
+   "name": "EmitCallDispatch",
+   "signature": "void EmitCallDispatch(struct ScriptNode *callee, int argCount, char threaded, unsigned int sourcePos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "node type 0x12 -> EmitCallFunction, 0x16 -> EmitCallFunctionPtr",
+   "status": "translated",
+   "notes": "callee->a is an ScrNode * for type 0x12 (forwarded as funcNode) and an expression id for type 0x16"
+  },
+  {
+   "addr": "0x080707cc",
+   "name": "EmitThreadCallDispatch",
+   "signature": "void EmitThreadCallDispatch(struct ScriptNode *callee, int argCount, char threaded, unsigned int srcPosA, unsigned int sourcePos, struct ScriptScope *scope)",
+   "subsystem": "script/compiler",
+   "confidence": "inferred",
+   "evidence": "node type 0x12 -> EmitCallFunctionMethod, 0x16 -> EmitCallFunctionPtrMethod, then pos(srcPosA,0) [rename script-compiler: objdump: dispatches to 0x08070640 / 0x080706c4 (the thread-call emitters) depending on callee kind]",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08205640",
+   "name": "scrAnimTreeRoot",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205644",
+   "name": "scrAnimTreeScratchObject",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205648",
+   "name": "g_08205648",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x0820564c",
+   "name": "scrAnimTreeObjects",
+   "type": "int[2][SCR_ANIMTREE_SLOTS]",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205a4c",
+   "name": "scrAnimTreeCount",
+   "type": "int[2]",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205a54",
+   "name": "scrUsingAnimTreeIndex",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205a68",
+   "name": "scrAnimTreeNames",
+   "type": "unsigned short[2][SCR_ANIMTREE_SLOTS]",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205c80",
+   "name": "scrValueStackCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205c84",
+   "name": "g_scr_dependency_record_count",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205c88",
+   "name": "g_scr_loaded_scripts_table",
+   "type": "unsigned int",
+   "confidence": "unknown",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205c8c",
+   "name": "g_scr_file_function_tables",
+   "type": "unsigned int",
+   "confidence": "unknown",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205ca4",
+   "name": "scrCompileDebuggerMode",
+   "type": "char",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205ca5",
+   "name": "scrOpcodeAtStackBase",
+   "type": "char",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205ca8",
+   "name": "scrCompileMode",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205cac",
+   "name": "scrLastOpcodePtr",
+   "type": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205cb4",
+   "name": "scrFuncTableCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08205cb8",
+   "name": "scrFuncTable",
+   "type": "int[SCR_FUNC_TABLE_MAX]",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08206cc0",
+   "name": "scrLastEmitPtr",
+   "type": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08206cc4",
+   "name": "scrPrevOpcodePtr",
+   "type": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08206cc8",
+   "name": "g_scr_current_file_symtab",
+   "type": "unsigned int",
+   "confidence": "unknown",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08206cd0",
+   "name": "scrCompileStackDepth",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08206cd4",
+   "name": "scrCompileMaxStackDepth",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08206cd8",
+   "name": "scrCompileMaxCallStackDepth",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08206cdc",
+   "name": "scrCompileKeepStringRefs",
+   "type": "char",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08206d10",
+   "name": "scrCompileUninitIsError",
+   "type": "char",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08206d14",
+   "name": "scrFuncRecordPtr",
+   "type": "struct ScrFuncRecord *",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08206d1c",
+   "name": "scrValueStack",
+   "type": "struct ScrDeferredValue[SCR_VALUE_STACK_SIZE]",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x0828733c",
+   "name": "g_scr_current_source_name",
+   "type": "const char *",
+   "confidence": "unknown",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x08287340",
+   "name": "g_08287340",
+   "type": "unsigned int",
+   "confidence": "unknown",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x0839750a",
+   "name": "g_0839750a",
+   "type": "char",
+   "confidence": "unknown",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  },
+  {
+   "addr": "0x0839753c",
+   "name": "g_scr_code_hash",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "used by the script compiler emit functions in chunk 010"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "ScrLocalBlock",
+   "size": "0x118",
+   "evidence": "0x118-byte block copy in 0x806ece2; field offsets 0,4,8,0xc,0x10,0x18 from 0x806e9b2/0x806ef96"
+  },
+  {
+   "name": "ScrDeferredValue",
+   "size": "0xc",
+   "evidence": "0xc stride of the value stack at 0x8206d1c in 0x806e120/0x806f50e"
+  },
+  {
+   "name": "ScrVariableValue",
+   "size": "0x8",
+   "evidence": "stack structs returned by fn_0807ccba and consumed by fn_0807caac/fn_0807cb12"
+  },
+  {
+   "name": "ScrFuncRecord",
+   "size": "0xc",
+   "evidence": "record writes at 0x80700b8 with 0xc stride"
+  },
+  {
+   "name": "ScrNode",
+   "size": "0x14",
+   "evidence": "node->type at +0 with operands at +4..+0x10 in 0x806fe86/0x8070124 (size unobserved, minimum 0x14)"
+  }
+ ],
+ "open_questions": [
+  "Semantics of fn_0807c184/fn_0807c6f8/fn_0807c71c/fn_0807ccba (script variable-id tree) are in another chunk; variable-system names here are placeholders.",
+  "Opcode ids are kept numeric; IW-style names (GetSelf/GetLevel/GetInteger) were only inferred from structure and ordinal pattern.",
+  "The string at 0x8143b41 for SCR_FUNC_TABLE_SIZE carries a leading 0x15 byte; unknown whether fn_08061124 treats it specially."
+ ]
+}

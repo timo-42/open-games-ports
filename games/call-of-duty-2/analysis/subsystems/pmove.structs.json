@@ -1,0 +1,1495 @@
+[
+ {
+  "name": "playerState_s",
+  "size": "0x26a8",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "int32",
+    "name": "commandTime",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); chunk_042 PM_SingleStep/PM_Pmove advance it"
+   },
+   {
+    "offset": "0x004",
+    "type": "int32",
+    "name": "pm_type",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (8 bits); switch in PM_SingleStep 0x080e8934 (0,1,7,2,3,4,5,6/default)"
+   },
+   {
+    "offset": "0x008",
+    "type": "int32",
+    "name": "bobCycle",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (8 bits); chunk_042 PM_Footsteps, chunk_043 PM_StepSlideMove bobCycle update (stored &0xff)"
+   },
+   {
+    "offset": "0x00c",
+    "type": "uint32",
+    "name": "pm_flags",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (27 bits); every pmove chunk (041-044,046); chunk_040 names it pmFlags2, chunk_103 stateFlags"
+   },
+   {
+    "offset": "0x010",
+    "type": "int32",
+    "name": "pm_time",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (-16 bits); PM_DropTimers 0x080e6936, PM_CrashLand writes timeCost, Player_* jump code uses it as the jump-phase timer (0x708/0x4b0), chunk_103 kickTime"
+   },
+   {
+    "offset": "0x014",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) origin[0..2] at 0x14,0x18,0x1c"
+   },
+   {
+    "offset": "0x020",
+    "type": "float[3]",
+    "name": "velocity",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) velocity[0..2] at 0x20,0x24,0x28"
+   },
+   {
+    "offset": "0x02c",
+    "type": "float[2]",
+    "name": "oldVelocity (smoothedVelocity)",
+    "evidence": "NOT in netField table. chunk_041 PM_ShouldClampAcceleration reads it as oldVelocity[2]; chunk_042 PM_SingleStep blends it toward velocity each step (smoothedVelocity). Same field, two names"
+   },
+   {
+    "offset": "0x034",
+    "type": "int32",
+    "name": "weaponTime",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (-16 bits); chunk_044 names it weaponTimer, decremented in PM_Weapon_TickTimers 0x080eec94"
+   },
+   {
+    "offset": "0x038",
+    "type": "int32",
+    "name": "weaponDelay",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (-16 bits); chunk_044 weaponDelay"
+   },
+   {
+    "offset": "0x03c",
+    "type": "int32",
+    "name": "grenadeTimeLeft",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (-16 bits); chunk_044 offhandTimer, PM_Weapon_TickOffhandTimer 0x080efeb4"
+   },
+   {
+    "offset": "0x040",
+    "type": "int32",
+    "name": "weaponRestrictKickTime",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (-16 bits); chunk_044 shotDelay"
+   },
+   {
+    "offset": "0x044",
+    "type": "int32",
+    "name": "foliageSoundTime",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (32 bits); chunk_042 PM_CheckMoveBump 0x080e6784 compares against serverTime (named field_44 there)"
+   },
+   {
+    "offset": "0x048",
+    "type": "int32",
+    "name": "gravity",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (16 bits); chunk_041 PM_CrashLand, chunk_040 Player_BeginJump, chunk_046. chunk_042 mislabels it field_48 'per-second decel used by the ladder code'"
+   },
+   {
+    "offset": "0x04c",
+    "type": "float",
+    "name": "leanf",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); chunk_042 PM_UpdateLean 0x080e69f4 moves it toward +-0.25/0.5; chunk_041/008 call it moveAxis (WRONG name; value scales speed x0.4 in PM_CmdScale and is copied verbatim to entityState+0xd4)"
+   },
+   {
+    "offset": "0x050",
+    "type": "int32",
+    "name": "speed",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (16 bits); PM_CmdScale uses speed/127"
+   },
+   {
+    "offset": "0x054",
+    "type": "int32[3]",
+    "name": "delta_angles",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) delta_angles[0..2] at 0x54,0x58,0x5c; chunk_040 deltaYaw58 = delta_angles[1]"
+   },
+   {
+    "offset": "0x060",
+    "type": "int32",
+    "name": "groundEntityNum",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (10 bits); 0x3ff = none, set in PM_GroundTrace/PM_SingleStep"
+   },
+   {
+    "offset": "0x064",
+    "type": "float[3]",
+    "name": "vLadderVec",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) vLadderVec[0..2]; chunk_042 ladderNormal, chunk_040 wallNormal (Player_ApplyJumpPush)"
+   },
+   {
+    "offset": "0x070",
+    "type": "int32",
+    "name": "jumpTime",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (32 bits); Player_BeginJump stores serverTime; PM_GetMoveSpeed ladder rule uses it (chunk_042 field_70); Player_TryJump 500 ms gate"
+   },
+   {
+    "offset": "0x074",
+    "type": "float",
+    "name": "jumpOriginZ",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); chunk_040 jumpBaseZ (origin.z at jump start); PM_ClearJumpBaseZ zeroes it"
+   },
+   {
+    "offset": "0x078",
+    "type": "int32",
+    "name": "legsTimer",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (16 bits); chunk_039 legsTimer; PM_DropTimers decrements it (chunk_042 field_78)"
+   },
+   {
+    "offset": "0x07c",
+    "type": "int32",
+    "name": "legsAnim",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (10 bits); copied to entityState+0xcc by BG_PlayerStateToEntityState (chunk_041 field_7c)"
+   },
+   {
+    "offset": "0x080",
+    "type": "int32",
+    "name": "torsoTimer",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (16 bits); PM_DropTimers decrements it (chunk_042 field_80)"
+   },
+   {
+    "offset": "0x084",
+    "type": "int32",
+    "name": "torsoAnim",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (10 bits); copied to entityState+0xd0 (chunk_041 field_84)"
+   },
+   {
+    "offset": "0x088",
+    "type": "int32",
+    "name": "legsAnimDuration",
+    "evidence": "NOT in netField table; chunk_039 legsAnimDuration (unnetworked)"
+   },
+   {
+    "offset": "0x08c",
+    "type": "int32",
+    "name": "torsoAnimDuration",
+    "evidence": "NOT in netField table; chunk_039 torsoAnimDuration"
+   },
+   {
+    "offset": "0x090",
+    "type": "int32",
+    "name": "damageTimer",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (16 bits); PM_Move air branch decays it by frametime*1000 and scales accel via PM_PmTimeScale/dvar player_dmgtimer_* (chunk_041 pmTime); chunk_042 field_90"
+   },
+   {
+    "offset": "0x094",
+    "type": "int32",
+    "name": "damageDuration",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (16 bits); chunk_042 field_94 (stumble/flinch dvars subtract from it)"
+   },
+   {
+    "offset": "0x098",
+    "type": "int32",
+    "name": "flinchYaw",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (16 bits); chunk_042 field_98 'converted to float for a yaw-quadrant lookup' (PM_YawQuadrantAnim)"
+   },
+   {
+    "offset": "0x09c",
+    "type": "int32",
+    "name": "movementDir",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (-8 bits); PM_SetMovementDir clamps to [-90,90]; chunk_042 moveAngleDelta"
+   },
+   {
+    "offset": "0x0a0",
+    "type": "uint32",
+    "name": "eFlags",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (24 bits); chunk_042/039/046 name it eFlags; chunks 008/041/044 call it buttonBits (WRONG: it is not usercmd buttons). Bits 0x300 gate movement (PM_SingleStep), 0x20000 EF dead, 0x40000 ADS copied by BG_PlayerStateToEntityState"
+   },
+   {
+    "offset": "0x0a4",
+    "type": "int32",
+    "name": "eventSequence",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (8 bits); BG_AddPredictableEventToPlayerstate 0x080dfc78 uses &3 ring"
+   },
+   {
+    "offset": "0x0a8",
+    "type": "int32[4]",
+    "name": "events",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) events[0..3]"
+   },
+   {
+    "offset": "0x0b8",
+    "type": "int32[4]",
+    "name": "eventParms",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) eventParms[0..3]"
+   },
+   {
+    "offset": "0x0c8",
+    "type": "int32",
+    "name": "unknown_c8",
+    "evidence": "NOT in netField table; chunks 041/046 name it eventSequenceSent but no pmove use was observed (chunk_040 field at 0xc8 on an ENTITY-state pointer is entityState.weapon, a different struct)"
+   },
+   {
+    "offset": "0x0cc",
+    "type": "int32",
+    "name": "clientNum",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (8 bits)"
+   },
+   {
+    "offset": "0x0d0",
+    "type": "int32",
+    "name": "offHandIndex",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (7 bits); chunk_044 offhandWeapon; chunk_008 usercmd.unk09 source"
+   },
+   {
+    "offset": "0x0d4",
+    "type": "int32",
+    "name": "weapon",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (7 bits); chunk_043/044/046. chunk_041 mislabels it linkedEntityNum ('entity whose scale is applied' - it is BG_GetWeaponDef(ps->weapon)+0x264)"
+   },
+   {
+    "offset": "0x0d8",
+    "type": "int32",
+    "name": "weaponstate",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (5 bits); PM_Weapon_Frame switch 0x080f066e"
+   },
+   {
+    "offset": "0x0dc",
+    "type": "float",
+    "name": "fWeaponPosFrac",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); PM_UpdateWeaponPosFrac 0x080ecc9c (0..1 ADS blend)"
+   },
+   {
+    "offset": "0x0e0",
+    "type": "int32",
+    "name": "adsDelayTime",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (32 bits); chunk_043/044 leave as padding/field_e0"
+   },
+   {
+    "offset": "0x0e4",
+    "type": "int32",
+    "name": "viewmodelIndex",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (8 bits); chunk_046 field_e4"
+   },
+   {
+    "offset": "0x0e8",
+    "type": "float[3]",
+    "name": "viewangles",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) viewangles[0..2] at 0xe8,0xec,0xf0 (-100 = angle-compressed)"
+   },
+   {
+    "offset": "0x0f4",
+    "type": "int32",
+    "name": "viewHeightTarget",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (-8 bits); PM_StanceIndex 0x080e1532: 0x28 crouch, 0x0b prone, else stand (0x3c); chunk_042 'stance', chunk_041 viewheightTarget"
+   },
+   {
+    "offset": "0x0f8",
+    "type": "float",
+    "name": "viewHeightCurrent",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); PM_UpdateStanceHeight output; chunk_041 viewheight"
+   },
+   {
+    "offset": "0x0fc",
+    "type": "int32",
+    "name": "viewHeightLerpTime",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (32 bits); chunk_041 stanceTransitionStart"
+   },
+   {
+    "offset": "0x100",
+    "type": "int32",
+    "name": "viewHeightLerpTarget",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (-8 bits); chunk_041 stanceTarget"
+   },
+   {
+    "offset": "0x104",
+    "type": "int32",
+    "name": "viewHeightLerpDown",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (1 bit); chunk_041 stanceToggled"
+   },
+   {
+    "offset": "0x108",
+    "type": "float",
+    "name": "viewHeightLerpPosAdj",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); chunk_041 stanceFloat"
+   },
+   {
+    "offset": "0x10c",
+    "type": "float[2]",
+    "name": "viewAngleClampBase",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) viewAngleClampBase[0..1]; chunk_042 limitCenter (ladder/prone yaw limits in PM_UpdateViewAngles)"
+   },
+   {
+    "offset": "0x114",
+    "type": "float[2]",
+    "name": "viewAngleClampRange",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) viewAngleClampRange[0..1]; chunk_042 limitRange"
+   },
+   {
+    "offset": "0x11c",
+    "type": "int32",
+    "name": "damageEvent",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (8 bits)"
+   },
+   {
+    "offset": "0x120",
+    "type": "int32",
+    "name": "damageYaw",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (8 bits)"
+   },
+   {
+    "offset": "0x124",
+    "type": "int32",
+    "name": "damagePitch",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (8 bits)"
+   },
+   {
+    "offset": "0x128",
+    "type": "int32",
+    "name": "damageCount",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (7 bits)"
+   },
+   {
+    "offset": "0x12c",
+    "type": "int32[6]",
+    "name": "misc dwords (0x12c health, 0x130 ?, 0x134 maxHealth, 0x138?, 0x13c?, 0x140 spawnCount)",
+    "evidence": "chunk_009 notes '6 misc dwords at 0x12c'; chunk_046 health@0x12c maxHealth@0x134 spawnCount@0x140; chunk_042 field_130 (999 = unset). Roles inferred, not pmove-owned"
+   },
+   {
+    "offset": "0x144",
+    "type": "int32[128]",
+    "name": "ammo",
+    "evidence": "chunk_043/044 ps->ammo/reserveAmmo[128] indexed by BG_GetWeaponAmmoIndex; chunk_009 4x16-dword mask groups"
+   },
+   {
+    "offset": "0x344",
+    "type": "int32[128]",
+    "name": "ammoclip",
+    "evidence": "chunk_043/044 ammoclip/clipAmmo[128] indexed by BG_GetWeaponClipIndex"
+   },
+   {
+    "offset": "0x544",
+    "type": "uint32[4]",
+    "name": "weapons",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) weapons[0],[1] at 0x544,0x548; 128-bit owned-weapon set; chunk_043 weapons[4]. chunk_044 (weaponsHeld[6]) and chunk_040 (bits544[8]) over-size it and collide with 0x554/0x55c"
+   },
+   {
+    "offset": "0x554",
+    "type": "int8[8]",
+    "name": "weaponslots",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) weaponslots[0] @0x554 and [4] @0x558 (two dwords); chunk_043 heldSlot[4] (idx 1,2 = primary/primaryb), chunk_046 weaponSlotA@0x555/weaponSlotB@0x556"
+   },
+   {
+    "offset": "0x55c",
+    "type": "uint32[4]",
+    "name": "weaponrechamber",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) weaponrechamber[0],[1] at 0x55c,0x560; chunk_044 weaponBits2[6] ('usesPendingBit' gate) - 4 words end at mins@0x56c"
+   },
+   {
+    "offset": "0x56c",
+    "type": "float[3]",
+    "name": "mins",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) mins[0..2]; chunk_042 PM_CheckDuck copies into pm->mins"
+   },
+   {
+    "offset": "0x578",
+    "type": "float[3]",
+    "name": "maxs",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) maxs[0..2]; stance code overrides maxs[2] to 30 (prone) / 50 (crouch)"
+   },
+   {
+    "offset": "0x584",
+    "type": "float",
+    "name": "proneDirection",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); chunk_042 field_584 / chunk_046 viewAngleYaw"
+   },
+   {
+    "offset": "0x588",
+    "type": "float",
+    "name": "proneDirectionPitch",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); PM_SmoothBodyAngles eases it at 70 deg/s (chunk_042 field_588)"
+   },
+   {
+    "offset": "0x58c",
+    "type": "float",
+    "name": "proneTorsoPitch",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); chunk_042 field_58c"
+   },
+   {
+    "offset": "0x590",
+    "type": "int32",
+    "name": "viewlocked",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (8 bits)"
+   },
+   {
+    "offset": "0x594",
+    "type": "int32",
+    "name": "viewlocked_entNum",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (16 bits); chunk_041 field_594, chunk_046 linkedEntityNum (=0x3ff at spawn)"
+   },
+   {
+    "offset": "0x598",
+    "type": "int32",
+    "name": "cursorHint",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (8 bits)"
+   },
+   {
+    "offset": "0x59c",
+    "type": "int32",
+    "name": "cursorHintString",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (-8 bits)"
+   },
+   {
+    "offset": "0x5a4",
+    "type": "int32",
+    "name": "iCompassFriendInfo",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (32 bits); chunk_046 targetInfo"
+   },
+   {
+    "offset": "0x5a8",
+    "type": "float",
+    "name": "fTorsoHeight",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); BG_PlayerStateToEntityState multiplies by prone blend into entityState+0xe4"
+   },
+   {
+    "offset": "0x5ac",
+    "type": "float",
+    "name": "fTorsoPitch",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); -> entityState+0xe8"
+   },
+   {
+    "offset": "0x5b0",
+    "type": "float",
+    "name": "fWaistPitch",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); -> entityState+0xec"
+   },
+   {
+    "offset": "0x5b4",
+    "type": "float",
+    "name": "holdBreathScale",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); PM_UpdateTimer5b8 0x080ed084 (chunk_043 field_5b4)"
+   },
+   {
+    "offset": "0x5b8",
+    "type": "int32",
+    "name": "holdBreathTimer",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (16 bits); PM_AdvanceTimer5b8 0x080ecf9c / PM_UpdateTimer5b8 (pm_flags 0x4000 = breath held)"
+   },
+   {
+    "offset": "0x5bc",
+    "type": "float",
+    "name": "mantleState.yaw",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); chunk_040 MantleState.yaw (ps+0x5bc)"
+   },
+   {
+    "offset": "0x5c0",
+    "type": "int32",
+    "name": "mantleState.timer",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (32 bits); chunk_040 MantleState.time, advanced by pml.msec in Mantle_UpdateMove"
+   },
+   {
+    "offset": "0x5c4",
+    "type": "int32",
+    "name": "mantleState.transIndex",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (4 bits); stage index 0..6 into table 0x08184d00"
+   },
+   {
+    "offset": "0x5c8",
+    "type": "uint32",
+    "name": "mantleState.flags",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (4 bits); bit0 over, bit1 hang?, bit2 end-clear, bit3 surface found (Mantle_CheckLedge/UpdateMove)"
+   },
+   {
+    "offset": "0x5cc",
+    "type": "int32",
+    "name": "eventNotifyCursor",
+    "evidence": "NOT in netField table; BG_PlayerStateToEntityState replays events from this cursor (chunk_041 eventReadCursor, chunk_046 eventConsumedSeq)"
+   },
+   {
+    "offset": "0x5d0",
+    "type": "int32",
+    "name": "weapAnim",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (10 bits); PlayerState_SetField5d0 0x080eb944 toggles bit 0x200 on change (chunk_043 field_5d0)"
+   },
+   {
+    "offset": "0x5d4",
+    "type": "float",
+    "name": "aimSpreadScale",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200); Player_BeginJump adds jump_spreadAdd (cap 255), PM_Weapon_UpdateAttackMeter/AdvanceAttackMeter; chunk_040 'spread', chunk_044 weaponMeter"
+   },
+   {
+    "offset": "0x5d8",
+    "type": "int32",
+    "name": "shellshockIndex",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (4 bits)"
+   },
+   {
+    "offset": "0x5dc",
+    "type": "int32",
+    "name": "shellshockTime",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (32 bits)"
+   },
+   {
+    "offset": "0x5e0",
+    "type": "int32",
+    "name": "shellshockDuration",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (16 bits)"
+   },
+   {
+    "offset": "0x5e4",
+    "type": "uint8[0x1c0]",
+    "name": "(16 x 7-dword records, not pmove)",
+    "evidence": "chunk_009 note for MSG_WriteDeltaPlayerState; contents not analysed here"
+   },
+   {
+    "offset": "0x7a4",
+    "type": "int32",
+    "name": "deltaTime",
+    "evidence": "netField table @0x08142520 (105 x 12B, read from the ELF image; consumed by MSG_WriteDeltaPlayerState 0x0806a200) (32 bits)"
+   },
+   {
+    "offset": "0x7a8",
+    "type": "uint8[0x1f00]",
+    "name": "(two 31-record arrays per chunk_009; not pmove)",
+    "evidence": "chunk_009; chunk_046 pad_07a8[0x1f00] reaches 0x26a8"
+   }
+  ],
+  "defined_in": [
+   "chunk_008_types.h",
+   "chunk_022_types.h",
+   "chunk_023_types.h",
+   "chunk_039_types.h",
+   "chunk_040_types.h (as 'PlayerState', mixed with entityState_s)",
+   "chunk_041_types.h",
+   "chunk_042_types.h",
+   "chunk_043_types.h (as playerState043_s)",
+   "chunk_044_types.h",
+   "chunk_046_types.h (fullest: size 0x26a8)"
+  ],
+  "conflicts": "(1) 0xa0: eFlags (039/042/046, netField) vs buttonBits (008/041/044) - the netField name wins; it is not a usercmd button mask. (2) 0x08: bobCycle (008/042/043, netField) vs pmFlags (040, wrong: that function takes an entityState_s, whose eFlags is at 0x08). (3) 0x0c pm_flags vs 040 'pmFlags2'. (4) 0x10 pm_time vs 040 'jumpPhase' vs 041 'field_10': same field, jump code reuses pm_time as phase timer (observed values 0x4b0/0x708/0x709). (5) 0x90: damageTimer (netField) vs 041 pmTime vs 042 field_90. (6) 0x4c: leanf (netField, 042) vs 041/008 moveAxis. (7) 0x48: gravity (041/043/046/040) vs 042 field_48 'per-second decel'. (8) 0xd4: weapon (043/044/046/netField) vs 041 linkedEntityNum; 046 uses the name linkedEntityNum for 0x594 instead. (9) 0xe4/0xe8/0xec: viewmodelIndex/viewangles in the real ps; chunk_040 viewZ/viewPitchOffset/viewYaw at the same offsets belong to entityState_s torso-blend fields. (10) 0x544 weapons: 4 words (043), 6 words (044), 8 words (040); 0x554 starts a byte array, so >4 words is contradicted. (11) 0x5d4 named spread/weaponMeter/aimSpreadScale (same field). (12) 0xc8 and 0x5cc are not in the netField table; names eventSequenceSent/eventNotifyCursor are provisional. The full size 0x26a8 is observed as memset/memcpy length (chunk_009/022/023/046) not as a sizeof.",
+  "confidence": "high for every netField-backed offset (names read from the binary); medium for unnetworked offsets 0x2c, 0x88, 0x8c, 0xc8, 0x5cc; low for the 0x12c block and 0x5e4..0x26a8"
+ },
+ {
+  "name": "pmove_s",
+  "size": "0xf8",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "playerState_s*",
+    "name": "ps",
+    "evidence": "all chunks; first word"
+   },
+   {
+    "offset": "0x004",
+    "type": "usercmd_s",
+    "name": "cmd",
+    "evidence": "chunk_041/042/046 usercmd_s embedded at +4 (0x1c bytes); chunks 043/044 flatten it (cmdServerTime@4, cmdButtons@8, cmdWeapon@0xc, cmdOffhand@0xd, cmdAngles@0x10, cmdForwardMove@0x1c, cmdRightMove@0x1d)"
+   },
+   {
+    "offset": "0x020",
+    "type": "usercmd_s",
+    "name": "oldcmd",
+    "evidence": "chunk_042 oldcmd, chunk_046 oldcmd; chunk_044 oldServerTime@0x20 oldButtons@0x24 oldWeapon@0x28; chunk_043/040 oldButtons@0x24; PM_Pmove copies cmd->oldcmd after every step"
+   },
+   {
+    "offset": "0x03c",
+    "type": "int32",
+    "name": "tracemask",
+    "evidence": "PM_Trace/PM_CorrectAllSolid; chunk_046 sets 0x2810011 (pm_type<6) / 0x810011; chunk_045 spectator 0x800811; bit 0x2000000 (body) is cleared by PM_Trace retry"
+   },
+   {
+    "offset": "0x040",
+    "type": "int32",
+    "name": "numtouch",
+    "evidence": "chunk_041 PM_AddTouchEnt; chunk_042 field_40 cleared at the start of PM_Pmove 0x080e9464"
+   },
+   {
+    "offset": "0x044",
+    "type": "int32[32]",
+    "name": "touchents",
+    "evidence": "chunk_041 PM_AddTouchEnt (32 slots, world entity 0x3fe ignored)"
+   },
+   {
+    "offset": "0x0c4",
+    "type": "float[3]",
+    "name": "mins",
+    "evidence": "chunks 040-046 (offset consistent); written by PM_CheckDuck"
+   },
+   {
+    "offset": "0x0d0",
+    "type": "float[3]",
+    "name": "maxs",
+    "evidence": "chunks 040-046; maxs[2] 30 prone / 50 crouch / ps->maxs[2] stand"
+   },
+   {
+    "offset": "0x0dc",
+    "type": "float",
+    "name": "xyspeed",
+    "evidence": "chunk_042 PM_Footsteps / PM_FootstepSpeedOk / PM_CheckMoveBump; only 042 names it, others leave padding"
+   },
+   {
+    "offset": "0x0e0",
+    "type": "int32",
+    "name": "stanceChanged",
+    "evidence": "chunk_042 PM_CheckDuck sets 1 when stance changes; chunk_044 field_e0"
+   },
+   {
+    "offset": "0x0e4",
+    "type": "uint8",
+    "name": "clipType",
+    "evidence": "index of the 12-byte dispatch row at 0x081869c0 (PM_TraceRaw 0x080e1308 decomp); chunk_046 ClientThink_real sets 1; chunk_045 spectator path sets 1; 041 calls it traceMode, 042/043 clipType/fieldE4"
+   },
+   {
+    "offset": "0x0e5",
+    "type": "uint8",
+    "name": "spawnEvent / mantleActive",
+    "evidence": "chunk_046 pmove_t.spawnEvent tested after PM_Pmove; chunk_040 PmoveCtx.mantleActive written by Mantle_Start/UpdateMove. Same byte (inferred)"
+   },
+   {
+    "offset": "0x0e8",
+    "type": "float[3]",
+    "name": "eventOrigin / mantleTarget",
+    "evidence": "chunk_046 eventOrigin passed to G_SpawnPmoveEventEntity; chunk_040 mantleTarget = ledge->end"
+   },
+   {
+    "offset": "0x0f4",
+    "type": "int32",
+    "name": "eventTime / mantleEndHeight",
+    "evidence": "chunk_046 eventTime; chunk_040 mantleEndHeight = overDur+upDur (a duration in ms, so 'EndHeight' is wrong)"
+   }
+  ],
+  "defined_in": [
+   "chunk_039_types.h (partial)",
+   "chunk_040_types.h (as PmoveCtx)",
+   "chunk_041_types.h",
+   "chunk_042_types.h",
+   "chunk_043_types.h (as pmove043_s)",
+   "chunk_044_types.h",
+   "chunk_046_types.h (0xf8 from memset)"
+  ],
+  "conflicts": "Offsets agree across chunks; only names differ. 0x0e5..0xf7 is named spawnEvent/eventOrigin/eventTime by 046 and mantleActive/mantleTarget/mantleEndHeight by 040: reconciled here as one field set because Mantle_Start writes them and ClientThink_real consumes them, but no chunk proves identity of the byte at 0xe5 beyond that flow. 0x0e0 stanceChanged is named only by 042. 0x08..0x1f are usercmd bytes in every layout. Padding 0x0e6..0x0e7 and 0xdc..0xdf assumed.",
+  "confidence": "high for 0x00-0x3c, 0xc4-0xe4; medium for 0xdc/0xe0/0xe5-0xf7"
+ },
+ {
+  "name": "pml_s",
+  "size": "0x7c",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "float[3]",
+    "name": "forward",
+    "evidence": "PM_SingleStep Angles_ToVectors(viewangles, pml.forward,right,up); Mantle_Debug receives &pml and reads it as the facing direction"
+   },
+   {
+    "offset": "0x00c",
+    "type": "float[3]",
+    "name": "right",
+    "evidence": "same"
+   },
+   {
+    "offset": "0x018",
+    "type": "float[3]",
+    "name": "up",
+    "evidence": "same"
+   },
+   {
+    "offset": "0x024",
+    "type": "float",
+    "name": "frametime",
+    "evidence": "msec*0.001 (PM_SingleStep)"
+   },
+   {
+    "offset": "0x028",
+    "type": "int32",
+    "name": "msec",
+    "evidence": "clamped 1..200 (PM_SingleStep); chunk_040 UserCmd040.deltaMsec at +0x28 is this field"
+   },
+   {
+    "offset": "0x02c",
+    "type": "int32",
+    "name": "walking",
+    "evidence": "chunk_041/042/043; chunk_040 JumpMoveOut.f2c zeroed by Player_BeginJump"
+   },
+   {
+    "offset": "0x030",
+    "type": "int32",
+    "name": "groundPlane",
+    "evidence": "chunk_041/042/043; chunk_040 JumpMoveOut.f30"
+   },
+   {
+    "offset": "0x034",
+    "type": "int32",
+    "name": "groundTraceHit",
+    "evidence": "chunk_041 groundTraceHit, chunk_042/043 field_34; chunk_040 JumpMoveOut.f34"
+   },
+   {
+    "offset": "0x038",
+    "type": "trace_t",
+    "name": "groundTrace",
+    "evidence": "PM_CorrectAllSolid copies 9 dwords to +0x38..+0x5b (decomp 0x80e34c6); chunk_043 groundNormal@0x3c = groundTrace.normal"
+   },
+   {
+    "offset": "0x05c",
+    "type": "float",
+    "name": "impactSpeed",
+    "evidence": "chunk_043 PM_SlideMove updates it (pml+0x5c, decomp 0x80e9c42:95); read after PM_StepSlideMove"
+   },
+   {
+    "offset": "0x060",
+    "type": "float[3]",
+    "name": "previous_origin",
+    "evidence": "PM_SingleStep, PM_CrashLand"
+   },
+   {
+    "offset": "0x06c",
+    "type": "float[3]",
+    "name": "previous_velocity",
+    "evidence": "PM_SingleStep, PM_CrashLand"
+   },
+   {
+    "offset": "0x078",
+    "type": "uint8[4]",
+    "name": "pad",
+    "evidence": "PM_SingleStep memset(&pml,0,0x7c)"
+   }
+  ],
+  "defined_in": [
+   "chunk_040_types.h (JumpMoveOut/UserCmd040 partial views)",
+   "chunk_041_types.h",
+   "chunk_042_types.h",
+   "chunk_043_types.h (pml043_s)",
+   "chunk_044_types.h (partial, size claimed 0x2c)",
+   "chunk_046 (none)"
+  ],
+  "conflicts": "chunk_040 names the pml pointer 'JumpMoveOut' (Player_TryJump/BeginJump) and 'UserCmd040' (Mantle_UpdateMove, 3rd parameter) and 'eye' (Mantle_Debug 2nd parameter): all are pml_s* (prototype in chunk_042 PM_SingleStep call sites). chunk_044 asserts sizeof(pml_s)==0x2c, which is only the touched prefix. chunk_042 uses trace_s size 0x28 for groundTrace, which would overlap impactSpeed at 0x5c.",
+  "confidence": "high"
+ },
+ {
+  "name": "trace_t",
+  "size": "0x24",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float",
+    "name": "fraction",
+    "evidence": "all"
+   },
+   {
+    "offset": "0x04",
+    "type": "float[3]",
+    "name": "normal",
+    "evidence": "all"
+   },
+   {
+    "offset": "0x10",
+    "type": "uint32",
+    "name": "surfaceFlags",
+    "evidence": "041 PM_GroundTrace (flags 1,2,0x2000, bits 20..24 surface type); 040 Mantle_FindSurface tests 0x6000000 (MANTLE_ON 0x2000000 / MANTLE_OVER 0x4000000)"
+   },
+   {
+    "offset": "0x14",
+    "type": "int32",
+    "name": "contents",
+    "evidence": "PM_Trace decomp 0x80e1360 tests &0x2000000"
+   },
+   {
+    "offset": "0x18",
+    "type": "void*",
+    "name": "material",
+    "evidence": "041 only (pointer); 042 const char*; unverified"
+   },
+   {
+    "offset": "0x1c",
+    "type": "uint16",
+    "name": "entityNum",
+    "evidence": "PM_Trace passes it to PM_AddTouchEnt; 041/042/043"
+   },
+   {
+    "offset": "0x1e",
+    "type": "uint16",
+    "name": "partName",
+    "evidence": "042 only"
+   },
+   {
+    "offset": "0x20",
+    "type": "uint16",
+    "name": "partGroup",
+    "evidence": "042 only"
+   },
+   {
+    "offset": "0x22",
+    "type": "uint8",
+    "name": "allsolid (inferred)",
+    "evidence": "040 Trace040.allSolid, 042 allsolid, 043 allSolid at 0x22; 041 names this byte startsolid"
+   },
+   {
+    "offset": "0x23",
+    "type": "uint8",
+    "name": "startsolid (inferred)",
+    "evidence": "040/042 startsolid at 0x23; 041 names it allsolid. PM_CorrectAllSolid loop and PM_Trace retry both test byte 0x23 (decomp 0x80e34c6, 0x80e1360)"
+   }
+  ],
+  "defined_in": [
+   "chunk_023_types.h (trace_s, SV-side, 0x10 named dist)",
+   "chunk_040_types.h (Trace040)",
+   "chunk_041_types.h",
+   "chunk_042_types.h (size 0x28)",
+   "chunk_043_types.h (pmTrace043_s, lower bound 0x34)"
+  ],
+  "conflicts": "(a) allsolid/startsolid byte order at 0x22/0x23 is swapped between chunk_041 (startsolid@0x22, allsolid@0x23) and chunks 040/042/043 (allsolid@0x22, startsolid@0x23). Not resolved by code: PM code tests byte 0x23 where Q3 tests allsolid-or-startsolid. The 040/042/043 order is adopted only as the majority; treat as UNKNOWN until a producer (Trace_BoxWorldThenEntities 0x080f3cfe / G_TraceBox 0x0810a528) is read. (b) Size: 0x24 (041, 040) vs 0x28 (042); pml.groundTrace copy is 9 dwords and pml+0x5c is a separate float, so 0x24 is supported; 043's 0x34 is only a lower bound. (c) chunk_023 names offset 0x10 'dist' and offset 0x14/0x18 differently; PM code uses 0x10 as surfaceFlags. Producer layout may differ from the PM view; unknown. (d) 0x18 material: pointer in 041/042, 'field_18' in 023.",
+  "confidence": "high for 0x00-0x1c; low for the 0x22/0x23 names; medium for size"
+ },
+ {
+  "name": "usercmd_s",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int32",
+    "name": "serverTime",
+    "evidence": "041/042/008/022"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "buttons",
+    "evidence": "bits observed in pmove: 0x1 attack, 0x4 alt/ADS?, 0x40/0x80 lean or vertical (freemove), 0x100 crouch, 0x200 prone, 0x400 jump (also mantle trigger), 0x800 slow-walk (x0.4 in PM_CmdScale), 0x1000 ADS/zoom, 0x2000 (PM_CheckDuck), 0x40000 (freeze), 0x10000/0x20000 offhand"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint8",
+    "name": "weapon",
+    "evidence": "008/041/044; PM_Weapon_ChangeSlot compares with ps->weapon; chunk_042/046 leave int unknown8"
+   },
+   {
+    "offset": "0x09",
+    "type": "uint8",
+    "name": "offhand",
+    "evidence": "008 unk09 / 044 cmdOffhand (offhand slot)"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int32[3]",
+    "name": "angles",
+    "evidence": "008/041/042/046 (read as short per 042 comment, stored as int)"
+   },
+   {
+    "offset": "0x18",
+    "type": "int8",
+    "name": "forwardMove",
+    "evidence": "008/041/042/043/044"
+   },
+   {
+    "offset": "0x19",
+    "type": "int8",
+    "name": "rightMove",
+    "evidence": "same"
+   },
+   {
+    "offset": "0x1a",
+    "type": "uint8[2]",
+    "name": "pad",
+    "evidence": "041"
+   }
+  ],
+  "defined_in": [
+   "chunk_008_types.h",
+   "chunk_022_types.h",
+   "chunk_041_types.h",
+   "chunk_042_types.h",
+   "chunk_044_types.h (flattened inside pmove_s)",
+   "chunk_046_types.h (field_08, field_18)"
+  ],
+  "conflicts": "Layout is consistent. chunk_040 'UserCmd040' (delta msec @0x28) is not a usercmd (it is pml_s). The 0x04 bit meanings are use-site observations, not a verified button enum. 041 states bit 0x80/0x40 add +/-127 'upmove' in PM_FreeMove/PM_FlyMove while 042 uses 0x40/0x80 as lean; both are the same bits used differently per pm_type (observed).",
+  "confidence": "high for offsets; low for bit semantics"
+ },
+ {
+  "name": "MantleState (ps+0x5bc)",
+  "size": "0x10",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float",
+    "name": "yaw",
+    "evidence": "Mantle_Start: Vec2_AngleDegrees(ledge->dir)"
+   },
+   {
+    "offset": "0x04",
+    "type": "int32",
+    "name": "time",
+    "evidence": "ms along the mantle; Mantle_UpdateMove adds pml.msec, clamps to total"
+   },
+   {
+    "offset": "0x08",
+    "type": "int32",
+    "name": "stage",
+    "evidence": "0..6 index into MantleStage[7]; Mantle_FindNearestStage"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint32",
+    "name": "flags",
+    "evidence": "copied from MantleLedge.flags: bit0 has over-anim, bit1 hang, bit2 end clear, bit3 surface"
+   }
+  ],
+  "defined_in": [
+   "chunk_040_types.h"
+  ],
+  "conflicts": "Equivalent to netFields mantleState.yaw/timer/transIndex/flags at 0x5bc/0x5c0/0x5c4/0x5c8 (names differ: time/stage). Bit meanings of flags are inferred from Mantle_CheckLedge; chunk_040 itself keeps a second 'mantleFlags' copy at ps+0x5c8 with bit 0x8 'surface found' and bit 0x2 'hang' that overlaps the same dword (consistent).",
+  "confidence": "high"
+ },
+ {
+  "name": "MantleLedge (stack local)",
+  "size": "0x34",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "dir",
+    "evidence": "surface direction (negated trace normal, z=0)"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "start",
+    "evidence": "ps->origin copy; start[2]+probeDist used as trace start"
+   },
+   {
+    "offset": "0x18",
+    "type": "float[3]",
+    "name": "ledgePos",
+    "evidence": "ledge hit position"
+   },
+   {
+    "offset": "0x24",
+    "type": "float[3]",
+    "name": "end",
+    "evidence": "mantle landing target (Mantle_ComputeLedgeTarget)"
+   },
+   {
+    "offset": "0x30",
+    "type": "uint32",
+    "name": "flags",
+    "evidence": "bit0 over, bit1 hang, bit2 end clear, bit3 found"
+   }
+  ],
+  "defined_in": [
+   "chunk_040_types.h"
+  ],
+  "conflicts": "Only chunk_040; internal consistency only. Callers: Mantle_Debug (0x080de088) builds it; no cross-chunk dependency.",
+  "confidence": "medium"
+ },
+ {
+  "name": "MantleStage[7] @0x08184d00",
+  "size": "0x0c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int32",
+    "name": "upAnim",
+    "evidence": "index 1..7 into mantle anim-name table 0x08184d60 (mp_mantle_up_57..21)"
+   },
+   {
+    "offset": "0x04",
+    "type": "int32",
+    "name": "overAnim",
+    "evidence": "8 mp_mantle_over_high, 9 mp_mantle_over_mid, 10 player_mantle_over_low"
+   },
+   {
+    "offset": "0x08",
+    "type": "float",
+    "name": "zHeight",
+    "evidence": "57,51,45,39,33,27,21 (read from chunk_040 initialiser and Mantle_ValidateAnims expected Z)"
+   }
+  ],
+  "defined_in": [
+   "chunk_040_types.h"
+  ],
+  "conflicts": "none; table values: {1,8,57},{2,8,51},{3,9,45},{4,9,39},{5,9,33},{6,10,27},{7,10,21}. Note ELF raw read of 0x08184d00 shows the ints 1,8,57.0f etc. consistent with chunk_040.",
+  "confidence": "high"
+ },
+ {
+  "name": "pm_dispatch_row @0x081869c0",
+  "size": "0x0c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "fn*",
+    "name": "trace(trace_t*,start,mins,maxs,end,passEnt,mask)",
+    "evidence": "row0=0x080f3cfe Trace_BoxWorldThenEntities, row1=0x0810a528 G_TraceBox (ELF read)"
+   },
+   {
+    "offset": "0x04",
+    "type": "fn*",
+    "name": "pointContents? (unused by pmove)",
+    "evidence": "row0=0x080f3dc0 Trace_ContentsWithEntities, row1=0x0809e368 SV_PointContents; chunk_041 field_04"
+   },
+   {
+    "offset": "0x08",
+    "type": "fn*",
+    "name": "notify(entityNum,event)",
+    "evidence": "row0=0, row1=0x080f7b38 G_HandleClientEvent; used by BG_PlayerStateToEntityState notifyRow"
+   }
+  ],
+  "defined_in": [
+   "chunk_041_types.h (cod2_pm_dispatch_s)",
+   "chunk_042_types.h (traceFnEntry_s, third slot named unknown8)"
+  ],
+  "conflicts": "042 lists the third word as void*; 041 as notify fn. Only rows 0 and 1 are valid code pointers (row 2 = {0,0,0x081559a0} is unrelated data). Row 1 is the server pmove path (clipType=1).",
+  "confidence": "high for rows 0-1"
+ },
+ {
+  "name": "pm_curve_key (stance curves)",
+  "size": "0x0c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int32",
+    "name": "key (percent 0..100, terminator -1)",
+    "evidence": "chunk_041"
+   },
+   {
+    "offset": "0x04",
+    "type": "float",
+    "name": "value (view height)",
+    "evidence": "tables read from ELF (directions inferred from value ranges): 0x08186780 stand->crouch {0:60,1:59.5,4:58.5,30:56,80:44,90:41.5,95:40.5,100:40}; 0x08186800 crouch->stand {0:40,5:40.5,10:41.5,20:44,70:56,96:58.5,99:59.5,100:60}; 0x08186880 crouch->prone {0:40,11:38,22:33,34:25,45:16,50:15,55:16,70:18,... continues}; 0x08186960 prone->crouch {0:11,5:10,30:21,50:25,67:31,83:34,100:40,-1}"
+   },
+   {
+    "offset": "0x08",
+    "type": "int32",
+    "name": "scalar",
+    "evidence": "interpolated and returned via scalarOut"
+   }
+  ],
+  "defined_in": [
+   "chunk_041_types.h (cod2_pm_curve_key_s)"
+  ],
+  "conflicts": "The 0x08186880 table was only dumped 8 rows deep here; remaining rows and the -1 terminator not captured. Which of the four tables PM_UpdateStanceHeight picks per transition is stated in chunk_041 but was not re-verified.",
+  "confidence": "medium"
+ },
+ {
+  "name": "entityState_s (partial, pmove-visible)",
+  "size": "unknown (>= 0xf0)",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int32",
+    "name": "number",
+    "evidence": "041"
+   },
+   {
+    "offset": "0x04",
+    "type": "int32",
+    "name": "eType",
+    "evidence": "041 (set 5 or 1 by pm_flags & 0xc00000)"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint32",
+    "name": "eFlags",
+    "evidence": "041/039/040(!): copy of ps->eFlags with 0x20000 (pm_type>=6) and 0x40000 (pm_flags&0x40) forced"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int32",
+    "name": "trType",
+    "evidence": "041 set to 1"
+   },
+   {
+    "offset": "0x18",
+    "type": "float[3]",
+    "name": "trBase",
+    "evidence": "041/039; origin copy (snapped when snap!=0)"
+   },
+   {
+    "offset": "0x30",
+    "type": "int32",
+    "name": "unknown_30",
+    "evidence": "041 set to 1"
+   },
+   {
+    "offset": "0x3c",
+    "type": "float[3]",
+    "name": "apos",
+    "evidence": "041 viewangles copy"
+   },
+   {
+    "offset": "0x6c",
+    "type": "float",
+    "name": "movementDir (as float)",
+    "evidence": "041"
+   },
+   {
+    "offset": "0x74",
+    "type": "int32",
+    "name": "unknown_74",
+    "evidence": "041 = ps+0x594 when eFlags&0x300"
+   },
+   {
+    "offset": "0x7c",
+    "type": "int32",
+    "name": "groundEntityNum (u16)",
+    "evidence": "041"
+   },
+   {
+    "offset": "0x90",
+    "type": "int32",
+    "name": "clientNum",
+    "evidence": "041; chunk_040 passes it as the anim handle to BG_UpdateConditionValue"
+   },
+   {
+    "offset": "0xa0",
+    "type": "uint32",
+    "name": "event",
+    "evidence": "041"
+   },
+   {
+    "offset": "0xa4",
+    "type": "int32",
+    "name": "eventSequence",
+    "evidence": "041"
+   },
+   {
+    "offset": "0xa8",
+    "type": "int32[4]",
+    "name": "events",
+    "evidence": "041"
+   },
+   {
+    "offset": "0xb8",
+    "type": "int32[4]",
+    "name": "eventParms",
+    "evidence": "041"
+   },
+   {
+    "offset": "0xc8",
+    "type": "int32",
+    "name": "weapon",
+    "evidence": "041; chunk_040 'weaponIndex'@0xc8 -> BG_GetWeaponDef"
+   },
+   {
+    "offset": "0xcc",
+    "type": "uint32",
+    "name": "legsAnim",
+    "evidence": "041 field_cc, 039 legsAnim; chunk_040 masks &0xfffffdff and indexes animation_t[0x60]"
+   },
+   {
+    "offset": "0xd0",
+    "type": "uint32",
+    "name": "torsoAnim",
+    "evidence": "041 field_d0"
+   },
+   {
+    "offset": "0xd4",
+    "type": "int32",
+    "name": "leanf bits",
+    "evidence": "041 moveAxisBits (float copied verbatim)"
+   },
+   {
+    "offset": "0xe4",
+    "type": "float",
+    "name": "torsoHeightBlend",
+    "evidence": "041 field_e4; chunk_040 viewZ"
+   },
+   {
+    "offset": "0xe8",
+    "type": "float",
+    "name": "torsoPitchBlend",
+    "evidence": "041 field_e8; chunk_040 viewPitchOffset"
+   },
+   {
+    "offset": "0xec",
+    "type": "float",
+    "name": "waistPitchBlend",
+    "evidence": "041 field_ec; chunk_040 viewYaw"
+   }
+  ],
+  "defined_in": [
+   "chunk_039_types.h",
+   "chunk_041_types.h",
+   "chunk_040_types.h (mis-named PlayerState in PlayerAnim_*/PlayerView_*)"
+  ],
+  "conflicts": "chunk_040 PlayerAnim_SetMoveParams/UpdateTree and PlayerView_* take an entityState_s (flags@+8, clientNum@+0x90, weapon@+0xc8, legsAnim@+0xcc, blends@+0xe4..0xec) but declare it as PlayerState (pmFlags@8, pmFlags2@0xc ...). Callers pass a gentity (046 line 690: PlayerAnim_UpdateTree(handle, ent, info, flag)), whose first member is entityState. Total size unknown.",
+  "confidence": "medium-high"
+ },
+ {
+  "name": "clientAnimData_t (animScriptData+0xb3bfc, stride 0x4b8)",
+  "size": "0x4b8",
+  "fields": [
+   {
+    "offset": "0x008",
+    "type": "int32",
+    "name": "entityNumber",
+    "evidence": "039"
+   },
+   {
+    "offset": "0x380",
+    "type": "playerAnimLerp_t(0x30)",
+    "name": "legs",
+    "evidence": "039; 042 turnYawPrev@0x380 / turnActive@0x384; 040 lean380[3]"
+   },
+   {
+    "offset": "0x3b0",
+    "type": "playerAnimLerp_t(0x30)",
+    "name": "torso",
+    "evidence": "039; 042 turnYawCurrent@0x3b0; 040 sway3b0[3] (z used at 0x3b8)"
+   },
+   {
+    "offset": "0x3e0",
+    "type": "float",
+    "name": "viewYawOffset",
+    "evidence": "039"
+   },
+   {
+    "offset": "0x3e4",
+    "type": "float",
+    "name": "easeParam",
+    "evidence": "039; 040 speedScale3e4"
+   },
+   {
+    "offset": "0x3e8",
+    "type": "float[3]",
+    "name": "viewAngles (or move velocity)",
+    "evidence": "039 viewAngles[3]; 040 velocity3e8 with x tested >0 by PlayerAnim_SetMoveParams; BG_PlayerAngles copies it - role UNRESOLVED"
+   },
+   {
+    "offset": "0x3f4",
+    "type": "int32",
+    "name": "flag3f4 (landingTimer)",
+    "evidence": "039/040"
+   },
+   {
+    "offset": "0x3f8",
+    "type": "int32",
+    "name": "flag3f8 (landingLatch)",
+    "evidence": "039/040"
+   },
+   {
+    "offset": "0x45c",
+    "type": "uint32[9][2]",
+    "name": "conditions",
+    "evidence": "039"
+   },
+   {
+    "offset": "0x4a4",
+    "type": "void*",
+    "name": "animTree",
+    "evidence": "039/040"
+   },
+   {
+    "offset": "0x4a8",
+    "type": "uint32",
+    "name": "animSlot (cached index)",
+    "evidence": "040 only; 039 pad4a8"
+   },
+   {
+    "offset": "0x4ac",
+    "type": "int32",
+    "name": "moveBlendUntil",
+    "evidence": "039"
+   },
+   {
+    "offset": "0x4b0",
+    "type": "int32",
+    "name": "turnAnimEndTime",
+    "evidence": "042 ('turn anim end time is %i, time is %i')"
+   },
+   {
+    "offset": "0x4b4",
+    "type": "int8",
+    "name": "turnAnimType",
+    "evidence": "042 (0x0e/0x0f)"
+   }
+  ],
+  "defined_in": [
+   "chunk_039_types.h",
+   "chunk_040_types.h (PlayerViewState)",
+   "chunk_042_types.h (clientAnimCtrl_s)"
+  ],
+  "conflicts": "0x3e8 role (viewAngles vs velocity). 040's PlayerViewState is fed by 046/048 with &g_0884e7b8[slot]+0xc, a different table from the animScriptData clients array used by 042 (g_0860b420+0xb3bfc); the two may be distinct structures with the same layout prefix. Client-count (64 in 042 vs 1 in 039) unresolved.",
+  "confidence": "medium"
+ },
+ {
+  "name": "WeaponDef (partial)",
+  "size": "unknown (>= 0x590; chunk_045 parses a 366-entry field table)",
+  "fields": [
+   {
+    "offset": "0x000",
+    "type": "const char*",
+    "name": "internalName",
+    "evidence": "043/044 name printed in diagnostics"
+   },
+   {
+    "offset": "0x004",
+    "type": "const char*",
+    "name": "displayName?",
+    "evidence": "043 field04Name copied into item table"
+   },
+   {
+    "offset": "0x074",
+    "type": "int32",
+    "name": "playerAnimType",
+    "evidence": "039/040 -> anim condition 0 (044 field_74)"
+   },
+   {
+    "offset": "0x078",
+    "type": "int32",
+    "name": "weaponType",
+    "evidence": "043: ==3 chosen by BG_FindFirstType3Weapon (binoculars-like); 044: ==1 alternate timing path; BG_WeaponTypeName table 0x081869e0 has 8 entries"
+   },
+   {
+    "offset": "0x07c",
+    "type": "int32",
+    "name": "weaponClass (cond 1)",
+    "evidence": "039/040/044 field_7c; 043: ==9 special-case in BG_WeaponFlagA / PM_UpdateWeaponFlag40"
+   },
+   {
+    "offset": "0x080",
+    "type": "int32",
+    "name": "weaponSlot",
+    "evidence": "043: 1/2 = held slots (primary/primaryb); BG_WeaponSlotFromName none/primary/primaryb"
+   },
+   {
+    "offset": "0x084",
+    "type": "int32",
+    "name": "offhandClass / class",
+    "evidence": "043 'field84 class/category'; 044 offhandClass; 039 puts class at 0x7c - conflict"
+   },
+   {
+    "offset": "0x088",
+    "type": "int32",
+    "name": "slotStackable",
+    "evidence": "043"
+   },
+   {
+    "offset": "0x1c4",
+    "type": "const char*",
+    "name": "ammoName",
+    "evidence": "043; BG_FillInAmmoIndex 0x080eb24a"
+   },
+   {
+    "offset": "0x1c8",
+    "type": "int32",
+    "name": "ammoIndex",
+    "evidence": "043"
+   },
+   {
+    "offset": "0x1cc",
+    "type": "const char*",
+    "name": "clipName",
+    "evidence": "043"
+   },
+   {
+    "offset": "0x1d0",
+    "type": "int32",
+    "name": "clipIndex",
+    "evidence": "043"
+   },
+   {
+    "offset": "0x1d4",
+    "type": "int32",
+    "name": "maxAmmo",
+    "evidence": "043"
+   },
+   {
+    "offset": "0x1d8",
+    "type": "int32",
+    "name": "clipSize",
+    "evidence": "043"
+   },
+   {
+    "offset": "0x1e0",
+    "type": "const char*",
+    "name": "sharedAmmoCapName",
+    "evidence": "043"
+   },
+   {
+    "offset": "0x1e4",
+    "type": "int32",
+    "name": "sharedAmmoCapIndex",
+    "evidence": "043"
+   },
+   {
+    "offset": "0x1e8",
+    "type": "int32",
+    "name": "sharedAmmoCap",
+    "evidence": "043"
+   },
+   {
+    "offset": "0x1f4",
+    "type": "int32",
+    "name": "altFireEnabled",
+    "evidence": "044 (read 500-decimal field)"
+   },
+   {
+    "offset": "0x264",
+    "type": "float",
+    "name": "moveSpeedScale",
+    "evidence": "041 PM_CmdScale (applied only if >0)"
+   },
+   {
+    "offset": "0x278",
+    "type": "int32",
+    "name": "field278 (ADS-hold gate)",
+    "evidence": "043 PM_AdvanceTimer5b8; 046 weaponDef->field_278"
+   },
+   {
+    "offset": "0x32c",
+    "type": "int32",
+    "name": "field32c",
+    "evidence": "043 BG_GetWeaponField32c; 046 zoom gate"
+   },
+   {
+    "offset": "0x340",
+    "type": "int32",
+    "name": "clipOnly",
+    "evidence": "043: 0 = draws ammo pool, else clip pool"
+   },
+   {
+    "offset": "0x368",
+    "type": "const char*",
+    "name": "altWeaponName",
+    "evidence": "043"
+   },
+   {
+    "offset": "0x36c",
+    "type": "int32",
+    "name": "altWeaponIndex",
+    "evidence": "043/044"
+   },
+   {
+    "offset": "0x588",
+    "type": "float",
+    "name": "field588",
+    "evidence": "043/044"
+   }
+  ],
+  "defined_in": [
+   "chunk_039_types.h (weaponDef_s)",
+   "chunk_040_types.h (WeaponDef040)",
+   "chunk_043_types.h (WeaponDef043_s)",
+   "chunk_044_types.h (weapon_def_s)",
+   "chunk_046_types.h (weaponDef_t, partial)"
+  ],
+  "conflicts": "0x7c/0x84: 'weaponClass' at 0x7c (039/040/044) vs 'class/category' at 0x84 (043/044 offhandClass) - two fields or one mis-assigned; unresolved. chunk_044 fields 0x1f4..0x248 are timers/counters by use only. Fields beyond those listed are chunk-local, offsets not cross-verified.",
+  "confidence": "medium for 0x1c4-0x1e8, 0x36c, 0x264; low elsewhere"
+ },
+ {
+  "name": "dvar record (partial)",
+  "size": "unknown (>= 0x0c)",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "?",
+    "name": "unknown",
+    "evidence": "name/flags (never read by pmove)"
+   },
+   {
+    "offset": "0x08",
+    "type": "float|int32|uint8",
+    "name": "value",
+    "evidence": "*(float*)(dvar+8) for float, *(char*)(dvar+8) for bool, *(int*)(dvar+8) for int; chunks 023/040/042/043/044 and decomp of PM_Friction (DAT_08626fec+8)"
+   }
+  ],
+  "defined_in": [
+   "chunk_023_types.h",
+   "chunk_040_types.h (cvar_s*)",
+   "chunk_041_types.h (vmCvar_s, by value)",
+   "chunk_042_types.h",
+   "chunk_043_types.h",
+   "chunk_044_types.h"
+  ],
+  "conflicts": "chunk_041 declares the pmove dvars as vmCvar_s objects at the global address (extern vmCvar_t dvar_friction) and reads dvar_friction.value, i.e. address+8. The binary stores a POINTER at the global (PM_Friction decomp: *(float*)(DAT_08626ff0 + 8) after a load of DAT_08626ff0). The 041 declaration is wrong for every dvar_* it uses (stopspeed, friction, inertia*, bg_fallDamage*, player_*). The vmCvar_s layout in 041 (handle/modCount/value/integer/string) is Q3 lineage and not supported by this binary.",
+  "confidence": "high"
+ }
+]

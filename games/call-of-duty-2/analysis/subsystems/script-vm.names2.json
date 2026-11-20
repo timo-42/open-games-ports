@@ -1,0 +1,1015 @@
+{
+ "functions": [
+  {
+   "addr": "0x0808523c",
+   "old": "Scr_AddNewObject",
+   "new": "GScr_spawnstruct",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"spawnstruct\" -> this handler; body consistent: allocates a struct object, pushes it, releases the allocation ref; no other caller"
+  },
+  {
+   "addr": "0x08114d74",
+   "old": "GScr_SampleAnimNodeVector",
+   "new": "GScr_getmovedelta",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getmovedelta\" -> this handler; body consistent: samples anim node between optional start/end times and pushes vector"
+  },
+  {
+   "addr": "0x08114e8c",
+   "old": "GScr_SampleAnimNodeAngle",
+   "new": "GScr_getangledelta",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getangledelta\" -> this handler; body consistent: same sampling, pushes planar angle as float"
+  },
+  {
+   "addr": "0x08114fac",
+   "old": "GScr_GetConfigFloat_0b",
+   "new": "GScr_getnorthyaw",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getnorthyaw\" -> this handler; body consistent: reads configstring 0x0b and pushes atof() as float"
+  },
+  {
+   "addr": "0x08114bb6",
+   "old": "GScr_SpawnFxImpactAtPoint",
+   "new": "GScr_grenadeexplosioneffect",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"grenadeexplosioneffect\" -> this handler; body consistent: spawns temp event 0xbc at a script point with up normal and ground trace"
+  },
+  {
+   "addr": "0x08114d5a",
+   "old": "GScr_SetRadiusDamageTag",
+   "new": "GScr_setplayerignoreradiusdamage",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setplayerignoreradiusdamage\" -> this handler; body consistent: stores int param in g_0864f978 which GScr_RadiusDamage copies to g_0864f974; G_RadiusDamage skips client victims when set"
+  },
+  {
+   "addr": "0x081160e0",
+   "old": "GScr_GetModelBoneCount",
+   "new": "GScr_getnumparts",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getnumparts\" -> this handler; body consistent: pushes bone count of model named by param 0"
+  },
+  {
+   "addr": "0x08116112",
+   "old": "GScr_GetModelBoneNameId",
+   "new": "GScr_getpartname",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getpartname\" -> this handler; body consistent: model bone name by index"
+  },
+  {
+   "addr": "0x081161ba",
+   "old": "GScr_SpawnTempFx",
+   "new": "GScr_earthquake",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"earthquake\" -> this handler; body consistent: temp event 0xc4: scale, duration seconds->ms, origin, radius params"
+  },
+  {
+   "addr": "0x08085628",
+   "old": "Scr_SampleTimers",
+   "new": "GScr_resettimeout",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"resettimeout\" -> this handler; body consistent: re-samples script start time (scrVmGlob_starttime = Sys_Milliseconds); also invoked internally by call-engine entry points"
+  },
+  {
+   "addr": "0x081159e2",
+   "old": "GScr_IsPlayerEntity",
+   "new": "GScr_isplayer",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"isplayer\" -> this handler; body consistent: pushes 1 when param is an entity with a client record"
+  },
+  {
+   "addr": "0x08115a42",
+   "old": "GScr_IsValidEffectId",
+   "new": "GScr_isplayernumber",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"isplayernumber\" -> this handler; body consistent: pushes 1 when int param is in 0..63"
+  },
+  {
+   "addr": "0x08115a82",
+   "old": "GScr_SetWinnerFromEntity",
+   "new": "GScr_setwinningplayer",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setwinningplayer\" -> this handler; body consistent: winner from entity"
+  },
+  {
+   "addr": "0x08115b40",
+   "old": "GScr_SetWinnerTeam",
+   "new": "GScr_setwinningteam",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setwinningteam\" -> this handler; body consistent: winner from team string"
+  },
+  {
+   "addr": "0x08115c62",
+   "old": "GScr_SendAnnouncementAll",
+   "new": "GScr_announcement",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"announcement\" -> this handler; body consistent: announcement to all clients"
+  },
+  {
+   "addr": "0x08115cd6",
+   "old": "GScr_SendAnnouncementToEntity",
+   "new": "GScr_clientannouncement",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"clientannouncement\" -> this handler; body consistent: announcement to one entity"
+  },
+  {
+   "addr": "0x08115d5a",
+   "old": "GScr_GetTeamScoreIndex",
+   "new": "GScr_getteamscore",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getteamscore\" -> this handler; body consistent: reads allies/axis score slot by team handle"
+  },
+  {
+   "addr": "0x08115dda",
+   "old": "GScr_SetTeamScore",
+   "new": "GScr_setteamscore",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setteamscore\" -> this handler; body consistent: stores allies/axis score, sends 'H'/'G' server command"
+  },
+  {
+   "addr": "0x08115ed2",
+   "old": "GScr_SetManualChangeMode",
+   "new": "GScr_setclientnamemode",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setclientnamemode\" -> this handler; body consistent: selects auto_change / manual_change (strings 'Unknown mode')"
+  },
+  {
+   "addr": "0x08115f28",
+   "old": "GScr_ApplyManualChangeNames",
+   "new": "GScr_updateclientnames",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"updateclientnames\" -> this handler; body consistent: error 'Only works in [manual_change] mode'; applies pending names"
+  },
+  {
+   "addr": "0x08115ff6",
+   "old": "GScr_CountTeamAliveEntities",
+   "new": "GScr_getteamplayersalive",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getteamplayersalive\" -> this handler; body consistent: counts live entities of allies/axis"
+  },
+  {
+   "addr": "0x08116bd8",
+   "old": "GScr_SpawnBotEntity",
+   "new": "GScr_addtestclient",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"addtestclient\" -> this handler; body consistent: calls SV_AddBot and pushes the entity"
+  },
+  {
+   "addr": "0x08116bfa",
+   "old": "GScr_SetDvarFromScript",
+   "new": "GScr_makecvarserverinfo",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"makecvarserverinfo\" -> this handler; body consistent: registers/flags dvar with flag 0x100 (serverinfo)"
+  },
+  {
+   "addr": "0x081178ea",
+   "old": "GScr_AllocServerPools",
+   "new": "GScr_setarchive",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setarchive\" -> this handler; body consistent: passes int param to SV_AllocServerPools"
+  },
+  {
+   "addr": "0x08116d4c",
+   "old": "GScr_SendNoticeToAll",
+   "new": "GScr_allclientsprint",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"allclientsprint\" -> this handler; body consistent: notice text to all clients"
+  },
+  {
+   "addr": "0x081170ae",
+   "old": "GScr_SendNoticeToEntity",
+   "new": "GScr_clientprint",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"clientprint\" -> this handler; body consistent: notice text to one entity"
+  },
+  {
+   "addr": "0x08116da2",
+   "old": "GScr_MapFileExists",
+   "new": "GScr_mapexists",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"mapexists\" -> this handler; body consistent: pushes 1 when SV_MapFileExists(param0)"
+  },
+  {
+   "addr": "0x08116dee",
+   "old": "GScr_NamedEntryExists",
+   "new": "GScr_isvalidgametype",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"isvalidgametype\" -> this handler; body consistent: pushes 1 when name is in the gametype list table (0x0884d72c)"
+  },
+  {
+   "addr": "0x08116e3a",
+   "old": "GScr_SetServerConfigStrings",
+   "new": "GScr_setvotestring",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setvotestring\" -> this handler; body consistent: sets configstring 0x10 and refreshes vote time/yes/no strings 0x0f,0x11,0x12"
+  },
+  {
+   "addr": "0x08116ee2",
+   "old": "GScr_SetServerConfigValue0f",
+   "new": "GScr_setvotetime",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setvotetime\" -> this handler; body consistent: sets configstring 0x0f from int param"
+  },
+  {
+   "addr": "0x08116f72",
+   "old": "GScr_SetServerConfigValue11",
+   "new": "GScr_setvoteyescount",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setvoteyescount\" -> this handler; body consistent: sets configstring 0x11 from int param"
+  },
+  {
+   "addr": "0x08116fdc",
+   "old": "GScr_SetServerConfigValue12",
+   "new": "GScr_setvotenocount",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setvotenocount\" -> this handler; body consistent: sets configstring 0x12 from int param"
+  },
+  {
+   "addr": "0x08117918",
+   "old": "GScr_ReturnZero",
+   "new": "GScr_issplitscreen",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"issplitscreen\" -> this handler; body consistent: pushes constant 0"
+  },
+  {
+   "addr": "0x08116574",
+   "old": "GScr_LocalToWorldPoint",
+   "new": "ScriptEntCmd_localtoworldcoords",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188720 (entity methods) entry \"localtoworldcoords\" -> this handler; body consistent: local-to-world point transform"
+  },
+  {
+   "addr": "0x081165f6",
+   "old": "GScr_SetTurretNegLimit_10",
+   "new": "ScriptEntCmd_setrightarc",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188720 (entity methods) entry \"setrightarc\" -> this handler; body consistent: turret arc limit setter"
+  },
+  {
+   "addr": "0x0811666a",
+   "old": "GScr_SetTurretLimit_18",
+   "new": "ScriptEntCmd_setleftarc",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188720 (entity methods) entry \"setleftarc\" -> this handler; body consistent: turret arc limit setter"
+  },
+  {
+   "addr": "0x081166d2",
+   "old": "GScr_SetTurretNegLimit_0c",
+   "new": "ScriptEntCmd_settoparc",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188720 (entity methods) entry \"settoparc\" -> this handler; body consistent: turret arc limit setter"
+  },
+  {
+   "addr": "0x08116746",
+   "old": "GScr_SetTurretLimit_14",
+   "new": "ScriptEntCmd_setbottomarc",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188720 (entity methods) entry \"setbottomarc\" -> this handler; body consistent: turret arc limit setter"
+  },
+  {
+   "addr": "0x081167ae",
+   "old": "G_PlaceSpawnPoint",
+   "new": "ScriptEntCmd_placespawnpoint",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188720 (entity methods) entry \"placespawnpoint\" -> this handler; body consistent: traces up 128/down 262144 with 30x30x70 box, settles origin, warns 'Spawn point entity %i is in solid'"
+  },
+  {
+   "addr": "0x081169a2",
+   "old": "GScr_SendTeamScoresToEntity",
+   "new": "ScriptEntCmd_updatescores",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x08188720 (entity methods) entry \"updatescores\" -> this handler; body consistent: sends team scores to the entity's client"
+  },
+  {
+   "addr": "0x0811998a",
+   "old": "GScr_ScriptMoverMove",
+   "new": "ScriptMover_moveto",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x0815e3a0 (script_mover methods) entry \"moveto\" -> this handler"
+  },
+  {
+   "addr": "0x08119c58",
+   "old": "GScr_MoveAxis_01",
+   "new": "ScriptMover_movey",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x0815e3a0 (script_mover methods) entry \"movey\" -> this handler"
+  },
+  {
+   "addr": "0x08119c74",
+   "old": "GScr_MoveAxis_02",
+   "new": "ScriptMover_movez",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x0815e3a0 (script_mover methods) entry \"movez\" -> this handler"
+  },
+  {
+   "addr": "0x08119a6c",
+   "old": "GScr_ScriptMoverGravity",
+   "new": "ScriptMover_movegravity",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x0815e3a0 (script_mover methods) entry \"movegravity\" -> this handler"
+  },
+  {
+   "addr": "0x08119c90",
+   "old": "GScr_ScriptMoverRotateTo",
+   "new": "ScriptMover_rotateto",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x0815e3a0 (script_mover methods) entry \"rotateto\" -> this handler"
+  },
+  {
+   "addr": "0x08119eea",
+   "old": "GScr_RotateAxis_01",
+   "new": "ScriptMover_rotateyaw",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x0815e3a0 (script_mover methods) entry \"rotateyaw\" -> this handler"
+  },
+  {
+   "addr": "0x08119f06",
+   "old": "GScr_RotateAxis_02",
+   "new": "ScriptMover_rotateroll",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x0815e3a0 (script_mover methods) entry \"rotateroll\" -> this handler"
+  },
+  {
+   "addr": "0x08119f22",
+   "old": "GScr_ScriptMoverRotateVelocity",
+   "new": "ScriptMover_rotatevelocity",
+   "confidence": "observed",
+   "evidence": "dispatch table 0x0815e3a0 (script_mover methods) entry \"rotatevelocity\" -> this handler"
+  },
+  {
+   "addr": "0x080f9b8c",
+   "old": "Player_GiveWeapon",
+   "new": "PlayerCmd_giveweapon",
+   "confidence": "observed",
+   "evidence": "player method table 0x08158a40 entry \"giveweapon\" -> this handler (script-vm.md sec.11 also maps it); naming style of sibling PlayerCmd_* entries"
+  },
+  {
+   "addr": "0x080fa0f6",
+   "old": "Player_HasWeapon",
+   "new": "PlayerCmd_hasweapon",
+   "confidence": "observed",
+   "evidence": "player method table 0x08158a40 entry \"hasweapon\" -> this handler (script-vm.md sec.11 also maps it); naming style of sibling PlayerCmd_* entries"
+  },
+  {
+   "addr": "0x080f80e4",
+   "old": "Player_SetField26b8",
+   "new": "Player_SetScore",
+   "confidence": "observed",
+   "evidence": "player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"score\" names this function as its score setter: stores Scr_GetInt(0) at +0x26b8 (field offset 9912) then G_CalculateRanks slot"
+  },
+  {
+   "addr": "0x080f8482",
+   "old": "Player_SetField27a4",
+   "new": "Player_SetPsOffsetTime",
+   "confidence": "observed",
+   "evidence": "player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"psoffsettime\" names this function as its psoffsettime setter (offset 0x27a4) slot"
+  },
+  {
+   "addr": "0x080f84a4",
+   "old": "Player_GetScaledIndex",
+   "new": "Player_GetPsOffsetTime",
+   "confidence": "observed",
+   "evidence": "player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"psoffsettime\" names this function as its psoffsettime getter slot slot"
+  },
+  {
+   "addr": "0x080f8420",
+   "old": "Player_SetScaledValue",
+   "new": "Player_SetArchiveTime",
+   "confidence": "observed",
+   "evidence": "player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"archivetime\" names this function as its archivetime setter (offset 0x26b4): stores int(1000*float) slot"
+  },
+  {
+   "addr": "0x080f8460",
+   "old": "Player_GetScaledValue",
+   "new": "Player_GetArchiveTime",
+   "confidence": "observed",
+   "evidence": "player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"archivetime\" names this function as its archivetime getter: pushes 0.001*value slot"
+  },
+  {
+   "addr": "0x080f814a",
+   "old": "Player_SetConfigIndex",
+   "new": "Player_SetStatusIcon",
+   "confidence": "observed",
+   "evidence": "player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"statusicon\" names this function as its statusicon setter (G_StatusIconIndex of the string) slot"
+  },
+  {
+   "addr": "0x080f817a",
+   "old": "Player_GetConfigName",
+   "new": "Player_GetStatusIcon",
+   "confidence": "observed",
+   "evidence": "player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"statusicon\" names this function as its statusicon getter slot"
+  },
+  {
+   "addr": "0x08117cb2",
+   "old": "Scr_GetFunction_08117cb2",
+   "new": "GScr_GetFunction",
+   "confidence": "inferred",
+   "evidence": "table lookup of builtin by name in 0x08188040 (0x91 entries), rewrites *name, returns handler; sole caller ScrCompile_FunctionCall; counterpart of Scr_GetMethod/GScr_GetMethod naming and CoD4-lineage GScr_GetFunction"
+  },
+  {
+   "addr": "0x0811b1ca",
+   "old": "G_FreeClassObject1",
+   "new": "HudElem_ReleaseScriptObject",
+   "confidence": "descriptive",
+   "evidence": "calls HudElem_ReleaseStringFields on obj then Scr_QueueEntityRelease(index, classnum 1); class 1 = hudelem per HudElem_RegisterScriptFields (Scr_AddClassField(1,...)); array stride 0x8c"
+  },
+  {
+   "addr": "0x08103b2e",
+   "old": "HudElem_FieldWrite",
+   "new": "HudElem_ScriptGetField",
+   "confidence": "inferred",
+   "evidence": "pushes field value (Scr_AddEntityFieldValue) or calls table slot +0x14; script-vm.md sec.11 item 12 shows slot +0x14 is the setter/+0x18 getter and callers route Scr_GetObjectField here; old name FieldWrite had direction reversed"
+  },
+  {
+   "addr": "0x08103ba6",
+   "old": "HudElem_FieldRead",
+   "new": "HudElem_ScriptSetField",
+   "confidence": "inferred",
+   "evidence": "stores value (Scr_SetEntityFieldGeneric) or calls table slot +0x18; Scr_SetObjectField routes here (script-vm.md sec.11 item 12)"
+  },
+  {
+   "addr": "0x0807a2d4",
+   "old": "ScrBuf_Reset",
+   "new": "TempMemory_Reset",
+   "confidence": "descriptive",
+   "evidence": "writes 0 to running offset g_08297484; called by Scr_InitCompileState, Scr_LoadFieldFiles, CMod_LoadBrushRelated (compiler and collision loader share it); lineage CoD4 TempMemoryReset"
+  },
+  {
+   "addr": "0x0807a2e4",
+   "old": "ScrBuf_Advance",
+   "new": "TempMemory_Reserve",
+   "confidence": "descriptive",
+   "evidence": "bump-reserves delta bytes: Hunk_ReallocateTempMemory(offset+delta), returns base+old offset; 27 callers incl. EmitOpcode/EmitByte, CM_AllocBrushNode; lineage CoD4 TempMalloc"
+  },
+  {
+   "addr": "0x0807a318",
+   "old": "ScrBuf_AdvanceA",
+   "new": "TempMemory_ReserveAliasA",
+   "confidence": "descriptive",
+   "evidence": "identical wrapper of ScrBuf_Advance; callers EmitInt32/EmitShort/EmitUnsignedShort/EmitStringIndex/EmitCodePos/EmitCanonicalString"
+  },
+  {
+   "addr": "0x0807a32c",
+   "old": "ScrBuf_AdvanceB",
+   "new": "TempMemory_ReserveAliasB",
+   "confidence": "descriptive",
+   "evidence": "second identical wrapper; callers EmitFloat, Scr_CompileSwitchStmt"
+  },
+  {
+   "addr": "0x0807a340",
+   "old": "ScrBuf_Rewind",
+   "new": "TempMemory_SetPos",
+   "confidence": "descriptive",
+   "evidence": "rewinds running offset by (current - mark) and reallocates; callers EmitOpcode, ScrCompile_DevBlockLeave, Scr_CompileDevBlock; lineage CoD4 TempMemorySetPos"
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08853220",
+   "old": "g_08853220",
+   "new": "scr_str_emptystring",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string '' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853222",
+   "old": "g_08853222",
+   "new": "scr_str_allies",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'allies' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853224",
+   "old": "g_08853224",
+   "new": "scr_str_axis",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'axis' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853226",
+   "old": "g_08853226",
+   "new": "scr_str_current",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'current' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x0885322a",
+   "old": "g_0885322a",
+   "new": "scr_str_death",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'death' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853230",
+   "old": "g_08853230",
+   "new": "scr_str_empty",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'empty' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853232",
+   "old": "g_08853232",
+   "new": "scr_str_entity",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'entity' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853236",
+   "old": "g_08853236",
+   "new": "scr_str_fraction",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'fraction' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x0885323e",
+   "old": "g_0885323e",
+   "new": "scr_str_invisible",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'invisible' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x0885324c",
+   "old": "g_0885324c",
+   "new": "scr_str_normal",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'normal' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853254",
+   "old": "g_08853254",
+   "new": "scr_str_position",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'position' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853264",
+   "old": "g_08853264",
+   "new": "scr_str_script_model",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'script_model' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853266",
+   "old": "g_08853266",
+   "new": "scr_str_script_origin",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'script_origin' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853268",
+   "old": "g_08853268",
+   "new": "scr_str_spectator",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'spectator' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x0885326c",
+   "old": "g_0885326c",
+   "new": "scr_str_surfacetype",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'surfacetype' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853274",
+   "old": "g_08853274",
+   "new": "scr_str_trigger",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'trigger' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853276",
+   "old": "g_08853276",
+   "new": "scr_str_trigger_use",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'trigger_use' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853278",
+   "old": "g_08853278",
+   "new": "scr_str_trigger_use_touch",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'trigger_use_touch' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x0885328e",
+   "old": "g_0885328e",
+   "new": "scr_str_intermission",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'intermission' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853292",
+   "old": "g_08853292",
+   "new": "scr_str_playing",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'playing' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853294",
+   "old": "g_08853294",
+   "new": "scr_str_none",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'none' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853296",
+   "old": "g_08853296",
+   "new": "scr_str_dead",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'dead' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08853298",
+   "old": "g_08853298",
+   "new": "scr_str_auto_change",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'auto_change' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x0885329a",
+   "old": "g_0885329a",
+   "new": "scr_str_manual_change",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'manual_change' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x0885329c",
+   "old": "g_0885329c",
+   "new": "scr_str_freelook",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'freelook' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x088532a2",
+   "old": "g_088532a2",
+   "new": "scr_str_snd_enveffectsprio_level",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'snd_enveffectsprio_level' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x088532a4",
+   "old": "g_088532a4",
+   "new": "scr_str_snd_enveffectsprio_shellshock",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'snd_enveffectsprio_shellshock' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x088532a6",
+   "old": "g_088532a6",
+   "new": "scr_str_snd_channelvolprio_holdbreath",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'snd_channelvolprio_holdbreath' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x088532a8",
+   "old": "g_088532a8",
+   "new": "scr_str_snd_channelvolprio_pain",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'snd_channelvolprio_pain' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x088532aa",
+   "old": "g_088532aa",
+   "new": "scr_str_snd_channelvolprio_shellshock",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'snd_channelvolprio_shellshock' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x088532c6",
+   "old": "g_088532c6",
+   "new": "scr_str_tag_weapon_right",
+   "type_hint": "unsigned short (script string handle)",
+   "confidence": "observed",
+   "evidence": "existing evidence: interned from string 'tag_weapon_right' in G_InitScriptStrings (read by script builtins/field handlers); prefix scr_str_ marks a pre-interned script string id"
+  },
+  {
+   "addr": "0x08397520",
+   "old": "g_08397520",
+   "new": "scrVarPub_notifyArrayId",
+   "type_hint": "uint32",
+   "confidence": "inferred",
+   "evidence": "array id created in Scr_Init variable-root init next to timeArray/level/anim; holds reverse registration [self][threadLocalId] consulted by ScrVar_RemoveThread (0x0807b8ae) and weighed by Scr_GetNamedRootWeight; cleared in VM_Init; CoD4 scrVarPub has a notifyArrayId in the same role (lineage, structure not byte-verified)"
+  },
+  {
+   "addr": "0x08397530",
+   "old": "g_08397530",
+   "new": "scrVarPub_freeEntList",
+   "type_hint": "uint32",
+   "confidence": "inferred",
+   "evidence": "head of chain of released entity vars: Scr_QueueEntityRelease links, Scr_FlushEntityReleaseChain pops and releases; cleared in VM_Init; CoD4 scrVarPub.freeEntList role"
+  },
+  {
+   "addr": "0x08397540",
+   "old": "g_08397540",
+   "new": "scrVarPub_pendingFieldObjectId",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "set by ScrVar_GetVarIdForSet (0x0807c21a) together with marker id 0xfffe; consumed by ScrVar_SetVarValueOrPending/ReadVarValueOrPending as the object whose class field is accessed"
+  },
+  {
+   "addr": "0x08397544",
+   "old": "g_08397544",
+   "new": "scrVarPub_pendingFieldNameId",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "companion of scrVarPub_pendingFieldObjectId: field name id recorded with marker 0xfffe, passed to ScrVar_SetClassFieldValue/ReadClassField"
+  },
+  {
+   "addr": "0x0839753c",
+   "old": "g_0839753c",
+   "new": "scrCompileOpcodeHash",
+   "type_hint": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "accumulator updated g = g*0x1f + opcode in the opcode emitter (0x0806e120) and Anim_HashAndEmitTree; reported by Scr_GetStatSnapshot; restored in EmitFunctionEpilogue"
+  },
+  {
+   "addr": "0x083d7600",
+   "old": "g_083d7600",
+   "new": "scrVm_noOwnerSentinel",
+   "type_hint": "uint8[]",
+   "confidence": "inferred",
+   "evidence": "Scr_PeekCallerOwner returns NULL when the frame owner equals this address"
+  },
+  {
+   "addr": "0x083d8a84",
+   "old": "g_083d8a84",
+   "new": "scrVmPub_maxstack",
+   "type_hint": "struct cod2_scr_entry_s *",
+   "confidence": "inferred",
+   "evidence": "value stack limit checked in Scr_ReserveStackSlot; overlays scrVmPub+0x4 (scrVmPub at 0x083d8a80, localVars at +0, call depth scr_call_depth at +8)"
+  },
+  {
+   "addr": "0x083d8a8c",
+   "old": "g_083d8a8c",
+   "new": "scrVmPub_function_frame",
+   "type_hint": "uint32 *",
+   "confidence": "inferred",
+   "evidence": "call-frame next-free cell (24-byte cells) used by Scr_CallFunction/Scr_SaveStack/Scr_RestoreStack; overlays scrVmPub+0xc"
+  },
+  {
+   "addr": "0x083d8a90",
+   "old": "g_083d8a90",
+   "new": "scrVmPub_top",
+   "type_hint": "struct cod2_scr_entry_s *",
+   "confidence": "inferred",
+   "evidence": "value stack top, 8-byte entries, 38 users; overlays scrVmPub+0x10 (fields +0x14..0x16 are scr_error_* bytes)"
+  },
+  {
+   "addr": "0x083d8a98",
+   "old": "g_083d8a98",
+   "new": "scrVmPub_inparamcount",
+   "type_hint": "int32",
+   "confidence": "inferred",
+   "evidence": "count of values pushed for a pending call/return; overlays scrVmPub+0x18"
+  },
+  {
+   "addr": "0x083d8a9c",
+   "old": "g_083d8a9c",
+   "new": "scrVmPub_outparamcount",
+   "type_hint": "int32",
+   "confidence": "inferred",
+   "evidence": "parameter count read by Scr_GetNumParams and Scr_Get*; overlays scrVmPub+0x1c"
+  },
+  {
+   "addr": "0x083dce98",
+   "old": "g_083dce98",
+   "new": "scrVmGlob_timestampHigh",
+   "type_hint": "uint32",
+   "confidence": "descriptive",
+   "evidence": "only written by Scr_SampleTimers: Sys_ReadTimestampLow() >> 16; sits next to scrVmGlob_starttime (0x083dce9c)"
+  },
+  {
+   "addr": "0x083dce78",
+   "old": "g_083dce78",
+   "new": "scrVmGlob_setupStack",
+   "type_hint": "uint32[]",
+   "confidence": "descriptive",
+   "evidence": "static one-entry value stack used by Scr_RunSetup"
+  },
+  {
+   "addr": "0x08297484",
+   "old": "g_08297484",
+   "new": "tempMemoryOffset",
+   "type_hint": "int",
+   "confidence": "descriptive",
+   "evidence": "running byte offset of the temp-hunk bump region; reset/advanced/rewound only by the TempMemory_* functions"
+  },
+  {
+   "addr": "0x08397548",
+   "old": "g_08397548",
+   "new": "scrCodeWindowBase",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "base of bytecode window: Scr_InitCompileState sets Hunk_AllocLow(0); Scr_IsInCodeRange tests p-base < scrCodeWindowLen; Scr_CallScriptOffset adds offsets to it (script-vm.md sec.2.3)"
+  },
+  {
+   "addr": "0x08205cb0",
+   "old": "g_08205cb0",
+   "new": "scrCodeWindowLen",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "length of bytecode window; set pos-base at 0x08075a26 and zeroed in Scr_InitCompileState/Scr_ResetAll"
+  },
+  {
+   "addr": "0x0839754c",
+   "old": "g_0839754c",
+   "new": "scrGlobalWindowEnd",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "end of the global window tested by Scr_IsInGlobalRange; zeroed in Scr_InitCompileState"
+  },
+  {
+   "addr": "0x08205c88",
+   "old": "g_08205c88",
+   "new": "scrCompileFileCacheArrayId",
+   "type_hint": "uint32",
+   "confidence": "inferred",
+   "evidence": "array id from ScrVar_AllocArray in Scr_InitCompileState; Scr_LoadScriptFile cache lookup; destroyed in Scr_ShutdownCompileState"
+  },
+  {
+   "addr": "0x08205c8c",
+   "old": "g_08205c8c",
+   "new": "scrCompileFuncRefArrayId",
+   "type_hint": "uint32",
+   "confidence": "inferred",
+   "evidence": "array id from ScrVar_AllocArray in Scr_InitCompileState; used by Scr_ResolveFunctionOffset and Scr_LoadScriptFile for function references"
+  },
+  {
+   "addr": "0x08205c90",
+   "old": "g_08205c90",
+   "new": "scrCompileFuncCallArrayId",
+   "type_hint": "uint32",
+   "confidence": "observed",
+   "evidence": "ScrVar_AllocArray result; ScrCompile_FunctionCall (0x08070b42) does FindVarValueId/NewChildAVarId(g, calleeId) for plain calls"
+  },
+  {
+   "addr": "0x08205c94",
+   "old": "g_08205c94",
+   "new": "scrCompileMethodCallArrayId",
+   "type_hint": "uint32",
+   "confidence": "inferred",
+   "evidence": "ScrVar_AllocArray result in Scr_InitCompileState, destroyed in Scr_ShutdownCompileState; method-call counterpart of the plain-call array (script-vm.md sec.compile)"
+  },
+  {
+   "addr": "0x0864c580",
+   "old": "g_0864c580",
+   "new": "level_teamScoreAxis",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "GScr_SetTeamScore stores param 1 here when team handle is the second team string (axis, g_08853224) and sends 'G' server command; zeroed in G_ExitLevel"
+  },
+  {
+   "addr": "0x0864c584",
+   "old": "g_0864c584",
+   "new": "level_teamScoreAllies",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "GScr_SetTeamScore stores here for team handle allies (g_08853222) and sends 'H'; zeroed in G_ExitLevel"
+  },
+  {
+   "addr": "0x0864c590",
+   "old": "g_0864c590",
+   "new": "level_teamScoresDirty",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "set to 1 by GScr_SetTeamScore, read by G_CalculateRanks and G_FlushPendingTurretUpdates"
+  },
+  {
+   "addr": "0x0864c594",
+   "old": "g_0864c594",
+   "new": "level_manualChangeMode",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "GScr_SetClientNameMode: 'auto_change' -> 0, 'manual_change' -> 1; GScr_updateclientnames errors 'Only works in [manual_change] mode' when 0"
+  },
+  {
+   "addr": "0x0864f970",
+   "old": "g_0864f970",
+   "new": "level_mapCommandState",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "0 none, 1 map_restart, 2 map, 3 exitlevel; used to raise 'map_restart already called' / 'map already called' / 'exitlevel already called'"
+  },
+  {
+   "addr": "0x0864e0d4",
+   "old": "g_0864e0d4",
+   "new": "level_mapCommandArg",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "optional int arg of map_restart/map/exitlevel builtins; read via Level_GetIntValue and G_ShutdownGame"
+  },
+  {
+   "addr": "0x0864f978",
+   "old": "g_0864f978",
+   "new": "level_ignorePlayerRadiusDamage",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "stored by setplayerignoreradiusdamage; GScr_RadiusDamage copies it to g_0864f974 around G_RadiusDamage"
+  },
+  {
+   "addr": "0x0864f974",
+   "old": "g_0864f974",
+   "new": "level_radiusDamageSkipClients",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "set from level_ignorePlayerRadiusDamage only during GScr_RadiusDamage; G_RadiusDamage skips victims with a client when nonzero"
+  }
+ ],
+ "left_unknown": [
+  {
+   "addr": "0x08092002",
+   "name": "ScrEntity_CachedSkelOp",
+   "why": "only caller Ent_RunKindCallback; skeleton allocator string lies outside chunk; role unclear"
+  },
+  {
+   "addr": "0x080921ec",
+   "name": "ScrEntity_CallVoidB",
+   "why": "no caller or string evidence; calls fn_080baaaa after handle lookup"
+  },
+  {
+   "addr": "0x080922fc",
+   "name": "ScrEntity_Nop",
+   "why": "empty body, called from ClientEndFrame; no evidence for a purpose"
+  },
+  {
+   "addr": "0x0807a8e8",
+   "name": "Scr_NoOp",
+   "why": "empty; called from ScrStr_Intern and Scr_ErrorAndDisable only; probably stripped debug hook"
+  },
+  {
+   "addr": "0x080800e2",
+   "name": "Stub_ReturnZero",
+   "why": "returns 0, no callers"
+  },
+  {
+   "addr": "0x0810fe4a",
+   "name": "Nop_0810fe4a",
+   "why": "empty, no callers"
+  },
+  {
+   "addr": "0x081185dc",
+   "name": "Stub_ReturnZero_081185dc",
+   "why": "returns 0, no callers"
+  },
+  {
+   "addr": "0x0807aa2e",
+   "name": "Scr_ReturnZero",
+   "why": "returns 0, no callers"
+  },
+  {
+   "addr": "0x08078a04",
+   "name": "ScrBox_Make1",
+   "why": "yyparse-only semantic-value node allocators (Make1..Make9); descriptive names already precise, no better lineage name found"
+  },
+  {
+   "addr": "0x0811069a",
+   "name": "Scr_RaiseError6",
+   "why": "Com_Error(6, msg) wrapper; arg meaning of 6 (error drop type) not verified against enum here"
+  },
+  {
+   "addr": "0x080fe56c",
+   "name": "Cmd_ParseConfigstring12Bounds_f",
+   "why": "no command registration or string found"
+  },
+  {
+   "addr": "0x08205a58",
+   "name": "g_08205a58",
+   "why": "table-slot active flag set at 0x080761b4; purpose not established"
+  },
+  {
+   "addr": "0x08205ca0",
+   "name": "g_08205ca0",
+   "why": "saved source cursor; Scr_ReadSourceLine/Scr_LoadScriptFile; compiler lane"
+  }
+ ]
+}

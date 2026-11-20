@@ -1,0 +1,103 @@
+{
+ "renames": [
+  {
+   "addr": "0x08094b56",
+   "old": "SV_ReadPackets",
+   "new": "SV_VoicePacketEvent",
+   "confidence": "inferred",
+   "evidence": "Only caller 0x08095bde (inside SV_ConnectionlessPacket 0x0809594e, after a strcmp of the command name). Body loops over clients (stride 0xb1064), matches address via 0x0806c424 and qport, then dispatches on client state: <=3 -> 0x0809c3c6, >3 -> 0x0809c2ee (both voice-packet parsers; 0x0809c2ee logs 'Received invalid voice packet of size %i from %s' at 0x814c640). Shape is Q3 SV_PacketEvent client-match loop copied for the voice path; the literal 'SV_ReadPackets: fixing up a translated port' at 0x814b540 is shared and also referenced from 0x080960e2. Must be applied together with the 0x080960e2 rename, which takes the freed name."
+  },
+  {
+   "addr": "0x080960e2",
+   "old": "SV_ReadPackets_080960e2",
+   "new": "SV_ReadPackets",
+   "confidence": "observed",
+   "evidence": "Called from the NET type-5 receive path when com_sv_running; calls SV_ConnectionlessPacket 0x0809594e for OOB packets (call at 0x08096126) and otherwise does client lookup by address/qport, 'fixing up a translated port' (0x814b540 referenced at 0x0809620b, literal prefix 'SV_ReadPackets:'), then Netchan_Process and serverId read. Q3 SV_PacketEvent equivalent; the string names it SV_ReadPackets. Depends on 0x08094b56 being renamed first (name uniqueness)."
+  },
+  {
+   "addr": "0x080698e8",
+   "old": "MSG_WriteDeltaPlayerstate",
+   "new": "MSG_WriteDeltaClientState",
+   "confidence": "inferred",
+   "evidence": "objdump: field count 0x16 (22) at 0x080698f1, memset of 0x5c bytes at 0x08069904, field table 0x08141f60 at 0x08069927 (clientState table: team, name, modelindex, attach*). Callers 0x0809853b/0x08098574/0x080985ac/0x0809b33f/0x0809b3f5/0x0809b7b0 are snapshot client-state emitters; reader twin 0x08069f14 is already MSG_ReadDeltaClientState. Also removes case-only clash with MSG_WriteDeltaPlayerState 0x0806a200."
+  },
+  {
+   "addr": "0x0809602e",
+   "old": "SV_SendToClients",
+   "new": "SV_PB_SendOOBToClients",
+   "confidence": "inferred",
+   "evidence": "Sole caller is 0x0813c59c inside PB callback 0x0813c582 (installed at struct+0x148 at 0x0813c7af); body gated on cmp [0x8423080],1 (server running) then iterates clients (stride 0xb1064) with optional single-client filter [ebp+0x10], sending an OOB packet. Not a general server API."
+  },
+  {
+   "addr": "0x08095e48",
+   "old": "SV_GetClientInfo",
+   "new": "SV_PB_GetClientInfo",
+   "confidence": "inferred",
+   "evidence": "Sole caller 0x0813c4b4 inside PB_ServerQuery 0x0813c43a (query 0x66 client info per symbols.json evidence). Fills 0x68-byte record for PunkBuster; not a generic accessor."
+  },
+  {
+   "addr": "0x08095f64",
+   "old": "SV_GetClientScoreText",
+   "new": "SV_PB_GetClientScoreText",
+   "confidence": "inferred",
+   "evidence": "Sole caller 0x0813c505 inside PB_ServerQuery 0x0813c43a (query 0x72 client score text)."
+  },
+  {
+   "addr": "0x08095e3a",
+   "old": "SV_GetMaxClients",
+   "new": "SV_PB_GetMaxClients",
+   "confidence": "inferred",
+   "evidence": "Sole caller 0x0813c479 inside PB_ServerQuery 0x0813c43a (query 0x65 max clients)."
+  }
+ ],
+ "rejected": [
+  {
+   "addr": "0x0809c3c6",
+   "old": "SV_ParseVoicePackets",
+   "suggested": "SV_ParseVoicePacketsRelay",
+   "reason": "Dispatch inversion confirmed (state<=3 -> 0x0809c3c6 at 0x08094c44-0x08094c56) but its role (relay vs game-level) was not established by evidence; 'Local' is ambiguous. Left unchanged."
+  },
+  {
+   "addr": "0x0809c2ee",
+   "old": "SV_ParseVoicePacketsLocal",
+   "suggested": "SV_ParseVoicePacketsInGame",
+   "reason": "Same: the 'Local' meaning cannot be proven or disproven from the binary alone (calls 0x080f9976 with client+0x20c44). No clearly better name."
+  },
+  {
+   "addr": "0x0806b1b8",
+   "old": "Net_SignExtend16",
+   "suggested": "LittleShort_Identity",
+   "reason": "Body is movsx of a 16-bit arg (0x0806b1c5); real LittleShort already exists elsewhere; inlined-endian role is inferred only, current name describes behaviour accurately."
+  },
+  {
+   "addr": "0x0806b1cc",
+   "old": "Net_Identity32",
+   "suggested": "LittleLong_Identity",
+   "reason": "Body is mov eax,[ebp+8]; ret. Current name accurately describes behaviour; endian-swap role not proven."
+  },
+  {
+   "addr": "0x0806cf00",
+   "old": "Netchan_SequenceToWire",
+   "suggested": "LittleLong_Identity2",
+   "reason": "Body not proven as endian helper; no better-supported name."
+  },
+  {
+   "addr": "0x0808cf40",
+   "old": "SV_NoteAuthorizeServerPacket",
+   "suggested": "SV_NoteMasterServerPacket",
+   "reason": "Doc note 20 is an open inconsistency (master vs authorize address), not resolved; no evidence to rename."
+  },
+  {
+   "addr": "0x08096e0c",
+   "old": "SV_ResolveMasterAddress",
+   "suggested": "",
+   "reason": "Name matches role; swapped strstr args is a behaviour bug not a naming issue."
+  },
+  {
+   "addr": "0x08090a5a",
+   "old": "SV_Mute_f",
+   "suggested": "",
+   "reason": "Name fine; issue is bounds, not naming."
+  }
+ ]
+}
