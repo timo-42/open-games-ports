@@ -28,7 +28,7 @@ jobs:
       tag: ${{ steps.version.outputs.version }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -82,7 +82,7 @@ jobs:
             target: x86_64-pc-windows-msvc
     steps:
       - name: Check out tag
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ needs.version.outputs.tag }}
 
@@ -103,7 +103,7 @@ jobs:
           archive="cod2-server-${TAG}-${LABEL}.zip"
           mkdir -p dist
           cp "target/${TARGET}/release/cod2-server" dist/
-          (cd dist && zip --quiet --best "../${archive}" cod2-server)
+          (cd dist && zip -q -9 "../${archive}" cod2-server)
 
       - name: Package archive (Windows)
         if: runner.os == 'Windows'
@@ -119,7 +119,7 @@ jobs:
           Compress-Archive -Path dist/cod2-server.exe -DestinationPath $archive
 
       - name: Upload archive
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.label }}
           path: cod2-server-*.zip
@@ -131,7 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download archives
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: dist
           merge-multiple: true
