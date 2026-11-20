@@ -1,0 +1,60 @@
+[workspace]
+members = [
+    "games/call-of-duty-2/port",
+    "runtime/cache",
+    "runtime/vfs",
+    "runtime/vfs-core",
+    "runtime/vfs-inno",
+]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99"
+license = "GPL-3.0-only"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_debug_implementations = "warn"
+
+[workspace.lints.clippy]
+todo = "warn"
+unwrap_used = "warn"
+
+[workspace.dependencies]
+bitstream-io = "=4.10.0"
+bzip2-rust = { package = "bzip2", version = "=0.6.1" }
+chrono = { version = "=0.4.45", default-features = false, features = ["clock"] }
+deflate64 = "=0.1.12"
+directories = "=6.0.0"
+flate2 = "=1.1.10"
+fs4 = "=0.13.1"
+getrandom = "=0.4.3"
+hostname = "=0.4.2"
+inno = { version = "=0.7.0", features = ["extract"] }
+iso9660 = "=0.1.1"
+lzo = "=0.1.4"
+md-5 = "=0.10.6"
+md4 = "=0.10.2"
+nsis = "=0.6.0"
+open-games-cache = { path = "runtime/cache" }
+open-games-vfs-core = { path = "runtime/vfs-core" }
+open-games-vfs-inno = { path = "runtime/vfs-inno" }
+opticaldiscs = { version = "=0.15.0", default-features = false }
+pelite = { version = "=0.10.0", default-features = false }
+rars = { version = "=0.11.0", default-features = false }
+sha2 = "=0.10.9"
+tar = { version = "=0.4.46", default-features = false }
+tempfile = "=3.27.0"
+vfs = "=0.13.0"
+zip = { version = "=9.0.4", default-features = false, features = ["deflate-flate2-zlib-rs"] }
+
+[patch.crates-io]
+inno = { path = "runtime/vfs/vendor/inno" }
+
+[profile.release]
+overflow-checks = true
+
+[profile.dev.package."*"]
+debug = false

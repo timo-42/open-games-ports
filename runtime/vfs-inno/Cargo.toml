@@ -1,0 +1,15 @@
+[package]
+name = "open-games-vfs-inno"
+description = "Inno Setup and GOG (legacy and Galaxy) installer indexing over any reader; shared by open-games-vfs and WebAssembly hosts"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+inno.workspace = true
+flate2.workspace = true
+md-5.workspace = true
+
+[lints]
+workspace = true
