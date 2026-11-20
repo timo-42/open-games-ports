@@ -29,6 +29,30 @@ For LAN clients, bind `net_ip` to the host's LAN address instead of `127.0.0.1`.
 
 The server accepts operator commands on stdin. A configured `rcon_password` enables remote console commands. Use only a trusted network for RCON and choose a strong password.
 
+### macOS
+
+The macOS release archive is not notarized, so macOS marks the extracted binary as quarantined. Clear that attribute once, from the directory containing `cod2-server`:
+
+```sh
+xattr -d com.apple.quarantine cod2-server
+```
+
+Then start the server with the arguments above, for example:
+
+```sh
+./cod2-server \
+  +set fs_basepath "$GAME_DIR" \
+  +set fs_homepath "$SERVER_HOME" \
+  +set dedicated 1 \
+  +set net_ip 127.0.0.1 \
+  +set net_port 28960 \
+  +set sv_maxclients 8 \
+  +set g_gametype dm \
+  +map mp_toujane
+```
+
+The release archive contains an Apple silicon build; Intel Macs can run it through Rosetta 2.
+
 ## Data and compatibility
 
 Original IWD archives, maps, installers, and executables are not included. Supply a compatible game installation externally. The official dedicated-server 1.3 update archive can be supplied with `--update <archive>` when using the matching retail data profile; consult the upstream package documentation for supported update formats.
