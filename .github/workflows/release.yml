@@ -1,0 +1,144 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-level:
+        description: Version component to increment
+        required: true
+        default: patch
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  version:
+    name: Create release tag
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Require the default branch
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_REF" != "refs/heads/${DEFAULT_BRANCH}" ]; then
+            echo "::error::Releases must be triggered from ${DEFAULT_BRANCH}, not ${GITHUB_REF}"
+            exit 1
+          fi
+
+      - name: Compute next version
+        id: version
+        uses: timo-42/vergit-action@main
+        with:
+          next: ${{ inputs.release-level }}
+          with-prefix: true
+
+      - name: Create and push tag
+        env:
+          TAG: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          if git rev-parse --verify --quiet "refs/tags/${TAG}" >/dev/null; then
+            echo "::error::Tag ${TAG} already exists"
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag --annotate "${TAG}" --message "Release ${TAG}"
+          git push origin "refs/tags/${TAG}"
+
+  build:
+    name: Build ${{ matrix.label }}
+    needs: version
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            label: linux-x86_64
+            target: x86_64-unknown-linux-gnu
+          - os: macos-latest
+            label: macos-arm64
+            target: aarch64-apple-darwin
+          - os: windows-latest
+            label: win64-x86_64
+            target: x86_64-pc-windows-msvc
+    steps:
+      - name: Check out tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.version.outputs.tag }}
+
+      - name: Install Rust target
+        run: rustup target add ${{ matrix.target }}
+
+      - name: Build
+        run: cargo build --release --locked -p cod2-server --target ${{ matrix.target }}
+
+      - name: Package archive
+        if: runner.os != 'Windows'
+        env:
+          TAG: ${{ needs.version.outputs.tag }}
+          TARGET: ${{ matrix.target }}
+          LABEL: ${{ matrix.label }}
+        run: |
+          set -euo pipefail
+          archive="cod2-server-${TAG}-${LABEL}.zip"
+          mkdir -p dist
+          cp "target/${TARGET}/release/cod2-server" dist/
+          (cd dist && zip --quiet --best "../${archive}" cod2-server)
+
+      - name: Package archive (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          TAG: ${{ needs.version.outputs.tag }}
+          TARGET: ${{ matrix.target }}
+          LABEL: ${{ matrix.label }}
+        run: |
+          $archive = "cod2-server-$env:TAG-$env:LABEL.zip"
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item "target/$env:TARGET/release/cod2-server.exe" dist/
+          Compress-Archive -Path dist/cod2-server.exe -DestinationPath $archive
+
+      - name: Upload archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.label }}
+          path: cod2-server-*.zip
+          if-no-files-found: error
+
+  release:
+    name: Publish release
+    needs: [version, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download archives
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ needs.version.outputs.tag }}
+        run: gh release create "${TAG}" dist/*.zip --title "${TAG}" --generate-notes
