@@ -1,0 +1,9 @@
+[package]
+name = "open-games-vfs-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license = "MIT"
+
+[dependencies]
+vfs.workspace = true

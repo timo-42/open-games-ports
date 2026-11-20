@@ -1,0 +1,34 @@
+[package]
+name = "open-games-vfs"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+bzip2-rust.workspace = true
+tar.workspace = true
+directories.workspace = true
+tempfile.workspace = true
+open-games-vfs-core.workspace = true
+open-games-vfs-inno.workspace = true
+open-games-cache.workspace = true
+deflate64.workspace = true
+inno.workspace = true
+rars.workspace = true
+flate2.workspace = true
+md-5.workspace = true
+vfs.workspace = true
+sha2.workspace = true
+iso9660.workspace = true
+zip.workspace = true
+pelite = { workspace = true, features = ["mmap", "derive_pod"] }
+opticaldiscs = { workspace = true, optional = true }
+lzo.workspace = true
+nsis.workspace = true
+
+[features]
+# CloneCD/CUE-BIN images use `opticaldiscs`, whose Wii/GameCube support pulls C
+# zstd/bzip2 sources. Static server and cross-check lanes disable it.
+default = ["optical-discs"]
+optical-discs = ["dep:opticaldiscs"]
