@@ -1,0 +1,999 @@
+{
+ "chunk": 107,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0811a004",
+   "name": "GScr_Solid",
+   "signature": "void GScr_Solid(uint32 self)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "GScr_Solid: script entity method \"solid\" (method table entry 0x0815e41c -> this address). Evidence: strings \"entity %i is not a script_brushmodel, script_model, or script_origin\" and \"cannot use the solid/notsolid commands on a script_origin entity( number %i )\\n\" referenced here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a106",
+   "name": "GScr_NotSolid",
+   "signature": "void GScr_NotSolid(uint32 self)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "GScr_NotSolid: script entity method \"notsolid\" (method table entry 0x0815e428 -> this address); same strings as GScr_Solid.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811a994",
+   "name": "Scr_CopyEntityRefChildren",
+   "signature": "void Scr_CopyEntityRefChildren(uint32 *dst, uint32 *src)",
+   "subsystem": "game/entity-script",
+   "confidence": "unknown",
+   "evidence": "Scr_CopyEntityRefChildren: thunk over Scr_CopyClassEntityChildren(src, dst, 0) taking both ids through pointers; no string, no table entry.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b228",
+   "name": "Scr_GetHudElemParam",
+   "signature": "void *Scr_GetHudElemParam(uint32 param)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "Scr_GetHudElemParam: resolves a script reference of class 1 to the hud element pool entry (stride 0x8c at 0x08628f80); otherwise error \"not a hudelem\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b312",
+   "name": "GScr_GetEnt",
+   "signature": "void GScr_GetEnt(void)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "GScr_GetEnt: script function \"getent\" (builtin table entry 0x0818808c -> this address); string \"getent used with more than one entity\" referenced here. Scans the entity array for an in-use entity whose script-string field (named by param 1, type 3 in the field table) equals param 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811b40e",
+   "name": "GScr_GetEntArray",
+   "signature": "void GScr_GetEntArray(void)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "GScr_GetEntArray: script function \"getentarray\" (builtin table entry 0x08188098 -> this address). With no parameters returns every in-use entity; otherwise those whose script-string field matches (same lookup as GScr_GetEnt).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c66e",
+   "name": "Trigger_Touch",
+   "signature": "void Trigger_Touch(struct gentity_s *self, struct gentity_s *other)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "Trigger_Touch: entClass table slot +0x0c (touch) of entClass 1 (0x08187d34 -> this address): queues the entity pair event then refreshes if flag 0x10.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c69a",
+   "name": "SP_trigger_multiple",
+   "signature": "void SP_trigger_multiple(struct gentity_s *ent)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "SP_trigger_multiple: spawn table (0x08188a18 \"trigger_multiple\" -> 0x0811c69a).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c6e0",
+   "name": "SP_trigger_radius",
+   "signature": "void SP_trigger_radius(struct gentity_s *ent)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "SP_trigger_radius: spawn table (0x08188a20 \"trigger_radius\" -> 0x0811c6e0); strings \"USAGE: spawn( \\\"trigger_radius\\\", <origin>, <spawnflags>, <radius>, <height> )\" and \"radius not specified for trigger_radius at (%g %g %g)\". With spawn vars (g_0864d6c8 set) the radius/height come from the map keys, otherwise from script params 3 and 4.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c880",
+   "name": "SP_trigger_disk",
+   "signature": "void SP_trigger_disk(struct gentity_s *ent)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "SP_trigger_disk: spawn table (0x08188a28 \"trigger_disk\" -> 0x0811c880); reads only \"radius\" (error string shared with trigger_radius), pads it by 64 and spans z in [-100000, 100000].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c98c",
+   "name": "Trigger_HurtTouch",
+   "signature": "void Trigger_HurtTouch(struct gentity_s *self, struct gentity_s *other)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "Trigger_HurtTouch: entClass table slot +0x0c (touch) of entClass 3 (0x08187d84 -> this address); damages the touching entity with mod 13 (no direction/point) and re-arms after 50 ms, or 1000 ms when spawnflag 0x10 is set.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811caba",
+   "name": "SP_trigger_hurt",
+   "signature": "void SP_trigger_hurt(struct gentity_s *ent)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "SP_trigger_hurt: spawn table (0x08188a30 \"trigger_hurt\" -> 0x0811caba); string keys \"sound\"/\"world_hurt_me\"; default damage 5; entClass 2 when spawnflag 1 is set, else 3.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811cb36",
+   "name": "SP_trigger_once",
+   "signature": "void SP_trigger_once(struct gentity_s *ent)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "SP_trigger_once: spawn table (0x08188a38 \"trigger_once\" -> 0x0811cb36); forces spawnflag 0x10.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811cdd4",
+   "name": "Trigger_DamageDie",
+   "signature": "void Trigger_DamageDie(struct gentity_s *self, struct gentity_s *inflictor, struct gentity_s *attacker, int damage, int mod)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "Trigger_DamageDie: entClass table slot +0x18 of entClass 4 (0x08187db8 -> this address), signature (self, inflictor, attacker, damage, mod); forwards to Ent_TryConsumeCharge and keeps health at 32000 unless \"accumulate\" is set.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ce16",
+   "name": "SP_trigger_damage",
+   "signature": "void SP_trigger_damage(struct gentity_s *ent)",
+   "subsystem": "game/entity-script",
+   "confidence": "inferred",
+   "evidence": "SP_trigger_damage: spawn table (0x08188a78 \"trigger_damage\" -> 0x0811ce16); spawn keys \"accumulate\" and \"threshold\" (default \"0\"), health 32000, entClass 4.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e0d6",
+   "name": "Ent_ConcatAttachTransform",
+   "signature": "void Ent_ConcatAttachTransform(struct gentity_s *ent, float *out)",
+   "subsystem": "game/entity-script",
+   "confidence": "unknown",
+   "evidence": "Ent_ConcatAttachTransform: builds the entity's attach transform (Ent_GetAttachTransform) and concatenates it with the matrix at attachLink+0x40; no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e78a",
+   "name": "G_PickTarget",
+   "signature": "struct gentity_s *G_PickTarget(uint16 targetname)",
+   "subsystem": "game/entity-script",
+   "confidence": "observed",
+   "evidence": "G_PickTarget: string \"G_PickTarget: target %s not found\\n\" is referenced here. Collects up to 32 entities whose targetname (+0x16c) matches, returns one at random (rand() % count) or NULL (0 handle returns NULL without a message).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f0b4",
+   "name": "G_DamageClientsInBounds",
+   "signature": "void G_DamageClientsInBounds(struct gentity_s *ent)",
+   "subsystem": "game/entity-script",
+   "confidence": "unknown",
+   "evidence": "G_DamageClientsInBounds: offsets the entity's mins/maxs by its client's origin, queries entities in that box (mask 0x2000000, max 0x400) and applies G_Damage(100000, dflags 0x10, mod 10) to every linked entity that has a client.",
+   "status": "translated",
+   "notes": "Name is descriptive only."
+  },
+  {
+   "addr": "0x0811f2f6",
+   "name": "G_AddTempEntityEventB3",
+   "signature": "void G_AddTempEntityEventB3(const float *origin, uint8 value)",
+   "subsystem": "game/entity-script",
+   "confidence": "unknown",
+   "evidence": "G_AddTempEntityEventB3: when value is non-zero spawns a temp entity of event 0xb3 at origin and stores value in its eventParm (+0xa0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f38e",
+   "name": "Ent_AddAnimEventB3",
+   "signature": "int Ent_AddAnimEventB3(int entnum, const char **animName)",
+   "subsystem": "game/entity-script",
+   "confidence": "unknown",
+   "evidence": "Ent_AddAnimEventB3: looks up an animation index by the name pointed to by *animName and forwards it to Ent_AddEventB3IfNonzero for the entity with the given number; returns 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081236cc",
+   "name": "FxCurveSrc_Copy",
+   "signature": "void FxCurveSrc_Copy(const struct FxCurveSrc *src, struct FxCurveSrc *dst)",
+   "subsystem": "fx/objects",
+   "confidence": "unknown",
+   "evidence": "FxCurveSrc_Copy: copies a 0x0c byte curve source (key table through the identity function fn_081240d0, then scale min/max).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124c72",
+   "name": "Particle_Destruct",
+   "signature": "void Particle_Destruct(struct Particle *p)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Particle_Destruct: vtable 0x0815f508 slot 0 (RTTI 8Particle): sets the Particle vtable and runs the Effect base destructor.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124ca6",
+   "name": "Particle_DeletingDestruct",
+   "signature": "void Particle_DeletingDestruct(struct Particle *p)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Particle_DeletingDestruct: vtable 0x0815f508 slot 1: destructor followed by the return of the element to pool 0x08a533a0 (0x24c).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124cda",
+   "name": "Particle::PlayRandomDirEffect",
+   "signature": "void Particle::PlayRandomDirEffect()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Particle::PlayRandomDirEffect: vtable slot 2 shared by Particle/OrientedParticle/Tail/Cylinder/Emitter. If flags has 0x200, not 0x400 and an effect template is set, plays it at the origin along a random unit direction (axis (0,0,1) when the vector is shorter than 1e-6). Random call order is z, y, x.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124e12",
+   "name": "Particle::IsCulled",
+   "signature": "byte Particle::IsCulled()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Particle::IsCulled: vtable slot 4; tests the sphere (worldOrigin, size) against the view planes with the effect's trace mask.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124e50",
+   "name": "Particle::Draw",
+   "signature": "void Particle::Draw()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Particle::Draw: vtable slot 5; submits in mode 4 only when both size and size2 are non-zero.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124e98",
+   "name": "Particle::Update",
+   "signature": "bool Particle::Update()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Particle::Update: vtable slot 3; fraction, binding, motion; world position from the binding frame; then size, size2 (each early-returns success when zero), colour, alpha, rotation, frame.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812532a",
+   "name": "Particle::GetRayVisibility",
+   "signature": "float Particle::GetRayVisibility(const float *rayOrigin, const float *rayDir, float radius)",
+   "subsystem": "fx/objects",
+   "confidence": "unknown",
+   "evidence": "Particle::GetRayVisibility: vtable slot 6, called from Fx_GetRayAttenuation. Projects the effect onto a ray; returns 1.0, or 1 - rgba[3]/255 when the ray passes within `size` of the effect centre (|t - radius| <= radius required).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126e58",
+   "name": "OrientedParticle_Destruct",
+   "signature": "void OrientedParticle_Destruct(struct OrientedParticle *p)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "OrientedParticle_Destruct: vtable 0x0815f4c8 slot 0 (RTTI 16OrientedParticle): sets its vtable then the Particle base destructor.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126e8c",
+   "name": "OrientedParticle_DeletingDestruct",
+   "signature": "void OrientedParticle_DeletingDestruct(struct OrientedParticle *p)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "OrientedParticle_DeletingDestruct: slot 1; returns the element to pool 0x08a533b0 (0x258, FxPool258b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126ec0",
+   "name": "OrientedParticle::IsCulled",
+   "signature": "byte OrientedParticle::IsCulled()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "OrientedParticle::IsCulled: slot 4; identical body to Particle::IsCulled.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126efe",
+   "name": "OrientedParticle::Draw",
+   "signature": "void OrientedParticle::Draw()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "OrientedParticle::Draw: slot 5; submits in mode 7.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126f1a",
+   "name": "OrientedParticle::Update",
+   "signature": "bool OrientedParticle::Update()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "OrientedParticle::Update: slot 3; like Particle::Update but runs every curve update unconditionally and finally maps the local axis at +0x24c into axes[0..2] (+0x48) through the binding frame.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812708a",
+   "name": "Cloud_ConstructBase",
+   "signature": "void Cloud_ConstructBase(struct Cloud *c)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cloud_ConstructBase: Particle ctor, Cloud vtable 0x0815f488 (RTTI 5Cloud), then Cloud::InitRandomAxis. Partial: the EH landing pad at 0x081270b2 (Particle_DestructBase(c), then _Unwind_Resume) is not modelled because the shared prototype header already declares __cxa_begin_catch with a conflicting exception specifier.",
+   "status": "partial",
+   "notes": "EH landing pad (Particle_DestructBase then _Unwind_Resume) not modelled; shared prototype header declares __cxa_begin_catch with a conflicting exception specifier."
+  },
+  {
+   "addr": "0x08127126",
+   "name": "Cloud_DestructBase",
+   "signature": "void Cloud_DestructBase(struct Cloud *c)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cloud_DestructBase: sets the Cloud vtable then Particle_DestructBase (D2 variant).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812715a",
+   "name": "Cloud_Destruct",
+   "signature": "void Cloud_Destruct(struct Cloud *c)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cloud_Destruct: vtable 0x0815f488 slot 0 (D1 variant, same body as Cloud_DestructBase).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812718e",
+   "name": "Cloud_DeletingDestruct",
+   "signature": "void Cloud_DeletingDestruct(struct Cloud *c)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cloud_DeletingDestruct: slot 1; returns the element to pool 0x08a533d0 (0x27c).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081271c8",
+   "name": "Cloud::IsCulled",
+   "signature": "byte Cloud::IsCulled()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cloud::IsCulled: slot 4; culling sphere radius is max(size, size2) + prevSize (+0x98).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127306",
+   "name": "Cloud::Draw",
+   "signature": "void Cloud::Draw()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cloud::Draw: slot 5; submits in mode 6.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127322",
+   "name": "Cloud::InitCurves",
+   "signature": "void Cloud::InitCurves(const struct FxParticleTemplate *tmpl)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cloud::InitCurves: slot 8; Particle::InitCurves then the two speed curves from template curves[8],[9] (+0x160,+0x16c) into +0x264/+0x270.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081276fc",
+   "name": "Line_Destruct",
+   "signature": "void Line_Destruct(struct Line *l)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Line_Destruct: vtable 0x0815f448 slot 0 (RTTI 4Line).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127730",
+   "name": "Line_DeletingDestruct",
+   "signature": "void Line_DeletingDestruct(struct Line *l)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Line_DeletingDestruct: slot 1; returns the element to pool 0x08a533a8 (0x258, FxPool258a).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812776a",
+   "name": "Line::IsCulled",
+   "signature": "byte Line::IsCulled()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Line::IsCulled: slot 4; segment (worldOrigin, prevWorldOrigin) with margin `size` on both ends.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081277c2",
+   "name": "Line::Draw",
+   "signature": "void Line::Draw()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Line::Draw: slot 5; submits in mode 8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081277de",
+   "name": "Line::Update",
+   "signature": "bool Line::Update()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Line::Update: slot 3; no motion step. World start point from the origin and world end point (+0x9c) from the local end point at +0x24c, through the binding frame; then size, colour, alpha.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812797c",
+   "name": "Tail_Destruct",
+   "signature": "void Tail_Destruct(struct Tail *t)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Tail_Destruct: vtable 0x0815f408 slot 0 (RTTI 4Tail).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081279b0",
+   "name": "Tail_DeletingDestruct",
+   "signature": "void Tail_DeletingDestruct(struct Tail *t)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Tail_DeletingDestruct: slot 1; returns the element to pool 0x08a533b8 (0x278, FxPool278a).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127a62",
+   "name": "Tail::InitCurves",
+   "signature": "void Tail::InitCurves(const struct FxParticleTemplate *tmpl)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Tail::InitCurves: slot 8 (shared with Cylinder); Particle::InitCurves then the length curves from template curves[8],[9] into +0x260/+0x26c.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127ab4",
+   "name": "Tail::Draw",
+   "signature": "void Tail::Draw()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Tail::Draw: slot 5; submits in mode 8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127ad0",
+   "name": "Tail::Update",
+   "signature": "bool Tail::Update()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Tail::Update: slot 3; remembers the previous origin at +0x24c, runs motion, size, tail length, colour, alpha, frame and finally the tail end point.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127e76",
+   "name": "Cylinder_Destruct",
+   "signature": "void Cylinder_Destruct(struct Cylinder *c)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cylinder_Destruct: vtable 0x0815f3c8 slot 0 (RTTI 8Cylinder); base destructor is Tail_DestructBase.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127eaa",
+   "name": "Cylinder_DeletingDestruct",
+   "signature": "void Cylinder_DeletingDestruct(struct Cylinder *c)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cylinder_DeletingDestruct: slot 1; returns the element to pool 0x08a533c0 (0x278, FxPool278b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127ede",
+   "name": "Cylinder::IsCulled",
+   "signature": "byte Cylinder::IsCulled()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cylinder::IsCulled: slot 4; segment (worldOrigin, prevWorldOrigin) with margins size2 and size.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127f36",
+   "name": "Cylinder::Draw",
+   "signature": "void Cylinder::Draw()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cylinder::Draw: slot 5; submits in mode 9.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127f52",
+   "name": "Cylinder::Update",
+   "signature": "bool Cylinder::Update()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Cylinder::Update: slot 3; no motion step. The segment runs from the origin to origin + length * axes[0]; both ends go through the binding frame when present.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812812a",
+   "name": "Emitter_Destruct",
+   "signature": "void Emitter_Destruct(struct Emitter *e)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Emitter_Destruct: vtable 0x0815f388 slot 0 (RTTI 7Emitter).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812815e",
+   "name": "Emitter_DeletingDestruct",
+   "signature": "void Emitter_DeletingDestruct(struct Emitter *e)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Emitter_DeletingDestruct: slot 1; returns the element to pool 0x08a533c8 (0x29c, FxPool29C).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081281e0",
+   "name": "Emitter::Update",
+   "signature": "bool Emitter::Update()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Emitter::Update: slot 3; motion step, damps the velocity at +0x284 by 0.7 when the origin did not move, integrates velocity, then (flag 0x10) moves the world position/axes through the binding frame and derives a frame velocity from the frame origin delta since the last emit time. Finally EmitElements. Quirk kept: when flag 0x10 is set without a binding frame, frameVel is never initialised before EmitElements receives it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128c0c",
+   "name": "Light_Destruct",
+   "signature": "void Light_Destruct(struct Light *l)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Light_Destruct: vtable 0x0815f348 slot 0 (RTTI 5Light, derives from Effect).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128c40",
+   "name": "Light_DeletingDestruct",
+   "signature": "void Light_DeletingDestruct(struct Light *l)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Light_DeletingDestruct: slot 1; returns the element to pool 0x08a53398 (0xfc, FxPoolFC).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128c74",
+   "name": "Light::InitCurves",
+   "signature": "void Light::InitCurves(const struct FxParticleTemplate *tmpl)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Light::InitCurves: slot 8 (shared with Flash); four curves from template curves[0],[1],[4],[5] (+0x100,+0x10c,+0x130,+0x13c) into +0xcc,+0xd8,+0xe4,+0xf0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128cec",
+   "name": "Light::IsCulled",
+   "signature": "byte Light::IsCulled()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Light::IsCulled: slot 4; sphere (worldOrigin, size) against the view planes.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128d2a",
+   "name": "Light::Draw",
+   "signature": "void Light::Draw()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Light::Draw: slot 5; hands (world origin, size, colour rgb) to the effects-system no-op FX_NoopC (0x0812d286).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128d74",
+   "name": "Light::Update",
+   "signature": "bool Light::Update()",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Light::Update: slot 3; evaluates the size and colour curves, then the world position through the binding frame.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129d0a",
+   "name": "Flash_Destruct",
+   "signature": "void Flash_Destruct(struct Flash *f)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Flash_Destruct: vtable 0x0815f308 slot 0 (RTTI 5Flash, derives from Light); base destructor is FxObjBase_Destruct (the Light destructor body at 0x08128bd8).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129d3e",
+   "name": "Flash_DeletingDestruct",
+   "signature": "void Flash_DeletingDestruct(struct Flash *f)",
+   "subsystem": "fx/objects",
+   "confidence": "inferred",
+   "evidence": "Flash_DeletingDestruct: slot 1; returns the element to the 0xfc pool (FxPoolFC_Free).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812b3c2",
+   "name": "FxTemplate_EvalStartAlpha",
+   "signature": "float FxTemplate_EvalStartAlpha(void *unused, const struct FxParticleTemplate *tmpl)",
+   "subsystem": "fx/templates",
+   "confidence": "unknown",
+   "evidence": "FxTemplate_EvalStartAlpha: rolls the alpha curve pair of a particle template (curves[2] at +0x118, curves[3] at +0x124) at t=0, blending with a random factor when template flag 0x4000 is set, and clamps to [0,1]. First parameter is unused.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812b47e",
+   "name": "FxTemplate_EvalStartSize",
+   "signature": "float FxTemplate_EvalStartSize(void *unused, const struct FxParticleTemplate *tmpl)",
+   "subsystem": "fx/templates",
+   "confidence": "unknown",
+   "evidence": "FxTemplate_EvalStartSize: same as FxTemplate_EvalStartAlpha for the size curve pair (curves[4] at +0x130, curves[5] at +0x13c, flag 0x8000 tested as a 16-bit value) but without clamping.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131838",
+   "name": "Fx_PlayEffect_Forward",
+   "signature": "void Fx_PlayEffect_Forward(struct FxEffectTemplate *effect, float *origin, float *forward)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_PlayEffect_Forward: forwards to the global scheduler (0x08a53804).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131862",
+   "name": "Fx_PlayEffect_ForwardUp",
+   "signature": "void Fx_PlayEffect_ForwardUp(struct FxEffectTemplate *effect, float *origin, float *forward, float *up)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_PlayEffect_ForwardUp: forwards to the global scheduler.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131894",
+   "name": "Fx_PlayEffect_Axis",
+   "signature": "void Fx_PlayEffect_Axis(struct FxEffectTemplate *effect, float *origin, float *axis, int *bolt)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_PlayEffect_Axis: forwards to the global scheduler's fn_0812aeec (origin, axis, bolt).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131936",
+   "name": "Fx_ClockAdvanceWrap",
+   "signature": "void Fx_ClockAdvanceWrap(int now)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_ClockAdvanceWrap: clears g_08a53818, advances the effects clock, then resets the two list update bounds to the current list counts.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131970",
+   "name": "Fx_ClockAdvanceFixedStepWrap",
+   "signature": "void Fx_ClockAdvanceFixedStepWrap(int now)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_ClockAdvanceFixedStepWrap: forwards to FX_ClockAdvanceFixedStep with the global clock.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131cc0",
+   "name": "Fx_FreeFirstWord",
+   "signature": "void Fx_FreeFirstWord(void **obj)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_FreeFirstWord: frees the pointer stored in the first word of the object (Com_Free_A).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081332e2",
+   "name": "ConfigBlock_WriteByte",
+   "signature": "byte ConfigBlock_WriteByte(struct ConfigBlock *block, byte value)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "ConfigBlock_WriteByte: writes one byte through ConfigBlock_Write with depth -1 (the byte's address is passed where the merged signature expects a StrPool **).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081339ee",
+   "name": "Fx_GetRayAttenuation",
+   "signature": "float Fx_GetRayAttenuation(const float *origin, const float *target)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_GetRayAttenuation: when enabled (g_08a5c9c4) and the distance between the two points is at least the dvar threshold, multiplies the slot-6 visibility results of every effect flagged 0x1000 in list B then list A, using radius 0.5 * distance. Returns 1.0 otherwise.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133eaa",
+   "name": "Fx_RewindToTime",
+   "signature": "void Fx_RewindToTime(int maxStart)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_RewindToTime: removes (without releasing) every effect in lists A and B whose start time (+0xb8) is later than maxStart, frees the removed lists, then clears the scheduler.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08133ffe",
+   "name": "Fx_SaveState",
+   "signature": "void Fx_SaveState(void *target)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_SaveState: attaches a 0x28-byte stream temporary to the target, serialises the effects slot, the scheduler playback list and every effect of list A then B, writes a terminating zero byte and finishes the stream.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08137072",
+   "name": "Fx_RunListB",
+   "signature": "void Fx_RunListB(void)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_RunListB: when the gating dvar (+8) is set, clears two counters and updates then collects draw list B from index 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081370ac",
+   "name": "Fx_RunListA",
+   "signature": "void Fx_RunListA(void)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_RunListA: same as Fx_RunListB for list A (counters g_08a5c9bc, g_08a5cae4).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081370e6",
+   "name": "Fx_RunFrame",
+   "signature": "void Fx_RunFrame(void)",
+   "subsystem": "fx/system",
+   "confidence": "unknown",
+   "evidence": "Fx_RunFrame: when the gating dvar is set: frees removed entries, processes pending events, then updates list B and list A from their previous bounds (freeing removed entries after each) and draws.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081386e4",
+   "name": "Loc_TranslateMarkedSegments",
+   "signature": "char *Loc_TranslateMarkedSegments(char *text, const char *context, int mode)",
+   "subsystem": "localization",
+   "confidence": "unknown",
+   "evidence": "Loc_TranslateMarkedSegments: walks the text in segments delimited by control bytes (0x14 = translate on, 0x15 = translate off, 0x16 = marker, NUL). Segments are copied (Q_strncpyz), translated with Loc_TranslatePart when enabled, appended to one of two 0x400-byte ring buffers (g_08a6e980) and \"&&N\" conversion markers are reordered so that segment order follows N. Overflow warns through Com_Printf (and Com_Error when loc_warnings and loc_warningsAsErrors are set and mode != 1). Evidence: strings \"%s too long when translated: \\\"%s\\\"\" and \"%s cannot have &&0 as conversion format: \\\"%s\\\"\\n\". Quirk",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c160",
+   "name": "PB_DispatchEvent71",
+   "signature": "void PB_DispatchEvent71(void)",
+   "subsystem": "punkbuster",
+   "confidence": "unknown",
+   "evidence": "PB_DispatchEvent71: PB_Dispatch(&pb, 0x71, -1, 0, 0, 0) on the global PunkBuster object.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c43a",
+   "name": "PB_ServerQuery",
+   "signature": "char *PB_ServerQuery(int query, char *buffer)",
+   "subsystem": "punkbuster",
+   "confidence": "unknown",
+   "evidence": "PB_ServerQuery: PunkBuster server query callback (0x65 max clients, 0x66 client info, 0x67 dvar display string, 0x72 client score text); the buffer is NUL-terminated at index 0xff first. Returns \"PB Error: Query Failed\" when a client lookup fails, otherwise NULL.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c524",
+   "name": "PB_PrintCallback",
+   "signature": "int PB_PrintCallback(const char *text)",
+   "subsystem": "punkbuster",
+   "confidence": "unknown",
+   "evidence": "PB_PrintCallback: output sink for PunkBuster text; text tagged \"[skipnotify]\" (compared against the PB object's name field at +0x14) is printed with Com_Printf(\"%s: %s\\n\") using the string at PB+0x20, everything else goes to SV_PrintTagged. Returns 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c582",
+   "name": "PB_SendToClientsCallback",
+   "signature": "int PB_SendToClientsCallback(int arg1, int arg2, int clientNum)",
+   "subsystem": "punkbuster",
+   "confidence": "unknown",
+   "evidence": "PB_SendToClientsCallback: forwards to SV_SendToClients and returns 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c5a8",
+   "name": "PB_SendPacketCallback",
+   "signature": "int PB_SendPacketCallback(const char *host, uint16 port, int length, const void *data)",
+   "subsystem": "punkbuster",
+   "confidence": "unknown",
+   "evidence": "PB_SendPacketCallback: forwards to Sys_SendPacketToHost (port narrowed to 16 bits) and returns 0.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08628f80",
+   "name": "g_08628f80",
+   "type": "byte[] (hud element pool, stride 0x8c)",
+   "confidence": "inferred",
+   "evidence": "Scr_GetHudElemParam indexes it by the low 16 bits of a class-1 script reference; same pool as chunk 048"
+  },
+  {
+   "addr": "0x0815e820",
+   "name": "g_entityScriptFieldTable",
+   "type": "struct entfield107_s[] (stride 0x10: name, ofs, type, setter)",
+   "confidence": "inferred",
+   "evidence": "GScr_GetEnt/GScr_GetEntArray read ofs (+4) and type (+8, 3 = script string) at idx*16 after Scr_FindClassFieldOffset"
+  },
+  {
+   "addr": "0x08188ab8",
+   "name": "g_fxEffectListA",
+   "type": "struct Effect **",
+   "confidence": "inferred",
+   "evidence": "effect list A pointer array, count g_08a5c9a0 (chunk 058)"
+  },
+  {
+   "addr": "0x08188abc",
+   "name": "g_fxEffectListB",
+   "type": "struct Effect **",
+   "confidence": "inferred",
+   "evidence": "effect list B pointer array, count g_08a5c9a4 (chunk 058)"
+  },
+  {
+   "addr": "0x08a5c9c4",
+   "name": "g_08a5c9c4",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "non-zero enables Fx_GetRayAttenuation"
+  },
+  {
+   "addr": "0x08a53ca0",
+   "name": "g_08a53ca0",
+   "type": "dvar_t *",
+   "confidence": "inferred",
+   "evidence": "float at +8 is the minimum distance for Fx_GetRayAttenuation"
+  },
+  {
+   "addr": "0x08a53818",
+   "name": "g_08a53818",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "cleared by Fx_ClockAdvanceWrap"
+  },
+  {
+   "addr": "0x08a5c9ac",
+   "name": "g_fxListAUpdateBound",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "list A update bound, reset to the list A count in Fx_ClockAdvanceWrap/Fx_RewindToTime/Fx_RunFrame"
+  },
+  {
+   "addr": "0x08a5c9b0",
+   "name": "g_fxListBUpdateBound",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "list B update bound, reset to the list B count in Fx_ClockAdvanceWrap/Fx_RewindToTime/Fx_RunFrame"
+  },
+  {
+   "addr": "0x08a6e960",
+   "name": "g_08a6e960",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "ring index (incremented mod 2) selecting one of two 0x400 buffers at 0x08a6e980 in Loc_TranslateMarkedSegments"
+  },
+  {
+   "addr": "0x08a6e980",
+   "name": "g_08a6e980",
+   "type": "char[2][0x400]",
+   "confidence": "inferred",
+   "evidence": "result ring buffers of Loc_TranslateMarkedSegments (memset 0x400, indexed by g_08a6e960 * 0x400)"
+  },
+  {
+   "addr": "0x0815f348",
+   "name": "vtbl_Light",
+   "type": "void *[]",
+   "confidence": "inferred",
+   "evidence": "vtable whose typeinfo (0x0815f580) names \"5Light\" (string at 0x0815f636), base typeinfo Effect; previously labelled vtbl_0815f348"
+  },
+  {
+   "addr": "0x0815f308",
+   "name": "vtbl_Flash",
+   "type": "void *[]",
+   "confidence": "inferred",
+   "evidence": "vtable whose typeinfo (0x0815f58c) names \"5Flash\" (string at 0x0815f62f), base typeinfo Light"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "Light",
+   "size": "0xfc",
+   "evidence": "RTTI 5Light; same layout as chunk 055 FxObjFc; vtable 0x0815f348"
+  },
+  {
+   "name": "Flash",
+   "size": "0xfc",
+   "evidence": "RTTI 5Flash derives from Light; vtable 0x0815f308"
+  },
+  {
+   "name": "Emitter",
+   "size": "0x29c",
+   "evidence": "chunk 054 Emitter with the 0x278..0x298 region named: pos 0x278, vel 0x284 (Emitter::Update damps vel by 0.7 when the origin is unchanged)"
+  },
+  {
+   "name": "FxParticleTemplate",
+   "size": "0x220",
+   "evidence": "flags at +0x90, curves[24] of FxCurveSrc at +0x100; Light::InitCurves, Cloud/Tail::InitCurves and FxTemplate_Eval* read curves[0..9]"
+  }
+ ],
+ "open_questions": [
+  "Scr_ReleaseAnyValue (0x08084bb2) is merged as void but its pseudocode returns ScrStr_TextFromHandle(Scr_GetAny(p)); it is a Scr_GetString-style accessor and should be renamed/retyped by the merge lane.",
+  "Cloud_ConstructBase (0x0812708a): EH landing pad not modelled (shared prototypes declare __cxa_begin_catch with a different exception specifier).",
+  "Emitter::Update with flag 0x10 and no binding frame passes an uninitialised frameVel to EmitElements (original quirk kept).",
+  "FX_NoopC (0x0812d286) is merged as void(void) but Light::Draw calls it with six arguments (system, origin, size, r, g, b); the prototype should be retyped.",
+  "entClass table slots: +0x0c touch, +0x18 die inferred from callback signatures only; slot names for +0x10/+0x14 (0x08187d60/0x08187db0/0x08187db4 targets are outside this chunk) are unconfirmed.",
+  "PB_PrintCallback reads the PunkBuster object at +0x20 (name+0xc) as the second printf string; this was kept verbatim from the disassembly and may be a different field than the merged punkbuster_s layout suggests."
+ ]
+}

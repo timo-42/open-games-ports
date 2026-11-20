@@ -1,0 +1,1474 @@
+{
+ "chunk": 55,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x08128a16",
+   "name": "FxObj29c_IntegrateVelocity",
+   "signature": "void FxObj29c_IntegrateVelocity(struct Emitter *self)",
+   "subsystem": "fx/object",
+   "confidence": "inferred",
+   "evidence": "pos(+0x278) = VectorMA(pos, frameTime*0.01, vel(+0x284)), then fn_080a94aa(pos, vec48); same 0x29c class as the serializer at 0x08128a7e [REA decompile sub_08128a16; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128a74",
+   "name": "Emitter_GetTypeId",
+   "signature": "int Emitter_GetTypeId(void)",
+   "subsystem": "fx/misc",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns 5; sole .rodata reference is Emitter vtable 0x0815f388 slot 9 (0x0815f3ac).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128a7e",
+   "name": "FxObj29c_Serialize",
+   "signature": "void FxObj29c_Serialize(struct Emitter *self, struct FxArchive *stream)",
+   "subsystem": "fx/object",
+   "confidence": "inferred",
+   "evidence": "base serializer 0x081268aa then field-by-field stream calls for offsets 0x24c..0x298 (pool element size 0x29c) [REA decompile sub_08128a7e; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128ba0",
+   "name": "Light_Construct",
+   "signature": "void Light_Construct(struct Light *self)",
+   "subsystem": "fx/object",
+   "confidence": "observed",
+   "evidence": "calls base constructor 0x0812464c then stores vtable 0x0815f348 (identical twin of 0x08128bbc, complete/base ctor pair) [REA decompile sub_08128ba0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered] [rename fx-anim: objdump: calls base ctor 0x0812464c then stores vptr 0x0815f348 (Light vtable, RTTI 5Light).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128bbc",
+   "name": "Light_ConstructBase",
+   "signature": "void Light_ConstructBase(struct Light *self)",
+   "subsystem": "fx/object",
+   "confidence": "observed",
+   "evidence": "identical twin of 0x08128ba0 [REA decompile sub_08128bbc; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered] [rename fx-anim: objdump: identical body to 0x08128ba0 (base ctor + vptr 0x0815f348): second ctor of the pair.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128bd8",
+   "name": "Light_DestructComplete",
+   "signature": "void Light_DestructComplete(struct Light *self)",
+   "subsystem": "fx/object",
+   "confidence": "observed",
+   "evidence": "stores vtable 0x0815f348 then calls base destructor 0x08124690 (no delete) [REA decompile sub_08128bd8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered] [rename fx-anim: objdump: sets vptr 0x0815f348, calls base dtor 0x08124690; delete branch dead (`and eax,0`); sibling 0x08128c0c is Light_Destruct.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128e1a",
+   "name": "FxObjFc_EvalSizeCurve",
+   "signature": "void FxObjFc_EvalSizeCurve(struct Light *self)",
+   "subsystem": "fx/object",
+   "confidence": "inferred",
+   "evidence": "size(+0x88) = scalar curve sample at age(+0x3c), blended between the two size curves when flag 0x8000 is set [REA decompile sub_08128e1a; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128e9e",
+   "name": "FxObjFc_EvalColorCurve",
+   "signature": "void FxObjFc_EvalColorCurve(struct Light *self)",
+   "subsystem": "fx/object",
+   "confidence": "inferred",
+   "evidence": "color(+0x6c) = vec3 curve sample at age(+0x3c), blended between the two colour curves when flag 0x2000 is set [REA decompile sub_08128e9e; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128f1c",
+   "name": "Light_GetTypeId",
+   "signature": "int Light_GetTypeId(void)",
+   "subsystem": "fx/misc",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns 9; sole .rodata reference is Light vtable 0x0815f348 slot 9 (0x0815f36c).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128f26",
+   "name": "FxObjFc_Serialize",
+   "signature": "void FxObjFc_Serialize(struct Light *self, struct FxArchive *stream)",
+   "subsystem": "fx/object",
+   "confidence": "inferred",
+   "evidence": "base serializer 0x081248fe, four curves via 0x0812350a, then the two blend floats (+0xc4,+0xc8) [REA decompile sub_08128f26; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128fca",
+   "name": "FxObjFc_CopyFromTemplate",
+   "signature": "void FxObjFc_CopyFromTemplate(struct Light *self, struct FxCurvePairTemplate *tmpl)",
+   "subsystem": "fx/object",
+   "confidence": "inferred",
+   "evidence": "base copy 0x08124a8a then copies the key-table pointer (first dword) of the four template curves at +0x100/+0x10c/+0x130/+0x13c [REA decompile sub_08128fca; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812902c",
+   "name": "FxObjFc_UpdateColor",
+   "signature": "bool FxObjFc_UpdateColor(struct Light *self)",
+   "subsystem": "fx/object",
+   "confidence": "inferred",
+   "evidence": "if fn_081247f0(self) is non-zero, evaluates the colour curves; returns that flag [REA decompile sub_0812902c; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129062",
+   "name": "FxObjFc_ApplyViewFalloff",
+   "signature": "void FxObjFc_ApplyViewFalloff(struct Light *self)",
+   "subsystem": "fx/object",
+   "confidence": "unknown",
+   "evidence": "scales colour curve A's scale (+0xd4) by a factor from distance to the view origin (0..600 units, quadratic) and facing dot with the view forward vector [REA decompile sub_08129062; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812915e",
+   "name": "Flash_Draw",
+   "signature": "void Flash_Draw(struct Light *self)",
+   "subsystem": "fx/object",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Stored at Flash vtable 0x0815f308 slot 5 (0x0815f31c, Draw); packs colour, places the flash 8 units in front of the view, sets size 12 and calls SubmitToRenderer(4). Replaces name FxObjFc_InitInFrontOfView.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129246",
+   "name": "Flash_GetTypeId",
+   "signature": "int Flash_GetTypeId(void)",
+   "subsystem": "fx/misc",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns 0xb; sole .rodata reference is Flash vtable 0x0815f308 slot 9 (0x0815f32c).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129250",
+   "name": "FxObjFc_Serialize_Thunk",
+   "signature": "void FxObjFc_Serialize_Thunk(struct Light *self, struct FxArchive *stream)",
+   "subsystem": "fx/object",
+   "confidence": "inferred",
+   "evidence": "forwards (obj, stream) to 0x08128f26 [REA decompile sub_08129250; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812926a",
+   "name": "__static_initialization_and_destruction_0",
+   "signature": "void __static_initialization_and_destruction_0(int initialize_p, int priority)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "GCC static-init shape (initialize_p == 1, priority == 0xffff); constructs the ten pool descriptors in order [REA decompile sub_0812926a; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129380",
+   "name": "FxFabs",
+   "signature": "float FxFabs(float x)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "absolute value of a float [REA decompile sub_08129380; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812939a",
+   "name": "FxMaxFloat",
+   "signature": "float FxMaxFloat(float a, float b)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "select(a-b >= 0 ? a : b) via 0x081298b2 [REA decompile sub_0812939a; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081293be",
+   "name": "FxMinInt",
+   "signature": "int FxMinInt(int a, int b)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "select(b-a < 0 ? b : a) via 0x081298fc (Ghidra shows void; the callee result is returned in eax) [REA decompile sub_081293be; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081293e4",
+   "name": "FxClampFloatSelect",
+   "signature": "float FxClampFloatSelect(float value, float lo, float hi)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "clamp(value, lo, hi) built from two select calls (Ghidra shows void; result is returned in st0) [REA decompile sub_081293e4; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129422",
+   "name": "FxClampIntSelect",
+   "signature": "int FxClampIntSelect(int value, int lo, int hi)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "integer twin of 0x081293e4 (result returned in eax) [REA decompile sub_08129422; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129464",
+   "name": "FxClampFloat",
+   "signature": "float FxClampFloat(float value, float lo, float hi)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "clamp(value, lo, hi) with explicit branches (lo wins first) [REA decompile sub_08129464; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081294a6",
+   "name": "FxRoundToInt",
+   "signature": "int FxRoundToInt(float x)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "floor(x + 0.5) converted to int with truncating x87 control word [REA decompile sub_081294a6; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081294dc",
+   "name": "FxVectorClear",
+   "signature": "void FxVectorClear(float *v)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "sets three dwords to zero [REA decompile sub_081294dc; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129506",
+   "name": "FxVectorSet",
+   "signature": "void FxVectorSet(float *v, float x, float y, float z)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "v = (x, y, z) [REA decompile sub_08129506; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812952a",
+   "name": "FxVectorCopy",
+   "signature": "void FxVectorCopy(const float *src, float *dst)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "dst = src (three dwords) [REA decompile sub_0812952a; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812955a",
+   "name": "FxVectorCopyOrClear",
+   "signature": "void FxVectorCopyOrClear(const float *src, float *dst)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "clears dst when src is NULL, else copies [REA decompile sub_0812955a; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129588",
+   "name": "FxVectorAdd",
+   "signature": "void FxVectorAdd(const float *a, const float *b, float *out)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "out = a + b [REA decompile sub_08129588; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081295cc",
+   "name": "FxVectorSubtract",
+   "signature": "void FxVectorSubtract(const float *a, const float *b, float *out)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "out = a - b [REA decompile sub_081295cc; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129610",
+   "name": "FxVectorScale",
+   "signature": "void FxVectorScale(const float *v, float s, float *out)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "out = s * v [REA decompile sub_08129610; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129648",
+   "name": "FxVectorMA",
+   "signature": "void FxVectorMA(const float *a, float s, const float *b, float *out)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "out = a + s * b [REA decompile sub_08129648; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812969c",
+   "name": "FxDotProduct",
+   "signature": "float FxDotProduct(const float *a, const float *b)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "dot(a, b) accumulated in extended precision, z term first [REA decompile sub_0812969c; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081296d0",
+   "name": "FxVectorCompare",
+   "signature": "int FxVectorCompare(const float *a, const float *b)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "exact component equality, 1 when all three match [REA decompile sub_081296d0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812973a",
+   "name": "FxVectorLengthSquared",
+   "signature": "float FxVectorLengthSquared(const float *v)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "dot(v, v) in extended precision [REA decompile sub_0812973a; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812976e",
+   "name": "FxVectorLength",
+   "signature": "float FxVectorLength(const float *v)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "FxSqrt(z*z + y*y + x*x) (Ghidra shows void; the result is returned in st0) [REA decompile sub_0812976e; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081297ac",
+   "name": "FxColorFloatToBytes",
+   "signature": "void FxColorFloatToBytes(const float *rgba, unsigned char *out)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "four floats * 255, rounded, clamped to [0,255] (min 255 then max 0), stored as bytes [REA decompile sub_081297ac; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081298b2",
+   "name": "FxSelectFloatGE",
+   "signature": "float FxSelectFloatGE(float cond, float a, float b)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "returns a when cond >= 0.0 else b [REA decompile sub_081298b2; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081298dc",
+   "name": "FxSqrt",
+   "signature": "float FxSqrt(float x)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "float sqrt through double sqrt [REA decompile sub_081298dc; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081298fc",
+   "name": "FxSelectIntLT",
+   "signature": "int FxSelectIntLT(int cond, int a, int b)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "returns b when cond < 0 else a [REA decompile sub_081298fc; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812991c",
+   "name": "FxMaxInt",
+   "signature": "int FxMaxInt(int a, int b)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "select(a-b < 0 ? b : a) via 0x081298fc (Ghidra shows void; result returned in eax) [REA decompile sub_0812991c; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129942",
+   "name": "FxVectorLerp",
+   "signature": "void FxVectorLerp(const float *a, const float *b, float t, float *out)",
+   "subsystem": "fx/math",
+   "confidence": "inferred",
+   "evidence": "out = a + (b - a) * t [REA decompile sub_08129942; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081299ac",
+   "name": "_GLOBAL__I_FxPools",
+   "signature": "void _GLOBAL__I_FxPools(void)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "static-constructor entry calling __static_initialization_and_destruction_0(1, 0xffff) [REA decompile sub_081299ac; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081299c8",
+   "name": "FxCurve_EvalScaled",
+   "signature": "float FxCurve_EvalScaled(struct FxCurve *curve, float t)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "scalar curve sample at t times the curve scale (+8) [REA decompile sub_081299c8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081299e8",
+   "name": "FxCurveVec3_EvalScaled",
+   "signature": "void FxCurveVec3_EvalScaled(struct FxCurve *curve, float *out, float t)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "vec3 curve sample at t into out, then out *= curve scale [REA decompile sub_081299e8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129a26",
+   "name": "FxCurve_EvalBlendScaled",
+   "signature": "float FxCurve_EvalBlendScaled(struct FxCurve *curveA, struct FxCurve *curveB, float blend, float t)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "(a + (b - a) * blend) * curveA.scale where a/b are samples of curves A/B at t [REA decompile sub_08129a26; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129a72",
+   "name": "FxCurveVec3_EvalBlendScaled",
+   "signature": "void FxCurveVec3_EvalBlendScaled(struct FxCurve *curveA, struct FxCurve *curveB, float blend, float *out, float t)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "vec3 samples of curves A and B at t, out = A + blend * (B - A), then out *= curveA.scale [REA decompile sub_08129a72; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129b02",
+   "name": "FxCurveRef_EvalScaled",
+   "signature": "float FxCurveRef_EvalScaled(struct FxCurve *curve, float t)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "fn_08123e0e(keys, t) times the scale float at +8 (curve handle flavour with an opaque key evaluator) [REA decompile sub_08129b02; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129b24",
+   "name": "FxCurveRef_EvalBlendScaled",
+   "signature": "float FxCurveRef_EvalBlendScaled(struct FxCurve *curveA, struct FxCurve *curveB, float blend, float t)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "blend of two opaque-evaluator samples at t, times curveA.scale [REA decompile sub_08129b24; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129b74",
+   "name": "FxPool44_Alloc",
+   "signature": "void *FxPool44_Alloc(int arg)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "allocates one 0x44-byte element from pool 0x08a53388 (tail call; allocation pointer returned) [REA decompile sub_08129b74; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129b90",
+   "name": "FxPool44_Free",
+   "signature": "void FxPool44_Free(void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "returns an element to pool 0x08a53388 [REA decompile sub_08129b90; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129bac",
+   "name": "FxRef_Construct",
+   "signature": "void FxRef_Construct(struct FxRef *ref)",
+   "subsystem": "fx/ref",
+   "confidence": "inferred",
+   "evidence": "sets the handle to NULL [REA decompile sub_08129bac; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129bba",
+   "name": "FxRef_ConstructFromRaw",
+   "signature": "void FxRef_ConstructFromRaw(struct FxRef *ref, struct FxBinding *obj)",
+   "subsystem": "fx/ref",
+   "confidence": "inferred",
+   "evidence": "handle = FxRef_AddRef(obj) (increments obj's refcount, no NULL check) [REA decompile sub_08129bba; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129bd8",
+   "name": "FxRef_Destruct",
+   "signature": "void FxRef_Destruct(struct FxRef *ref)",
+   "subsystem": "fx/ref",
+   "confidence": "inferred",
+   "evidence": "releases the object when the handle is non-NULL [REA decompile sub_08129bd8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129bf6",
+   "name": "FxRef_Assign",
+   "signature": "void FxRef_Assign(struct FxRef *dst, struct FxRef *src)",
+   "subsystem": "fx/ref",
+   "confidence": "inferred",
+   "evidence": "handle assignment: when objects differ, release old (and null it), then take a ref on the source if it is valid [REA decompile sub_08129bf6; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129c50",
+   "name": "FxRef_IsValid",
+   "signature": "bool FxRef_IsValid(struct FxRef *ref)",
+   "subsystem": "fx/ref",
+   "confidence": "inferred",
+   "evidence": "obj != NULL [REA decompile sub_08129c50; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129c62",
+   "name": "FxRef_AssignRaw",
+   "signature": "void FxRef_AssignRaw(struct FxRef *dst, struct FxBinding *obj)",
+   "subsystem": "fx/ref",
+   "confidence": "inferred",
+   "evidence": "when obj differs: release the old object if any, then take a ref on the new one (no NULL check on the new pointer) [REA decompile sub_08129c62; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129ca0",
+   "name": "FxRef_Get",
+   "signature": "struct FxBinding *FxRef_Get(struct FxRef *ref)",
+   "subsystem": "fx/ref",
+   "confidence": "inferred",
+   "evidence": "returns the raw object pointer [REA decompile sub_08129ca0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129caa",
+   "name": "Effect_GetRayVisibility",
+   "signature": "float Effect_GetRayVisibility(void)",
+   "subsystem": "fx/misc",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns 1.0; stored at slot 6 of Effect (0x0815f560), Light (0x0815f360) and Flash (0x0815f320) vtables. Previously FxReturnOne.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129cb2",
+   "name": "Effect_AddBlocker",
+   "signature": "void Effect_AddBlocker(void)",
+   "subsystem": "fx/misc",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Empty body; slot 7 of Effect (0x0815f564), Light (0x0815f364), Flash (0x0815f324) vtables. Previously FxNoOp_08129cb2.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129cb8",
+   "name": "FxObj_GetSpan",
+   "signature": "int FxObj_GetSpan(struct Effect *obj)",
+   "subsystem": "fx/object",
+   "confidence": "inferred",
+   "evidence": "spanEnd(+0xbc) - spanStart(+0xb8) [REA decompile sub_08129cb8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129cd2",
+   "name": "FxPoolC4_Free",
+   "signature": "void FxPoolC4_Free(void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "returns an element to pool 0x08a53390 [REA decompile sub_08129cd2; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129cee",
+   "name": "FxPoolFC_Free",
+   "signature": "void FxPoolFC_Free(void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "returns an element to pool 0x08a53398 [REA decompile sub_08129cee; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129d72",
+   "name": "Flash_IsCulled",
+   "signature": "int Flash_IsCulled(void)",
+   "subsystem": "fx/misc",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Returns 0; sole .rodata reference is Flash vtable 0x0815f308 slot 4 (0x0815f318).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129d7c",
+   "name": "FxPool24C_Free",
+   "signature": "void FxPool24C_Free(void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "returns an element to pool 0x08a533a0 [REA decompile sub_08129d7c; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129d98",
+   "name": "FxPool27C_Free",
+   "signature": "void FxPool27C_Free(void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "returns an element to pool 0x08a533d0 [REA decompile sub_08129d98; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129db4",
+   "name": "FxPool258a_Free",
+   "signature": "void FxPool258a_Free(void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "returns an element to pool 0x08a533a8 [REA decompile sub_08129db4; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129dd0",
+   "name": "FxPool258b_Free",
+   "signature": "void FxPool258b_Free(void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "returns an element to pool 0x08a533b0 [REA decompile sub_08129dd0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129dec",
+   "name": "FxPool278a_Free",
+   "signature": "void FxPool278a_Free(void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "returns an element to pool 0x08a533b8 [REA decompile sub_08129dec; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129e08",
+   "name": "FxPool278b_Free",
+   "signature": "void FxPool278b_Free(void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "returns an element to pool 0x08a533c0 [REA decompile sub_08129e08; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129e24",
+   "name": "FxObj29c_RandomizeValue",
+   "signature": "void FxObj29c_RandomizeValue(struct Emitter *self)",
+   "subsystem": "fx/object",
+   "confidence": "inferred",
+   "evidence": "value274 = base294 + fn_080a3792() * range298 (random float in [base, base+range] shape) [REA decompile sub_08129e24; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129e50",
+   "name": "FxPool29C_Free",
+   "signature": "void FxPool29C_Free(void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "returns an element to pool 0x08a533c8 [REA decompile sub_08129e50; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129e6c",
+   "name": "FxArchive_IsReading",
+   "signature": "unsigned char FxArchive_IsReading(struct FxArchive *obj)",
+   "subsystem": "fx/object",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Returns byte at +4 of FxArchive; callers Effect::Archive/Particle::Archive branch on it to choose load vs save (chunk 054 lines 165/349, chunk 056 250/1156); struct comment \"non-zero while reading\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129e78",
+   "name": "FxStream_ReadInt",
+   "signature": "int FxStream_ReadInt(struct FxArchive *stream)",
+   "subsystem": "fx/serialize",
+   "confidence": "inferred",
+   "evidence": "reads 4 bytes from the stream via fn_08122df8 and returns them [REA decompile sub_08129e78; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129e9e",
+   "name": "FxStream_WriteInt",
+   "signature": "void FxStream_WriteInt(struct FxArchive *stream, int value)",
+   "subsystem": "fx/serialize",
+   "confidence": "inferred",
+   "evidence": "writes the 4-byte stack slot of the value argument to the stream via fn_0812308a [REA decompile sub_08129e9e; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129ec0",
+   "name": "FxStream_Byte",
+   "signature": "void FxStream_Byte(struct FxArchive *stream, void *p)",
+   "subsystem": "fx/serialize",
+   "confidence": "inferred",
+   "evidence": "(de)serializes one byte through fn_08123414(stream, p, 1) [REA decompile sub_08129ec0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129ee2",
+   "name": "FxStream_Int",
+   "signature": "void FxStream_Int(struct FxArchive *stream, int *p)",
+   "subsystem": "fx/serialize",
+   "confidence": "inferred",
+   "evidence": "(de)serializes four bytes through fn_08123414 [REA decompile sub_08129ee2; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129f04",
+   "name": "FxStream_Float",
+   "signature": "void FxStream_Float(struct FxArchive *stream, float *p)",
+   "subsystem": "fx/serialize",
+   "confidence": "inferred",
+   "evidence": "(de)serializes four bytes through fn_08123414 (same body as FxStream_Int) [REA decompile sub_08129f04; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129f26",
+   "name": "FxStream_Vec3",
+   "signature": "void FxStream_Vec3(struct FxArchive *stream, float *p)",
+   "subsystem": "fx/serialize",
+   "confidence": "inferred",
+   "evidence": "(de)serializes twelve bytes through fn_08123414 [REA decompile sub_08129f26; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129f48",
+   "name": "FxPool44_Init",
+   "signature": "void FxPool44_Init(struct FxPool *pool)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "perBlock = 0x1e1, head = NULL [REA decompile sub_08129f48; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129f60",
+   "name": "FxPoolC4_Init",
+   "signature": "void FxPoolC4_Init(struct FxPool *pool)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "perBlock = 0xa7, head = NULL [REA decompile sub_08129f60; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129f78",
+   "name": "FxPoolFC_Init",
+   "signature": "void FxPoolFC_Init(struct FxPool *pool)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "perBlock = 0x81, head = NULL [REA decompile sub_08129f78; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129f90",
+   "name": "FxPool24C_Init",
+   "signature": "void FxPool24C_Init(struct FxPool *pool)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "perBlock = 0x37, head = NULL [REA decompile sub_08129f90; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129fa8",
+   "name": "FxPool258a_Init",
+   "signature": "void FxPool258a_Init(struct FxPool *pool)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "perBlock = 0x36, head = NULL [REA decompile sub_08129fa8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129fc0",
+   "name": "FxPool258b_Init",
+   "signature": "void FxPool258b_Init(struct FxPool *pool)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "perBlock = 0x36, head = NULL [REA decompile sub_08129fc0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129fd8",
+   "name": "FxPool278a_Init",
+   "signature": "void FxPool278a_Init(struct FxPool *pool)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "perBlock = 0x33, head = NULL [REA decompile sub_08129fd8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08129ff0",
+   "name": "FxPool278b_Init",
+   "signature": "void FxPool278b_Init(struct FxPool *pool)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "perBlock = 0x33, head = NULL [REA decompile sub_08129ff0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a008",
+   "name": "FxPool29C_Init",
+   "signature": "void FxPool29C_Init(struct FxPool *pool)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "perBlock = 0x31, head = NULL [REA decompile sub_0812a008; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a020",
+   "name": "FxPool27C_Init",
+   "signature": "void FxPool27C_Init(struct FxPool *pool)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "perBlock = 0x33, head = NULL [REA decompile sub_0812a020; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a038",
+   "name": "FxCurve_Eval",
+   "signature": "float FxCurve_Eval(struct FxCurve *curve, float t)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "seeks the cursor for t then evaluates the key at cursor*8+8 with fn_08123ef0 (scalar curve, 2 floats per key) [REA decompile sub_0812a038; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a084",
+   "name": "FxCurveVec3_Eval",
+   "signature": "void FxCurveVec3_Eval(struct FxCurve *curve, float *out, float t)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "seeks the cursor for t then lerps key cursor*0x10+8 with the next key (vec3 curve, 4 floats per key) into out [REA decompile sub_0812a084; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a0cc",
+   "name": "FxRef_AddRef",
+   "signature": "struct FxBinding *FxRef_AddRef(struct FxBinding *obj)",
+   "subsystem": "fx/ref",
+   "confidence": "inferred",
+   "evidence": "increments the first dword (refcount) of the object and returns the pointer [REA decompile sub_0812a0cc; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a0da",
+   "name": "FxPool44_AllocFrom",
+   "signature": "void *FxPool44_AllocFrom(struct FxPool *pool, int arg)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "finds the first block with a free element (moving it to the front when it is not the head), allocating a new block via fn_0812411a when none, pops the free list, and zeroes 0x44 bytes [REA decompile sub_0812a0da; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a1b8",
+   "name": "FxPool44_PushFront",
+   "signature": "void FxPool44_PushFront(struct FxPool *pool, struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "unlinks the block, then makes it the new head of the block list [REA decompile sub_0812a1b8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a200",
+   "name": "FxPool44_FreeTo",
+   "signature": "void FxPool44_FreeTo(struct FxPool *pool, void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "finds the owning block with fn_081242b2(elem, 0x44); when the head block has no free element the owner becomes the head, else when the owner has at least perBlock free elements it is released with fn_08124292 (unless it is the head and the next block is missing or full) [REA decompile sub_0812a200; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a298",
+   "name": "FxPoolC4_FreeTo",
+   "signature": "void FxPoolC4_FreeTo(struct FxPool *pool, void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "finds the owning block with fn_081242b2(elem, 0xc4); when the head block has no free element the owner becomes the head, else when the owner has at least perBlock free elements it is released with fn_08124292 (unless it is the head and the next block is missing or full) [REA decompile sub_0812a298; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a330",
+   "name": "FxPoolFC_FreeTo",
+   "signature": "void FxPoolFC_FreeTo(struct FxPool *pool, void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "finds the owning block with fn_081242b2(elem, 0xfc); when the head block has no free element the owner becomes the head, else when the owner has at least perBlock free elements it is released with fn_08124292 (unless it is the head and the next block is missing or full) [REA decompile sub_0812a330; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a3c8",
+   "name": "FxPool24C_FreeTo",
+   "signature": "void FxPool24C_FreeTo(struct FxPool *pool, void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "finds the owning block with fn_081242b2(elem, 0x24c); when the head block has no free element the owner becomes the head, else when the owner has at least perBlock free elements it is released with fn_08124292 (unless it is the head and the next block is missing or full) [REA decompile sub_0812a3c8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a460",
+   "name": "FxPool27C_FreeTo",
+   "signature": "void FxPool27C_FreeTo(struct FxPool *pool, void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "finds the owning block with fn_081242b2(elem, 0x27c); when the head block has no free element the owner becomes the head, else when the owner has at least perBlock free elements it is released with fn_08124292 (unless it is the head and the next block is missing or full) [REA decompile sub_0812a460; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a4f8",
+   "name": "FxPool258a_FreeTo",
+   "signature": "void FxPool258a_FreeTo(struct FxPool *pool, void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "finds the owning block with fn_081242b2(elem, 0x258); when the head block has no free element the owner becomes the head, else when the owner has at least perBlock free elements it is released with fn_08124292 (unless it is the head and the next block is missing or full) [REA decompile sub_0812a4f8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a590",
+   "name": "FxPool258b_FreeTo",
+   "signature": "void FxPool258b_FreeTo(struct FxPool *pool, void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "finds the owning block with fn_081242b2(elem, 0x258); when the head block has no free element the owner becomes the head, else when the owner has at least perBlock free elements it is released with fn_08124292 (unless it is the head and the next block is missing or full) [REA decompile sub_0812a590; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a628",
+   "name": "FxPool278a_FreeTo",
+   "signature": "void FxPool278a_FreeTo(struct FxPool *pool, void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "finds the owning block with fn_081242b2(elem, 0x278); when the head block has no free element the owner becomes the head, else when the owner has at least perBlock free elements it is released with fn_08124292 (unless it is the head and the next block is missing or full) [REA decompile sub_0812a628; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a6c0",
+   "name": "FxPool278b_FreeTo",
+   "signature": "void FxPool278b_FreeTo(struct FxPool *pool, void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "finds the owning block with fn_081242b2(elem, 0x278); when the head block has no free element the owner becomes the head, else when the owner has at least perBlock free elements it is released with fn_08124292 (unless it is the head and the next block is missing or full) [REA decompile sub_0812a6c0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a758",
+   "name": "FxPool29C_FreeTo",
+   "signature": "void FxPool29C_FreeTo(struct FxPool *pool, void *elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "finds the owning block with fn_081242b2(elem, 0x29c); when the head block has no free element the owner becomes the head, else when the owner has at least perBlock free elements it is released with fn_08124292 (unless it is the head and the next block is missing or full) [REA decompile sub_0812a758; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a7f0",
+   "name": "FxCurveVec3_Interp",
+   "signature": "void FxCurveVec3_Interp(float *key, float t, float *out)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "lerps the vec3 of key (floats 1..3) toward the next key (floats 5..7) by (t - key.time) / (nextKey.time - key.time) [REA decompile sub_0812a7f0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a848",
+   "name": "FxCurve_Seek",
+   "signature": "void FxCurve_Seek(struct FxCurve *curve, float t)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "moves the curve cursor so that key[cursor+1].time >= t: restarts at key 0 when t is before the current key, then advances while the next key time is < t [REA decompile sub_0812a848; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a8d0",
+   "name": "FxPoolC4_PushFront",
+   "signature": "void FxPoolC4_PushFront(struct FxPool *pool, struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "unlinks the block, then makes it the new head of the block list (clone of FxPool44_PushFront) [REA decompile sub_0812a8d0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a918",
+   "name": "FxPoolFC_PushFront",
+   "signature": "void FxPoolFC_PushFront(struct FxPool *pool, struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "unlinks the block, then makes it the new head of the block list (clone of FxPool44_PushFront) [REA decompile sub_0812a918; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a960",
+   "name": "FxPool24C_PushFront",
+   "signature": "void FxPool24C_PushFront(struct FxPool *pool, struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "unlinks the block, then makes it the new head of the block list (clone of FxPool44_PushFront) [REA decompile sub_0812a960; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a9a8",
+   "name": "FxPool27C_PushFront",
+   "signature": "void FxPool27C_PushFront(struct FxPool *pool, struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "unlinks the block, then makes it the new head of the block list (clone of FxPool44_PushFront) [REA decompile sub_0812a9a8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812a9f0",
+   "name": "FxPool258a_PushFront",
+   "signature": "void FxPool258a_PushFront(struct FxPool *pool, struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "unlinks the block, then makes it the new head of the block list (clone of FxPool44_PushFront) [REA decompile sub_0812a9f0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812aa38",
+   "name": "FxPool258b_PushFront",
+   "signature": "void FxPool258b_PushFront(struct FxPool *pool, struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "unlinks the block, then makes it the new head of the block list (clone of FxPool44_PushFront) [REA decompile sub_0812aa38; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812aa80",
+   "name": "FxPool278a_PushFront",
+   "signature": "void FxPool278a_PushFront(struct FxPool *pool, struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "unlinks the block, then makes it the new head of the block list (clone of FxPool44_PushFront) [REA decompile sub_0812aa80; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812aac8",
+   "name": "FxPool278b_PushFront",
+   "signature": "void FxPool278b_PushFront(struct FxPool *pool, struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "unlinks the block, then makes it the new head of the block list (clone of FxPool44_PushFront) [REA decompile sub_0812aac8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ab10",
+   "name": "FxPool29C_PushFront",
+   "signature": "void FxPool29C_PushFront(struct FxPool *pool, struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "unlinks the block, then makes it the new head of the block list (clone of FxPool44_PushFront) [REA decompile sub_0812ab10; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ab58",
+   "name": "FxNoOp_0812ab58",
+   "signature": "void FxNoOp_0812ab58(void)",
+   "subsystem": "fx/misc",
+   "confidence": "unknown",
+   "evidence": "empty function [REA decompile sub_0812ab58; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ab5e",
+   "name": "FxPickList_Pick",
+   "signature": "int FxPickList_Pick(struct FxPickList *list)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "returns the element chosen by FxPickList_PickOut [REA decompile sub_0812ab5e; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ab7e",
+   "name": "FxPickList_PickOut",
+   "signature": "int *FxPickList_PickOut(int *out, struct FxPickList *list)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "*out = 0 when the 16-bit count is zero, else items[fn_080aaada(0, count)]; returns out (hidden-pointer return, ret 4) [REA decompile sub_0812ab7e; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812abd6",
+   "name": "FxScheduler_ResetList_A",
+   "signature": "void FxScheduler_ResetList_A(struct FxScheduler *self)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "head = NULL, count = 0 [REA decompile sub_0812abd6; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812abf0",
+   "name": "FxScheduler_ResetList_B",
+   "signature": "void FxScheduler_ResetList_B(struct FxScheduler *self)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "identical twin of 0x0812abd6 [REA decompile sub_0812abf0; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ac0a",
+   "name": "FxScheduler_Clear",
+   "signature": "void FxScheduler_Clear(struct FxScheduler *self, char runCallback, struct FxEffectTemplate *arg)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "pops and frees every scheduled-effect record (fn_0812c014), zeroes the count, optionally calls fn_0812bcdc(arg) [REA decompile sub_0812ac0a; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ac64",
+   "name": "FxScheduler_ReportInvalidEffect",
+   "signature": "void FxScheduler_ReportInvalidEffect(void)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "prints \"FxScheduler::PlayEffect called with invalid effect\\n\" through fn_081314e2 [REA decompile sub_0812ac64; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered] [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ac78",
+   "name": "FxScheduler_PlayEffect_DefaultAxis",
+   "signature": "void FxScheduler_PlayEffect_DefaultAxis(struct FxScheduler *self, struct FxEffectTemplate *effect, float *origin)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "builds axis (0,0,1),(1,0,0),(0,1,0) and calls the full PlayEffect with no bolt [REA decompile sub_0812ac78; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ad20",
+   "name": "FxScheduler_PlayEffect_Forward",
+   "signature": "void FxScheduler_PlayEffect_Forward(struct FxScheduler *self, struct FxEffectTemplate *effect, float *origin, float *forward)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "axis[0] = copy of the forward vector, right/up from fn_080a4cc2(forward, right, up), then PlayEffect with no bolt [REA decompile sub_0812ad20; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ad82",
+   "name": "FxScheduler_PlayEffect_ForwardUp",
+   "signature": "void FxScheduler_PlayEffect_ForwardUp(struct FxScheduler *self, struct FxEffectTemplate *effect, float *origin, float *forward, float *up)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "axis[0] = forward, axis[2] = up, axis[1] = fn_080a423c(forward, up) (cross), then PlayEffect with no bolt [REA decompile sub_0812ad82; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812adf8",
+   "name": "FxPrimTemplate_PassesDistanceLimits",
+   "signature": "bool FxPrimTemplate_PassesDistanceLimits(struct fx_primitive_s *prim, const float *origin)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "squared distance from origin to the view origin must be >= (minDistance*scale)^2 and <= (maxDistance*scale)^2 for the non-zero limits [REA decompile sub_0812adf8; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812aeec",
+   "name": "FxScheduler_PlayEffect",
+   "signature": "void FxScheduler_PlayEffect(struct FxScheduler *self, struct FxEffectTemplate *effect, float *origin, float *axis, int *bolt)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "stores a helper seed, falls back to \"fx/error.efx\" (and reports) when the effect is NULL, then for every primitive template spawns count = (int)(range + 0.5) records: delay <= 0 spawns now via fn_0812b8a8, else queues a 0x50-byte FxScheduledEffect [REA decompile sub_0812aeec; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered] [rename fx-anim: symbols.json signature is already FxScheduler_PlayEffect(self,effect,...); name is a leftover fn_ placeholder; core callee of PlayEffect_* wrappers (section 10).]",
+   "status": "translated",
+   "notes": "",
+   "name_before_rename": "FxScheduler::PlayEffect"
+  },
+  {
+   "addr": "0x0812b2aa",
+   "name": "FxEffectTemplate_GetDuration",
+   "signature": "float FxEffectTemplate_GetDuration(void *unused, struct FxEffectTemplate *effect)",
+   "subsystem": "fx/scheduler",
+   "confidence": "inferred",
+   "evidence": "maximum over primitive templates of (field5c + delay.max); first parameter unused [REA decompile sub_0812b2aa; Ghidra 12.2 pseudocode, cross-checked against disassembly where x87/float semantics mattered] [rename fx-anim: section 10: computes max(life.hi+delay.hi), first arg unused; used as effect duration by 0x0813198c.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812b31a",
+   "name": "FxPrim_SampleStartRgb",
+   "signature": "void FxPrim_SampleStartRgb(void *unused, struct FxCurvePairTemplate *tmpl, float *out)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: fx-anim.md section 10: operates on a primitive template, not a curve pair; samples rgb curve channel 0 (+0x100) and optional rgb2 (+0x10c, flag 0x2000) at t=0 with a random blend.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812b524",
+   "name": "FX_DecalEvent_Stub",
+   "signature": "void FX_DecalEvent_Stub(void)",
+   "subsystem": "fx/misc",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Empty function; sole caller Fx_QueueEventA 0x08136762, dispatched by FX_DispatchPrimitive for primitive type 6 (\"decal\" in the FX_BuildTemplate name table, observed strings).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812b52a",
+   "name": "FxPrim_ResolveBoltRef",
+   "signature": "int FxPrim_ResolveBoltRef(struct FxCurvePairTemplate *tmpl, int *bolt, struct FxRef *outRef)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: fx-anim.md section 10: spawn-placement resolver used by FX_DrawPrimitive; returns 1 when flag 2 clear or bolt NULL/negative, else resolves a FxBinding frame via FxBinding_FindOrCreate.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188ac0",
+   "name": "g_fxSystem",
+   "type": "struct FxSystem *",
+   "confidence": "inferred",
+   "evidence": "pointer loaded by every Fx function; +4 time, +0xc frame time (int * 0.01), +0x14 view origin, +0x20 view forward, +0xf8 distance scale"
+  },
+  {
+   "addr": "0x08a53c98",
+   "name": "g_08a53c98",
+   "type": "struct FxFlagVar *",
+   "confidence": "inferred",
+   "evidence": "byte at +8 gates PlayEffect (must be 0)"
+  },
+  {
+   "addr": "0x08a53c80",
+   "name": "g_08a53c80",
+   "type": "struct FxFlagVar *",
+   "confidence": "inferred",
+   "evidence": "byte at +8 gates PlayEffect (must be non-zero)"
+  },
+  {
+   "addr": "0x08a53388",
+   "name": "g_fxPoolBinding",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "pool descriptor, element 0x44, perBlock 0x1e1 set by 0x08129f48"
+  },
+  {
+   "addr": "0x08a53390",
+   "name": "g_fxPoolEffect",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "pool element 0xc4, perBlock 0xa7"
+  },
+  {
+   "addr": "0x08a53398",
+   "name": "g_fxPoolLightFlash",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "pool element 0xfc, perBlock 0x81"
+  },
+  {
+   "addr": "0x08a533a0",
+   "name": "g_fxPoolParticle",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "pool element 0x24c, perBlock 0x37"
+  },
+  {
+   "addr": "0x08a533a8",
+   "name": "g_fxPoolLine",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "pool element 0x258, perBlock 0x36"
+  },
+  {
+   "addr": "0x08a533b0",
+   "name": "g_fxPoolOrientedParticle",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "pool element 0x258, perBlock 0x36"
+  },
+  {
+   "addr": "0x08a533b8",
+   "name": "g_fxPoolTail",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "pool element 0x278, perBlock 0x33"
+  },
+  {
+   "addr": "0x08a533c0",
+   "name": "g_fxPoolCylinder",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "pool element 0x278, perBlock 0x33"
+  },
+  {
+   "addr": "0x08a533c8",
+   "name": "g_fxPoolEmitter",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "pool element 0x29c, perBlock 0x31"
+  },
+  {
+   "addr": "0x08a533d0",
+   "name": "g_fxPoolCloud",
+   "type": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "pool element 0x27c, perBlock 0x33"
+  },
+  {
+   "addr": "0x0815f348",
+   "name": "vtbl_0815f348",
+   "type": "char[]",
+   "confidence": "inferred",
+   "evidence": "vtable stored by the 0x08128ba0/0x08128bbc constructors and 0x08128bd8 destructor"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "FxCurve",
+   "size": "0xc",
+   "evidence": "three dwords keys/cursor/scale; cursor advanced by 0x0812a848"
+  },
+  {
+   "name": "FxPoolBlock",
+   "size": "0x8000",
+   "evidence": "trailer at 0x7ff0: freeCount, freeList, next, prev; element size = pool free wrappers pass to 0x081242b2"
+  },
+  {
+   "name": "FxPool",
+   "size": "0x8",
+   "evidence": "perBlock = 0x7ff0/elemSize, head block"
+  },
+  {
+   "name": "Light",
+   "size": "0xfc",
+   "evidence": "pool element size 0xfc; curves at 0xcc/0xd8/0xe4/0xf0 (stride 12) serialized at 0x08128f26"
+  },
+  {
+   "name": "Emitter",
+   "size": "0x29c",
+   "evidence": "pool element size 0x29c; serializer 0x08128a7e covers 0x24c..0x298"
+  },
+  {
+   "name": "FxScheduledEffect",
+   "size": "0x50",
+   "evidence": "operator new(0x50) record in PlayEffect"
+  },
+  {
+   "name": "FxScheduler",
+   "size": "0xc",
+   "evidence": "seed, delayed-spawn head, count"
+  },
+  {
+   "name": "fx_primitive_s",
+   "size": "unknown",
+   "evidence": "partial; fields 0x48..0x64, 0x94, 0x2a0 observed"
+  },
+  {
+   "name": "FxEffectTemplate",
+   "size": "unknown",
+   "evidence": "primCount at +4, prim pointer array at +8"
+  },
+  {
+   "name": "FxSystem",
+   "size": "unknown",
+   "evidence": "partial view of the object at *0x08188ac0"
+  }
+ ],
+ "open_questions": [
+  "What are the real class names for the pool element types (0x44,0xc4,0xfc,0x24c,0x258x2,0x278x2,0x27c,0x29c)? Names here are size-based; no RTTI strings were seen in this chunk.",
+  "FxPlacement/axis layout filled by fn_08133756 (56-byte frame region) and the real size of the curve temporaries built by fn_08125028 (16 bytes assumed) are not confirmed.",
+  "0x0812b52a: the original has a compiler EH cleanup for the temporary handle; the reconstruction destroys it only on the normal path. Also FxStream_WriteInt writes the full 4-byte argument slot (byte argument callers may leave upper bytes undefined)."
+ ]
+}

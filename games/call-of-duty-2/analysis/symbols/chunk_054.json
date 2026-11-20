@@ -1,0 +1,1224 @@
+{
+ "chunk": 54,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x081240d8",
+   "name": "FxPool_Init",
+   "signature": "void FxPool_Init()",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "loop over 64 blocks of 0x8000 stamping the -1 'unused' marker at +0x7ff0 of the pool at 0x08853380; called once at startup",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812411a",
+   "name": "FxPool_AllocBlock",
+   "signature": "struct FxPoolBlock *FxPool_AllocBlock(struct FxPoolBlock *prev, int count, int elemSize)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "string '^1Out of effects memory!\\n' printed via Com_DPrintf when no block is free [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812422a",
+   "name": "FxPool_UnlinkBlock",
+   "signature": "void FxPool_UnlinkBlock(struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "doubly linked list unlink of the prev/next links at +0x7ff8/+0x7ffc, paired with FxPool_AllocBlock",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124292",
+   "name": "FxPool_FreeBlock",
+   "signature": "void FxPool_FreeBlock(struct FxPoolBlock *blk)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "unlinks the block then writes the -1 'unused' marker, the inverse of FxPool_AllocBlock",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081242b2",
+   "name": "FxPool_FreeElement",
+   "signature": "struct FxPoolBlock *FxPool_FreeElement(void **elem)",
+   "subsystem": "fx/pool",
+   "confidence": "inferred",
+   "evidence": "masks the element address to its 0x8000 block in the 0x08853380 pool and pushes it on that block's free list",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812430c",
+   "name": "Color_FloatsToBytes3",
+   "signature": "void Color_FloatsToBytes3(const float *rgb, byte *out)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "clamps (int)(f*255.0f) to 0..255 for 3 channels; truncating fistp (control word 0xc00)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124386",
+   "name": "FxBinding_FindOrCreate",
+   "signature": "struct FxRef *FxBinding_FindOrCreate(struct FxRef *out, const struct FxBindingKey *key)",
+   "subsystem": "fx/binding",
+   "confidence": "inferred",
+   "evidence": "walks the g_08a53384 list for a matching key pair, else allocates a 0x44 record; C++ EH cleanup of the allocation not modelled",
+   "status": "partial",
+   "notes": "C++ exception-unwind cleanup handlers (try ranges in the pseudocode) are not represented"
+  },
+  {
+   "addr": "0x08124442",
+   "name": "FxBinding_Release",
+   "signature": "void FxBinding_Release(struct FxBinding *b)",
+   "subsystem": "fx/binding",
+   "confidence": "inferred",
+   "evidence": "decrements refCount at +0, unlinks from the g_08a53384 list and frees the record on zero",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124498",
+   "name": "FxBinding_ResolveFrame",
+   "signature": "const float *FxBinding_ResolveFrame(struct FxBinding *b)",
+   "subsystem": "fx/binding",
+   "confidence": "unknown",
+   "evidence": "always returns 0; callers treat the result as a frame pointer (Effect::ResolveBinding, Particle::GetStartVelocity)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081244a2",
+   "name": "FxBinding_Construct",
+   "signature": "void FxBinding_Construct(struct FxBinding *b, const struct FxBindingKey *key)",
+   "subsystem": "fx/binding",
+   "confidence": "inferred",
+   "evidence": "initialises refCount/field04, stores the key pair at +0x3c/+0x40 and pushes onto g_08a53384 (C1 variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081244e0",
+   "name": "FxBinding_ConstructBase",
+   "signature": "void FxBinding_ConstructBase(struct FxBinding *b, const struct FxBindingKey *key)",
+   "subsystem": "fx/binding",
+   "confidence": "inferred",
+   "evidence": "identical body to FxBinding_Construct (C2 base-object variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812451e",
+   "name": "FxRef_Archive",
+   "signature": "void FxRef_Archive(struct FxRef *ref, struct FxArchive *ar)",
+   "subsystem": "fx/binding",
+   "confidence": "inferred",
+   "evidence": "writes -1 or the key pair when saving; reads the key pair and re-acquires via FxBinding_FindOrCreate when loading; EH cleanup of temporary not modelled",
+   "status": "partial",
+   "notes": "C++ exception-unwind cleanup handlers (try ranges in the pseudocode) are not represented"
+  },
+  {
+   "addr": "0x08124614",
+   "name": "Fx_AllocCallback",
+   "signature": "void *Fx_AllocCallback(int size)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "thin wrapper over Hunk_Alloc (0x080abf78); only used as the two allocator callbacks of Fx_LoadXModel",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124628",
+   "name": "Fx_LoadXModel",
+   "signature": "struct XModel *Fx_LoadXModel(const char *name)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "calls XModel_FindOrLoad(name, alloc, allocColl) with Fx_AllocCallback for both allocators",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812464c",
+   "name": "Effect_Construct",
+   "signature": "void Effect_Construct(struct Effect *e)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "sets vtable 0x0815f548 (typeinfo '6Effect') and initialises the binding ref at +0xc0 (C1 variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812466e",
+   "name": "Effect_ConstructBase",
+   "signature": "void Effect_ConstructBase(struct Effect *e)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "identical body to Effect_Construct (C2 variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124690",
+   "name": "Effect_DestructBase",
+   "signature": "void Effect_DestructBase(struct Effect *e)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "resets vtable to Effect and releases the binding ref at +0xc0 (D2 variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081246c8",
+   "name": "Effect_Destruct",
+   "signature": "void Effect_Destruct(struct Effect *e)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "identical body to Effect_DestructBase; vtable slot 0 of Effect (D1 complete destructor)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124700",
+   "name": "Effect_DeletingDestruct",
+   "signature": "void Effect_DeletingDestruct(struct Effect *e)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 1 of Effect: destroys then returns the object to the effects pool via fn_08129cd2 (D0 deleting variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124738",
+   "name": "Effect::OnExpire",
+   "signature": "void Effect::OnExpire()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "slot 2 OnExpire per fx-anim.md 4.1; empty body, in Effect/Light/Flash vtables (.rodata)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812473e",
+   "name": "Effect::IsCulled",
+   "signature": "bool Effect::IsCulled()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "slot 4 IsCulled per fx-anim.md 4.1; returns 0 (never culled)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124748",
+   "name": "Effect::Draw",
+   "signature": "void Effect::Draw()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "slot 5 Draw per fx-anim.md 4.1; empty body",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812474e",
+   "name": "Effect::ResolveBinding",
+   "signature": "bool Effect::ResolveBinding(const float **outFrame)",
+   "subsystem": "fx/binding",
+   "confidence": "inferred",
+   "evidence": "if the binding ref is set, asks FxBinding_ResolveFrame for a frame; fails when it returns 0; used by Cloud::Update",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081247a4",
+   "name": "Effect::GetTraceMask",
+   "signature": "int Effect::GetTraceMask()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "returns FxSystem+0x80, clamped to <=5 when flag 0x2000000 is set; used as the trace mask by Tail::TraceSegment",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081247f0",
+   "name": "Effect::UpdateFraction",
+   "signature": "bool Effect::UpdateFraction()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "frac = (time-startTime)/(endTime-startTime) clamped to [0,1]; false while time < startTime",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124894",
+   "name": "Effect::SetTimes",
+   "signature": "void Effect::SetTimes(int start, int end)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "stores startTime (+0xb8) and endTime (+0xbc); duration accessor fn_08129cb8 returns their difference",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081248b2",
+   "name": "Effect::GetAge",
+   "signature": "int Effect::GetAge()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "FxSystem time minus startTime",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081248d4",
+   "name": "Effect::SetBinding",
+   "signature": "void Effect::SetBinding(struct FxRef *ref)",
+   "subsystem": "fx/binding",
+   "confidence": "inferred",
+   "evidence": "assigns the binding smart pointer at +0xc0 (fn_08129bf6 = FxRef assignment)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081248f4",
+   "name": "Effect::GetTypeId",
+   "signature": "int Effect::GetTypeId()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 9 returns a small class id: Effect 0, Particle 1, Line 2, Tail 3, Cylinder 4, OrientedParticle 7, Cloud 12",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081248fe",
+   "name": "Effect::Archive",
+   "signature": "void Effect::Archive(struct FxArchive *ar)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "save/load of the base fields through the FxArchive helpers; on load recomputes cachedHandle from worldOrigin",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124a8a",
+   "name": "Effect::CopyFromTemplate",
+   "signature": "void Effect::CopyFromTemplate(const struct FxParticleTemplate *tmpl)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "slot 11 CopyFromTemplate (fx-anim.md 4.1); empty base; Particle override copies key tables",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124a90",
+   "name": "Effect::SubmitToRenderer",
+   "signature": "void Effect::SubmitToRenderer(int mode)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "callers pass mode 1/4/6/7/8/9 from Draw overrides; fills renderer descriptor (fx-anim.names2.json)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124be6",
+   "name": "Particle_Construct",
+   "signature": "void Particle_Construct(struct Particle *p)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Effect ctor then vtable 0x0815f508 (typeinfo '8Particle') and zeroes the offset vec3 at +0xc4 (C1)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124c12",
+   "name": "Particle_ConstructBase",
+   "signature": "void Particle_ConstructBase(struct Particle *p)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "identical body to Particle_Construct (C2 variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124c3e",
+   "name": "Particle_DestructBase",
+   "signature": "void Particle_DestructBase(struct Particle *p)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "sets Particle vtable then runs the Effect base destructor (D2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08124fd4",
+   "name": "Particle::SetBasis",
+   "signature": "void Particle::SetBasis(const float *axes3)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "copies three vec3 from the argument (or zeroes them if the address is null) into the basis at +0xd0/+0xdc/+0xe8",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08125028",
+   "name": "FxCurve_InitFromTemplate",
+   "signature": "void FxCurve_InitFromTemplate(const FxCurveSrc *src, FxCurve *dst)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "copies the key table pointer and rolls the per-instance scale from the template's [min,max] range",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812505e",
+   "name": "Particle::InitCurves",
+   "signature": "void Particle::InitCurves(const struct FxParticleTemplate *tmpl)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 8 of Particle: initialises the 22 curve slots at +0x144.. from template slots 0-7 and 10-23 (slots 8,9 are class specific)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081252ce",
+   "name": "Particle::SetVelocityRand",
+   "signature": "void Particle::SetVelocityRand(float x, float y, float z)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "stores a vec3 at +0x12c, the random weights used by the velocity range curves in EvalVelocityTerm",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081252fc",
+   "name": "Particle::SetAccelRand",
+   "signature": "void Particle::SetAccelRand(float x, float y, float z)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "stores a vec3 at +0x138, the random weights used by the acceleration range curves in EvalAccelTerm",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812540c",
+   "name": "Particle::AppendBlocker",
+   "signature": "void Particle::AppendBlocker()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "slot 7 (+0x1c) AddBlocker per fx-anim.md 4.1/10: appends {origin,size^2,1-alpha/255} to blocker list read by FX_GetAttenuation",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812548a",
+   "name": "Particle::ClampedRatio",
+   "signature": "float Particle::ClampedRatio(float num, float den)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "num/den capped at 1.0 (no lower clamp); this is unused",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081254bc",
+   "name": "Particle_ShouldStop",
+   "signature": "bool Particle_ShouldStop(const float *vel, const float *normal, float fraction)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "true when the hit normal points up (z>0) and the velocity is slow (|v|^2 < 16); otherwise true only if the trace fraction is exactly 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08125522",
+   "name": "Particle::StopMoving",
+   "signature": "void Particle::StopMoving()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "clears collide/impact-effect bits (0x20,0x800) and sets the stopped bit 0x1000000",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08125556",
+   "name": "Particle::HandleImpact",
+   "signature": "void Particle::HandleImpact(const float *frame, float t, const float *vel, float traceFraction, const float *normal)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "reflects the accumulated offset about the hit normal scaled by +0x100 (bounce), or stops the particle via Particle_ShouldStop",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08125680",
+   "name": "Trace_DidHit",
+   "signature": "bool Trace_DidHit(const struct FxTrace *tr)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "true when neither solid flag (+0x22,+0x23) is set and fraction != 1.0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081256d4",
+   "name": "Particle::UpdateMotion",
+   "signature": "bool Particle::UpdateMotion(const float *frame)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "integrates origin with EvalVelocityTotal, optionally traces the step (flag 0x20), spawns impact effect (0x800), kills (0x400) or bounces via HandleImpact",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08125a82",
+   "name": "Particle::EvalVelocityTerm",
+   "signature": "void Particle::EvalVelocityTerm(float t, float *out, const float *frame)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "evaluates the three velocity curves (+0x1bc..; range variant with +0x1e0.. and rand +0x12c when flag 0x80000), rotates by basis unless world-space flag 0x200000",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08125c16",
+   "name": "Particle::EvalAccelTerm",
+   "signature": "void Particle::EvalAccelTerm(float t, float *out, const float *frame)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "same shape as EvalVelocityTerm over the acceleration curves (+0x204.., alt +0x228.., rand +0x138, flags 0x100000/0x400000)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08125daa",
+   "name": "Particle::EvalGravityTerm",
+   "signature": "void Particle::EvalGravityTerm(float t, float *out, const float *frame)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "gravity vector for t*duration ms from GetGravityVec, rotated into the frame when one is bound",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08125e2c",
+   "name": "Particle::EvalVelocityIntegral",
+   "signature": "void Particle::EvalVelocityIntegral(float t, float *out)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "integral variant (fn_08129b02/fn_08129b24) of the velocity curves scaled by duration/1000",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08125fb6",
+   "name": "Particle::EvalAccelIntegral",
+   "signature": "void Particle::EvalAccelIntegral(float t, float *out)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "integral variant of the acceleration curves; the range selector tests 0x80000 (the velocity-range bit), not 0x100000, as in the binary",
+   "status": "translated",
+   "notes": "range selector tests flag 0x80000 as in the binary"
+  },
+  {
+   "addr": "0x08126140",
+   "name": "Particle::GetGravityVec",
+   "signature": "void Particle::GetGravityVec(int ms, float *out)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "(0, 0, ms * gravity(+0xf4) * 0.001)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126178",
+   "name": "Particle::EvalDisplacement",
+   "signature": "void Particle::EvalDisplacement(int ms, float *out)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "sum of velocity integral, acceleration integral and gravity*ms/1000 at ms into the lifetime (t capped at 1)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126252",
+   "name": "Particle::GetStartVelocity",
+   "signature": "void Particle::GetStartVelocity(float *out)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "EvalVelocityTotal at t=0 in the bound frame; zero vector if the binding cannot be resolved",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081262c6",
+   "name": "Particle::EvalVelocityTotal",
+   "signature": "void Particle::EvalVelocityTotal(float t, float *out, const float *frame)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "velocity + acceleration + gravity terms plus the accumulated offset at +0xc4; the per-frame motion rate used by UpdateMotion and Emitter",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812637e",
+   "name": "Particle::UpdateSize",
+   "signature": "void Particle::UpdateSize()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "size (+0x88) from the size curve (+0x174) or its range variant (flag 0x8000, rand +0x120) at frac",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126402",
+   "name": "Particle::UpdateSize2",
+   "signature": "void Particle::UpdateSize2()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "size2 (+0x8c): copy of size when +0x104 is 0, else the +0x18c curve (range flag 0x10000, rand +0x124)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081264a2",
+   "name": "Particle::UpdateColor",
+   "signature": "void Particle::UpdateColor()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "rgb vec3 curve at +0x144 (range flag 0x2000, rand +0x118) converted to bytes at +0x90",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126530",
+   "name": "Particle::UpdateAlpha",
+   "signature": "void Particle::UpdateAlpha()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "alpha curve at +0x15c (range flag 0x4000, rand +0x11c) clamped to 0..1; scales rgb bytes (alpha=255) or writes alpha only when flag 0x80",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812669e",
+   "name": "Particle::UpdateRotation",
+   "signature": "void Particle::UpdateRotation()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "angle (+0x44) += frameTime * 0.01 * rate, rate from the curve at +0x1a4 (range flag 0x40000, rand +0x128)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812672e",
+   "name": "Particle::UpdateFrame",
+   "signature": "int Particle::UpdateFrame()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "sprite frame index (+0x94) from age * frameRate + frameOffset with wrap (mode 0) or clamp/repeat-count (mode 1) over the frame count of the template; return value follows the decompiled register usage (returns this when no frame computed)",
+   "status": "translated",
+   "notes": "return value for loopMode other than 0/1 or frame count 1 is the this pointer (decompiler register artefact); original probably void"
+  },
+  {
+   "addr": "0x081268a0",
+   "name": "Particle::GetTypeId",
+   "signature": "int Particle::GetTypeId()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 9 of Particle returns 1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081268aa",
+   "name": "Particle::Archive",
+   "signature": "void Particle::Archive(struct FxArchive *ar)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Effect::Archive followed by the particle fields in order: vec3 +0xc4/+0xd0/+0xdc/+0xe8, +0x100, +0x104, 22 curves, +0x108.. +0x140",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126c46",
+   "name": "Particle::CopyFromTemplate",
+   "signature": "void Particle::CopyFromTemplate(const struct FxParticleTemplate *tmpl)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 11: copies only the key table pointers of template curve slots 0-7 and 10-23 into the 22 curves at +0x144",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126dec",
+   "name": "OrientedParticle_Construct",
+   "signature": "void OrientedParticle_Construct(struct OrientedParticle *p)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Particle ctor then vtable 0x0815f4c8 (typeinfo '16OrientedParticle')",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126e08",
+   "name": "OrientedParticle_ConstructBase",
+   "signature": "void OrientedParticle_ConstructBase(struct OrientedParticle *p)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "identical to OrientedParticle_Construct (C2 variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08126e24",
+   "name": "OrientedParticle_DestructBase",
+   "signature": "void OrientedParticle_DestructBase(struct OrientedParticle *p)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "sets the OrientedParticle vtable then runs Particle_DestructBase (D2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812704e",
+   "name": "OrientedParticle::GetTypeId",
+   "signature": "int OrientedParticle::GetTypeId()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 9 of OrientedParticle returns 7",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127058",
+   "name": "OrientedParticle::Archive",
+   "signature": "void OrientedParticle::Archive(struct FxArchive *ar)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Particle::Archive plus vec3 at +0x24c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081270d8",
+   "name": "Cloud_Construct",
+   "signature": "void Cloud_Construct(struct Cloud *c)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Particle ctor, vtable 0x0815f488 (typeinfo '5Cloud'), then Cloud::InitRandomAxis; EH cleanup of the base on throw not modelled",
+   "status": "partial",
+   "notes": "C++ exception-unwind cleanup handlers (try ranges in the pseudocode) are not represented"
+  },
+  {
+   "addr": "0x081271c2",
+   "name": "Cloud::OnExpire",
+   "signature": "void Cloud::OnExpire()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "slot 2 OnExpire; empty override (vtable 0x0815f488 .rodata)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812722e",
+   "name": "Cloud::InitRandomAxis",
+   "signature": "void Cloud::InitRandomAxis()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "up to 4 tries of a random vec3 in [-1,1]^3 with 0.01<=|v|^2<=1, then normalised; falls back to (1,0,0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127374",
+   "name": "Cloud::UpdateSpeed",
+   "signature": "void Cloud::UpdateSpeed()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "when useSpeedCurve is set, speed (+0x258) from the +0x264 curve (range flag 0x20000, rand +0x260)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127402",
+   "name": "Cloud::Update",
+   "signature": "bool Cloud::Update()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 3 of Cloud: per-frame update (fraction, binding, motion, size/size2/speed/colour/alpha/rotation, orientation from axis+angle, world position)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081275ba",
+   "name": "Cloud::GetTypeId",
+   "signature": "int Cloud::GetTypeId()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 9 of Cloud returns 12",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081275c4",
+   "name": "Cloud::Archive",
+   "signature": "void Cloud::Archive(struct FxArchive *ar)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Particle::Archive plus vec3 +0x24c, curves +0x264/+0x270, float +0x260, byte +0x25c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127652",
+   "name": "Cloud::CopyFromTemplate",
+   "signature": "void Cloud::CopyFromTemplate(const struct FxParticleTemplate *tmpl)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Particle::CopyFromTemplate plus key pointers of template curve slots 8 and 9",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127690",
+   "name": "Line_Construct",
+   "signature": "void Line_Construct(struct Line *l)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Particle ctor then vtable 0x0815f448 (typeinfo '4Line')",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081276ac",
+   "name": "Line_ConstructBase",
+   "signature": "void Line_ConstructBase(struct Line *l)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "identical to Line_Construct (C2 variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081276c8",
+   "name": "Line_DestructBase",
+   "signature": "void Line_DestructBase(struct Line *l)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "sets the Line vtable then Particle_DestructBase (D2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127764",
+   "name": "Line::OnExpire",
+   "signature": "void Line::OnExpire()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "slot 2 OnExpire; empty override (vtable 0x0815f448 .rodata)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081278d4",
+   "name": "Line::GetTypeId",
+   "signature": "int Line::GetTypeId()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 9 of Line returns 2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081278de",
+   "name": "Line::Archive",
+   "signature": "void Line::Archive(struct FxArchive *ar)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Particle::Archive plus vec3 at +0x24c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127910",
+   "name": "Tail_Construct",
+   "signature": "void Tail_Construct(struct Tail *t)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Particle ctor then vtable 0x0815f408 (typeinfo '4Tail')",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812792c",
+   "name": "Tail_ConstructBase",
+   "signature": "void Tail_ConstructBase(struct Tail *t)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "identical to Tail_Construct (C2 variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127948",
+   "name": "Tail_DestructBase",
+   "signature": "void Tail_DestructBase(struct Tail *t)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "sets the Tail vtable then Particle_DestructBase (D2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081279e4",
+   "name": "Tail::UpdateLengthAndPoint",
+   "signature": "void Tail::UpdateLengthAndPoint()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "calls UpdateLength then UpdateTailPoint with no frame",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127a0a",
+   "name": "Tail::TraceSegment",
+   "signature": "bool Tail::TraceSegment()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 4 of Tail: world trace between worldOrigin and prevWorldOrigin with size as radius and GetTraceMask()",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127bea",
+   "name": "Tail::UpdateLength",
+   "signature": "void Tail::UpdateLength()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "length (+0x258) from the +0x260 curve (range flag 0x20000, rand +0x25c) at frac",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127c6a",
+   "name": "Tail::UpdateTailPoint",
+   "signature": "void Tail::UpdateTailPoint(const float *frame)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "places prevWorldOrigin at origin + length * unit(endPoint - origin), through the frame when bound",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127d4c",
+   "name": "Tail::GetTypeId",
+   "signature": "int Tail::GetTypeId()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 9 of Tail returns 3",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127d56",
+   "name": "Tail::Archive",
+   "signature": "void Tail::Archive(struct FxArchive *ar)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Particle::Archive plus vec3 +0x24c, curves +0x260/+0x26c, float +0x25c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127dcc",
+   "name": "Tail::CopyFromTemplate",
+   "signature": "void Tail::CopyFromTemplate(const struct FxParticleTemplate *tmpl)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Particle::CopyFromTemplate plus key pointers of template curve slots 8 and 9",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127e0a",
+   "name": "Cylinder_Construct",
+   "signature": "void Cylinder_Construct(struct Cylinder *c)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Tail ctor then vtable 0x0815f3c8 (typeinfo '8Cylinder')",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127e26",
+   "name": "Cylinder_ConstructBase",
+   "signature": "void Cylinder_ConstructBase(struct Cylinder *c)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "identical to Cylinder_Construct (C2 variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08127e42",
+   "name": "Cylinder_DestructBase",
+   "signature": "void Cylinder_DestructBase(struct Cylinder *c)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "sets the Cylinder vtable then Tail_DestructBase (D2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812809a",
+   "name": "Cylinder::GetTypeId",
+   "signature": "int Cylinder::GetTypeId()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "vtable slot 9 of Cylinder returns 4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081280a4",
+   "name": "Cylinder::Archive",
+   "signature": "void Cylinder::Archive(struct FxArchive *ar)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "forwards to Tail::Archive",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081280be",
+   "name": "Emitter_Construct",
+   "signature": "void Emitter_Construct(struct Emitter *e)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "Particle ctor then vtable 0x0815f388 (typeinfo '7Emitter')",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081280da",
+   "name": "Emitter_ConstructBase",
+   "signature": "void Emitter_ConstructBase(struct Emitter *e)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "identical to Emitter_Construct (C2 variant)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081280f6",
+   "name": "Emitter_DestructBase",
+   "signature": "void Emitter_DestructBase(struct Emitter *e)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "sets the Emitter vtable then Particle_DestructBase (D2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128192",
+   "name": "Emitter::IsCulled",
+   "signature": "bool Emitter::IsCulled()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "slot 4 IsCulled; returns 0 (vtable 0x0815f388)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812819c",
+   "name": "Emitter::Draw",
+   "signature": "void Emitter::Draw()",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "slot 5 Draw; submits mode 1 when flag 0x10 and prevSize != 0 (vtable 0x0815f388)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08128456",
+   "name": "Emitter::EmitElements",
+   "signature": "void Emitter::EmitElements(const float *frameVel, const float *frame)",
+   "subsystem": "fx/effects",
+   "confidence": "inferred",
+   "evidence": "steps a point along EvalVelocityTotal in 12 ms increments until it moves minStep, then spawns effect emitTemplateId at it via fn_0812aeec; re-rolls minStep with fn_08129e24",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08853380",
+   "name": "g_fxPoolBlocks",
+   "type": "struct FxPoolBlock [64]",
+   "confidence": "inferred",
+   "evidence": "64 x 0x8000 block pool, stride and 0x7ff0 trailer used by FxPool_AllocBlock/FreeElement"
+  },
+  {
+   "addr": "0x08a53380",
+   "name": "g_fxPoolHighWater",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "pool high-water mark in bytes, written by FxPool_AllocBlock"
+  },
+  {
+   "addr": "0x08a53384",
+   "name": "g_fxBindingList",
+   "type": "struct FxBinding *",
+   "confidence": "inferred",
+   "evidence": "head of the intrusive FxBinding list (next at +0x38)"
+  },
+  {
+   "addr": "0x08a53cb0",
+   "name": "g_fxBlockerCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "entry count of the draw list written by Particle::AppendBlocker"
+  },
+  {
+   "addr": "0x08a53d00",
+   "name": "g_fxBlockers",
+   "type": "struct FxDrawEntry [N]",
+   "confidence": "inferred",
+   "evidence": "20 byte entries appended by Particle::AppendBlocker"
+  },
+  {
+   "addr": "0x08a53804",
+   "name": "g_fxScheduler",
+   "type": "struct FxScheduler *",
+   "confidence": "inferred",
+   "evidence": "first argument of fn_0812ad20/fn_0812aeec effect spawn calls; FxScheduler::PlayEffect string nearby"
+  },
+  {
+   "addr": "0x08188ac0",
+   "name": "g_fxSystem",
+   "type": "struct FxSystem *",
+   "confidence": "inferred",
+   "evidence": "pointer to object with time (+4), frameTime (+0xc), traceMask (+0x80)"
+  },
+  {
+   "addr": "0x0814cfc8",
+   "name": "vec3_origin",
+   "type": "float [3]",
+   "confidence": "inferred",
+   "evidence": "used as zero mins/maxs for the point trace in Particle::UpdateMotion"
+  },
+  {
+   "addr": "0x0815f548",
+   "name": "vtbl_Effect",
+   "type": "void *[]",
+   "confidence": "inferred",
+   "evidence": "vtable whose preceding typeinfo word points at RTTI name \"6Effect\""
+  },
+  {
+   "addr": "0x0815f508",
+   "name": "vtbl_Particle",
+   "type": "void *[]",
+   "confidence": "inferred",
+   "evidence": "vtable whose preceding typeinfo word points at RTTI name \"8Particle\""
+  },
+  {
+   "addr": "0x0815f4c8",
+   "name": "vtbl_OrientedParticle",
+   "type": "void *[]",
+   "confidence": "inferred",
+   "evidence": "vtable whose preceding typeinfo word points at RTTI name \"16OrientedParticle\""
+  },
+  {
+   "addr": "0x0815f488",
+   "name": "vtbl_Cloud",
+   "type": "void *[]",
+   "confidence": "inferred",
+   "evidence": "vtable whose preceding typeinfo word points at RTTI name \"5Cloud\""
+  },
+  {
+   "addr": "0x0815f448",
+   "name": "vtbl_Line",
+   "type": "void *[]",
+   "confidence": "inferred",
+   "evidence": "vtable whose preceding typeinfo word points at RTTI name \"4Line\""
+  },
+  {
+   "addr": "0x0815f408",
+   "name": "vtbl_Tail",
+   "type": "void *[]",
+   "confidence": "inferred",
+   "evidence": "vtable whose preceding typeinfo word points at RTTI name \"4Tail\""
+  },
+  {
+   "addr": "0x0815f3c8",
+   "name": "vtbl_Cylinder",
+   "type": "void *[]",
+   "confidence": "inferred",
+   "evidence": "vtable whose preceding typeinfo word points at RTTI name \"8Cylinder\""
+  },
+  {
+   "addr": "0x0815f388",
+   "name": "vtbl_Emitter",
+   "type": "void *[]",
+   "confidence": "inferred",
+   "evidence": "vtable whose preceding typeinfo word points at RTTI name \"7Emitter\""
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "FxPoolBlock",
+   "size": "0x8000",
+   "evidence": "0x8000 stride, trailer at +0x7ff0"
+  },
+  {
+   "name": "FxBinding",
+   "size": "0x44",
+   "evidence": "allocated with size 0x44 in FxBinding_FindOrCreate"
+  },
+  {
+   "name": "FxTrace",
+   "size": "0x38",
+   "evidence": "fraction at 0, normal at 4, flags at 0x22/0x23; stack layout in Particle::UpdateMotion"
+  },
+  {
+   "name": "FxRenderDesc",
+   "size": "0x74",
+   "evidence": "memset size in Effect::SubmitToRenderer"
+  },
+  {
+   "name": "FxCurve",
+   "size": "0xc",
+   "evidence": "22 contiguous 12 byte curve slots at Particle+0x144"
+  },
+  {
+   "name": "Effect",
+   "size": "0xc4",
+   "evidence": "Particle fields start at 0xc4"
+  },
+  {
+   "name": "Particle",
+   "size": "0x24c",
+   "evidence": "22 curves end at 0x24c, derived classes add fields from 0x24c"
+  },
+  {
+   "name": "Cloud",
+   "size": "0x27c",
+   "evidence": "last member curve at 0x270 (12 bytes); constructor/size not seen"
+  },
+  {
+   "name": "Tail",
+   "size": "0x278",
+   "evidence": "last member curve at 0x26c (12 bytes); constructor/size not seen"
+  }
+ ],
+ "open_questions": [
+  "Particle/Effect virtual functions at 0x08124c72..0x08124e98 and 0x0812532a, 0x08127ad0, 0x081281e0 etc. (vtable slots 0-5) have no decompiled body in the manifest (Ghidra did not create functions there); Particle::Update, Particle D1/D0 destructors and Emitter::Update are therefore untranslated and not in any chunk.",
+  "FxBinding_ResolveFrame (0x08124498) always returns 0, so any bound effect fails ResolveBinding; unclear whether this is a dedicated-server stub. Binding key semantic (entity number + tag?) is unknown.",
+  "Class sizes of Cloud, Line, Tail, Cylinder, Emitter and OrientedParticle are unconfirmed (constructors are in the effects pool allocator callers, not seen); the template struct layout beyond curves[24] at +0x100 is unknown.",
+  "Effect flag bit meanings (0x20 collide, 0x400 kill on impact, 0x800 impact effect etc.) are inferred from usage only; 0x30/0x34/0x38/0xb0/0xb4 fields of Effect are unnamed.",
+  "Names for merged symbols Hunk_Alloc and XModel_FindOrLoad were used as supplied; the call at 0x08124628 passes Fx_AllocCallback twice, consistent with an allocator pair but the first argument being a name string is unverified."
+ ]
+}

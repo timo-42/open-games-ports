@@ -1,0 +1,1218 @@
+{
+ "chunk": 13,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x08076d26",
+   "name": "MT_Init",
+   "signature": "void MT_Init(void)",
+   "subsystem": "script/alloc-mt",
+   "confidence": "inferred",
+   "evidence": "MT_ family (MT_GetSize, MT_AllocIndex strings in neighbours); body resets 17 order free heads, seeds 16 orders via fn_080768aa, resets counters.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076db6",
+   "name": "MT_AllocFail",
+   "signature": "void MT_AllocFail(const char *where, int bytes)",
+   "subsystem": "script/alloc-mt",
+   "confidence": "inferred",
+   "evidence": "format string \"%s: failed memory allocation of %d bytes for script usage\" at 0x08076db6 callsite; \"failed memory allocation for script usage\" string. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076dea",
+   "name": "MT_GetSize",
+   "signature": "uint32 MT_GetSize(int bytes)",
+   "subsystem": "script/alloc-mt",
+   "confidence": "observed",
+   "evidence": "string \"MT_GetSize: max allocation exceeded\" passed by this function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076e6a",
+   "name": "MT_AllocIndex",
+   "signature": "uint32 MT_AllocIndex(int bytes)",
+   "subsystem": "script/alloc-mt",
+   "confidence": "observed",
+   "evidence": "string \"MT_AllocIndex\" passed to MT_AllocFail on exhaustion. Callers pass a second stack argument that this function never reads.",
+   "status": "translated",
+   "notes": "Second stack argument pushed by callers is not read by this function; kept out of the signature."
+  },
+  {
+   "addr": "0x08076f22",
+   "name": "MT_FreeIndex",
+   "signature": "void MT_FreeIndex(uint32 handle, int bytes)",
+   "subsystem": "script/alloc-mt",
+   "confidence": "inferred",
+   "evidence": "MT_ family free counterpart of MT_AllocIndex (same order/size accounting); buddy coalescing via fn_08076a0a.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076fa0",
+   "name": "MT_AddFreeHandle",
+   "signature": "void MT_AddFreeHandle(uint32 handle)",
+   "subsystem": "script/alloc-mt",
+   "confidence": "inferred",
+   "evidence": "inserts a handle into the free lists at the largest free aligned order (buddy merge), used by MT_RebuildFreeLists.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807706a",
+   "name": "StrPool_AllocBlock",
+   "signature": "uint8 *StrPool_AllocBlock(int bytes, int caller_arg)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "returns a pointer into the 8-byte string pool record array for a fresh MT block.",
+   "status": "translated",
+   "notes": "Second parameter is forwarded by the caller and unused; the handle is a 16-bit index, a failed allocation returns str_pool+0."
+  },
+  {
+   "addr": "0x08077090",
+   "name": "StrPool_FreeBlock",
+   "signature": "void StrPool_FreeBlock(void *blockPtr, int bytes)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "inverse of StrPool_AllocBlock; converts a pool record pointer back to its MT handle.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080770b2",
+   "name": "MT_ResetStats",
+   "signature": "uint8 *MT_ResetStats(void)",
+   "subsystem": "script/alloc-mt",
+   "confidence": "unknown",
+   "evidence": "no string; resets the MT counters and calls fn_080ab6ce(0x2000) (purpose of the 8 KiB request not established).",
+   "status": "translated",
+   "notes": "Calls fn_080ab6ce(0x2000); purpose of the request not established."
+  },
+  {
+   "addr": "0x080770da",
+   "name": "MT_MarkAllocatedBlock",
+   "signature": "void MT_MarkAllocatedBlock(uint8 *bitmap, uint32 handle, int bytes)",
+   "subsystem": "script/alloc-mt",
+   "confidence": "inferred",
+   "evidence": "marks the bit range of an allocated MT block in a 0x10000-bit handle bitmap and updates the counters.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08077154",
+   "name": "MT_RebuildFreeLists",
+   "signature": "void MT_RebuildFreeLists(uint8 *bitmap)",
+   "subsystem": "script/alloc-mt",
+   "confidence": "inferred",
+   "evidence": "rebuilds the free lists from a handle bitmap (clear bits are free), then releases the bitmap.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080771ac",
+   "name": "MT_SizeOrderLE",
+   "signature": "bool MT_SizeOrderLE(int bytes, int other)",
+   "subsystem": "script/alloc-mt",
+   "confidence": "inferred",
+   "evidence": "compares the MT size classes of two byte sizes (returns order(other) <= order(bytes)).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080771dc",
+   "name": "ScrDbg_Init",
+   "signature": "void ScrDbg_Init(void)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "script debug-table init (file, line and frame tables sized 0x10000/0x10000/0x10), gated on scr_debug_enabled.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080772c4",
+   "name": "ScrDbg_Shutdown",
+   "signature": "void ScrDbg_Shutdown(void)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "frees the script debug tables allocated by ScrDbg_Init and the frame/saved-source blocks.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080773d2",
+   "name": "ScrDbg_PushLine",
+   "signature": "void ScrDbg_PushLine(int32 line_value, uint32 flags)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "pushes a source line (value, flags) onto the debug file/line tables, growing them when full; -1/-2 values set pending slots.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080775ee",
+   "name": "ScrDbg_PopLine",
+   "signature": "void ScrDbg_PopLine(void)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "pops the most recent source line pushed by ScrDbg_PushLine.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08077656",
+   "name": "ScrDbg_SetPendingEntry",
+   "signature": "void ScrDbg_SetPendingEntry(int32 value)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "fills the pending -2 line slot with a value and marks it with flag 4.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080776a2",
+   "name": "ScrDbg_FindBestLine",
+   "signature": "uint32 ScrDbg_FindBestLine(int32 frame_index, uint32 value_lo, uint32 value_hi, uint32 required_flags, uint32 *out_value)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "finds the best (lowest-key) line of a frame whose value lies in [lo,hi) and whose flags include the mask.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08077874",
+   "name": "ScrDbg_FindMaxLineValue",
+   "signature": "uint32 ScrDbg_FindMaxLineValue(int32 frame_index, uint32 max_value, uint32 required_flags)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "largest line value not above max_value inside a frame's key range, requiring the flag mask.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080779f6",
+   "name": "ScrDbg_FindFileEntryFloor",
+   "signature": "struct scr_file_entry_s *ScrDbg_FindFileEntryFloor(uint32 key)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "binary search of the file table for the last entry whose key is not above the key (floor lookup); NULL when none.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08077ab4",
+   "name": "ScrDbg_FindFileEntryExact",
+   "signature": "struct scr_file_entry_s *ScrDbg_FindFileEntryExact(uint32 key)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "binary search of the file table for an exact key match; returns the entry or NULL.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08077b6a",
+   "name": "ScrDbg_LineValue",
+   "signature": "uint32 ScrDbg_LineValue(uint32 key, int32 line_offset)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "line value of the entry at (floor file entry of key).first_line + line_offset.",
+   "status": "translated",
+   "notes": "Dereferences the floor file entry without a NULL check (crash path preserved from the binary)."
+  },
+  {
+   "addr": "0x08077b94",
+   "name": "ScrDbg_CountLineBreaks",
+   "signature": "int ScrDbg_CountLineBreaks(const char *text, int nbytes, const char **line_start, int *line_len)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "scans nbytes of a NUL-separated text block, returning the NUL count and the start/length of the last line.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08077be6",
+   "name": "ScrDbg_ScanFrameText",
+   "signature": "int ScrDbg_ScanFrameText(int32 frame_index, int32 nbytes)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "scans the text of a frame; the caller consumes EAX, which carries the return of ScrDbg_CountLineBreaks.",
+   "status": "translated",
+   "notes": "Returns the EAX leftover of ScrDbg_CountLineBreaks; consumed by ScrDbg_LookupLineForKey and ScrDbg_GetFileAndLine."
+  },
+  {
+   "addr": "0x08077c24",
+   "name": "ScrDbg_LookupLineForKey",
+   "signature": "int ScrDbg_LookupLineForKey(uint32 key, uint32 required_flags, uint32 *out)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "finds the first line of a file key whose flags include the mask; fills out[0]=frame index, out[1]=scan result, out[2]=line value.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08077cec",
+   "name": "ScrDbg_IsEnabled",
+   "signature": "uint8 ScrDbg_IsEnabled(void)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "returns the script debug enable byte.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08077cf8",
+   "name": "ScrDbg_AllocFrame",
+   "signature": "struct scr_frame_s *ScrDbg_AllocFrame(void)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "appends one zeroed frame slot to the frame table, growing it (capacity doubles) when full.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08077d90",
+   "name": "ScrDbg_AddFrame",
+   "signature": "void ScrDbg_AddFrame(const char *name, uint32 id, const char *src, int32 src_len, uint8 sanitize, uint8 is_debug)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "appends a named frame with optional source text (copied; optionally sanitised of line breaks) and records the last source pointer.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08077efc",
+   "name": "ScrDbg_LoadFrameFile",
+   "signature": "char *ScrDbg_LoadFrameFile(int unused_channel, const char *name, uint32 id, uint8 is_debug)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "loads a source file through the filesystem (fn_080a3562) into a heap buffer and registers it as a frame; the first argument is forwarded by callers and unused here.",
+   "status": "translated",
+   "notes": "First parameter is forwarded by callers and unused."
+  },
+  {
+   "addr": "0x08077fde",
+   "name": "ScrDbg_LoadFrameFileOrSaved",
+   "signature": "char *ScrDbg_LoadFrameFileOrSaved(int unused_channel, const char *name, uint32 id, uint8 is_savegame)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "when is_savegame is set and a saved-source stack exists, pops the top saved text (NUL bytes turned to newlines) as a frame; otherwise loads the file.",
+   "status": "translated",
+   "notes": "First parameter is forwarded by callers and unused."
+  },
+  {
+   "addr": "0x08078128",
+   "name": "ScrDbg_ExtractLine",
+   "signature": "int ScrDbg_ExtractLine(const char *text, int nbytes, int *line_len, char *out_line)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "extracts the last line of a text window into out_line (tabs to spaces, trailing CR removed); returns the NUL count.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080781d6",
+   "name": "ScrDbg_PrintSourceContext",
+   "signature": "void ScrDbg_PrintSourceContext(int channel, const char *file_name, const char *text, int nbytes)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "prints a source location header, the source line and a caret line to a channel; \" (savegame)\" tag when a saved source is active.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080782d2",
+   "name": "ScrDbg_FormatFrameLine",
+   "signature": "int ScrDbg_FormatFrameLine(int frame_index, int nbytes, char *buf, int bufsize)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "formats \"<line> // <file><savegame>, line N\" for a frame into a caller buffer; returns the NUL count.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807839a",
+   "name": "ScrDbg_FindFrameIndex",
+   "signature": "int ScrDbg_FindFrameIndex(uint32 pc)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "frame index lookup; the largest index >= 1 with a nonzero id not above the code key, else a value below 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080783fa",
+   "name": "ScrDbg_PrintLocation",
+   "signature": "void ScrDbg_PrintLocation(int channel, const char *pc, int32 line_bias)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "prints a code location (frozen/removed thread, \"@ offset\", or the source context when debug is enabled).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080785ac",
+   "name": "ScrDbg_GetFileAndLine",
+   "signature": "void ScrDbg_GetFileAndLine(uint32 key, const char **out_file, int *out_line)",
+   "subsystem": "script/debug-tables",
+   "confidence": "inferred",
+   "evidence": "maps a code key to its file name and 1-based line number (floor file entry, frame lookup).",
+   "status": "translated",
+   "notes": "Dereferences the floor file entry without a NULL check (crash path preserved from the binary)."
+  },
+  {
+   "addr": "0x0807863e",
+   "name": "ScrCompile_ErrorInFile",
+   "signature": "void ScrCompile_ErrorInFile(int nbytes, const char *fmt, ...)",
+   "subsystem": "script/errors",
+   "confidence": "inferred",
+   "evidence": "body prints the string \"******* script compile error *******\" (string evidence for the error path; function name inferred); formats the message, prints it with source context, or defers it when scr_compile_error_deferred is set.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807873e",
+   "name": "ScrCompile_ErrorAt",
+   "signature": "void ScrCompile_ErrorAt(const char *pc, const char *fmt, ...)",
+   "subsystem": "script/errors",
+   "confidence": "inferred",
+   "evidence": "body prints \"******* script compile error *******\" (string evidence; function name inferred); compile-error report with a location at pc.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080787dc",
+   "name": "ScrRuntime_ReportTrace",
+   "signature": "void ScrRuntime_ReportTrace(int channel, const char *pc, int32 extra, const char *msg)",
+   "subsystem": "script/errors",
+   "confidence": "inferred",
+   "evidence": "string \"script runtime error\" and the \"called from:\" / \"started from:\" labels (observed). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080788d2",
+   "name": "ScrRuntime_Error",
+   "signature": "void ScrRuntime_Error(const char *pc, int32 extra, const char *msg, const char *detail)",
+   "subsystem": "script/errors",
+   "confidence": "inferred",
+   "evidence": "string \"\\025script runtime error\\n(see console for details)\" (observed); reports a runtime error through the trace or message path by the scr_error_* flags. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Channel and fatal/recoverable paths follow scr_error_* flags; detail NULL becomes empty string."
+  },
+  {
+   "addr": "0x080789e0",
+   "name": "ScrVal_StoreWord",
+   "signature": "uint32 *ScrVal_StoreWord(uint32 *dst, uint32 value)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "stores one word through a pointer and returns it; body is byte-identical to ScrVal_StoreWordAlt.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080789f2",
+   "name": "ScrVal_StoreWordAlt",
+   "signature": "uint32 *ScrVal_StoreWordAlt(uint32 *dst, uint32 value)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "duplicate of ScrVal_StoreWord (identical code at a second address).",
+   "status": "translated",
+   "notes": "Byte-identical to ScrVal_StoreWord."
+  },
+  {
+   "addr": "0x08078a04",
+   "name": "ScrBox_Make1",
+   "signature": "void **ScrBox_Make1(void **out, uint32 a)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "allocates a 4-byte box holding one word; out receives the box.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078a2e",
+   "name": "ScrBox_Make2",
+   "signature": "void **ScrBox_Make2(void **out, uint32 a, uint32 b)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "allocates an 8-byte box holding two words.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078a62",
+   "name": "ScrBox_Make3",
+   "signature": "void **ScrBox_Make3(void **out, uint32 a, uint32 b, uint32 c)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "allocates a 12-byte box holding three words.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078aa0",
+   "name": "ScrBox_Make2Alt",
+   "signature": "void **ScrBox_Make2Alt(void **out, uint32 a, uint32 b)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "duplicate of ScrBox_Make2 (identical code at a second address).",
+   "status": "translated",
+   "notes": "Byte-identical to ScrBox_Make2."
+  },
+  {
+   "addr": "0x08078ad4",
+   "name": "ScrBox_Make4",
+   "signature": "void **ScrBox_Make4(void **out, uint32 a, uint32 b, uint32 c, uint32 d)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "allocates a 16-byte box holding four words.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078b5a",
+   "name": "ScrBox_Make5",
+   "signature": "void **ScrBox_Make5(void **out, uint32 a, uint32 b, uint32 c, uint32 d, uint32 e)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "allocates a 20-byte box holding five words.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078bf4",
+   "name": "ScrBox_Make6",
+   "signature": "void **ScrBox_Make6(void **out, uint32 a, uint32 b, uint32 c, uint32 d, uint32 e, uint32 f)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "allocates a 24-byte box holding six words.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078c50",
+   "name": "ScrBox_Make7",
+   "signature": "void **ScrBox_Make7(void **out, uint32 a, uint32 b, uint32 c, uint32 d, uint32 e, uint32 f, uint32 g)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "allocates a 28-byte box holding seven words.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078cb6",
+   "name": "ScrBox_Make8",
+   "signature": "void **ScrBox_Make8(void **out, uint32 a, uint32 b, uint32 c, uint32 d, uint32 e, uint32 f, uint32 g, uint32 h)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "allocates a 32-byte box holding eight words.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078d26",
+   "name": "ScrBox_Make9",
+   "signature": "void **ScrBox_Make9(void **out, uint32 a, uint32 b, uint32 c, uint32 d, uint32 e, uint32 f, uint32 g, uint32 h, uint32 i)",
+   "subsystem": "script/values",
+   "confidence": "unknown",
+   "evidence": "allocates a 36-byte box holding nine words.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078da0",
+   "name": "ScrList_Create",
+   "signature": "void **ScrList_Create(void **out, uint32 value)",
+   "subsystem": "script/values",
+   "confidence": "inferred",
+   "evidence": "creates a list holding one value (head and tail set to the new node).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078df6",
+   "name": "ScrList_PushFront",
+   "signature": "void **ScrList_PushFront(void **out, uint32 value, struct scr_list_s *list)",
+   "subsystem": "script/values",
+   "confidence": "inferred",
+   "evidence": "pushes a value on the front of a list (head at offset 0); out receives the list.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078e3c",
+   "name": "ScrList_Append",
+   "signature": "void **ScrList_Append(void **out, struct scr_list_s *list, uint32 value)",
+   "subsystem": "script/values",
+   "confidence": "inferred",
+   "evidence": "appends a value at the tail of a list (tail at offset 4); out receives the list.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078e94",
+   "name": "ScrList_Splice",
+   "signature": "void **ScrList_Splice(void **out, struct scr_list_s *list, struct scr_list_s *other)",
+   "subsystem": "script/values",
+   "confidence": "inferred",
+   "evidence": "splices the chain described by other (head, tail) onto the tail of list; out receives the list.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078ec8",
+   "name": "ScrStr_Record",
+   "signature": "struct scr_string_s *ScrStr_Record(uint32 handle)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "handle to record address (handle * 8 + pool base).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078eda",
+   "name": "ScrStr_RecordFromText",
+   "signature": "struct scr_string_s *ScrStr_RecordFromText(const char *text)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "text pointer to record address (text sits 4 bytes into the record).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078ee6",
+   "name": "ScrStr_TextFromHandle",
+   "signature": "const char *ScrStr_TextFromHandle(uint32 handle)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "handle to text pointer; handle 0 yields NULL.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078f12",
+   "name": "ScrStr_FindNulIndex",
+   "signature": "uint32 ScrStr_FindNulIndex(const struct scr_string_s *rec)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "scans the record's text in 256-byte steps from (length - 1) for the NUL terminator; returns its index.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078f4c",
+   "name": "ScrStr_NulIndexOfHandle",
+   "signature": "int ScrStr_NulIndexOfHandle(uint32 handle)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "NUL index of a handle's record; the caller consumes EAX, the return of ScrStr_FindNulIndex.",
+   "status": "translated",
+   "notes": "Returns the callee EAX value (int), consumed by ScrStr_ReinternLower."
+  },
+  {
+   "addr": "0x08078f6e",
+   "name": "ScrStr_HandleOfRecord",
+   "signature": "int ScrStr_HandleOfRecord(const struct scr_string_s *rec)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "record address to pool handle (offset from pool base divided by 8).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078f96",
+   "name": "ScrStr_HandleOfText",
+   "signature": "int ScrStr_HandleOfText(const char *text)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "text pointer to pool handle; the result is discarded by the caller.",
+   "status": "translated",
+   "notes": "Declared void in the decompiler; EAX leftover (handle index) not reproduced."
+  },
+  {
+   "addr": "0x08078fb2",
+   "name": "ScrStr_Hash",
+   "signature": "int ScrStr_Hash(const char *text, uint32 len)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "string hash to a bucket index in 1..0x3fff (multiplier 0x1f; long strings hash their length quarter).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079074",
+   "name": "ScrStr_Init",
+   "signature": "void ScrStr_Init(void)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "initialises the string pool (MT_Init), the hash node chain and the ready flag.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079102",
+   "name": "ScrStr_EnsureInit",
+   "signature": "void ScrStr_EnsureInit(void)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "lazy string pool initialisation; otherwise runs the fn_0807a0a8 hook.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079120",
+   "name": "ScrStr_ClearReady",
+   "signature": "void ScrStr_ClearReady(void)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "clears the string pool ready flag.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079138",
+   "name": "ScrStr_Find",
+   "signature": "uint16 ScrStr_Find(const char *text, uint32 len)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "looks up an existing interned string (exact bytes and length) in its bucket; a hit moves the node to the bucket head.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079316",
+   "name": "ScrStr_LookupCString",
+   "signature": "uint32 ScrStr_LookupCString(const char *text)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "looks up a C string as an interned string; result discarded.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807933a",
+   "name": "ScrStr_LookupLowerCString",
+   "signature": "uint32 ScrStr_LookupLowerCString(const char *text)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "looks up the lowercase form of a C string (tolower over the bytes including the NUL).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080793e4",
+   "name": "ScrStr_SetRefFlag",
+   "signature": "void ScrStr_SetRefFlag(struct scr_string_s *rec, uint8 flag)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "sets a usage flag bit on a record; the first setting of a bit adds one reference.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079418",
+   "name": "ScrStr_SetRefFlagHandle",
+   "signature": "void ScrStr_SetRefFlagHandle(uint32 handle, uint8 flag)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "handle form of ScrStr_SetRefFlag.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807943c",
+   "name": "ScrStr_Intern",
+   "signature": "uint32 ScrStr_Intern(const char *text, uint32 flags, uint32 len, uint32 extra)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "interns a byte string into the pool (bucket search, then node and MT block allocation); the extra argument is passed to MT_AllocIndex, which ignores it.",
+   "status": "translated",
+   "notes": "Extra argument is forwarded to MT_AllocIndex and unused there. Flag-0 bucket branch uses the bucket handle as a node index (original quirk preserved)."
+  },
+  {
+   "addr": "0x080798e0",
+   "name": "ScrStr_InternCStringEx",
+   "signature": "uint32 ScrStr_InternCStringEx(const char *text, uint32 flags, uint32 extra)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "interns a C string (length strlen+1) with the given flags and extra argument.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079914",
+   "name": "ScrStr_InternCString",
+   "signature": "uint32 ScrStr_InternCString(const char *text, uint32 flags)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "interns a C string with the default extra argument 6.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079936",
+   "name": "ScrStr_InternLowerBytes",
+   "signature": "uint32 ScrStr_InternLowerBytes(const char *text, uint32 flags, uint32 len, uint32 extra)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "format \"max string length exceeded: \\\"%s\\\"\" (observed); interns the lowercase bytes (no NUL) of a string of len bytes.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080799ee",
+   "name": "ScrStr_InternLowerCStringEx",
+   "signature": "uint32 ScrStr_InternLowerCStringEx(const char *text, uint32 flags, uint32 extra)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "lowercase intern of a C string (length strlen+1) with an extra argument.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079a22",
+   "name": "ScrStr_InternLowerCString",
+   "signature": "uint32 ScrStr_InternLowerCString(const char *text, uint32 flags)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "lowercase intern of a C string with the default extra argument 6.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079a44",
+   "name": "ScrStr_ReinternLower",
+   "signature": "uint32 ScrStr_ReinternLower(uint32 handle, uint32 flags, uint32 extra)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "re-interns an existing handle's text in lowercase, releasing the old handle; returns the handle unchanged when the text is too long.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079b28",
+   "name": "ScrStr_SetFlagOrDecRef",
+   "signature": "void ScrStr_SetFlagOrDecRef(uint32 handle, uint8 flag)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "sets a flag bit when unset, otherwise decrements the reference count.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079b6e",
+   "name": "ScrStr_AddRef",
+   "signature": "void ScrStr_AddRef(uint32 handle)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "increments a record's reference count.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079b94",
+   "name": "ScrStr_FreeNode",
+   "signature": "void ScrStr_FreeNode(uint32 handle, struct scr_string_s *rec, int bytes)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "removes a node from its hash bucket chain, frees its MT block and returns the node to the free list.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079cf2",
+   "name": "ScrStr_Release",
+   "signature": "void ScrStr_Release(uint32 handle)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "releases one reference to a pool handle, freeing the node when the count reaches zero.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079d2a",
+   "name": "ScrStr_ResetOrFree",
+   "signature": "void ScrStr_ResetOrFree(uint32 handle)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "permanent (flag 4) records are reset to one reference; others are cleared and freed.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079d96",
+   "name": "ScrStr_DecRefOrFree",
+   "signature": "void ScrStr_DecRefOrFree(uint32 handle, int bytes)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "decrements a record's reference count and frees the node when it reaches zero.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079de0",
+   "name": "ScrStr_AssignRef",
+   "signature": "void ScrStr_AssignRef(uint16 *slot, uint32 handle)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "assigns a pool handle to a 16-bit slot, adding a reference to the new handle and releasing the old one.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079e58",
+   "name": "ScrStr_InternCStringFlag1",
+   "signature": "uint32 ScrStr_InternCStringFlag1(const char *text)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "interns a C string with flag 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08079e74",
+   "name": "ScrStr_InternFloat",
+   "signature": "int ScrStr_InternFloat(float value)",
+   "subsystem": "script/string-pool",
+   "confidence": "inferred",
+   "evidence": "format \"%g\" (observed in rodata neighbourhood of the call); interns the float's text with extra argument 14.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08206f80",
+   "name": "str_pool",
+   "type": "uint8[]",
+   "confidence": "inferred",
+   "evidence": "base of 8-byte string-pool records; MT_Init and ScrStr_Record address it (0x08206f00 == 0x08206f80 at init)"
+  },
+  {
+   "addr": "0x08206f00",
+   "name": "str_pool_base",
+   "type": "uint8 *",
+   "confidence": "inferred",
+   "evidence": "set to 0x08206f80 in MT_Init; base for handle*8 addressing in ScrStr_Record"
+  },
+  {
+   "addr": "0x08287280",
+   "name": "mt_free_heads",
+   "type": "uint16[17]",
+   "confidence": "inferred",
+   "evidence": "indexed by order in MT_AllocIndex, cleared 17 entries in MT_Init"
+  },
+  {
+   "addr": "0x082872a4",
+   "name": "mt_alloc_count",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "incremented in MT_AllocIndex/MarkAllocatedBlock, decremented in MT_FreeIndex"
+  },
+  {
+   "addr": "0x082872a8",
+   "name": "mt_alloc_bytes",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "adds/subtracts 1<<order in the MT allocator paths"
+  },
+  {
+   "addr": "0x0828717f",
+   "name": "g_0828717f",
+   "type": "uint8[]",
+   "confidence": "unknown",
+   "evidence": "size-class table indexed by (bytes+7)>>3 in MT_GetSize; lies in .bss so is populated at runtime by code outside this chunk (not located)"
+  },
+  {
+   "addr": "0x08287180",
+   "name": "g_08287180",
+   "type": "uint8[]",
+   "confidence": "unknown",
+   "evidence": "high-range size-class table indexed by ((bytes+7)>>3 - 1)>>8 in MT_GetSize; populated outside this chunk"
+  },
+  {
+   "addr": "0x08287400",
+   "name": "sl_hash",
+   "type": "struct sl_hash_node_s[0x4000]",
+   "confidence": "inferred",
+   "evidence": "hash nodes, 4 bytes each (link, handle); index 0 holds free-list head (link) and tail (handle)"
+  },
+  {
+   "addr": "0x08297400",
+   "name": "sl_hash_ready",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "checked and cleared by ScrStr_EnsureInit / ScrStr_ClearReady; set to 1 at end of ScrStr_Init"
+  },
+  {
+   "addr": "0x08297404",
+   "name": "sl_last_link_ptr",
+   "type": "uint16 *",
+   "confidence": "inferred",
+   "evidence": "written in ScrStr_FreeNode (first-match branch); never read in this chunk"
+  },
+  {
+   "addr": "0x0839750a",
+   "name": "scr_debug_enabled",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "gate for every debug-table and source-context path; returned by ScrDbg_IsEnabled"
+  },
+  {
+   "addr": "0x0839750c",
+   "name": "scr_compile_error_deferred",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "checked in ScrCompile_ErrorInFile; nonzero defers the message into scr_compile_error_msg"
+  },
+  {
+   "addr": "0x08397510",
+   "name": "scr_compile_error_msg",
+   "type": "char *",
+   "confidence": "inferred",
+   "evidence": "set once from the formatted message when compile errors are deferred"
+  },
+  {
+   "addr": "0x08397548",
+   "name": "scr_code_base",
+   "type": "const char *",
+   "confidence": "inferred",
+   "evidence": "subtracted from code pointers to print the \"@ offset\" form in ScrDbg_PrintLocation"
+  },
+  {
+   "addr": "0x08287300",
+   "name": "scr_file_table",
+   "type": "struct scr_file_entry_s *",
+   "confidence": "inferred",
+   "evidence": "0x14-byte file entries sorted by key; grown in ScrDbg_PushLine"
+  },
+  {
+   "addr": "0x08287304",
+   "name": "scr_file_table_cap",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "capacity of scr_file_table; initial 0x10000"
+  },
+  {
+   "addr": "0x08287308",
+   "name": "scr_file_table_count",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "entries in use"
+  },
+  {
+   "addr": "0x0828730c",
+   "name": "scr_line_table",
+   "type": "struct scr_line_s *",
+   "confidence": "inferred",
+   "evidence": "8-byte line entries (value, flags) addressed by file first_line + offset"
+  },
+  {
+   "addr": "0x08287310",
+   "name": "scr_line_table_cap",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "capacity of scr_line_table; initial 0x10000"
+  },
+  {
+   "addr": "0x08287314",
+   "name": "scr_line_table_count",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "line entries in use"
+  },
+  {
+   "addr": "0x08287318",
+   "name": "scr_frame_table_cap",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "frame capacity (initial 0x10), doubled in ScrDbg_AllocFrame"
+  },
+  {
+   "addr": "0x0828731c",
+   "name": "scr_last_file_key",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "key of the file currently being pushed; compared to g_08205cac"
+  },
+  {
+   "addr": "0x08287320",
+   "name": "scr_cur_file_line_count",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "line count of the current file in scr_file_table"
+  },
+  {
+   "addr": "0x08287324",
+   "name": "scr_saved_src",
+   "type": "struct scr_saved_src_s *",
+   "confidence": "inferred",
+   "evidence": "saved-source stack; nonnull selects the \" (savegame)\" text and the pop path in ScrDbg_LoadFrameFileOrSaved"
+  },
+  {
+   "addr": "0x08287328",
+   "name": "scr_saved_src_count",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "entries on scr_saved_src"
+  },
+  {
+   "addr": "0x0828732c",
+   "name": "scr_pending_a",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "pending line index for value -1; resolved by a later push with flag 1"
+  },
+  {
+   "addr": "0x08287330",
+   "name": "scr_pending_b",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "pending line index for value -2; filled by ScrDbg_SetPendingEntry"
+  },
+  {
+   "addr": "0x08287334",
+   "name": "scr_frame_table",
+   "type": "struct scr_frame_s *",
+   "confidence": "inferred",
+   "evidence": "0x18-byte frame records (id, name, source, length, current line, debug flag)"
+  },
+  {
+   "addr": "0x08287338",
+   "name": "scr_frame_count",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "frames in use"
+  },
+  {
+   "addr": "0x0828733c",
+   "name": "scr_cur_file_name",
+   "type": "char *",
+   "confidence": "inferred",
+   "evidence": "file name used in ScrCompile_ErrorInFile; set outside this chunk"
+  },
+  {
+   "addr": "0x08287340",
+   "name": "scr_last_source_text",
+   "type": "char *",
+   "confidence": "inferred",
+   "evidence": "last non-null source text pointer recorded by ScrDbg_AddFrame"
+  },
+  {
+   "addr": "0x08205cac",
+   "name": "g_08205cac",
+   "type": "uint32",
+   "confidence": "unknown",
+   "evidence": "current source key read by ScrDbg_PushLine; written outside this chunk"
+  },
+  {
+   "addr": "0x08205ca8",
+   "name": "g_08205ca8",
+   "type": "int32",
+   "confidence": "unknown",
+   "evidence": "compared with 2 as a gate in the debug-table functions; owner outside this chunk"
+  },
+  {
+   "addr": "0x08205ca5",
+   "name": "g_08205ca5",
+   "type": "uint8",
+   "confidence": "unknown",
+   "evidence": "gate in ScrDbg_PushLine that clears flag bit 0 when zero"
+  },
+  {
+   "addr": "0x083d8aa0",
+   "name": "scr_call_stack",
+   "type": "struct scr_call_entry_s[]",
+   "confidence": "inferred",
+   "evidence": "0x18-byte call stack entries (pc, flags); entry 0 is the \"started from\" location"
+  },
+  {
+   "addr": "0x083d8a88",
+   "name": "scr_call_depth",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "call stack depth read by ScrRuntime_ReportTrace"
+  },
+  {
+   "addr": "0x083d8a94",
+   "name": "scr_error_plain",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "selects plain message output in ScrRuntime_Error"
+  },
+  {
+   "addr": "0x083d8a95",
+   "name": "scr_error_recoverable",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "selects channel 0 and continuation in ScrRuntime_Error"
+  },
+  {
+   "addr": "0x083d8a96",
+   "name": "scr_error_fatal",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "selects error level 5 and the detail line in ScrRuntime_Error"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "scr_string_s",
+   "size": "0x8",
+   "evidence": "8-byte pool record: length @0, flags @1, refcount @2 (int16), text @4; COD2_ASSERT in chunk_013_types.h"
+  },
+  {
+   "name": "sl_hash_node_s",
+   "size": "0x4",
+   "evidence": "hash node: link (14-bit next + state bits), handle; 0x4000 nodes at 0x08287400"
+  },
+  {
+   "name": "scr_file_entry_s",
+   "size": "0x14",
+   "evidence": "debug file table: key @0, first_line @4, line_count @8"
+  },
+  {
+   "name": "scr_line_s",
+   "size": "0x8",
+   "evidence": "debug line table: value @0, flags @4"
+  },
+  {
+   "name": "scr_frame_s",
+   "size": "0x18",
+   "evidence": "frame: id @0, name @4, source @8, source_len @0xc, current_line @0x10, is_debug @0x14"
+  },
+  {
+   "name": "scr_saved_src_s",
+   "size": "0x8",
+   "evidence": "saved-source stack: text @0, length @4"
+  },
+  {
+   "name": "scr_call_entry_s",
+   "size": "0x18",
+   "evidence": "call stack: pc @0, flags @4"
+  },
+  {
+   "name": "scr_list_node_s",
+   "size": "0x8",
+   "evidence": "list node: value @0, next @4 (ScrList_*)"
+  },
+  {
+   "name": "scr_list_s",
+   "size": "0x8",
+   "evidence": "list header: head @0, tail @4 (ScrList_*)"
+  }
+ ],
+ "open_questions": [
+  "g_0828717f and g_08287180 (size-class tables used by MT_GetSize) lie in .bss; the chunk does not initialise them. Locate the writer (likely an init in another chunk) to confirm the table contents.",
+  "Callers push a second stack argument to MT_AllocIndex, StrPool_AllocBlock and ScrStr_Intern that MT_AllocIndex never reads. Confirm this is ABI residue in all callers (no semantic argument).",
+  "ScrStr_Intern flag-0 bucket branch uses the bucket handle (a 16-bit MT handle) as a node index into sl_hash[0x4000]; handles above 0x3fff would index out of range. Original behaviour preserved; confirm with a runtime trace whether this path is reachable.",
+  "ScrStr_FreeNode and ScrStr_Intern write sl_last_link_ptr only in one branch (0x08297404); confirm no reader exists in other chunks.",
+  "ScrDbg_LineValue and ScrDbg_GetFileAndLine dereference the floor file entry without a NULL check; preserved crash path, confirm callers never pass a key below the first file key.",
+  "Naming for ScrStr_*/ScrDbg_*/ScrRuntime_* follows the IW-style SL_/Scr_ families by role; no direct symbol strings name these functions, so they are inferred. The merge lane should confirm against sibling chunks.",
+  "Out-of-chunk callees fn_08060dea, fn_08061124, fn_080b7fa6, fn_080b7f0a, fn_08060c20 are printf-like console/error helpers; their exact signatures (and that fn_08061124 does not return) are inferred from call shape.",
+  "Some void-declared decompiler functions end with a callee whose EAX value is consumed (ScrStr_HandleOfText, fn_0807a0a8 hook path); only the consumed cases are reproduced as int returns."
+ ]
+}

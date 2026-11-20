@@ -1,0 +1,1565 @@
+{
+ "chunk": 0,
+ "model": "haiku",
+ "functions": [],
+ "globals": [],
+ "types_proposed": [],
+ "open_questions": [
+  "Chunk range: the brief gives 0x804a6b0 as the end, but the manifest's last function at 0x0804a6e4 (size 33) ends at 0x804a704 and is included; the merge lane should confirm the boundary (0x804a6c0 _start is in this chunk).",
+  "150 PLT import thunks have no source body (status=translated, naming=observed). The merge lane should decide whether callers referencing these addresses are rewritten to the import name; several import names are C++ mangled (_ZNSs..., _Znaj, _ZdlPv) and their signatures use void * for std::string objects.",
+  "Out-of-chunk placeholders used by this chunk: fn_0804a750 (CRT frame_dummy), fn_0813e2e0 (CRT ctor driver), fn_0813e230 (CRT init), fn_0813e290 (CRT fini), fn_080d4f7c (main, pushed as __libc_start_main's main argument). Their names are inferred from the crt1/crti/crtbegin convention, not from strings.",
+  "Ghidra pseudocode for call_gmon_start shows an unconditional call to __gmon_start__ and for PLT0 a null-pointer call; both are artefacts. The reconstruction follows the disassembly (weak null test; push/jmp pair)."
+ ],
+ "documentation_only_functions": [
+  {
+   "addr": "0x08049d2c",
+   "name": "_init",
+   "signature": "void _init(void)",
+   "subsystem": "crt/init",
+   "confidence": "inferred",
+   "evidence": "section .init (readelf: .init 0x08049d2c, size 0x17); standard crti.o _init shape (push ebp/sub esp,8, three calls, leave/ret); Ghidra label _DT_INIT",
+   "status": "translated",
+   "notes": "calls call_gmon_start, then the two out-of-chunk CRT routines in this order"
+  },
+  {
+   "addr": "0x08049d44",
+   "name": "plt0",
+   "signature": "void plt0(void)",
+   "subsystem": "crt/lazy-binding",
+   "confidence": "inferred",
+   "evidence": "section .plt starts at 0x08049d44 with the PLT0 layout: push GOT[1] (0x0817d128), jmp GOT[2] (0x0817d12c); ELF lazy-binding convention; Ghidra auto-label at this address (its pseudocode is an artefact, the disassembly is authoritative)",
+   "status": "translated",
+   "notes": "not C-callable: entered only by the push/jmp pair at each PLT entry (push index; jmp PLT0); body is top-level asm"
+  },
+  {
+   "addr": "0x08049d54",
+   "name": "usleep",
+   "signature": "int usleep(unsigned int useconds)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'usleep': PLT entry 0x08049d54 (jmp via GOT 0x0817d130)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049d64",
+   "name": "mkdir",
+   "signature": "int mkdir(const char *path, unsigned int mode)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'mkdir': PLT entry 0x08049d64 (jmp via GOT 0x0817d134)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049d74",
+   "name": "cos",
+   "signature": "double cos(double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'cos': PLT entry 0x08049d74 (jmp via GOT 0x0817d138)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049d84",
+   "name": "ntohl",
+   "signature": "uint32 ntohl(uint32 netlong)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'ntohl': PLT entry 0x08049d84 (jmp via GOT 0x0817d13c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049d94",
+   "name": "std::string::operator=",
+   "signature": "void *_ZNSsaSEPKc(void *self, const char *s)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSsaSEPKc': PLT entry 0x08049d94 (jmp via GOT 0x0817d140)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049da4",
+   "name": "rename",
+   "signature": "int rename(const char *oldpath, const char *newpath)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'rename': PLT entry 0x08049da4 (jmp via GOT 0x0817d144)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049db4",
+   "name": "std::string::compare",
+   "signature": "int _ZNKSs7compareERKSs(const void *self, const void *other)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNKSs7compareERKSs': PLT entry 0x08049db4 (jmp via GOT 0x0817d148)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049dc4",
+   "name": "execl",
+   "signature": "int execl(const char *path, const char *arg, ...)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'execl': PLT entry 0x08049dc4 (jmp via GOT 0x0817d14c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049dd4",
+   "name": "strncat",
+   "signature": "char *strncat(char *dest, const char *src, unsigned int n)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strncat': PLT entry 0x08049dd4 (jmp via GOT 0x0817d150)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049de4",
+   "name": "vsprintf",
+   "signature": "int vsprintf(char *str, const char *format, void *ap)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'vsprintf': PLT entry 0x08049de4 (jmp via GOT 0x0817d154)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049df4",
+   "name": "strchr",
+   "signature": "char *strchr(const char *s, int c)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strchr': PLT entry 0x08049df4 (jmp via GOT 0x0817d158)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049e04",
+   "name": "std::allocator<char>::allocator",
+   "signature": "void _ZNSaIcEC1Ev(void *self)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSaIcEC1Ev': PLT entry 0x08049e04 (jmp via GOT 0x0817d15c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049e14",
+   "name": "atan",
+   "signature": "double atan(double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'atan': PLT entry 0x08049e14 (jmp via GOT 0x0817d160)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049e24",
+   "name": "__cxa_pure_virtual",
+   "signature": "void __cxa_pure_virtual(void)",
+   "subsystem": "import/libstdc++-abi",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__cxa_pure_virtual': PLT entry 0x08049e24 (jmp via GOT 0x0817d164)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049e34",
+   "name": "pthread_mutexattr_settype",
+   "signature": "int pthread_mutexattr_settype(void *attr, int kind)",
+   "subsystem": "import/libpthread",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_mutexattr_settype': PLT entry 0x08049e34 (jmp via GOT 0x0817d168)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049e44",
+   "name": "write",
+   "signature": "int write(int fd, const void *buf, unsigned int n)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'write': PLT entry 0x08049e44 (jmp via GOT 0x0817d16c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049e54",
+   "name": "localtime",
+   "signature": "struct tm *localtime(const long *timep)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'localtime': PLT entry 0x08049e54 (jmp via GOT 0x0817d170)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049e64",
+   "name": "recvfrom",
+   "signature": "int recvfrom(int fd, void *buf, unsigned int n, int flags, void *addr, unsigned int *addrlen)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'recvfrom': PLT entry 0x08049e64 (jmp via GOT 0x0817d174)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049e74",
+   "name": "fileno",
+   "signature": "int fileno(void *stream)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fileno': PLT entry 0x08049e74 (jmp via GOT 0x0817d178)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049e84",
+   "name": "strcmp",
+   "signature": "int strcmp(const char *a, const char *b)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strcmp': PLT entry 0x08049e84 (jmp via GOT 0x0817d17c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049e94",
+   "name": "isspace",
+   "signature": "int isspace(int c)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'isspace': PLT entry 0x08049e94 (jmp via GOT 0x0817d180)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049ea4",
+   "name": "close",
+   "signature": "int close(int fd)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'close': PLT entry 0x08049ea4 (jmp via GOT 0x0817d184)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049eb4",
+   "name": "asin",
+   "signature": "double asin(double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'asin': PLT entry 0x08049eb4 (jmp via GOT 0x0817d188)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049ec4",
+   "name": "dlsym",
+   "signature": "void *dlsym(void *handle, const char *symbol)",
+   "subsystem": "import/libdl",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'dlsym': PLT entry 0x08049ec4 (jmp via GOT 0x0817d18c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049ed4",
+   "name": "fprintf",
+   "signature": "int fprintf(void *stream, const char *format, ...)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fprintf': PLT entry 0x08049ed4 (jmp via GOT 0x0817d190)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049ee4",
+   "name": "fork",
+   "signature": "int fork(void)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fork': PLT entry 0x08049ee4 (jmp via GOT 0x0817d194)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049ef4",
+   "name": "getenv",
+   "signature": "char *getenv(const char *name)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'getenv': PLT entry 0x08049ef4 (jmp via GOT 0x0817d198)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049f04",
+   "name": "signal",
+   "signature": "void *signal(int signum, void *handler)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'signal': PLT entry 0x08049f04 (jmp via GOT 0x0817d19c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049f14",
+   "name": "std::string::string",
+   "signature": "void _ZNSsC1EPKcRKSaIcE(void *self, const char *s, const void *alloc)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSsC1EPKcRKSaIcE': PLT entry 0x08049f14 (jmp via GOT 0x0817d1a0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049f24",
+   "name": "fflush",
+   "signature": "int fflush(void *stream)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fflush': PLT entry 0x08049f24 (jmp via GOT 0x0817d1a4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049f34",
+   "name": "seteuid",
+   "signature": "int seteuid(unsigned int uid)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'seteuid': PLT entry 0x08049f34 (jmp via GOT 0x0817d1a8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049f44",
+   "name": "unlink",
+   "signature": "int unlink(const char *path)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'unlink': PLT entry 0x08049f44 (jmp via GOT 0x0817d1ac)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049f54",
+   "name": "select",
+   "signature": "int select(int nfds, void *readfds, void *writefds, void *exceptfds, void *timeout)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'select': PLT entry 0x08049f54 (jmp via GOT 0x0817d1b0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049f64",
+   "name": "vsnprintf",
+   "signature": "int vsnprintf(char *str, unsigned int size, const char *format, void *ap)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'vsnprintf': PLT entry 0x08049f64 (jmp via GOT 0x0817d1b4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049f74",
+   "name": "strerror",
+   "signature": "char *strerror(int errnum)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strerror': PLT entry 0x08049f74 (jmp via GOT 0x0817d1b8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049f84",
+   "name": "tcsetattr",
+   "signature": "int tcsetattr(int fd, int optional_actions, const void *termios_p)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'tcsetattr': PLT entry 0x08049f84 (jmp via GOT 0x0817d1bc)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049f94",
+   "name": "isalnum",
+   "signature": "int isalnum(int c)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'isalnum': PLT entry 0x08049f94 (jmp via GOT 0x0817d1c0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049fa4",
+   "name": "__cxa_atexit",
+   "signature": "int __cxa_atexit(void (*func)(void *), void *arg, void *dso_handle)",
+   "subsystem": "import/libstdc++-abi",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__cxa_atexit': PLT entry 0x08049fa4 (jmp via GOT 0x0817d1c4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049fb4",
+   "name": "getpwuid",
+   "signature": "void *getpwuid(unsigned int uid)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'getpwuid': PLT entry 0x08049fb4 (jmp via GOT 0x0817d1c8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049fc4",
+   "name": "operator.delete",
+   "signature": "void _ZdlPv(void *p)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZdlPv': PLT entry 0x08049fc4 (jmp via GOT 0x0817d1cc)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049fd4",
+   "name": "__errno_location",
+   "signature": "int *__errno_location(void)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__errno_location': PLT entry 0x08049fd4 (jmp via GOT 0x0817d1d0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049fe4",
+   "name": "ftell",
+   "signature": "long ftell(void *stream)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'ftell': PLT entry 0x08049fe4 (jmp via GOT 0x0817d1d4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x08049ff4",
+   "name": "std::string::c_str",
+   "signature": "const char *_ZNKSs5c_strEv(const void *self)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNKSs5c_strEv': PLT entry 0x08049ff4 (jmp via GOT 0x0817d1d8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a004",
+   "name": "system",
+   "signature": "int system(const char *command)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'system': PLT entry 0x0804a004 (jmp via GOT 0x0817d1dc)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a014",
+   "name": "chmod",
+   "signature": "int chmod(const char *path, unsigned int mode)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'chmod': PLT entry 0x0804a014 (jmp via GOT 0x0817d1e0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a024",
+   "name": "tolower",
+   "signature": "int tolower(int c)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'tolower': PLT entry 0x0804a024 (jmp via GOT 0x0817d1e4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a034",
+   "name": "access",
+   "signature": "int access(const char *path, int mode)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'access': PLT entry 0x0804a034 (jmp via GOT 0x0817d1e8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a044",
+   "name": "std::string::operator=",
+   "signature": "void *_ZNSsaSERKSs(void *self, const void *other)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSsaSERKSs': PLT entry 0x0804a044 (jmp via GOT 0x0817d1ec)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a054",
+   "name": "malloc",
+   "signature": "void *malloc(unsigned int size)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'malloc': PLT entry 0x0804a054 (jmp via GOT 0x0817d1f0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a064",
+   "name": "pthread_mutex_init",
+   "signature": "int pthread_mutex_init(void *mutex, const void *attr)",
+   "subsystem": "import/libpthread",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_mutex_init': PLT entry 0x0804a064 (jmp via GOT 0x0817d1f4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a074",
+   "name": "std::string::~string",
+   "signature": "void _ZNSsD1Ev(void *self)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSsD1Ev': PLT entry 0x0804a074 (jmp via GOT 0x0817d1f8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a084",
+   "name": "fread",
+   "signature": "unsigned int fread(void *ptr, unsigned int size, unsigned int nmemb, void *stream)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fread': PLT entry 0x0804a084 (jmp via GOT 0x0817d1fc)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a094",
+   "name": "memmove",
+   "signature": "void *memmove(void *dest, const void *src, unsigned int n)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'memmove': PLT entry 0x0804a094 (jmp via GOT 0x0817d200)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a0a4",
+   "name": "std::string::operator[]",
+   "signature": "char *_ZNSsixEj(void *self, unsigned int pos)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSsixEj': PLT entry 0x0804a0a4 (jmp via GOT 0x0817d204)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a0b4",
+   "name": "sendto",
+   "signature": "int sendto(int fd, const void *buf, unsigned int n, int flags, const void *addr, unsigned int addrlen)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sendto': PLT entry 0x0804a0b4 (jmp via GOT 0x0817d208)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a0c4",
+   "name": "remove",
+   "signature": "int remove(const char *path)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'remove': PLT entry 0x0804a0c4 (jmp via GOT 0x0817d20c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a0d4",
+   "name": "__cxa_rethrow",
+   "signature": "void __cxa_rethrow(void)",
+   "subsystem": "import/libstdc++-abi",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__cxa_rethrow': PLT entry 0x0804a0d4 (jmp via GOT 0x0817d210)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a0e4",
+   "name": "rint",
+   "signature": "double rint(double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'rint': PLT entry 0x0804a0e4 (jmp via GOT 0x0817d214)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a0f4",
+   "name": "std::string::string",
+   "signature": "void _ZNSsC1Ev(void *self)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSsC1Ev': PLT entry 0x0804a0f4 (jmp via GOT 0x0817d218)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a104",
+   "name": "__xstat",
+   "signature": "int __xstat(int ver, const char *path, void *buf)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__xstat': PLT entry 0x0804a104 (jmp via GOT 0x0817d21c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a114",
+   "name": "setsockopt",
+   "signature": "int setsockopt(int fd, int level, int optname, const void *optval, unsigned int optlen)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'setsockopt': PLT entry 0x0804a114 (jmp via GOT 0x0817d220)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a124",
+   "name": "fseek",
+   "signature": "int fseek(void *stream, long offset, int whence)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fseek': PLT entry 0x0804a124 (jmp via GOT 0x0817d224)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a134",
+   "name": "time",
+   "signature": "long time(long *tloc)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'time': PLT entry 0x0804a134 (jmp via GOT 0x0817d228)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a144",
+   "name": "pthread_mutexattr_init",
+   "signature": "int pthread_mutexattr_init(void *attr)",
+   "subsystem": "import/libpthread",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_mutexattr_init': PLT entry 0x0804a144 (jmp via GOT 0x0817d22c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a154",
+   "name": "pthread_mutex_lock",
+   "signature": "int pthread_mutex_lock(void *mutex)",
+   "subsystem": "import/libpthread",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_mutex_lock': PLT entry 0x0804a154 (jmp via GOT 0x0817d230)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a164",
+   "name": "fputs",
+   "signature": "int fputs(const char *s, void *stream)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fputs': PLT entry 0x0804a164 (jmp via GOT 0x0817d234)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a174",
+   "name": "strstr",
+   "signature": "char *strstr(const char *haystack, const char *needle)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strstr': PLT entry 0x0804a174 (jmp via GOT 0x0817d238)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a184",
+   "name": "strlen",
+   "signature": "unsigned int strlen(const char *s)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strlen': PLT entry 0x0804a184 (jmp via GOT 0x0817d23c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a194",
+   "name": "longjmp",
+   "signature": "void longjmp(void *env, int val)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'longjmp': PLT entry 0x0804a194 (jmp via GOT 0x0817d240)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a1a4",
+   "name": "sleep",
+   "signature": "unsigned int sleep(unsigned int seconds)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sleep': PLT entry 0x0804a1a4 (jmp via GOT 0x0817d244)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a1b4",
+   "name": "__cxa_end_catch",
+   "signature": "void __cxa_end_catch(void)",
+   "subsystem": "import/libstdc++-abi",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__cxa_end_catch': PLT entry 0x0804a1b4 (jmp via GOT 0x0817d248)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a1c4",
+   "name": "qsort",
+   "signature": "void qsort(void *base, unsigned int nmemb, unsigned int size, void *compar)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'qsort': PLT entry 0x0804a1c4 (jmp via GOT 0x0817d24c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a1d4",
+   "name": "atof",
+   "signature": "double atof(const char *nptr)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'atof': PLT entry 0x0804a1d4 (jmp via GOT 0x0817d250)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a1e4",
+   "name": "atan2",
+   "signature": "double atan2(double y, double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'atan2': PLT entry 0x0804a1e4 (jmp via GOT 0x0817d254)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a1f4",
+   "name": "strncmp",
+   "signature": "int strncmp(const char *a, const char *b, unsigned int n)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strncmp': PLT entry 0x0804a1f4 (jmp via GOT 0x0817d258)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a204",
+   "name": "inet_addr",
+   "signature": "uint32 inet_addr(const char *cp)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'inet_addr': PLT entry 0x0804a204 (jmp via GOT 0x0817d25c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a214",
+   "name": "floor",
+   "signature": "double floor(double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'floor': PLT entry 0x0804a214 (jmp via GOT 0x0817d260)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a224",
+   "name": "memcmp",
+   "signature": "int memcmp(const void *a, const void *b, unsigned int n)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'memcmp': PLT entry 0x0804a224 (jmp via GOT 0x0817d264)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a234",
+   "name": "__gxx_personality_v0",
+   "signature": "int __gxx_personality_v0(int version, int actions, uint64 exception_class, void *exception_object, void *context)",
+   "subsystem": "import/libstdc++-abi",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__gxx_personality_v0': PLT entry 0x0804a234 (jmp via GOT 0x0817d268)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a244",
+   "name": "std::string::erase",
+   "signature": "void *_ZNSs5eraseEjj(void *self, unsigned int pos, unsigned int len)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSs5eraseEjj': PLT entry 0x0804a244 (jmp via GOT 0x0817d26c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a254",
+   "name": "pthread_self",
+   "signature": "unsigned int pthread_self(void)",
+   "subsystem": "import/libpthread",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_self': PLT entry 0x0804a254 (jmp via GOT 0x0817d270)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a264",
+   "name": "std::string::operator+=",
+   "signature": "void *_ZNSspLEc(void *self, char c)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSspLEc': PLT entry 0x0804a264 (jmp via GOT 0x0817d274)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a274",
+   "name": "dlerror",
+   "signature": "const char *dlerror(void)",
+   "subsystem": "import/libdl",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'dlerror': PLT entry 0x0804a274 (jmp via GOT 0x0817d278)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a284",
+   "name": "__libc_start_main",
+   "signature": "int __libc_start_main(void *main, int argc, void *argv, void *init, void *fini, void *rtld_fini, void *stack_end)",
+   "subsystem": "import/libc-startup",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__libc_start_main': PLT entry 0x0804a284 (jmp via GOT 0x0817d27c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a294",
+   "name": "std::string::find",
+   "signature": "unsigned int _ZNKSs4findEPKcj(const void *self, const char *s, unsigned int pos)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNKSs4findEPKcj': PLT entry 0x0804a294 (jmp via GOT 0x0817d280)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a2a4",
+   "name": "toupper",
+   "signature": "int toupper(int c)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'toupper': PLT entry 0x0804a2a4 (jmp via GOT 0x0817d284)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a2b4",
+   "name": "sqrtf",
+   "signature": "float sqrtf(float x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sqrtf': PLT entry 0x0804a2b4 (jmp via GOT 0x0817d288)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a2c4",
+   "name": "realloc",
+   "signature": "void *realloc(void *ptr, unsigned int size)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'realloc': PLT entry 0x0804a2c4 (jmp via GOT 0x0817d28c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a2d4",
+   "name": "strcat",
+   "signature": "char *strcat(char *dest, const char *src)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strcat': PLT entry 0x0804a2d4 (jmp via GOT 0x0817d290)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a2e4",
+   "name": "tan",
+   "signature": "double tan(double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'tan': PLT entry 0x0804a2e4 (jmp via GOT 0x0817d294)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a2f4",
+   "name": "asctime",
+   "signature": "char *asctime(const void *tm)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'asctime': PLT entry 0x0804a2f4 (jmp via GOT 0x0817d298)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a304",
+   "name": "printf",
+   "signature": "int printf(const char *format, ...)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'printf': PLT entry 0x0804a304 (jmp via GOT 0x0817d29c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a314",
+   "name": "bind",
+   "signature": "int bind(int fd, const void *addr, unsigned int addrlen)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'bind': PLT entry 0x0804a314 (jmp via GOT 0x0817d2a0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a324",
+   "name": "getuid",
+   "signature": "unsigned int getuid(void)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'getuid': PLT entry 0x0804a324 (jmp via GOT 0x0817d2a4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a334",
+   "name": "fcntl",
+   "signature": "int fcntl(int fd, int cmd, ...)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fcntl': PLT entry 0x0804a334 (jmp via GOT 0x0817d2a8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a344",
+   "name": "memcpy",
+   "signature": "void *memcpy(void *dest, const void *src, unsigned int n)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'memcpy': PLT entry 0x0804a344 (jmp via GOT 0x0817d2ac)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a354",
+   "name": "sqrt",
+   "signature": "double sqrt(double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sqrt': PLT entry 0x0804a354 (jmp via GOT 0x0817d2b0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a364",
+   "name": "std::string::string",
+   "signature": "void _ZNSsC1ERKSs(void *self, const void *other)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSsC1ERKSs': PLT entry 0x0804a364 (jmp via GOT 0x0817d2b4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a374",
+   "name": "std::allocator<char>::~allocator",
+   "signature": "void _ZNSaIcED1Ev(void *self)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSaIcED1Ev': PLT entry 0x0804a374 (jmp via GOT 0x0817d2b8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a384",
+   "name": "fclose",
+   "signature": "int fclose(void *stream)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fclose': PLT entry 0x0804a384 (jmp via GOT 0x0817d2bc)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a394",
+   "name": "strrchr",
+   "signature": "char *strrchr(const char *s, int c)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strrchr': PLT entry 0x0804a394 (jmp via GOT 0x0817d2c0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a3a4",
+   "name": "ctime",
+   "signature": "char *ctime(const long *timep)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'ctime': PLT entry 0x0804a3a4 (jmp via GOT 0x0817d2c4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a3b4",
+   "name": "isdigit",
+   "signature": "int isdigit(int c)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'isdigit': PLT entry 0x0804a3b4 (jmp via GOT 0x0817d2c8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a3c4",
+   "name": "rmdir",
+   "signature": "int rmdir(const char *path)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'rmdir': PLT entry 0x0804a3c4 (jmp via GOT 0x0817d2cc)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a3d4",
+   "name": "closedir",
+   "signature": "int closedir(void *dirp)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'closedir': PLT entry 0x0804a3d4 (jmp via GOT 0x0817d2d0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a3e4",
+   "name": "gettimeofday",
+   "signature": "int gettimeofday(void *tv, void *tz)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'gettimeofday': PLT entry 0x0804a3e4 (jmp via GOT 0x0817d2d4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a3f4",
+   "name": "srand",
+   "signature": "void srand(unsigned int seed)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'srand': PLT entry 0x0804a3f4 (jmp via GOT 0x0817d2d8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a404",
+   "name": "opendir",
+   "signature": "void *opendir(const char *name)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'opendir': PLT entry 0x0804a404 (jmp via GOT 0x0817d2dc)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a414",
+   "name": "snprintf",
+   "signature": "int snprintf(char *str, unsigned int size, const char *format, ...)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'snprintf': PLT entry 0x0804a414 (jmp via GOT 0x0817d2e0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a424",
+   "name": "gethostname",
+   "signature": "int gethostname(char *name, unsigned int len)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'gethostname': PLT entry 0x0804a424 (jmp via GOT 0x0817d2e4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a434",
+   "name": "gethostbyname",
+   "signature": "void *gethostbyname(const char *name)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'gethostbyname': PLT entry 0x0804a434 (jmp via GOT 0x0817d2e8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a444",
+   "name": "strcasecmp",
+   "signature": "int strcasecmp(const char *a, const char *b)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strcasecmp': PLT entry 0x0804a444 (jmp via GOT 0x0817d2ec)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a454",
+   "name": "dlclose",
+   "signature": "int dlclose(void *handle)",
+   "subsystem": "import/libdl",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'dlclose': PLT entry 0x0804a454 (jmp via GOT 0x0817d2f0)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a464",
+   "name": "exit",
+   "signature": "void exit(int status)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'exit': PLT entry 0x0804a464 (jmp via GOT 0x0817d2f4)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a474",
+   "name": "isalpha",
+   "signature": "int isalpha(int c)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'isalpha': PLT entry 0x0804a474 (jmp via GOT 0x0817d2f8)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a484",
+   "name": "atoi",
+   "signature": "int atoi(const char *nptr)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'atoi': PLT entry 0x0804a484 (jmp via GOT 0x0817d2fc)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a494",
+   "name": "calloc",
+   "signature": "void *calloc(unsigned int nmemb, unsigned int size)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'calloc': PLT entry 0x0804a494 (jmp via GOT 0x0817d300)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a4a4",
+   "name": "sscanf",
+   "signature": "int sscanf(const char *str, const char *format, ...)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sscanf': PLT entry 0x0804a4a4 (jmp via GOT 0x0817d304)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a4b4",
+   "name": "free",
+   "signature": "void free(void *ptr)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'free': PLT entry 0x0804a4b4 (jmp via GOT 0x0817d308)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a4c4",
+   "name": "ioctl",
+   "signature": "int ioctl(int fd, unsigned long request, ...)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'ioctl': PLT entry 0x0804a4c4 (jmp via GOT 0x0817d30c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a4d4",
+   "name": "htons",
+   "signature": "uint16 htons(uint16 hostshort)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'htons': PLT entry 0x0804a4d4 (jmp via GOT 0x0817d310)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a4e4",
+   "name": "getcwd",
+   "signature": "char *getcwd(char *buf, unsigned int size)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'getcwd': PLT entry 0x0804a4e4 (jmp via GOT 0x0817d314)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a4f4",
+   "name": "__cxa_begin_catch",
+   "signature": "void *__cxa_begin_catch(void *exceptionObject)",
+   "subsystem": "import/libstdc++-abi",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '__cxa_begin_catch': PLT entry 0x0804a4f4 (jmp via GOT 0x0817d318)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a504",
+   "name": "isatty",
+   "signature": "int isatty(int fd)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'isatty': PLT entry 0x0804a504 (jmp via GOT 0x0817d31c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a514",
+   "name": "acos",
+   "signature": "double acos(double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'acos': PLT entry 0x0804a514 (jmp via GOT 0x0817d320)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a524",
+   "name": "memset",
+   "signature": "void *memset(void *s, int c, unsigned int n)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'memset': PLT entry 0x0804a524 (jmp via GOT 0x0817d324)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a534",
+   "name": "_exit",
+   "signature": "void _exit(int status)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_exit': PLT entry 0x0804a534 (jmp via GOT 0x0817d328)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a544",
+   "name": "strncasecmp",
+   "signature": "int strncasecmp(const char *a, const char *b, unsigned int n)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strncasecmp': PLT entry 0x0804a544 (jmp via GOT 0x0817d32c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a554",
+   "name": "strncpy",
+   "signature": "char *strncpy(char *dest, const char *src, unsigned int n)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strncpy': PLT entry 0x0804a554 (jmp via GOT 0x0817d330)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a564",
+   "name": "std::string::operator+=",
+   "signature": "void *_ZNSspLEPKc(void *self, const char *s)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZNSspLEPKc': PLT entry 0x0804a564 (jmp via GOT 0x0817d334)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a574",
+   "name": "fopen",
+   "signature": "void *fopen(const char *path, const char *mode)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fopen': PLT entry 0x0804a574 (jmp via GOT 0x0817d338)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a584",
+   "name": "_setjmp",
+   "signature": "int _setjmp(void *env)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_setjmp': PLT entry 0x0804a584 (jmp via GOT 0x0817d33c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a594",
+   "name": "_Unwind_Resume",
+   "signature": "void _Unwind_Resume(void *exception_object)",
+   "subsystem": "import/libgcc-unwind",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_Unwind_Resume': PLT entry 0x0804a594 (jmp via GOT 0x0817d340)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a5a4",
+   "name": "pthread_mutex_unlock",
+   "signature": "int pthread_mutex_unlock(void *mutex)",
+   "subsystem": "import/libpthread",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_mutex_unlock': PLT entry 0x0804a5a4 (jmp via GOT 0x0817d344)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a5b4",
+   "name": "operator.new[]",
+   "signature": "void *_Znaj(unsigned int size)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_Znaj': PLT entry 0x0804a5b4 (jmp via GOT 0x0817d348)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a5c4",
+   "name": "pthread_mutexattr_destroy",
+   "signature": "int pthread_mutexattr_destroy(void *attr)",
+   "subsystem": "import/libpthread",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'pthread_mutexattr_destroy': PLT entry 0x0804a5c4 (jmp via GOT 0x0817d34c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a5d4",
+   "name": "operator.delete[]",
+   "signature": "void _ZdaPv(void *p)",
+   "subsystem": "import/libstdc++",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import '_ZdaPv': PLT entry 0x0804a5d4 (jmp via GOT 0x0817d350)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a5e4",
+   "name": "sprintf",
+   "signature": "int sprintf(char *str, const char *format, ...)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sprintf': PLT entry 0x0804a5e4 (jmp via GOT 0x0817d354)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a5f4",
+   "name": "fwrite",
+   "signature": "unsigned int fwrite(const void *ptr, unsigned int size, unsigned int nmemb, void *stream)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'fwrite': PLT entry 0x0804a5f4 (jmp via GOT 0x0817d358)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a604",
+   "name": "sin",
+   "signature": "double sin(double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'sin': PLT entry 0x0804a604 (jmp via GOT 0x0817d35c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a614",
+   "name": "socket",
+   "signature": "int socket(int domain, int type, int protocol)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'socket': PLT entry 0x0804a614 (jmp via GOT 0x0817d360)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a624",
+   "name": "readdir",
+   "signature": "void *readdir(void *dirp)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'readdir': PLT entry 0x0804a624 (jmp via GOT 0x0817d364)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a634",
+   "name": "rand",
+   "signature": "int rand(void)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'rand': PLT entry 0x0804a634 (jmp via GOT 0x0817d368)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a644",
+   "name": "log",
+   "signature": "double log(double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'log': PLT entry 0x0804a644 (jmp via GOT 0x0817d36c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a654",
+   "name": "tcgetattr",
+   "signature": "int tcgetattr(int fd, void *termios_p)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'tcgetattr': PLT entry 0x0804a654 (jmp via GOT 0x0817d370)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a664",
+   "name": "read",
+   "signature": "int read(int fd, void *buf, unsigned int n)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'read': PLT entry 0x0804a664 (jmp via GOT 0x0817d374)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a674",
+   "name": "geteuid",
+   "signature": "unsigned int geteuid(void)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'geteuid': PLT entry 0x0804a674 (jmp via GOT 0x0817d378)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a684",
+   "name": "ceil",
+   "signature": "double ceil(double x)",
+   "subsystem": "import/libm",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'ceil': PLT entry 0x0804a684 (jmp via GOT 0x0817d37c)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a694",
+   "name": "dlopen",
+   "signature": "void *dlopen(const char *filename, int flags)",
+   "subsystem": "import/libdl",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'dlopen': PLT entry 0x0804a694 (jmp via GOT 0x0817d380)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a6a4",
+   "name": "strcpy",
+   "signature": "char *strcpy(char *dest, const char *src)",
+   "subsystem": "import/libc",
+   "confidence": "observed",
+   "evidence": "ELF dynamic import 'strcpy': PLT entry 0x0804a6a4 (jmp via GOT 0x0817d384)",
+   "status": "translated",
+   "notes": "PLT import thunk: no body emitted; reconstructed callers call the imported symbol directly"
+  },
+  {
+   "addr": "0x0804a6c0",
+   "name": "_start",
+   "signature": "void _start(void)",
+   "subsystem": "crt/startup",
+   "confidence": "inferred",
+   "evidence": "ELF e_entry = 0x0804a6c0 (readelf -h); body pops argc, computes argv, aligns esp, pushes stack_end/rtld_fini/fini/init/argv/argc/main and calls __libc_start_main (crt1 convention); Ghidra label 'entry'",
+   "status": "translated",
+   "notes": "top-level asm reproduces the instruction sequence exactly; main/init/fini are out-of-chunk placeholders (see chunk_000_types.h)"
+  },
+  {
+   "addr": "0x0804a6e4",
+   "name": "call_gmon_start",
+   "signature": "void call_gmon_start(void)",
+   "subsystem": "crt/init",
+   "confidence": "inferred",
+   "evidence": "crtbegin.o call_gmon_start shape: saves ebx, loads GOT slot 0x0817d120 for weak __gmon_start__, calls it only if non-null; Ghidra auto-label at this address (its unconditional call in pseudocode is an artefact; disassembly shows the null test)",
+   "status": "translated",
+   "notes": "weak profiling hook; no-op when __gmon_start__ is not linked in"
+  }
+ ],
+ "notes": "Whole chunk is CRT startup + the dynamic-import PLT. Excluded from the linked build (compiled only with COD2_RECON_ORIGINAL_CRT); libc/libstdc++ imports come from system headers and the system C runtime supplies _start/_init/_fini/frame_dummy. main (0x080d4f7c) is the program entry; see rename request L00-1.",
+ "documentation_only_globals": [
+  {
+   "addr": "0x0817d120",
+   "name": "__gmon_start__",
+   "type": "void (*)(void)",
+   "confidence": "inferred",
+   "evidence": "GOT slot loaded by call_gmon_start (ebx-4, GOT base 0x0817d124 from the _GLOBAL_OFFSET_TABLE_ pattern); weak undefined symbol"
+  }
+ ]
+}

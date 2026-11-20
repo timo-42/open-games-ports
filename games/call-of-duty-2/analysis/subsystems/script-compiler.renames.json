@@ -1,0 +1,437 @@
+{
+ "renames": [
+  {
+   "addr": "0x08073aa6",
+   "old": "Scr_CompileLoop_Single",
+   "new": "Scr_CompileWaittill",
+   "confidence": "inferred",
+   "evidence": "objdump: compiles two operand exprs, EmitOpcode(0x78, -2), then Scr_ForEachPairEmit_3 -> EmitClearLocalVariableFieldCached (opcode 0x33 SafeSetWaittill...), then EmitOpcode(0x34) clearparams; not a loop (no jumps/labels)"
+  },
+  {
+   "addr": "0x08073ba8",
+   "old": "Scr_CompileLoop_Multi",
+   "new": "Scr_CompileWaittillmatch",
+   "confidence": "inferred",
+   "evidence": "objdump: compiles object + N args via ScrCompile_ExprPush, EmitOpcode(0x77) then count byte, 0x34 clearparams; sibling of 0x08073aa6 (OP_waittillmatch)"
+  },
+  {
+   "addr": "0x08073b80",
+   "old": "Scr_ScanLoop_Single",
+   "new": "Scr_ScanWaittill",
+   "confidence": "inferred",
+   "evidence": "scan helper paired with Scr_CompileLoop_Single (adds variables via ForEachPairEmit_2)"
+  },
+  {
+   "addr": "0x08073cf4",
+   "old": "Scr_CompileListStmt_3a",
+   "new": "Scr_CompileNotify",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x7b) voidCodepos, args via ExprPush, EmitOpcode(0x79) notify, stack deltas match notify"
+  },
+  {
+   "addr": "0x08073dea",
+   "old": "Scr_CompileSimple_3b",
+   "new": "Scr_CompileEndon",
+   "confidence": "inferred",
+   "evidence": "objdump: compiles one expression then EmitOpcode(0x7a, -2) = OP_endon"
+  },
+  {
+   "addr": "0x08073902",
+   "old": "Scr_CompileExprStmt_Op100",
+   "new": "Scr_CompileIncrement",
+   "confidence": "inferred",
+   "evidence": "objdump: StoreLvalue, EmitOpcode(0x64) (OP_inc), then EmitOp_39 SetVariableField"
+  },
+  {
+   "addr": "0x0807397e",
+   "old": "Scr_CompileExprStmt_Op101",
+   "new": "Scr_CompileDecrement",
+   "confidence": "inferred",
+   "evidence": "objdump: same as 0x08073902 with EmitOpcode(0x65) (OP_dec)"
+  },
+  {
+   "addr": "0x080748d6",
+   "old": "Scr_CompileMarker_85",
+   "new": "Scr_CompileProfBegin",
+   "confidence": "inferred",
+   "evidence": "objdump: passes op 0x85 to Scr_CompileMarker (0x0807487e); OP_prof_begin per doc section 12.2 (opcode name inferred from VM enum)"
+  },
+  {
+   "addr": "0x080748f8",
+   "old": "Scr_CompileMarker_86",
+   "new": "Scr_CompileProfEnd",
+   "confidence": "inferred",
+   "evidence": "objdump: passes op 0x86 to Scr_CompileMarker; OP_prof_end"
+  },
+  {
+   "addr": "0x080751c4",
+   "old": "Scr_CompileGuardedBlock",
+   "new": "Scr_CompileDevBlock",
+   "confidence": "inferred",
+   "evidence": "objdump: errors via string at 0x0814435c if scrCompileMode != 0 (nested), sets mode 2 then 1 around Scr_CompileStmtList, restores code hash, only emits when developer_script (0x0839750b) set: the /# ... #/ developer block"
+  },
+  {
+   "addr": "0x08075dd4",
+   "old": "Scr_ReleaseSymbolRef",
+   "new": "Scr_AddRefToValue",
+   "confidence": "inferred",
+   "evidence": "objdump: loads pair->type,pair->value and calls 0x0807c064 which symbols.json names ScrVar_AddRefValue: it adds a reference, not release"
+  },
+  {
+   "addr": "0x08075df4",
+   "old": "Scr_ReleaseSymbolRefAlt",
+   "new": "Scr_RemoveRefToValue",
+   "confidence": "inferred",
+   "evidence": "same shape as 0x08075dd4 but calls the release routine (ScrVar_ReleaseValue) per script-compiler.md 12.2"
+  },
+  {
+   "addr": "0x080761b4",
+   "old": "Scr_InitTableSlot",
+   "new": "Scr_InitAnimTrees",
+   "confidence": "inferred",
+   "evidence": "objdump: sets byte 0x8205a58=1 and zeroes per-group count at 0x8205a4c[idx*4]; anim-tree registry group init"
+  },
+  {
+   "addr": "0x08076510",
+   "old": "Scr_ForEachTableSlot",
+   "new": "Scr_LoadAnimTrees",
+   "confidence": "inferred",
+   "evidence": "objdump: loops i=1..count[group] calling 0x0806dcb0 (Scr_LoadAnimTree(i,arg,group))"
+  },
+  {
+   "addr": "0x08076550",
+   "old": "Scr_ShutdownTableSlot",
+   "new": "Scr_ShutdownAnimTrees",
+   "confidence": "inferred",
+   "evidence": "objdump: releases object 0x8205640 (anim tree object) via release helpers; counterpart of Scr_InitAnimTrees"
+  },
+  {
+   "addr": "0x0806e50e",
+   "old": "EmitOp_00",
+   "new": "EmitEnd",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0,0,0): OP_End; named by address-of-opcode, opcode 0 is End"
+  },
+  {
+   "addr": "0x0806e532",
+   "old": "EmitOp_01",
+   "new": "EmitReturn",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(1,-1,0): OP_Return, consumes one stack value"
+  },
+  {
+   "addr": "0x0806e936",
+   "old": "EmitOp_39",
+   "new": "EmitSetVariableField",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x39,-1) then PushLine; OP_SetVariableField (fusion table in doc 5.2)"
+  },
+  {
+   "addr": "0x0806fd46",
+   "old": "EmitOp_58",
+   "new": "EmitDecTop",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x58,-1) with no position record: discards top of stack after statement call (OP_DecTop)"
+  },
+  {
+   "addr": "0x0806fd6a",
+   "old": "EmitOp_59",
+   "new": "EmitCastFieldObject",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x59,-1); emitted after call-as-object in ScrCompile_CallStatement (0x0807138e)"
+  },
+  {
+   "addr": "0x0806f57a",
+   "old": "EmitOp_5b",
+   "new": "EmitCastBool",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x5b,0)"
+  },
+  {
+   "addr": "0x0806f5b2",
+   "old": "EmitOp_5c",
+   "new": "EmitBoolNot",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x5c,0); fusion with JumpOnFalse->JumpOnTrue per doc 5.2"
+  },
+  {
+   "addr": "0x0806f5ea",
+   "old": "EmitOp_5d",
+   "new": "EmitBoolComplement",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x5d,0)"
+  },
+  {
+   "addr": "0x0806f622",
+   "old": "EmitOp_76",
+   "new": "EmitSize",
+   "confidence": "inferred",
+   "evidence": "objdump: compiles operand then EmitOpcode(0x76,0): the .size operator"
+  },
+  {
+   "addr": "0x0806f74c",
+   "old": "EmitOp_26",
+   "new": "EmitGetSelfObject",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x26,+1); fusion table: 0x26 is the object form of self used by field ops"
+  },
+  {
+   "addr": "0x0806f91c",
+   "old": "EmitOp_14",
+   "new": "EmitGetGameRef",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x14,+1); 0x14 = GetGameRef per doc 5.3 (name of opcode inferred from VM enum)"
+  },
+  {
+   "addr": "0x0806f954",
+   "old": "EmitOp_20",
+   "new": "EmitEvalArray",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x20,-1) + two PushLine; fusion table names 0x20 EvalArray"
+  },
+  {
+   "addr": "0x0806f99e",
+   "old": "EmitOp_23",
+   "new": "EmitEvalArrayRef",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x23,-1)"
+  },
+  {
+   "addr": "0x0806f9e8",
+   "old": "EmitOp_24",
+   "new": "EmitClearArray",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x24,-1)"
+  },
+  {
+   "addr": "0x0806fa32",
+   "old": "EmitOp_25",
+   "new": "EmitEmptyArray",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x25,+1)"
+  },
+  {
+   "addr": "0x0806fad4",
+   "old": "EmitOp_2a_Expr",
+   "new": "EmitEvalFieldVariable",
+   "confidence": "inferred",
+   "evidence": "objdump: compiles object expr then EmitOpcode(0x2a,+1), then field slot via EmitCanonicalString"
+  },
+  {
+   "addr": "0x0806fb30",
+   "old": "EmitOp_2e_Expr",
+   "new": "EmitEvalFieldVariableRef",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x2e,0) + field slot"
+  },
+  {
+   "addr": "0x0806fb78",
+   "old": "EmitOp_2f_Expr",
+   "new": "EmitClearFieldVariable",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x2f,0) + field slot"
+  },
+  {
+   "addr": "0x0806f1dc",
+   "old": "EmitEvalLocalVariableRefCached",
+   "new": "EmitSafeSetVariableFieldCached",
+   "confidence": "inferred",
+   "evidence": "objdump: opcode chosen from {0x31,0x32} ([ebp-8]=0x31/0x32) + u8 offset; 0x31 = SafeSetVariableFieldCached0 in fusion table"
+  },
+  {
+   "addr": "0x0806f878",
+   "old": "EmitSetLocalVariableFieldCached",
+   "new": "EmitEvalLocalVariableRefCached",
+   "confidence": "inferred",
+   "evidence": "objdump: opcode chosen from {0x36,0x37} + u8 offset; 0x36/0x37 = EvalLocalVariableRefCached; always followed by SetVariableField"
+  },
+  {
+   "addr": "0x0806f280",
+   "old": "EmitClearLocalVariableFieldCached",
+   "new": "EmitSafeSetWaittillVariableFieldCached",
+   "confidence": "inferred",
+   "evidence": "objdump: emits opcode 0x33 + u8 offset; used only by waittill variable list (Scr_ForEachPairEmit_3)"
+  },
+  {
+   "addr": "0x08073a64",
+   "old": "Scr_ForEachPairEmit_3",
+   "new": "Scr_EmitWaittillSets",
+   "confidence": "inferred",
+   "evidence": "objdump: loop body calls 0x0806f280 (opcode 0x33) per list item; called from Scr_CompileLoop_Single"
+  },
+  {
+   "addr": "0x08072772",
+   "old": "ScrCompile_ExprThenOp532",
+   "new": "ScrCompile_Return",
+   "confidence": "inferred",
+   "evidence": "objdump: ExprPush then call 0x0806e532 (EmitReturn, OP_Return) then PushLine"
+  },
+  {
+   "addr": "0x080727b6",
+   "old": "ScrCompile_Op50e",
+   "new": "ScrCompile_ReturnVoid",
+   "confidence": "inferred",
+   "evidence": "objdump: calls 0x0806e50e (EmitEnd, OP_End) then PushLine, no expression: bare return;"
+  },
+  {
+   "addr": "0x080727e8",
+   "old": "ScrCompile_Op4C",
+   "new": "ScrCompile_Wait",
+   "confidence": "inferred",
+   "evidence": "objdump: ExprPush then EmitOpcode(0x4c,-1); 0x4c = wait (doc 5.3)"
+  },
+  {
+   "addr": "0x08072858",
+   "old": "ScrCompile_Op4D",
+   "new": "ScrCompile_WaittillFrameEnd",
+   "confidence": "inferred",
+   "evidence": "objdump: EmitOpcode(0x4d,0) with no operand; 0x4d = waittillframeend"
+  },
+  {
+   "addr": "0x08071bce",
+   "old": "ScrCompile_ShortCircuit61",
+   "new": "ScrCompile_OrExpr",
+   "confidence": "inferred",
+   "evidence": "objdump: lhs expr, EmitOpcode(0x61,-1) (JumpOnTrueExpr) + u16 jump target, rhs expr, BoolCast (0x0806f57a); jump-if-true == ||"
+  },
+  {
+   "addr": "0x08071c72",
+   "old": "ScrCompile_ShortCircuit60",
+   "new": "ScrCompile_AndExpr",
+   "confidence": "inferred",
+   "evidence": "same as 0x08071bce with EmitOpcode(0x60,-1) (JumpOnFalseExpr) == &&"
+  },
+  {
+   "addr": "0x08072586",
+   "old": "ScrNode_IsType1F",
+   "new": "ScrNode_IsUndefined",
+   "confidence": "inferred",
+   "evidence": "objdump: cmp node->kind,0x1f; kind 0x1f is the `undefined` literal (doc 4.4)"
+  },
+  {
+   "addr": "0x08072598",
+   "old": "ScrNode_IsWrappedType1F",
+   "new": "ScrNode_IsWrappedUndefined",
+   "confidence": "inferred",
+   "evidence": "objdump: kind==6 wrapper then recurses into 0x08072586"
+  },
+  {
+   "addr": "0x080725ce",
+   "old": "ScrCompile_TryFastLvalue",
+   "new": "ScrCompile_TryClearAssign",
+   "confidence": "inferred",
+   "evidence": "doc 12.2: emits ClearArray/ClearFieldVariable for `x.f = undefined`/`a[i] = undefined`; uses ScrNode_IsUndefined"
+  },
+  {
+   "addr": "0x0807138e",
+   "old": "ScrCompile_CallStatement",
+   "new": "ScrCompile_CallAsObject",
+   "confidence": "inferred",
+   "evidence": "objdump: switch on node kind 0x17/0x18, calls FunctionCall/MethodCall with discard=0 then EmitCastFieldObject (0x0806fd6a): call used as object"
+  },
+  {
+   "addr": "0x08070640",
+   "old": "EmitCallFunctionMethod",
+   "new": "EmitThreadCallFunction",
+   "confidence": "inferred",
+   "evidence": "objdump: emits opcode 0x54 / 0x56 (ScriptThreadCall/MethodThreadCall), not a method call"
+  },
+  {
+   "addr": "0x080706c4",
+   "old": "EmitCallFunctionPtrMethod",
+   "new": "EmitThreadCallFunctionPtr",
+   "confidence": "inferred",
+   "evidence": "objdump: emits opcodes 0x55 / 0x57 (thread call through function pointer)"
+  },
+  {
+   "addr": "0x080707cc",
+   "old": "EmitCallMethodDispatch",
+   "new": "EmitThreadCallDispatch",
+   "confidence": "inferred",
+   "evidence": "objdump: dispatches to 0x08070640 / 0x080706c4 (the thread-call emitters) depending on callee kind"
+  },
+  {
+   "addr": "0x080739e0",
+   "old": "Scr_ForEachPairEmit_1",
+   "new": "Scr_EmitParamSets",
+   "confidence": "inferred",
+   "evidence": "doc 12.2: walks param list emitting SafeSetVariableFieldCached (0x31/0x32) per item, same walk as other ForEachPair helpers"
+  },
+  {
+   "addr": "0x08073a22",
+   "old": "Scr_ForEachPairEmit_2",
+   "new": "Scr_AddVarList",
+   "confidence": "inferred",
+   "evidence": "chunk_012.cpp comment at ~line 131: same walk as ForEachPairEmit_1 calling ScrLocalBlock_AddVarA (scan pass: registers variables)"
+  },
+  {
+   "addr": "0x0808b9dd",
+   "old": "Parse_ReportSyntaxError",
+   "new": "yyerror",
+   "confidence": "inferred",
+   "evidence": "objdump: ignores arg; if token state 0x8a6f4d4==0 reports string 0x814932b else if !=0x102 reports 0x8149348 via ScrCompile_ErrorInFile: bison yyerror hook"
+  }
+ ],
+ "rejected": [
+  {
+   "addr": "0x08117cb2",
+   "old": "Scr_GetFunction_08117cb2",
+   "suggested": "Scr_GetFunction",
+   "reason": "Name Scr_GetFunction already used at 0x08084dd0 in symbols.json; would collide. Needs a distinct name like Scr_GetBuiltinFunction, but behaviour (lookup by name with developer out-flag) not re-verified in this lane."
+  },
+  {
+   "addr": "0x08076034",
+   "old": "Scr_AssignSlot",
+   "suggested": "Scr_GetCanonicalString",
+   "reason": "doc suggestion only, not verified; current name is acceptable"
+  },
+  {
+   "addr": "0x080760a2",
+   "old": "Scr_GetOrAssignSlot",
+   "suggested": "Scr_GetCanonicalStringRef",
+   "reason": "doc suggestion only, not verified"
+  },
+  {
+   "addr": "0x0808ba2b",
+   "old": "Lex_RunParser",
+   "suggested": "Scr_ParseSource",
+   "reason": "function memset()s a 0x30 yacc state, initialises parser globals and runs yyparse; name Lex_RunParser is acceptable and 'string-intern flags' param meaning not proven"
+  },
+  {
+   "addr": "0x080771dc",
+   "old": "ScrDbg_*",
+   "suggested": "ScrPos_*/ScrSrc_*",
+   "reason": "bulk prefix rename not proven; functions still print file/line source context (ScrDbg_PrintLocation), so ScrDbg_ is defensible"
+  },
+  {
+   "addr": "0x080704c6",
+   "old": "Scr_FindOrAddFuncTableEntry",
+   "suggested": "",
+   "reason": "already 1-arg in symbols.json; fix is prototype only"
+  },
+  {
+   "addr": "0x0806fda2",
+   "old": "EmitAssign_20/23/24",
+   "suggested": "ScrCompile_ArrayEval/Ref/Clear",
+   "reason": "opcode mapping is plausible (0x20/0x23/0x24) but individual rename not verified here; addresses 0x0806fda2/0x0806fde0/0x0806fe40 left unchanged"
+  },
+  {
+   "addr": "0x0807053e",
+   "old": "EmitCallFunction",
+   "suggested": "EmitCallFunction",
+   "reason": "name is fine; only param 'threaded' -> 'hasSelf' (parameter, not a function rename)"
+  },
+  {
+   "addr": "0x0807088a",
+   "old": "ScrCompile_EmitCallTarget",
+   "suggested": "",
+   "reason": "only parameter name isMethod->hasSelf, not a function rename"
+  },
+  {
+   "addr": "0x08070b42",
+   "old": "ScrCompile_FunctionCall",
+   "suggested": "",
+   "reason": "only a parameter rename (resultUsed -> discardResult)"
+  }
+ ]
+}

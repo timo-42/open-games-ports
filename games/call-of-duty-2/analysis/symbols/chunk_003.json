@@ -1,0 +1,800 @@
+{
+ "chunk": 3,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0805271c",
+   "name": "CM_ModelBounds",
+   "signature": "void CM_ModelBounds(int handle, float *mins, float *maxs)",
+   "subsystem": "collision/query",
+   "confidence": "inferred",
+   "evidence": "Copies the mins/maxs of the cmodel selected by a handle (Q3 CM_ModelBounds shape: callee 0x08059358 indexes cm.cmodels with 0x48 stride).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805275a",
+   "name": "CM_HunkAlloc",
+   "signature": "void *CM_HunkAlloc(int size, ...)",
+   "subsystem": "collision/memory",
+   "confidence": "unknown",
+   "evidence": "Allocation wrapper forwarding only the size to fn_080abf78; call sites also push a tag string and a number that the callee ignores.",
+   "status": "translated",
+   "notes": "variadic: call sites push extra tag args ignored by callee"
+  },
+  {
+   "addr": "0x0805276e",
+   "name": "CM_NoOp_BeforeTempBufferReset",
+   "signature": "void CM_NoOp_BeforeTempBufferReset(void)",
+   "subsystem": "collision/memory",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body is ret-only (5 bytes); single caller site is CMod_LoadBrushRelated immediately before the temp-buffer reset (chunk_003 comment). Purpose of the stripped call is unknown; name states position only.",
+   "status": "translated",
+   "notes": "empty function"
+  },
+  {
+   "addr": "0x08052774",
+   "name": "CM_NoOp_BeforeLeafBrushTreeBuild",
+   "signature": "void CM_NoOp_BeforeLeafBrushTreeBuild(void)",
+   "subsystem": "collision/memory",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body is ret-only; called in CMod_BuildLeafBrushTree before the leaf brush kd-tree is built (chunk_003:371).",
+   "status": "translated",
+   "notes": "empty function"
+  },
+  {
+   "addr": "0x0805277a",
+   "name": "CM_HunkAllocTemp",
+   "signature": "void *CM_HunkAllocTemp(int size, ...)",
+   "subsystem": "collision/memory",
+   "confidence": "unknown",
+   "evidence": "Wrapper forwarding the size to fn_080ac088 (which bumps a 16-byte aligned counter and errors when the pool is exhausted); extra tag argument ignored.",
+   "status": "translated",
+   "notes": "variadic: call sites push extra tag args ignored by callee"
+  },
+  {
+   "addr": "0x0805278e",
+   "name": "CM_HunkClearLow",
+   "signature": "void CM_HunkClearLow(void)",
+   "subsystem": "collision/memory",
+   "confidence": "unknown",
+   "evidence": "Wrapper for fn_080ac4bc.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805279c",
+   "name": "CM_HunkClearTemp",
+   "signature": "void CM_HunkClearTemp(void)",
+   "subsystem": "collision/memory",
+   "confidence": "unknown",
+   "evidence": "Wrapper for fn_080ac14c (resets the temp counter to its saved value); paired with CM_HunkAllocTemp use.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080527aa",
+   "name": "VectorCopy_080527aa",
+   "signature": "void VectorCopy_080527aa(const uint32 *src, uint32 *dst)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "Copies three 32-bit words (VectorCopy shape) without going through the FPU.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080527da",
+   "name": "Identity_080527da",
+   "signature": "int Identity_080527da(int v)",
+   "subsystem": "math/util",
+   "confidence": "unknown",
+   "evidence": "Returns its argument unchanged.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080527e4",
+   "name": "CMod_LoadMaterials",
+   "signature": "void CMod_LoadMaterials(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadMaterials\" is the allocation tag and the 0x48-byte records are copied from the BSP lump.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805292c",
+   "name": "CM_AllocBrushNode",
+   "signature": "struct cbrushnode_s *CM_AllocBrushNode(void)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "inferred",
+   "evidence": "Takes 0x14 bytes from the fn_0807a2e4 bump buffer, zeroes them and sets the split-distance slot to -FLT_MAX: a blank cbrushnode_t.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805296c",
+   "name": "CMod_LoadSubmodels",
+   "signature": "void CMod_LoadSubmodels(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadSubmodels\" tags the allocation and the error messages.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08052bb2",
+   "name": "CMod_ScoreBrushSplit",
+   "signature": "float CMod_ScoreBrushSplit(const unsigned short *brushes, int numBrushes, int axis, const float *mins, const float *maxs, float *dist)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "unknown",
+   "evidence": "Scores a candidate split plane (*dist on axis) for a brush list: counts brushes fully on each side, reports the midpoint of the closest facing faces back through *dist and returns min(gap to bounds) * min(count).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08052d16",
+   "name": "CMod_PartionLeafBrushes_r",
+   "signature": "struct cbrushnode_s *CMod_PartionLeafBrushes_r(unsigned short *brushes, int numBrushes, const float *mins, const float *maxs)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_PartionLeafBrushes_r\" (sic) is the temp-allocation tag; recursive split of a brush index list into a cbrushnode_t tree.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080531d8",
+   "name": "CMod_BuildLeafBrushTree",
+   "signature": "void CMod_BuildLeafBrushTree(unsigned short *leafBrushes, int numLeafBrushes, struct cLeaf_s *leaf)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "inferred",
+   "evidence": "Computes the padded bounds of a brush index list into leaf->mins/maxs, builds its brush-node tree and stores the node index in leaf->leafBrushNode. Named from its role between CMod_LoadLeafBrushNodes and CMod_PartionLeafBrushes_r.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080533a2",
+   "name": "CMod_LeafTerrainContents",
+   "signature": "unsigned int CMod_LeafTerrainContents(const struct cLeaf_s *leaf)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "unknown",
+   "evidence": "OR of the material contents of every aabb tree referenced by the leaf's (firstCollAabbIndex, collAabbCount) range.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08053404",
+   "name": "CMod_LoadSubmodelBrushNodes",
+   "signature": "void CMod_LoadSubmodelBrushNodes(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadSubmodelBrushNodes\" tags the allocation; builds per-submodel (index >= 1) brush lists and trees.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08053558",
+   "name": "CMod_LoadNodes",
+   "signature": "void CMod_LoadNodes(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadNodes\" tags the allocation; 0x24-byte file nodes become 8-byte cnode_t (plane pointer + two short children).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080536bc",
+   "name": "CMod_LoadBrushes",
+   "signature": "void CMod_LoadBrushes(const struct bspLump_s *brushLump, const struct bspLump_s *sideLump)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "Strings \"CMod_LoadBrushes\" / \"CMod_LoadBrushSides\" tag the allocations. File brushes are (short numSides, short materialNum); the side lump holds 6 axial (float, material) pairs per brush followed by the extra sides.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08053ac0",
+   "name": "CMod_LoadLeafs",
+   "signature": "void CMod_LoadLeafs(const struct bspLump_s *l, char loadClusters)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadLeafs\" tags the allocation; 0x24-byte file leaves become 0x2c-byte cLeaf_t, cluster only read when loadClusters is set.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08053c84",
+   "name": "CMod_LoadLeafBrushNodes",
+   "signature": "void CMod_LoadLeafBrushNodes(const struct bspLump_s *leafLump)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "inferred",
+   "evidence": "For every leaf: ORs the contents of its leaf brushes, computes terrain contents and builds its brush tree from the leaf-brush slice (firstLeafBrush at file+0x10, count at +0x14).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08053d82",
+   "name": "CMod_LoadPlanes",
+   "signature": "void CMod_LoadPlanes(byte *base, const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadPlanes\" tags the allocation; file planes (normal[3], dist) get a type byte (axis index or 3) and signbits.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08053f38",
+   "name": "CMod_LoadLeafBrushes",
+   "signature": "void CMod_LoadLeafBrushes(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadLeafBrushes\" tags the allocation; ints narrowed to unsigned short brush indices (one spare element allocated).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08054012",
+   "name": "CMod_LoadLeafSurfaces",
+   "signature": "void CMod_LoadLeafSurfaces(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadLeafSurfaces\" tags the allocation; byte-swapped int array copy.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080540c6",
+   "name": "CMod_LoadCollisionVerts",
+   "signature": "void CMod_LoadCollisionVerts(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadCollisionVerts\" tags the allocation; 0x10-byte file records (first 4 bytes skipped) become 3-float vertices.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080541c4",
+   "name": "CMod_LoadCollisionEdges",
+   "signature": "void CMod_LoadCollisionEdges(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadCollisionEdges\" tags the allocation; 0x38-byte file records (first 4 bytes skipped, 12 floats then a length) become 0x30-byte edges whose third axis is scaled by 1/length.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08054424",
+   "name": "CMod_LoadCollisionTriangles",
+   "signature": "void CMod_LoadCollisionTriangles(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadCollisionTriangles\" tags the allocation; 0x48-byte records: 12 floats (plane, s-vec, t-vec) then 3 vertex indices and 3 edge indices.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08054690",
+   "name": "CMod_LoadCollisionBorders",
+   "signature": "void CMod_LoadCollisionBorders(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadCollisionBorders\" tags the allocation; 0x1c-byte records of 7 floats.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08054822",
+   "name": "CMod_LoadCollisionPartitions",
+   "signature": "void CMod_LoadCollisionPartitions(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadCollisionPartitions\" tags the allocation; 0xc-byte records (counts at +2/+3, triangle and border start indices at +4/+8) are resolved to pointers.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08054952",
+   "name": "CMod_LoadCollisionAabbTrees",
+   "signature": "void CMod_LoadCollisionAabbTrees(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadCollisionAabbTrees\" tags the allocation; 0x20-byte records: 6 floats, material index, child count, child/partition index.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08054ae0",
+   "name": "CMod_LoadEntityString",
+   "signature": "void CMod_LoadEntityString(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadEntityString\" tags the allocation; copies the entity lump verbatim.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08054b3a",
+   "name": "CMod_LoadVisibility",
+   "signature": "void CMod_LoadVisibility(const struct bspLump_s *l)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadVisibility\" tags the allocation; empty lump gives an all-ones visibility table, else (numClusters, clusterBytes, data) is copied.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08054c2a",
+   "name": "CMod_LoadBrushRelated",
+   "signature": "void CMod_LoadBrushRelated(struct bspHeader_s *header, char loadClusters)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CMod_LoadBrushRelated\" tags the final allocation; loads brushes, leaf brushes, aabb trees, leafs and submodels, builds the brush-node trees in the temp buffer and copies them (with a reserved leading node) to permanent memory.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08054d70",
+   "name": "CM_LoadMapFromBsp",
+   "signature": "void CM_LoadMapFromBsp(const char *name, char loadClusters)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "observed",
+   "evidence": "String \"CM_LoadMapFromBsp\" tags the name allocation; also the \"do not compile the bsp with visibility\" error.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08054f0c",
+   "name": "CM_InitBoxHull",
+   "signature": "void CM_InitBoxHull(void)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "inferred",
+   "evidence": "Builds the extra \"box\" brush (index numBrushes, contents -1, no sides), an all-encompassing box leaf and a one-brush leaf node referencing it (Q3 CM_InitBoxHull shape).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805504e",
+   "name": "CMod_ClearBspBase",
+   "signature": "void CMod_ClearBspBase(void)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "unknown",
+   "evidence": "Clears the BSP image base pointer.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805505e",
+   "name": "CM_PlaneFromIndex",
+   "signature": "struct cplane_s *CM_PlaneFromIndex(int index)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "unknown",
+   "evidence": "Returns &cm_planes[index].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055076",
+   "name": "CMod_ReadLump",
+   "signature": "int CMod_ReadLump(int lumpIndex, void **outData)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "inferred",
+   "evidence": "Re-opens the map file (cm.name), reads the 0x140-byte header, byte-swaps it and loads one lump into a fresh buffer; error key \"EXE_ERR_COULDNT_LOAD\" at 0x813ffd9. Callee roles (open/read/seek/close/alloc) inferred from argument shapes.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080551e6",
+   "name": "CMod_FreeLump",
+   "signature": "void CMod_FreeLump(void)",
+   "subsystem": "collision/bsp-load",
+   "confidence": "inferred",
+   "evidence": "Releases the buffer allocated by CMod_ReadLump.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080551fc",
+   "name": "Float_Abs_080551fc",
+   "signature": "float Float_Abs_080551fc(float v)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "fabs for a float (per-TU copy of the vector-math helper).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055216",
+   "name": "Float_Max",
+   "signature": "float Float_Max(float a, float b)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "max(a, b): selects a when a - b >= 0, else b.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805523a",
+   "name": "Float_Min",
+   "signature": "float Float_Min(float a, float b)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "min(a, b): selects a when b - a >= 0, else b.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805525e",
+   "name": "Int_Min",
+   "signature": "int Int_Min(int a, int b)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "Integer min(a, b): selects a when b - a >= 0, else b.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055284",
+   "name": "Swap_FloatBits",
+   "signature": "uint32 Swap_FloatBits(const uint32 *p)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "Little-endian host \"LittleFloat\" shape: returns the 32-bit pattern at *p.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805528e",
+   "name": "Vec3_Set_0805528e",
+   "signature": "void Vec3_Set_0805528e(uint32 *v, uint32 x, uint32 y, uint32 z)",
+   "subsystem": "math/util",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body stores three scalar arguments into dst[0..2]; same byte family as Vec3_Set_080b5810/080bc0e0. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_set, Vec3_Set_080b5810, Vec3_Set_b_080b934c; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080552b2",
+   "name": "VectorCopy_080552b2",
+   "signature": "void VectorCopy_080552b2(const uint32 *src, uint32 *dst)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "VectorCopy (three 32-bit words).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080552e2",
+   "name": "VectorScale",
+   "signature": "void VectorScale(const float *v, float scale, float *out)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "VectorScale: out = scale * v.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805531a",
+   "name": "VectorLength",
+   "signature": "float VectorLength(const float *v)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "VectorLength: sqrt of the sum of squares, via Float_Sqrt.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055358",
+   "name": "LittleShort",
+   "signature": "int LittleShort(short v)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "Little-endian host \"LittleShort\": sign-extends the short.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805536c",
+   "name": "CMod_LittleLong",
+   "signature": "int CMod_LittleLong(int v)",
+   "subsystem": "math/util",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Identity int->int; ~30 call sites all in CMod_* lump readers (chunk_003 lines 104-943) applied to every BSP lump field; id Tech 3 LittleLong on little-endian host. Distinguished from other TU copies by CMod_ prefix.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055374",
+   "name": "Swap_BitsToFloat",
+   "signature": "float Swap_BitsToFloat(uint32 bits)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "Reinterprets a 32-bit pattern as float (the pattern is passed through the stack and read back by Float_Identity).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055388",
+   "name": "Float_SelectNonNeg",
+   "signature": "float Float_SelectNonNeg(float cond, float ifNonNeg, float ifNeg)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "Returns ifNonNeg when 0.0 <= cond, otherwise ifNeg (NaN selects ifNeg).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080553b2",
+   "name": "Float_Sqrt",
+   "signature": "float Float_Sqrt(float v)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "sqrt computed in double precision and narrowed to float.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080553d2",
+   "name": "Int_SelectNonNeg",
+   "signature": "int Int_SelectNonNeg(int cond, int ifNonNeg, int ifNeg)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "Returns ifNeg when cond < 0, otherwise ifNonNeg.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080553f2",
+   "name": "Float_Identity",
+   "signature": "float Float_Identity(float v)",
+   "subsystem": "math/util",
+   "confidence": "unknown",
+   "evidence": "Returns its float argument unchanged.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055404",
+   "name": "CM_CullBox",
+   "signature": "int CM_CullBox(const struct traceWork_s *tw, const float *origin, const float *halfSize)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "Separating-axis style reject of the trace volume against an aabb (origin, halfSize): 1 = culled, 0 = may intersect. Name from the CoD4 CM_CullBox shape (three axis tests plus three cross-product tests unless axialCullOnly).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080555b6",
+   "name": "CM_PositionTestCapsuleInTriangle",
+   "signature": "void CM_PositionTestCapsuleInTriangle(const struct traceWork_s *tw, const struct CollisionTriangle_s *tri, struct trace_s *trace)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "Tests whether the trace sphere/capsule start position overlaps a collision triangle (face interior, then vertex and edge distance tests); on overlap sets fraction=0 and both solid flags. Name from CoD4 CM_PositionTestCapsuleInTriangle shape; not string-confirmed.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055af0",
+   "name": "CM_TraceThroughAabbTree_r",
+   "signature": "void CM_TraceThroughAabbTree_r(struct traceWork_s *tw, struct CollisionAabbTree_s *tree, struct trace_s *trace)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "Recursive swept trace through the aabb tree: culls with CM_CullBox, at a leaf (childCount 0) tests each not-yet-checked partition's triangles (point or capsule variant by tw->isPoint) and borders, else recurses over the children.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055d4c",
+   "name": "CM_PositionTestInAabbTree_r",
+   "signature": "void CM_PositionTestInAabbTree_r(struct traceWork_s *tw, struct CollisionAabbTree_s *tree, struct trace_s *trace)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "Position-test counterpart of CM_TraceThroughAabbTree_r: same cull and partition-check logic but tests each triangle with CM_PositionTestCapsuleInTriangle.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055e78",
+   "name": "CM_TraceThroughAabbTree",
+   "signature": "void CM_TraceThroughAabbTree(struct traceWork_s *tw, struct CollisionAabbTree_s *tree, struct trace_s *trace)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "Traces one aabb tree if its material contents match tw->contents; when the trace fraction shrinks, records the material's surface flags, contents and pointer in the trace.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055f02",
+   "name": "CM_TraceThroughAabbTreeMasked",
+   "signature": "void CM_TraceThroughAabbTreeMasked(struct traceWork_s *tw, struct CollisionAabbTree_s *tree, struct trace_s *trace)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "Calls CM_TraceThroughAabbTree only when the tree's material contents intersect tw->contents (the callee repeats the same test).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08055f50",
+   "name": "CM_PositionTestInTerrainLeaf",
+   "signature": "void CM_PositionTestInTerrainLeaf(struct traceWork_s *tw, const struct cLeaf_s *leaf, struct trace_s *trace)",
+   "subsystem": "collision/trace",
+   "confidence": "inferred",
+   "evidence": "Position test over all aabb trees of a leaf whose material contents match; stops at the first tree that sets the trace's 0x22 flag and copies that material's surface flags, contents and pointer into the trace. [rename collision: N12: only tests terrain aabb trees, not brush position test (which is cm_leaf_trace family); current name suggests the full Q3 CM_PositionTest and is misleading]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805618c",
+   "name": "Float_Abs_0805618c",
+   "signature": "float Float_Abs_0805618c(float v)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "fabs for a float (per-TU copy).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080561a6",
+   "name": "VectorCopy_080561a6",
+   "signature": "void VectorCopy_080561a6(const uint32 *src, uint32 *dst)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "VectorCopy (three 32-bit words), per-TU copy.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080561d6",
+   "name": "VectorAdd",
+   "signature": "void VectorAdd(const float *a, const float *b, float *out)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "VectorAdd: out = a + b.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805621a",
+   "name": "VectorSubtract",
+   "signature": "void VectorSubtract(const float *a, const float *b, float *out)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "VectorSubtract: out = a - b.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805625e",
+   "name": "VectorMA",
+   "signature": "void VectorMA(const float *a, float scale, const float *dir, float *out)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "VectorMA: out = a + scale * dir.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080562b2",
+   "name": "DotProduct",
+   "signature": "long double DotProduct(const float *a, const float *b)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "DotProduct, summed z, y, x in extended precision.",
+   "status": "translated",
+   "notes": "original returns extended-precision st0; modelled as float return"
+  },
+  {
+   "addr": "0x080562e6",
+   "name": "VectorLengthSquared",
+   "signature": "long double VectorLengthSquared(const float *v)",
+   "subsystem": "math/util",
+   "confidence": "inferred",
+   "evidence": "Squared length (v . v), summed z, y, x in extended precision.",
+   "status": "translated",
+   "notes": "original returns extended-precision st0; modelled as float return"
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188dc0",
+   "name": "cm",
+   "type": "struct clipMap_s",
+   "confidence": "inferred",
+   "evidence": "0x110-byte block zeroed by CM_LoadMapFromBsp; error string 'cm.numBrushes exceeded' at 0x813fa20; field offsets consistent across loaders"
+  },
+  {
+   "addr": "0x08188ed8",
+   "name": "cm_numPlanes",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "set by CMod_LoadPlanes; zeroed with the next two words"
+  },
+  {
+   "addr": "0x08188edc",
+   "name": "cm_planes",
+   "type": "struct cplane_s *",
+   "confidence": "inferred",
+   "evidence": "allocated by CMod_LoadPlanes (0x14 stride), indexed by nodes and brush sides"
+  },
+  {
+   "addr": "0x08188ee0",
+   "name": "cmod_base",
+   "type": "byte *",
+   "confidence": "inferred",
+   "evidence": "BSP image base added to every lump fileofs; cleared at the end of CM_LoadMapFromBsp"
+  },
+  {
+   "addr": "0x08188ee4",
+   "name": "cmod_lumpBuffer",
+   "type": "void *",
+   "confidence": "inferred",
+   "evidence": "buffer from CMod_ReadLump, released by CMod_FreeLump"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "clipMap_s",
+   "size": "0x110",
+   "evidence": "memset size in CM_LoadMapFromBsp and field offsets from all CMod_Load* functions; checksum at 0x10c"
+  },
+  {
+   "name": "cbrush_s",
+   "size": "0x30",
+   "evidence": "CMod_LoadBrushes stride and field writes"
+  },
+  {
+   "name": "cLeaf_s",
+   "size": "0x2c",
+   "evidence": "CMod_LoadLeafs stride; box leaf in CM_InitBoxHull"
+  },
+  {
+   "name": "cmodel_s",
+   "size": "0x48",
+   "evidence": "CMod_LoadSubmodels stride; fn_08059358 indexing"
+  },
+  {
+   "name": "cbrushnode_s",
+   "size": "0x14",
+   "evidence": "CM_AllocBrushNode size and CMod_PartionLeafBrushes_r field use"
+  },
+  {
+   "name": "CollisionAabbTree_s",
+   "size": "0x20",
+   "evidence": "CMod_LoadCollisionAabbTrees stride; CM_CullBox reads origin/halfSize"
+  },
+  {
+   "name": "CollisionTriangle_s",
+   "size": "0x48",
+   "evidence": "CMod_LoadCollisionTriangles stride"
+  },
+  {
+   "name": "CollisionEdge_s",
+   "size": "0x30",
+   "evidence": "CMod_LoadCollisionEdges stride"
+  },
+  {
+   "name": "CollisionBorder_s",
+   "size": "0x1c",
+   "evidence": "CMod_LoadCollisionBorders stride"
+  },
+  {
+   "name": "CollisionPartition_s",
+   "size": "0xc",
+   "evidence": "CMod_LoadCollisionPartitions stride"
+  },
+  {
+   "name": "traceWork_s",
+   "size": "unknown (>=0xb0)",
+   "evidence": "partial: offsets read by CM_CullBox, CM_PositionTestCapsuleInTriangle and the aabb-tree trace functions"
+  },
+  {
+   "name": "trace_s",
+   "size": "unknown (>=0x24)",
+   "evidence": "partial: fraction, surfaceFlags, contents, material, two flag bytes at 0x22/0x23"
+  }
+ ],
+ "open_questions": [
+  "Names and order of the trace_t flag bytes at 0x22/0x23 (startsolid vs allsolid) are unverified; only 0x22 is tested by CM_PositionTestInLeaf.",
+  "Roles of the Hunk-like callees fn_080abf78/fn_080ac088/fn_080ac14c/fn_080ac4bc and the temp bump buffer fn_0807a2e4 are inferred from shapes only; CM_HunkAlloc ignores the tag string and number passed by callers.",
+  "traceWork_t/trace_t full layouts and the semantics of fn_08056490/fn_0805631a/fn_08057046 (triangle/border trace tests) belong to the adjacent chunk; CollisionBorder field names are CoD4-lineage guesses with no evidence in this chunk."
+ ]
+}

@@ -1,0 +1,173 @@
+{
+ "renames": [
+  {
+   "addr": "0x080526f8",
+   "old": "CM_GetRecordShort28",
+   "new": "CM_LeafCluster",
+   "confidence": "inferred",
+   "evidence": "asm 0x80526f8: leaf index*0x2c into cm.leafs (0x8188de8), movsx word at +0x28 = cluster; callers (chunks 020/022/023) feed it to the PVS lookup; matches Q3 CM_LeafCluster"
+  },
+  {
+   "addr": "0x08059186",
+   "old": "cm_table_entry_address",
+   "new": "CM_ClusterPVS",
+   "confidence": "inferred",
+   "evidence": "asm: cluster bounds check vs 0x8188e44 (numClusters), stride 0x8188e48 (clusterBytes), base 0x8188e4c (visibility), 0x8188e50 flag; returns all-visible/base ptr when invalid; callers pass CM_LeafCluster result; Q3 CM_ClusterPVS"
+  },
+  {
+   "addr": "0x080592e2",
+   "old": "cm_scratch_stage_segment",
+   "new": "CM_TempBoxModel",
+   "confidence": "inferred",
+   "evidence": "asm: fetches per-thread slot pair, copies mins/maxs into slot box, stores contents at +0xc, returns handle 0x3ff (the temp-box model handle); callers chunks 023/045 use it for entity bounds clip; Q3 CM_TempBoxModel"
+  },
+  {
+   "addr": "0x080576dc",
+   "old": "cm_block_alloc",
+   "new": "AllocWinding",
+   "confidence": "inferred",
+   "evidence": "asm: increments live-count 0x8188eec with high-water 0x8188ef0, allocates 4+12*n bytes (n points of vec3 + count word); sibling free at 0x8057724 names FreeWinding by string; Q3 AllocWinding"
+  },
+  {
+   "addr": "0x08057724",
+   "old": "cm_block_free",
+   "new": "FreeWinding",
+   "confidence": "observed",
+   "evidence": "asm: checks magic 0xdeaddead and calls error with string at 0x8140020 'FreeWinding: freed a freed winding' (rodata), then marks magic, decrements count, frees"
+  },
+  {
+   "addr": "0x080526e4",
+   "old": "CM_GetCount_08188e34",
+   "new": "CM_NumSubModels",
+   "confidence": "inferred",
+   "evidence": "asm: returns dword at 0x8188e34 = cm+0x74 which collision.md section 9 N8 reconciles as numSubModels; current name embeds an address only"
+  },
+  {
+   "addr": "0x080526ee",
+   "old": "CM_GetCount_08188e58",
+   "new": "CM_EntityString",
+   "confidence": "inferred",
+   "evidence": "asm: returns dword at 0x8188e58 = cm+0x98, the entity-string pointer per N8 (set by CMod_LoadEntityString); Q3 CM_EntityString; the 'GetCount' name is wrong since it returns a pointer"
+  },
+  {
+   "addr": "0x08058b90",
+   "old": "cm_plane_tree_find_leaf",
+   "new": "CM_PointLeafnum_r",
+   "confidence": "inferred",
+   "evidence": "walks 8-byte plane-tree nodes until node<0, returns -1-leaf (chunk_004 comment); Q3 CM_PointLeafnum_r"
+  },
+  {
+   "addr": "0x08058c30",
+   "old": "cm_plane_tree_find_leaf_root",
+   "new": "CM_PointLeafnum",
+   "confidence": "inferred",
+   "evidence": "root wrapper of 0x08058b90 starting at the tree root; Q3 CM_PointLeafnum"
+  },
+  {
+   "addr": "0x08058c4c",
+   "old": "cm_leaf_list_add",
+   "new": "CM_StoreLeafs",
+   "confidence": "inferred",
+   "evidence": "appends leaf (-1-node) to the leaf list and records last leaf (chunk_004 comment); Q3 CM_StoreLeafs"
+  },
+  {
+   "addr": "0x08058cc2",
+   "old": "cm_plane_tree_collect",
+   "new": "CM_BoxLeafnums_r",
+   "confidence": "inferred",
+   "evidence": "box-vs-plane recursive traversal of plane tree collecting touched leaves via the store function; Q3 CM_BoxLeafnums_r"
+  },
+  {
+   "addr": "0x08058d6a",
+   "old": "cm_plane_tree_query_box",
+   "new": "CM_BoxLeafnums",
+   "confidence": "inferred",
+   "evidence": "sets up leaf list (items, capacity, last_leaf_out), calls the _r traversal from root, returns count; Q3 CM_BoxLeafnums signature (mins,maxs,list,max,lastLeaf); callers chunks 022/023 are area/snapshot leaf queries"
+  },
+  {
+   "addr": "0x08058f8c",
+   "old": "cm_point_contents",
+   "new": "CM_PointContents",
+   "confidence": "inferred",
+   "evidence": "returns contents bitmask for a point in a model's leaf/brush set (0 when outside leaf bounds); Q3 CM_PointContents"
+  },
+  {
+   "addr": "0x08059098",
+   "old": "cm_model_point_contents",
+   "new": "CM_TransformedPointContents",
+   "confidence": "inferred",
+   "evidence": "transforms point by origin and, when angles non-zero/NaN, by model axes then queries model contents; Q3 CM_TransformedPointContents"
+  },
+  {
+   "addr": "0x0805b894",
+   "old": "Sweep_TraceBoxInit",
+   "new": "CM_BoxTrace",
+   "confidence": "inferred",
+   "evidence": "per N18/call graph: memset result 0x24 bytes and fraction=1.0 then calls the trace body 0x0805b414; this is the public entry used by game/server trace calls (chunks 023/045/056); Q3 CM_BoxTrace"
+  },
+  {
+   "addr": "0x0805b414",
+   "old": "Sweep_TraceBoxDispatch",
+   "new": "CM_BoxTraceBody",
+   "confidence": "inferred",
+   "evidence": "N18: the CM_BoxTrace body (builds trace work, dispatches brush/terrain/static-model traversal) called by the initialising wrapper 0x0805b894; has no Q3 equivalent name"
+  },
+  {
+   "addr": "0x08055f50",
+   "old": "CM_PositionTestInLeaf",
+   "new": "CM_PositionTestInTerrainLeaf",
+   "confidence": "inferred",
+   "evidence": "N12: only tests terrain aabb trees, not brush position test (which is cm_leaf_trace family); current name suggests the full Q3 CM_PositionTest and is misleading"
+  }
+ ],
+ "rejected": [
+  {
+   "addr": "0x0805ac12",
+   "old": "Sweep_ClipBoxHalves",
+   "suggested": "CM_TraceCapsuleVsTempCapsule",
+   "reason": "Only call-graph evidence (N18); no string or Q3 counterpart; descriptive name not clearly better"
+  },
+  {
+   "addr": "0x0805bef2",
+   "old": "CM_TraceKdTree",
+   "suggested": "CM_TraceBrushNodeTree",
+   "reason": "N15: 'kd' is acceptable; no decisive evidence for a change"
+  },
+  {
+   "addr": "0x08058148",
+   "old": "CM_HunkReserveA",
+   "suggested": "XModel_HunkReserveA",
+   "reason": "N16: only an XModel_FindOrLoad callback but evidence is reference-only; name is address-identifying and harmless; subsystem tag is the fix"
+  },
+  {
+   "addr": "0x0805815c",
+   "old": "CM_HunkReserveB",
+   "suggested": "XModel_HunkReserveB",
+   "reason": "same as CM_HunkReserveA"
+  },
+  {
+   "addr": "0x08055216",
+   "old": "Float_Max",
+   "suggested": "Float_Max_<addr>",
+   "reason": "N13 duplicate names are across per-chunk files; merged symbols.json already uses unique address-suffixed names so no rename needed"
+  },
+  {
+   "addr": "0x08059270",
+   "old": "cm_scratch_acquire",
+   "suggested": "CM_GetThreadSlot",
+   "reason": "Only per-thread slot access (R1/N9) known; semantics of slot content unclear; not clearly better"
+  },
+  {
+   "addr": "0x08055076",
+   "old": "CMod_ReadLump",
+   "suggested": "CM_ReadLump",
+   "reason": "Existing CMod_ name matches Q3 lineage; no change"
+  },
+  {
+   "addr": "0x0805505e",
+   "old": "CM_PlaneFromIndex",
+   "suggested": "",
+   "reason": "Dead code, no caller; name plausible, no evidence for better"
+  }
+ ]
+}

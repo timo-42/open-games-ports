@@ -1,0 +1,1235 @@
+{
+ "chunk": 61,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0813b8fe",
+   "name": "RbNode_Left",
+   "signature": "int RbNode_Left(const struct cod2_str_map_s *m)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "returns node+0x08 (left link) of the tree node layout used by insert/rotate code at 0x0813b90a/0x0813bddc",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b90a",
+   "name": "RbTree_InsertWithHint",
+   "signature": "void *RbTree_InsertWithHint(void *out, struct cod2_str_map_s *tree, struct cod2_rb_node_s *x, struct cod2_rb_node_s *y, struct rb_pair_s *value)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "libstdc++ _Rb_tree::_M_insert shape (hint x, parent y, header tree+4, count tree+8, comparator tree+0xc); calls RbTree_InsertFixup 0x0813bb08",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813baa8",
+   "name": "RbNode_ParentSlot",
+   "signature": "struct cod2_rb_node_s **RbNode_ParentSlot(struct cod2_rb_node_s *node)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "returns node+0x04 (parent link); used by RbTree_InsertWithHint",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813bab4",
+   "name": "RbTree_Begin",
+   "signature": "void *RbTree_Begin(void *out, struct cod2_str_map_s *tree)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "copies leftmost node (via 0x0813add2) into iterator out",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813bae2",
+   "name": "Rb_InitWithFlag",
+   "signature": "void Rb_InitWithFlag(void *self, unsigned int arg, const byte *flag)",
+   "subsystem": "util/rbtree",
+   "confidence": "unknown",
+   "evidence": "initializes via 0x0813adee then stores one flag byte at +4; caller outside chunk",
+   "status": "translated",
+   "notes": "purpose unknown"
+  },
+  {
+   "addr": "0x0813bb08",
+   "name": "RbTree_InsertFixup",
+   "signature": "void RbTree_InsertFixup(struct cod2_rb_node_s *x, struct cod2_rb_node_s **root)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "libstdc++ _Rb_tree_insert_and_rebalance: color 0 red, 1 black; rotations 0x0813bddc/0x0813be68",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813bcc0",
+   "name": "RbTree_Clear",
+   "signature": "void RbTree_Clear(struct cod2_str_map_s *tree)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "calls erase helper 0x0813b7f4 with (tree, tree->header)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813bcde",
+   "name": "RbTree_CreateNode",
+   "signature": "struct cod2_rb_node_s *RbTree_CreateNode(struct cod2_str_map_s *tree, struct rb_pair_s *value)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "allocates node via 0x0813aec8, copy-constructs value at node+0x10",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813bd52",
+   "name": "Rb_ConstructValue",
+   "signature": "void Rb_ConstructValue(struct rb_pair_s *dst, const struct rb_pair_s *src)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "placement-new of pair (size 8) through 0x0813bdce then 0x0813bef4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813bdce",
+   "name": "Rb_PlacementNew",
+   "signature": "void *Rb_PlacementNew(unsigned int size, void *place)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "returns second argument (operator new(size, void*) behaviour)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813bdd6",
+   "name": "Rb_EmptyHook",
+   "signature": "void Rb_EmptyHook(void)",
+   "subsystem": "util/rbtree",
+   "confidence": "unknown",
+   "evidence": "empty function (frame setup and return only)",
+   "status": "translated",
+   "notes": "no observable behaviour"
+  },
+  {
+   "addr": "0x0813bddc",
+   "name": "Rb_RotateLeft",
+   "signature": "void Rb_RotateLeft(struct cod2_rb_node_s *x, struct cod2_rb_node_s **root)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "libstdc++ _Rb_tree_rotate_left shape (node+0x0c right child, root slot update)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813be68",
+   "name": "Rb_RotateRight",
+   "signature": "void Rb_RotateRight(struct cod2_rb_node_s *x, struct cod2_rb_node_s **root)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "mirror of Rb_RotateLeft (node+0x08 left child)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813bef4",
+   "name": "Rb_PairCopyConstruct",
+   "signature": "void Rb_PairCopyConstruct(struct rb_pair_s *dst, const struct rb_pair_s *src)",
+   "subsystem": "util/rbtree",
+   "confidence": "inferred",
+   "evidence": "calls _ZNSsC1ERKSs twice (+0x0, +0x4) with landing pad destroying first member (0x813bf27 _ZNSsD1Ev, _Unwind_Resume)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813bf4c",
+   "name": "PB_DispatchEvent3",
+   "signature": "void PB_DispatchEvent3(int event, int a, int b, int c)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "forwards to PB_Dispatch with sixth argument 0; called from 0x0813bf84, 0x0813c02c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813bf84",
+   "name": "PB_SendJoinedText",
+   "signature": "void PB_SendJoinedText(int tag, const char *first, const char *second)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "builds \"first second\" (single space, 2068-byte buffer, length cap 0x800) and sends event 0x0f",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c02c",
+   "name": "PB_ServerInit",
+   "signature": "void PB_ServerInit(void)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "installs handlers (0x0813c774), sends event 0x10 with \"\" (rodata 0x08160cc2), applies cvar \"0\" (rodata 0x08160cc3) when sb is NULL",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c07a",
+   "name": "PB_QueryServerEvent0",
+   "signature": "void PB_QueryServerEvent0(void)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "PB_QueryServer(pb, 0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c096",
+   "name": "PB_QueryServerEventNeg1",
+   "signature": "void PB_QueryServerEventNeg1(void)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "PB_QueryServer(pb, -1); called from PB_HandleCommand Cmd_Exec path with \"pb_\" prefix",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c0b2",
+   "name": "PB_SendEvent33",
+   "signature": "void PB_SendEvent33(int first, int second)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "unknown",
+   "evidence": "PB_Dispatch event 0x33 with arguments (-1, second, first, 0)",
+   "status": "translated",
+   "notes": "event meaning unknown"
+  },
+  {
+   "addr": "0x0813c0ec",
+   "name": "PB_OnConnectPacket",
+   "signature": "void PB_OnConnectPacket(int a, int b)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Only caller: the 'connect' branch of SV_ConnectionlessPacket (chunk_021:1544) which passes (address text or \"localhost\", raw packet data) immediately before SV_DirectConnect; invokes punkbuster_s callback slot +0x158 if set. Purpose of the pbsv.so side is unobserved, the role (hook on connect OOB packet) is.",
+   "status": "translated",
+   "notes": "callback meaning unknown"
+  },
+  {
+   "addr": "0x0813c11c",
+   "name": "PB_CheckClientConnect",
+   "signature": "const char *PB_CheckClientConnect(const char *addrText, int punkbuster, char *guidOut)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Only caller SV_DirectConnect (chunk_020:596): passes (local address text, cl_punkbuster value, keyA) and the returned string is used as an 'error\\n...' rejection text (network.md section 2/10); returns 0 when slot +0x15c unset.",
+   "status": "translated",
+   "notes": "callback meaning unknown"
+  },
+  {
+   "addr": "0x0813c19c",
+   "name": "PB_SendMapStartEventEnabled",
+   "signature": "void PB_SendMapStartEventEnabled(void)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Dispatches PB event 0x75; sole caller is the tail of SV_SpawnServer (chunk_021:878-880) in the branch where Dvar_GetBool(\"sv_punkbuster\") != 0 (string observed).",
+   "status": "translated",
+   "notes": "event meaning unknown"
+  },
+  {
+   "addr": "0x0813c1d8",
+   "name": "PB_SendMapStartEventDisabled",
+   "signature": "void PB_SendMapStartEventDisabled(void)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Dispatches PB event 0x76; sole caller is the tail of SV_SpawnServer in the branch where Dvar_GetBool(\"sv_punkbuster\") == 0 (string observed).",
+   "status": "translated",
+   "notes": "event meaning unknown"
+  },
+  {
+   "addr": "0x0813c214",
+   "name": "PB_ConsoleCapture",
+   "signature": "void PB_ConsoleCapture(char *text, int n)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "forwards to pb+0x160 callback, appends to con_cap_buf within con_cap_len; fields named by PB_HandleCommand ConCapBuf/ConCapBufLen",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c28c",
+   "name": "PB_HandleCommand",
+   "signature": "int PB_HandleCommand(char *cmd, char *args)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "rodata command names via strcasecmp: set_sv_punkbuster, ConCapBufLen, ConCapBuf, Cmd_Exec, DropClient, Cvar_Set, Dvar_Set; installed at pb+0x13c",
+   "status": "translated",
+   "notes": "ConCapBufLen stores pointer bits into the int limit (binary behaviour, kept)"
+  },
+  {
+   "addr": "0x0813c5de",
+   "name": "PB_StaticInit",
+   "signature": "void PB_StaticInit(int initialize_p, int priority)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "GCC static-init guard shape (initialize_p == 1, priority 0xffff); builds the object and registers PB_AtexitShutdown via __cxa_atexit",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c61e",
+   "name": "PB_AtexitShutdown",
+   "signature": "void PB_AtexitShutdown(void)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "calls PB_Shutdown on the global object",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c632",
+   "name": "PB_GlobalCtorEntry",
+   "signature": "void PB_GlobalCtorEntry(void)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "_GLOBAL__sub_I shape, calls PB_StaticInit(1, 0xffff)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c64e",
+   "name": "Int_ToStringRadix",
+   "signature": "char *Int_ToStringRadix(unsigned int value, char *out, unsigned int radix)",
+   "subsystem": "util/format",
+   "confidence": "unknown",
+   "evidence": "integer to string for radix 2..36 (lowercase digits), signed only for radix 10; \"0\" otherwise; checked against an independent model (108 cases)",
+   "status": "translated",
+   "notes": "purpose of caller unknown"
+  },
+  {
+   "addr": "0x0813c774",
+   "name": "PB_InitHandlers",
+   "signature": "void PB_InitHandlers(struct punkbuster_s *pb)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "clears handler slots then installs PB_HandleCommand at +0x13c and callbacks at +0x140/+0x144/+0x148/+0x154 (LAB_ addresses)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c7c8",
+   "name": "PB_Dispatch",
+   "signature": "int PB_Dispatch(struct punkbuster_s *pb, int event, int a, int b, int c, int d)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "lazy-load of pbsv.so when pending or absent (unload when loaded and pending), then proc_sb(pb, event, a..d); events 0x71/0x72 suppress load errors",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c888",
+   "name": "PB_QueryServer",
+   "signature": "int PB_QueryServer(struct punkbuster_s *pb, int event)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "calls proc_sa (symbol \"sa\") when loaded and not pending; starts a pending load with event 0x10 otherwise",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c938",
+   "name": "PB_Construct",
+   "signature": "void PB_Construct(struct punkbuster_s *pb)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "rodata string \"PunkBuster Server\" copied to object +0x14 by this function; magic 0x357afe24 at +0 [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813c9da",
+   "name": "PB_ClearHandlers",
+   "signature": "void PB_ClearHandlers(struct punkbuster_s *pb)",
+   "subsystem": "pb/punkbuster",
+   "confidence": "inferred",
+   "evidence": "zeroes +0x13c..+0x148 (command, cvar query, two callbacks)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ca14",
+   "name": "PB_UnloadServerDll",
+   "signature": "void PB_UnloadServerDll(struct punkbuster_s *pb)",
+   "subsystem": "pb/dll",
+   "confidence": "inferred",
+   "evidence": "clears proc table and callbacks, dlclose pbsv.so handle (+0x08)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ca88",
+   "name": "PB_LoadServerDll",
+   "signature": "char *PB_LoadServerDll(struct punkbuster_s *pb)",
+   "subsystem": "pb/dll",
+   "confidence": "inferred",
+   "evidence": "rodata names pbsvnew.so, pbsvold.so, pbsv.so, procs \"sa\"/\"sb\", errors \"PB Error: Server DLL Load Failure\" and \"... Get Procedure Failure\"; swaps pbsvnew.so into pbsv.so",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813cd06",
+   "name": "PB_Shutdown",
+   "signature": "void PB_Shutdown(struct punkbuster_s *pb)",
+   "subsystem": "pb/dll",
+   "confidence": "inferred",
+   "evidence": "unloads pbsv.so, closes pbcl.so and pbag.so",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813cd30",
+   "name": "PB_MakeExecutable",
+   "signature": "void PB_MakeExecutable(const char *path)",
+   "subsystem": "pb/paths",
+   "confidence": "inferred",
+   "evidence": "chmod(path, 0777)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813cd4c",
+   "name": "PB_BuildPath",
+   "signature": "char *PB_BuildPath(struct punkbuster_s *pb, char *out, char *name)",
+   "subsystem": "pb/paths",
+   "confidence": "inferred",
+   "evidence": "builds pb_dir + name; first call resolves home path and fs_basepath, mkdir, copies pbsv/pbcl/pbag.so when missing",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ce98",
+   "name": "PB_CloseClDll",
+   "signature": "void PB_CloseClDll(struct punkbuster_s *pb)",
+   "subsystem": "pb/dll",
+   "confidence": "inferred",
+   "evidence": "dlclose on pb+0x0c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813cec2",
+   "name": "PB_CloseAgDll",
+   "signature": "void PB_CloseAgDll(struct punkbuster_s *pb)",
+   "subsystem": "pb/dll",
+   "confidence": "inferred",
+   "evidence": "clears pb+0x164, dlclose on pb+0x10",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813cef8",
+   "name": "PB_GetFsBasePath",
+   "signature": "void PB_GetFsBasePath(struct punkbuster_s *pb, char *out)",
+   "subsystem": "pb/paths",
+   "confidence": "inferred",
+   "evidence": "rodata \"fs_basepath\" through cvar_query callback key 0x67",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813cf38",
+   "name": "PB_CopyDllIfMissing",
+   "signature": "void PB_CopyDllIfMissing(struct punkbuster_s *pb, const char *name, const char *src_dir)",
+   "subsystem": "pb/paths",
+   "confidence": "inferred",
+   "evidence": "copies src_dir+name to pb_dir+name when the destination cannot be opened",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813cff0",
+   "name": "PB_InitHomePath",
+   "signature": "void PB_InitHomePath(struct punkbuster_s *pb)",
+   "subsystem": "pb/paths",
+   "confidence": "inferred",
+   "evidence": "rodata \"fs_homepath\" through cvar_query key 0x67, getcwd fallback, trailing slash, \"pb/\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813d0ae",
+   "name": "PB_CopyFile",
+   "signature": "int PB_CopyFile(const char *src, const char *dst, int max_size)",
+   "subsystem": "pb/paths",
+   "confidence": "inferred",
+   "evidence": "fopen rb/wb, reads whole file into heap buffer, writes, returns 1 when counts match",
+   "status": "translated",
+   "notes": "binary pairs new[] with operator delete (kept)"
+  },
+  {
+   "addr": "0x0813d1f0",
+   "name": "MD5Transform",
+   "signature": "void MD5Transform(unsigned int *state, const unsigned int *x)",
+   "subsystem": "crypto/md5",
+   "confidence": "inferred",
+   "evidence": "RFC 1321 T constants and shifts match the decompiled literals (0xd76aa478.. and 7/12/17/22 etc.); validated against hashlib on 138 inputs",
+   "status": "translated",
+   "notes": "64 unrolled steps written as a loop with identical constants, shifts and word order"
+  },
+  {
+   "addr": "0x0813df1c",
+   "name": "MD5_InitSeeded",
+   "signature": "void MD5_InitSeeded(struct md5_ctx_s *ctx, unsigned int seed)",
+   "subsystem": "crypto/md5",
+   "confidence": "inferred",
+   "evidence": "IV 0x67452301/0xefcdab89/0x98badcfe/0x10325476 plus seed*11/71/37/97",
+   "status": "translated",
+   "notes": "seed 0 gives the standard MD5 IV"
+  },
+  {
+   "addr": "0x0813df9a",
+   "name": "MD5_Update",
+   "signature": "void MD5_Update(struct md5_ctx_s *ctx, const byte *data, unsigned int len)",
+   "subsystem": "crypto/md5",
+   "confidence": "inferred",
+   "evidence": "standard byte-wise MD5 update with 64-byte buffer at ctx+0x18",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813e0b4",
+   "name": "MD5_Final",
+   "signature": "void MD5_Final(struct md5_ctx_s *ctx)",
+   "subsystem": "crypto/md5",
+   "confidence": "inferred",
+   "evidence": "pads with 0x80 table, appends saved bit count as words 14/15, writes digest at ctx+0x58; validated against hashlib",
+   "status": "translated",
+   "notes": "word 14/15 taken from the saved count pair (stack adjacency in binary; confirmed by tests)"
+  },
+  {
+   "addr": "0x0813e230",
+   "name": "libc_csu_init",
+   "signature": "void libc_csu_init(void)",
+   "subsystem": "crt",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Address pushed as the init argument (before fini 0x0813e290) to __libc_start_main in _start (0x0804a6d0); body calls .init and ctors: glibc crt csu init.",
+   "status": "translated",
+   "notes": "caller unknown"
+  },
+  {
+   "addr": "0x0813e290",
+   "name": "Crt_RunFini",
+   "signature": "void Crt_RunFini(void)",
+   "subsystem": "crt",
+   "confidence": "inferred",
+   "evidence": "libc csu fini shape: list loop never executes on this path, then Crt_Fini",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813e2e0",
+   "name": "Crt_RunCtors",
+   "signature": "uint32 Crt_RunCtors(void)",
+   "subsystem": "crt",
+   "confidence": "inferred",
+   "evidence": "__do_global_ctors_aux shape: walks .ctors downward from g_0817d00c[4] to -1 sentinel",
+   "status": "partial",
+   "notes": "return value is an uninitialized local in the binary; this translation returns 0"
+  },
+  {
+   "addr": "0x0813e310",
+   "name": "Crt_Fini",
+   "signature": "void Crt_Fini(void)",
+   "subsystem": "crt",
+   "confidence": "inferred",
+   "evidence": "ELF .fini wrapper, calls placeholder fn_0804a710",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08a70000",
+   "name": "usleep",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::usleep placeholder at 0x08a70000 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70004",
+   "name": "mkdir",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::mkdir placeholder at 0x08a70004 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70008",
+   "name": "cos",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::cos placeholder at 0x08a70008 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a7000c",
+   "name": "ntohl",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::ntohl placeholder at 0x08a7000c outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70010",
+   "name": "std::string::operator=",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "inferred",
+   "evidence": "Ghidra EXTERNAL::std::string::operator= placeholder at 0x08a70010 outside the loaded image (no code bytes) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70014",
+   "name": "rename",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::rename placeholder at 0x08a70014 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70018",
+   "name": "std::string::compare",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "inferred",
+   "evidence": "Ghidra EXTERNAL::std::string::compare placeholder at 0x08a70018 outside the loaded image (no code bytes) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a7001c",
+   "name": "execl",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::execl placeholder at 0x08a7001c outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70020",
+   "name": "strncat",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::strncat placeholder at 0x08a70020 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70024",
+   "name": "vsprintf",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::vsprintf placeholder at 0x08a70024 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70028",
+   "name": "strchr",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::strchr placeholder at 0x08a70028 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a7002c",
+   "name": "std::allocator<char>::allocator",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::std::allocator<char>::allocator placeholder at 0x08a7002c outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70030",
+   "name": "atan",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::atan placeholder at 0x08a70030 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70034",
+   "name": "__cxa_pure_virtual",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::__cxa_pure_virtual placeholder at 0x08a70034 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70038",
+   "name": "pthread_mutexattr_settype",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::pthread_mutexattr_settype placeholder at 0x08a70038 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a7003c",
+   "name": "write",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::write placeholder at 0x08a7003c outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70040",
+   "name": "localtime",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::localtime placeholder at 0x08a70040 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70044",
+   "name": "recvfrom",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::recvfrom placeholder at 0x08a70044 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70048",
+   "name": "fileno",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::fileno placeholder at 0x08a70048 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a7004c",
+   "name": "strcmp",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::strcmp placeholder at 0x08a7004c outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70050",
+   "name": "isspace",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::isspace placeholder at 0x08a70050 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70054",
+   "name": "close",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::close placeholder at 0x08a70054 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70058",
+   "name": "asin",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::asin placeholder at 0x08a70058 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a7005c",
+   "name": "dlsym",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::dlsym placeholder at 0x08a7005c outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70060",
+   "name": "fprintf",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::fprintf placeholder at 0x08a70060 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70064",
+   "name": "fork",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::fork placeholder at 0x08a70064 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70068",
+   "name": "getenv",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::getenv placeholder at 0x08a70068 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a7006c",
+   "name": "signal",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::signal placeholder at 0x08a7006c outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70070",
+   "name": "std::string::string",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "inferred",
+   "evidence": "Ghidra EXTERNAL::std::string::string placeholder at 0x08a70070 outside the loaded image (no code bytes) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70074",
+   "name": "fflush",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::fflush placeholder at 0x08a70074 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70078",
+   "name": "seteuid",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::seteuid placeholder at 0x08a70078 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a7007c",
+   "name": "unlink",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::unlink placeholder at 0x08a7007c outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70080",
+   "name": "select",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::select placeholder at 0x08a70080 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70084",
+   "name": "vsnprintf",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::vsnprintf placeholder at 0x08a70084 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70088",
+   "name": "strerror",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::strerror placeholder at 0x08a70088 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a7008c",
+   "name": "tcsetattr",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::tcsetattr placeholder at 0x08a7008c outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70090",
+   "name": "isalnum",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::isalnum placeholder at 0x08a70090 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70094",
+   "name": "__cxa_atexit",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::__cxa_atexit placeholder at 0x08a70094 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a70098",
+   "name": "getpwuid",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::getpwuid placeholder at 0x08a70098 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a7009c",
+   "name": "operator.delete",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::operator.delete placeholder at 0x08a7009c outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700a0",
+   "name": "__errno_location",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::__errno_location placeholder at 0x08a700a0 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700a4",
+   "name": "ftell",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::ftell placeholder at 0x08a700a4 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700a8",
+   "name": "std::string::c_str",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "inferred",
+   "evidence": "Ghidra EXTERNAL::std::string::c_str placeholder at 0x08a700a8 outside the loaded image (no code bytes) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700ac",
+   "name": "system",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::system placeholder at 0x08a700ac outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700b0",
+   "name": "chmod",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::chmod placeholder at 0x08a700b0 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700b4",
+   "name": "tolower",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::tolower placeholder at 0x08a700b4 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700b8",
+   "name": "access",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::access placeholder at 0x08a700b8 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700bc",
+   "name": "std::string::operator=",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "inferred",
+   "evidence": "Ghidra EXTERNAL::std::string::operator= placeholder at 0x08a700bc outside the loaded image (no code bytes) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700c0",
+   "name": "malloc",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::malloc placeholder at 0x08a700c0 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700c4",
+   "name": "pthread_mutex_init",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::pthread_mutex_init placeholder at 0x08a700c4 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700c8",
+   "name": "std::string::~string",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "inferred",
+   "evidence": "Ghidra EXTERNAL::std::string::~string placeholder at 0x08a700c8 outside the loaded image (no code bytes) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700cc",
+   "name": "fread",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::fread placeholder at 0x08a700cc outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700d0",
+   "name": "memmove",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::memmove placeholder at 0x08a700d0 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700d4",
+   "name": "std::string::operator[]",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "inferred",
+   "evidence": "Ghidra EXTERNAL::std::string::operator[] placeholder at 0x08a700d4 outside the loaded image (no code bytes) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700d8",
+   "name": "sendto",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::sendto placeholder at 0x08a700d8 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700dc",
+   "name": "remove",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::remove placeholder at 0x08a700dc outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700e0",
+   "name": "__cxa_rethrow",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::__cxa_rethrow placeholder at 0x08a700e0 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700e4",
+   "name": "rint",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::rint placeholder at 0x08a700e4 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700e8",
+   "name": "std::string::string",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "inferred",
+   "evidence": "Ghidra EXTERNAL::std::string::string placeholder at 0x08a700e8 outside the loaded image (no code bytes) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700ec",
+   "name": "__xstat",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::__xstat placeholder at 0x08a700ec outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700f0",
+   "name": "setsockopt",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::setsockopt placeholder at 0x08a700f0 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  },
+  {
+   "addr": "0x08a700f4",
+   "name": "fseek",
+   "signature": "",
+   "subsystem": "imports",
+   "confidence": "observed",
+   "evidence": "Ghidra EXTERNAL::fseek placeholder at 0x08a700f4 outside the loaded image (no code bytes)",
+   "status": "partial",
+   "notes": "ELF import placeholder; no body to translate; signature not recovered"
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08a6f2c0",
+   "name": "g_08a6f2c0",
+   "type": "struct punkbuster_s",
+   "confidence": "observed",
+   "evidence": "object (size 0x170, .bss) written by 0x0813c938 with rodata string \"PunkBuster Server\"; all PB_* functions in this chunk address it"
+  },
+  {
+   "addr": "0x0817d3a4",
+   "name": "pb_dsoHandle",
+   "type": "void *",
+   "confidence": "inferred",
+   "evidence": "third argument of __cxa_atexit in PB_StaticInit (0x0813c5de); dso handle slot in .data"
+  },
+  {
+   "addr": "0x0817d00c",
+   "name": "g_0817d00c",
+   "type": "void (*[])(void)",
+   "confidence": "inferred",
+   "evidence": "start of .ctors (0x0817d00c); Crt_RunCtors starts at the slot 0x0817d01c (index 4) and walks downward"
+  },
+  {
+   "addr": "0x08188b60",
+   "name": "md5_padding",
+   "type": "unsigned char[64]",
+   "confidence": "observed",
+   "evidence": ".data MD5 padding block (0x80 then zeros) read by MD5_Final (0x0813e0b4)"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "punkbuster_s",
+   "size": "0x170",
+   "evidence": "offsets from 0x0813c28c..0x0813cff0: magic +0, dll handles +8/+0xc/+0x10, name +0x14, pb_dir +0x34, dll_pending +0x138, handlers +0x13c..+0x160, con_cap_buf +0x168, con_cap_len +0x16c"
+  },
+  {
+   "name": "md5_ctx_s",
+   "size": "0x68",
+   "evidence": "count[2] +0, state[4] +8, buffer +0x18 (64 bytes), digest +0x58 (16 bytes); MD5_Update/MD5_Final offsets"
+  },
+  {
+   "name": "rb_node_s",
+   "size": "0x18",
+   "evidence": "color +0, parent +4, left +8, right +0xc, value pair +0x10 (0x0813b90a, 0x0813bb08, 0x0813bddc, 0x0813be68)"
+  },
+  {
+   "name": "rb_tree_s",
+   "size": "partial (>= 0x10)",
+   "evidence": "header pointer +4, node_count +8 (incremented in 0x0813b90a), key comparator at +0xc"
+  },
+  {
+   "name": "rb_pair_s",
+   "size": "0x8",
+   "evidence": "std::pair<std::string,std::string> copy in 0x0813bef4 (old-ABI string, one pointer)"
+  },
+  {
+   "name": "cod2_std_string_s",
+   "size": "0x4",
+   "evidence": "old-ABI std::string (copy via _ZNSsC1ERKSs, destroy via _ZNSsD1Ev)"
+  }
+ ],
+ "open_questions": [
+  "The 62 entries at 0x08a70000..0x08a700f4 are Ghidra EXTERNAL import placeholders (libc/libstdc++ names), not code in the image; the merge lane should record them as imports and not as translated functions.",
+  "PB_InitHandlers stores code addresses LAB_0813c43a, LAB_0813c524, LAB_0813c582 and LAB_0813c5a8, which are outside this chunk function list; they are referenced as fn_0813c43a and friends and need function boundaries from the chunk that owns those bytes.",
+  "The red-black tree accessors (fn_0813ad4a root, fn_0813add2 leftmost, fn_0813ade0 rightmost, fn_0813af60 and fn_0813b7e8 child slots, fn_0813af94 comparator) are inferred from use; the owning chunks must confirm which link each one returns before the tree code is treated as a std::map equivalent.",
+  "Crt_RunCtors return value is an uninitialized stack local in the binary (translated as 0); confirm the caller ignores it.",
+  "Behaviour kept as found: PB_HandleCommand ConCapBufLen stores argument pointer bits into the int limit, and PB_CopyFile pairs new[] with operator delete. Both are observable in the binary and should be preserved in the native port unless the owner decides otherwise."
+ ]
+}

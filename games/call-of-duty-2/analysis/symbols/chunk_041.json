@@ -1,0 +1,735 @@
+{
+ "chunk": 41,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080dfb76",
+   "name": "PM_NudgeDirectionAgainstNormal",
+   "signature": "void PM_NudgeDirectionAgainstNormal(const float *dir, const float *normal, float *out)",
+   "subsystem": "pm/movement",
+   "confidence": "unknown",
+   "evidence": "no string or callee names it; behaviour: negate dir, nudge toward normal/+Z until dot >= 0.3 (0.7 when normal.z > 0.8)",
+   "status": "translated",
+   "notes": "callers not yet cross-checked against other lanes"
+  },
+  {
+   "addr": "0x080dfc78",
+   "name": "BG_AddPredictableEventToPlayerstate",
+   "signature": "void BG_AddPredictableEventToPlayerstate(uint32 newEvent, uint8 eventParm, struct playerState_s *ps)",
+   "subsystem": "pm/events",
+   "confidence": "inferred",
+   "evidence": "shape matches the id Tech 3 BG_AddPredictableEventToPlayerstate (ring of 4 events, eventSequence & 3); event 0 ignored",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dfcc2",
+   "name": "BG_PlayerStateToEntityState",
+   "signature": "void BG_PlayerStateToEntityState(struct playerState_s *ps, struct entityState_s *s, int snap, uint32 notifyRow)",
+   "subsystem": "pm/snapshot",
+   "confidence": "inferred",
+   "evidence": "matches id Tech 3 BG_PlayerStateToEntityState (origin/angles snap, flags 0x20000/0x40000, event ring); extra 4th arg selects dispatch row g_081869c0[notifyRow].notify",
+   "status": "translated",
+   "notes": "4th argument semantics unverified"
+  },
+  {
+   "addr": "0x080e01f4",
+   "name": "PM_ProbeClimbableLedge",
+   "signature": "int PM_ProbeClimbableLedge(int passEntity, const float *origin, float halfWidth, float height, float yaw, float *outTorsoHeight, float *outAngleA, float *outAngleB, int skipFirstTrace, int checkDuring, const float *groundNormal, uint8 traceMode, int altMaskSelect, float probeHeight)",
+   "subsystem": "pm/movement",
+   "confidence": "unknown",
+   "evidence": "3171-byte multi-trace ledge/step probe; uses trace fraction, normal[2] >= 0.7, startsolid; masks 0x810011/0x820011; no string names it",
+   "status": "translated",
+   "notes": "largest function in chunk; control flow checked against pseudocode, arguments inferred from call sites"
+  },
+  {
+   "addr": "0x080e0e58",
+   "name": "PM_ProbeClimbableLedgeEntry",
+   "signature": "int PM_ProbeClimbableLedgeEntry(int passEntity, const float *origin, float halfWidth, float height, float yaw, float *outTorsoHeight, float *outAngleA, float *outAngleB, int skipFirstTrace, int checkDuring, const float *groundNormal, uint8 traceMode, int altMaskSelect, float probeHeight)",
+   "subsystem": "pm/movement",
+   "confidence": "unknown",
+   "evidence": "pseudocode is a plain forwarding call with the same 14 arguments to 0x080e01f4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e0ece",
+   "name": "LerpColorOverTime",
+   "signature": "void LerpColorOverTime(const struct cod2_color_fade_s *fade, int now, uint8 *out)",
+   "subsystem": "render/color",
+   "confidence": "unknown",
+   "evidence": "RGBA fade between fields +0x20 and +0x24 over a start/duration window at +0x28/+0x2c; no string names it",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e103c",
+   "name": "VectorClear",
+   "signature": "void VectorClear(float *v)",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "writes three zero words (id Tech 3 VectorClear shape)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1066",
+   "name": "VectorSet",
+   "signature": "void VectorSet(float *v, float x, float y, float z)",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "three-word store; callers pass raw bit patterns (0x3f800000=1.0f, 0x40c00000=6.0f, 0xc0c00000=-6.0f, 0x80000000=-0.0f)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e108a",
+   "name": "VectorCopy",
+   "signature": "void VectorCopy(const float *src, float *dst)",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 VectorCopy shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e10ba",
+   "name": "VectorNegate",
+   "signature": "void VectorNegate(const float *src, float *dst)",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "XOR of sign bit 0x80000000 per component, equal to negation",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e10f8",
+   "name": "VectorAdd_080e10f8",
+   "signature": "void VectorAdd_080e10f8(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 VectorAdd shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e113c",
+   "name": "VectorSubtract_080e113c",
+   "signature": "void VectorSubtract_080e113c(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 VectorSubtract shape",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1180",
+   "name": "VectorScale_080e1180",
+   "signature": "void VectorScale_080e1180(const float *v, float scale, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "out = scale * v per component",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e11b8",
+   "name": "VectorMA_080e11b8",
+   "signature": "void VectorMA_080e11b8(const float *v, float scale, const float *dir, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "out = v + scale*dir (id Tech 3 VectorMA)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e120c",
+   "name": "DotProduct_080e120c",
+   "signature": "long double DotProduct_080e120c(const float *a, const float *b)",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 DotProduct; pseudocode returns long double (x87 st0), kept as long double",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1240",
+   "name": "VectorLength_080e1240",
+   "signature": "float VectorLength_080e1240(const float *v)",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "sum of squares passed to FloatSqrt; pseudocode falls through the sqrt call's st0 result",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e127e",
+   "name": "FloatSqrt",
+   "signature": "float FloatSqrt(float x)",
+   "subsystem": "math/scalar",
+   "confidence": "inferred",
+   "evidence": "single libm import (sqrt) computed in double and rounded to float",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e129e",
+   "name": "VectorLerp",
+   "signature": "void VectorLerp(const float *a, const float *b, float frac, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "out = a + (b-a)*frac; in-place safe",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1308",
+   "name": "PM_TraceRaw",
+   "signature": "void PM_TraceRaw(struct pmove_s *pm, struct trace_s *trace, const float *start, const float *mins, const float *maxs, const float *end, int passEntity, int contentMask)",
+   "subsystem": "pm/trace",
+   "confidence": "inferred",
+   "evidence": "dispatches through g_081869c0[pm->traceMode].trace (row index from pmove +0xe4), seven arguments",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1360",
+   "name": "PM_Trace",
+   "signature": "void PM_Trace(struct pmove_s *pm, struct trace_s *trace, const float *start, const float *mins, const float *maxs, const float *end, int passEntity, int contentMask)",
+   "subsystem": "pm/trace",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_trace counterpart: allsolid with contents bit 0x2000000 records the hit entity (trace +0x1c) in the touch list and retraces with that bit cleared",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1452",
+   "name": "PM_AddEvent",
+   "signature": "void PM_AddEvent(struct playerState_s *ps, int event)",
+   "subsystem": "pm/events",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_AddEvent: BG_AddPredictableEventToPlayerstate(event, 0, ps)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1474",
+   "name": "PM_AddTouchEnt",
+   "signature": "void PM_AddTouchEnt(struct pmove_s *pm, int entityNum)",
+   "subsystem": "pm/trace",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_AddTouchEnt shape: skips entity 0x3fe, unique add, capacity 32 (pmove +0x40 count, +0x44 list)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e14d4",
+   "name": "PM_ClipVelocity",
+   "signature": "void PM_ClipVelocity(const float *in, const float *normal, float *out)",
+   "subsystem": "pm/movement",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_ClipVelocity with overbounce fixed at 1.001 (backoff = dot - 0.001*|dot|), verified from the constant 0.001",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1532",
+   "name": "PM_StanceIndex",
+   "signature": "int PM_StanceIndex(const struct playerState_s *ps)",
+   "subsystem": "pm/stance",
+   "confidence": "inferred",
+   "evidence": "viewheightTarget 0x28 -> 2, 0xb -> 1, else 0; class index of stand/prone/crouch",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e156e",
+   "name": "PM_Friction",
+   "signature": "void PM_Friction(struct playerState_s *ps, struct pml_s *pml)",
+   "subsystem": "pm/movement",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_Friction; uses cvars g_08626fec (stop speed), g_08626ff0 (friction); 0x400 and 0x200 flag branches",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e170c",
+   "name": "PM_ShouldClampAcceleration",
+   "signature": "int PM_ShouldClampAcceleration(struct playerState_s *ps, float accel, const float *dir)",
+   "subsystem": "pm/movement",
+   "confidence": "inferred",
+   "evidence": "debug strings 'angle is %f (oldVel is ...)' and 'clamping acceleration from %f to %f' name the clamp; tests the turn angle against g_08626fe8",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e17fe",
+   "name": "PM_ClampAcceleration",
+   "signature": "float PM_ClampAcceleration(struct playerState_s *ps, float accel, const float *dir)",
+   "subsystem": "pm/movement",
+   "confidence": "inferred",
+   "evidence": "pairs with PM_ShouldClampAcceleration; limit is g_08626fe0 (the 'clamping acceleration to' value)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e188e",
+   "name": "PM_Accelerate",
+   "signature": "void PM_Accelerate(struct playerState_s *ps, struct pml_s *pml, const float *wishdir, float wishspeed, float accel)",
+   "subsystem": "pm/movement",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_Accelerate; second branch (pmFlags 0x20) steers velocity toward the wish vector",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1a02",
+   "name": "PM_MaxAxisCmdScale",
+   "signature": "float PM_MaxAxisCmdScale(const struct playerState_s *ps, float x, float y, float z)",
+   "subsystem": "pm/movement",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_CmdScale shape on raw (x,y,z); speed*max|c|/(127*len) with pmType and moveAxis factors",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1b1e",
+   "name": "PM_CmdScale2D",
+   "signature": "float PM_CmdScale2D(const struct playerState_s *ps, const struct usercmd_s *cmd)",
+   "subsystem": "pm/movement",
+   "confidence": "inferred",
+   "evidence": "forward/right-only command scale (max of |forwardMove|,|rightMove|); same modifiers as PM_MaxAxisCmdScale",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1c58",
+   "name": "PM_CmdScale",
+   "signature": "float PM_CmdScale(struct pmove_s *pm, const struct usercmd_s *cmd)",
+   "subsystem": "pm/movement",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_CmdScale: per-direction cvars g_08627040/g_08627044, stance transition blend via PM_StanceTransitionProgress, linked-entity scale at +0x264, cmd button 0x800",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1f20",
+   "name": "PM_PmTimeScale",
+   "signature": "float PM_PmTimeScale(int pmTime)",
+   "subsystem": "pm/movement",
+   "confidence": "unknown",
+   "evidence": "linear scale 1 + pmTime*(-g_08627058/g_08627054), 1 when either is zero",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e1f8c",
+   "name": "PM_SetMovementDir",
+   "signature": "void PM_SetMovementDir(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "pm/movement",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_SetMovementDir: movementDir from travel direction vs view yaw, clamped to +-90 and stored as int8",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e2220",
+   "name": "PM_GroundSurfaceType",
+   "signature": "int PM_GroundSurfaceType(const struct pml_s *pml)",
+   "subsystem": "pm/surface",
+   "confidence": "inferred",
+   "evidence": "bits 20..24 of ground trace surfaceFlags, zero when bit 0x2000 is set",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e225e",
+   "name": "PM_FreeMove",
+   "signature": "void PM_FreeMove(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "pm/movement",
+   "confidence": "unknown",
+   "evidence": "friction, then accelerate toward a 3D wish vector (vertical from buttons 0x80/0x40), then step-slide; no counterpart identified",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e23f8",
+   "name": "PM_AirMove",
+   "signature": "void PM_AirMove(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "pm/movement",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_WalkMove: friction, flatten forward/right to ground, accelerate, clip on groundPlane, step-slide, movement dir [rename pmove: Called from the PM_SingleStep dispatcher when pml.walking == 0 (0x80e92fb), from PM_WalkMove after a successful jump (0x80e25fe), and from PM_LadderMove after Player_TryJump succeeds (0x80e84b2). No jump check itself; matches Q3 PM_AirMove. Current name PM_WalkMove is swapped; must be applied in the same step as 0x080e25a6 so names stay unique.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e25a6",
+   "name": "PM_WalkMove",
+   "signature": "void PM_WalkMove(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "pm/movement",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_Move dispatch: fn_080dcca8 false -> airborne branch (pmTime countdown, gravity, clip, step-slide); true -> PM_WalkMove [rename pmove: Dispatcher in PM_SingleStep calls 0x080e25a6 when pml.walking (cmp [ebp-0x7c],0 ; jne) at 0x80e92e4. 0x080e25a6 calls Player_TryJump 0x080dcca8 at 0x80e25e8 and on success tail-calls 0x080e23f8 (0x80e25fe), exactly Q3 PM_WalkMove (jump -> PM_AirMove). Current name PM_Move is a non-lineage name. Apply together with the swap of 0x080e23f8.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e2a22",
+   "name": "PM_ReduceGroundSpeed",
+   "signature": "void PM_ReduceGroundSpeed(struct playerState_s *ps, struct pml_s *pml)",
+   "subsystem": "pm/movement",
+   "confidence": "unknown",
+   "evidence": "while walking, reduces velocity length by 20 units/s, clearing when it would reach zero",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e2aa2",
+   "name": "PM_FlyMove",
+   "signature": "void PM_FlyMove(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "pm/movement",
+   "confidence": "unknown",
+   "evidence": "no gravity, friction, 3D wish from cmd with up from buttons 0x80/0x40 at rate 9, integrates origin",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e2cec",
+   "name": "PM_ClimbMove",
+   "signature": "void PM_ClimbMove(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "pm/movement",
+   "confidence": "unknown",
+   "evidence": "like PM_FlyMove but side basis is cross(up, right) (surface-aligned frame)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e2fb0",
+   "name": "PM_FootstepSoundIndex",
+   "signature": "int PM_FootstepSoundIndex(const struct playerState_s *ps, const struct pml_s *pml)",
+   "subsystem": "pm/events",
+   "confidence": "inferred",
+   "evidence": "surface index offset by 0x18 / +1 / +0x2f by pmFlags and moveAxis",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e302a",
+   "name": "PM_GroundSoundIndexPlus18",
+   "signature": "int PM_GroundSoundIndexPlus18(const struct pml_s *pml)",
+   "subsystem": "pm/events",
+   "confidence": "unknown",
+   "evidence": "surface index + 0x18, zero when surface index is zero",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e305c",
+   "name": "PM_GroundSoundIndexPlus1",
+   "signature": "int PM_GroundSoundIndexPlus1(const struct pml_s *pml)",
+   "subsystem": "pm/events",
+   "confidence": "unknown",
+   "evidence": "surface index + 1, zero when surface index is zero",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e308c",
+   "name": "PM_GroundSoundIndexPlus5D",
+   "signature": "int PM_GroundSoundIndexPlus5D(const struct pml_s *pml)",
+   "subsystem": "pm/events",
+   "confidence": "unknown",
+   "evidence": "surface index + 0x5d, no zero check",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e30a8",
+   "name": "PM_GroundSoundIndexPlus74",
+   "signature": "int PM_GroundSoundIndexPlus74(const struct pml_s *pml)",
+   "subsystem": "pm/events",
+   "confidence": "unknown",
+   "evidence": "surface index + 0x74, no zero check",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e30c4",
+   "name": "PM_CrashLand",
+   "signature": "void PM_CrashLand(struct playerState_s *ps, struct pml_s *pml)",
+   "subsystem": "pm/damage",
+   "confidence": "inferred",
+   "evidence": "string 'bg_fallDamageMaxHeight must be greater than bg_fallDamageMinHeight' (cvars g_08626fd8/g_08626fdc); fall height from previous vz and gravity",
+   "status": "translated",
+   "notes": "cvar roles inferred from the string pair"
+  },
+  {
+   "addr": "0x080e34c6",
+   "name": "PM_CorrectAllSolid",
+   "signature": "int PM_CorrectAllSolid(struct pmove_s *pm, struct pml_s *pml, struct trace_s *trace)",
+   "subsystem": "pm/trace",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_CorrectAllSolid: 26 offsets g_081551e0[i], first non-allsolid one becomes origin; else airborne and return 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e36aa",
+   "name": "PM_GroundProbe",
+   "signature": "void PM_GroundProbe(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "pm/trace",
+   "confidence": "unknown",
+   "evidence": "single downward probe (1 unit when airborne, 64 units otherwise); emits fall event 3/4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e38a2",
+   "name": "PM_GroundTrace",
+   "signature": "void PM_GroundTrace(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "pm/trace",
+   "confidence": "inferred",
+   "evidence": "id Tech 3 PM_GroundTrace: trace +-0.25 (or -1.0 with buttonBits 0x300), startsolid/allsolid handling via PM_CorrectAllSolid, steep-slope and landing branches",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e3c46",
+   "name": "PM_StanceDurationMs",
+   "signature": "int PM_StanceDurationMs(const struct playerState_s *ps, int stanceTarget, int stanceToggled)",
+   "subsystem": "pm/stance",
+   "confidence": "unknown",
+   "evidence": "400 ms for prone and for crouch-toggle-clear, else 200; playerState argument not read",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e3c86",
+   "name": "PM_EvalStanceCurve",
+   "signature": "float PM_EvalStanceCurve(int percent, const struct cod2_pm_curve_key_s *table, float *scalarOut)",
+   "subsystem": "pm/stance",
+   "confidence": "unknown",
+   "evidence": "piecewise-linear table of {int key, float value, int scalar} rows terminated by key -1; raw-bit value and int scalar per disassembly",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e3dae",
+   "name": "PM_StanceTransitionProgress",
+   "signature": "float PM_StanceTransitionProgress(const struct pmove_s *pm, int fromStance, int toStance)",
+   "subsystem": "pm/stance",
+   "confidence": "unknown",
+   "evidence": "elapsed fraction of a stance transition from cmd.serverTime, 0 when no matching transition",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080e3eb0",
+   "name": "PM_UpdateStanceHeight",
+   "signature": "void PM_UpdateStanceHeight(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "pm/stance",
+   "confidence": "unknown",
+   "evidence": "moves viewheight toward viewheightTarget (60/40/11) using stance curve tables g_08186880/60/80/800 and a velocity nudge; else 180 units/s per frametime",
+   "status": "translated",
+   "notes": "largest stance routine; branch structure checked against pseudocode and disassembly"
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08626fe0",
+   "name": "g_08626fe0",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "float read at +8 (0x08626fe8); acceleration clamp limit named by the debug string 'clamping acceleration from %f to %f'"
+  },
+  {
+   "addr": "0x08626fe4",
+   "name": "g_08626fe4",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "low byte of value read at +8 selects the debug print in PM_ShouldClampAcceleration"
+  },
+  {
+   "addr": "0x08626fe8",
+   "name": "g_08626fe8",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "cosine threshold for the turn test in PM_ShouldClampAcceleration"
+  },
+  {
+   "addr": "0x08626fec",
+   "name": "g_08626fec",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "minimum speed (stop speed) in PM_Friction, PM_Accelerate, PM_FlyMove, PM_ClimbMove"
+  },
+  {
+   "addr": "0x08626ff0",
+   "name": "g_08626ff0",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "friction scale in PM_Friction and PM_FlyMove/PM_ReduceGroundSpeed paths"
+  },
+  {
+   "addr": "0x08626fd8",
+   "name": "g_08626fd8",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "min fall height; paired with bg_fallDamageMinHeight in PM_CrashLand's string"
+  },
+  {
+   "addr": "0x08626fdc",
+   "name": "g_08626fdc",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "max fall height; paired with bg_fallDamageMaxHeight in PM_CrashLand's string"
+  },
+  {
+   "addr": "0x08627040",
+   "name": "g_08627040",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "side-axis scale in PM_CmdScale"
+  },
+  {
+   "addr": "0x08627044",
+   "name": "g_08627044",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "negative forward scale in PM_CmdScale"
+  },
+  {
+   "addr": "0x08627048",
+   "name": "g_08627048",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "pmType 4 scale in PM_MaxAxisCmdScale, PM_CmdScale2D, PM_CmdScale"
+  },
+  {
+   "addr": "0x08627054",
+   "name": "g_08627054",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "denominator of the pmTime scale in PM_PmTimeScale"
+  },
+  {
+   "addr": "0x08627058",
+   "name": "g_08627058",
+   "type": "vmCvar_t",
+   "confidence": "inferred",
+   "evidence": "numerator slope of the pmTime scale in PM_PmTimeScale"
+  },
+  {
+   "addr": "0x0814cfc8",
+   "name": "vec3_origin",
+   "type": "float[3]",
+   "confidence": "inferred",
+   "evidence": "zero vector copied as a source by PM_FlyMove, PM_ClimbMove, PM_UpdateStanceHeight"
+  },
+  {
+   "addr": "0x0815486c",
+   "name": "g_pmLocalOnlyEventIds",
+   "type": "int32[]",
+   "confidence": "unknown",
+   "evidence": "sentinel-terminated id list searched in BG_PlayerStateToEntityState (negative terminator)"
+  },
+  {
+   "addr": "0x081551e0",
+   "name": "g_pmCorrectAllSolidOffsets",
+   "type": "float[26][3]",
+   "confidence": "inferred",
+   "evidence": "26 probe offsets used by PM_CorrectAllSolid"
+  },
+  {
+   "addr": "0x081869c0",
+   "name": "g_pmTraceDispatch",
+   "type": "cod2_pm_dispatch_s[]",
+   "confidence": "inferred",
+   "evidence": "12-byte rows: +0 trace function (7 args) selected by pmove traceMode; +8 notify hook (entity, event); +4 unknown"
+  },
+  {
+   "addr": "0x08186880",
+   "name": "g_stanceHeightCurveToProne",
+   "type": "cod2_pm_curve_key_s[]",
+   "confidence": "unknown",
+   "evidence": "stance curve for prone target in PM_UpdateStanceHeight / PM_CmdScale"
+  },
+  {
+   "addr": "0x08186960",
+   "name": "g_stanceHeightCurveProneToCrouch",
+   "type": "cod2_pm_curve_key_s[]",
+   "confidence": "unknown",
+   "evidence": "crouch-target curve, toggle clear"
+  },
+  {
+   "addr": "0x08186780",
+   "name": "g_stanceHeightCurveStandToCrouch",
+   "type": "cod2_pm_curve_key_s[]",
+   "confidence": "unknown",
+   "evidence": "crouch-target curve, toggle set"
+  },
+  {
+   "addr": "0x08186800",
+   "name": "g_stanceHeightCurveCrouchToStand",
+   "type": "cod2_pm_curve_key_s[]",
+   "confidence": "unknown",
+   "evidence": "stand-target curve"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "usercmd_s",
+   "size": "0x1c",
+   "evidence": "7-word copies of pmove+4..+0x1f; buttons@4, angles@0xc, forwardMove@0x18, rightMove@0x19; matches chunk_008 proposal"
+  },
+  {
+   "name": "playerState_s",
+   "size": "partial (not asserted)",
+   "evidence": "fields at 0x00..0x5cc from consistent offsets in this chunk; pmFlags@0x0c, origin@0x14, viewheight@0xf8 agree with chunk_023/chunk_008/chunk_019; 0x7c/0x84 and 0x4c/0x14 naming disagrees across lanes"
+  },
+  {
+   "name": "entityState_s",
+   "size": "partial (not asserted)",
+   "evidence": "fields written by BG_PlayerStateToEntityState; trBase@0x18, apos@0x3c, event@0xa0, events@0xa8, eventParms@0xb8"
+  },
+  {
+   "name": "pmove_s",
+   "size": "partial (not asserted)",
+   "evidence": "ps@0, cmd@4..0x1f, tracemask@0x3c, numtouch@0x40, touchents@0x44, mins@0xc4, maxs@0xd0, traceMode@0xe4"
+  },
+  {
+   "name": "pml_s",
+   "size": "0x6c minimum",
+   "evidence": "forward/right/up@0/0xc/0x18, frametime@0x24, walking@0x2c, groundPlane@0x30, groundTrace@0x38, previous_origin@0x60, previous_velocity@0x6c"
+  },
+  {
+   "name": "trace_s",
+   "size": "0x24",
+   "evidence": "layout proposed by chunk_003 (fraction, normal, surfaceFlags, contents, material); entityNum u16@0x1c and startsolid/allsolid@0x22/0x23 confirmed by use here"
+  },
+  {
+   "name": "cod2_pm_dispatch_s",
+   "size": "0xc",
+   "evidence": "indexed by pmove traceMode (row stride 12 at 0x081869c0); notify at +8"
+  },
+  {
+   "name": "cod2_pm_curve_key_s",
+   "size": "0xc",
+   "evidence": "{int key, float value, int scalar} rows, key -1 terminator; value read as raw bits, scalar via fild (disassembly 0x80e3c86)"
+  },
+  {
+   "name": "vmCvar_s",
+   "size": "0x14",
+   "evidence": "float value at +8 on the DAT_ cvar bases; Q3 vmCvar_t layout"
+  },
+  {
+   "name": "cod2_color_fade_s",
+   "size": "0x30 minimum",
+   "evidence": "from@0x20, to@0x24, startTime@0x28, duration@0x2c in LerpColorOverTime"
+  }
+ ],
+ "open_questions": [
+  "playerState_s and pmove_s are partial: several fields (ps 0x10, 0x64, 0x7c, 0x84, 0x9c range, 0x584/0x594/0x5a8 block, pmove 0x20..0x3b and 0xdc..0xe3) have only usage-derived names and no size is asserted; the layouts for the same offsets disagree across lanes (chunk_008/019/023), so the merge lane must reconcile them before promotion.",
+  "Dispatch row g_081869c0: the 7-argument trace function signature and the notify(entity, event) hook are consistent across 6 call sites, but the identity of the trace implementation behind rows 0x00 and 0x01 (content masks 0x810011/0x820011) and the meaning of the unknown +4 word are unverified.",
+  "Out-of-chunk placeholder signatures: fn_080a45fc (vector to two angles, returns float), fn_080eb9a4 (entity by number, returns a pointer read at +0x264), fn_080dcca8 (returns a signed char used as a boolean) and fn_080a4d5a (float pointer, returns float) are inferred from call sites only; the merge queue should verify them against their definitions."
+ ]
+}

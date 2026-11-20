@@ -1,0 +1,872 @@
+{
+ "chunk": 34,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080c3be4",
+   "name": "Vec3_AddScaledLerp",
+   "signature": "void Vec3_AddScaledLerp(const float *base, float scale, const float *a, const float *b, float t, float *out)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: out[i] = base[i] + Lerp_Float(a[i], b[i], t) * scale.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3c90",
+   "name": "Short2_ToFloat2",
+   "signature": "void Short2_ToFloat2(const short *src, float *dst)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: converts two int16 to two floats.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3cb0",
+   "name": "Lerp_Short",
+   "signature": "long double Lerp_Short(short a, short b, float t)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: a + (b - a) * t on int16 endpoints; result left in extended precision (st0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3ce2",
+   "name": "Lerp_Float",
+   "signature": "long double Lerp_Float(float a, float b, float t)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: a + (b - a) * t.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c522a",
+   "name": "Float_Sqrt_080c522a",
+   "signature": "float Float_Sqrt_080c522a(float x)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body (float)sqrt((double)x) through libm; same shape as Float_Sqrt_080aaebe. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c524a",
+   "name": "Vec3_CopyBits_080c524a",
+   "signature": "void Vec3_CopyBits_080c524a(const float *src, float *dst)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c527a",
+   "name": "ByteCursor_ReadInt16",
+   "signature": "short ByteCursor_ReadInt16(byte **cursor)",
+   "subsystem": "io/cursor",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): memcpy 2 bytes from *cursor, advance 2 (chunk body). Generic cursor reader; name states width/signedness.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c52b0",
+   "name": "ByteCursor_ReadUInt16",
+   "signature": "uint16 ByteCursor_ReadUInt16(byte **cursor)",
+   "subsystem": "io/cursor",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): memcpy 2 bytes from *cursor as uint16, advance 2.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c52e6",
+   "name": "ByteCursor_ReadFloat32",
+   "signature": "float ByteCursor_ReadFloat32(byte **cursor)",
+   "subsystem": "io/cursor",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): memcpy 4 bytes as float from *cursor, advance 4.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c79bc",
+   "name": "ByteCursor_ReadUInt32",
+   "signature": "uint32 ByteCursor_ReadUInt32(byte **cursor)",
+   "subsystem": "io/cursor",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): memcpy 4 bytes as uint32 from *cursor, advance 4; body returns uint32.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5e4c",
+   "name": "Stub_ReturnZero_080c5e4c",
+   "signature": "int Stub_ReturnZero_080c5e4c(void)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: returns 0, no arguments.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5e56",
+   "name": "Stub_Nop_080c5e56",
+   "signature": "void Stub_Nop_080c5e56(void)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5e64",
+   "name": "Float_Max",
+   "signature": "float Float_Max(float a, float b)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: a - b >= 0 ? a : b, i.e. max(a, b) (NaN yields b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5e88",
+   "name": "Vec3_CopyB",
+   "signature": "void Vec3_CopyB(const float *src, float *dst)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: copies three 32-bit words (src -> dst).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5eb8",
+   "name": "Vec3_Sub_080c5eb8",
+   "signature": "void Vec3_Sub_080c5eb8(const float *a, const float *b, float *out)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub, cm_vec3_sub_b, cm_vec3_sub_c; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5efc",
+   "name": "Vec3_MA",
+   "signature": "void Vec3_MA(const float *base, float scale, const float *dir, float *out)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: out = base + scale * dir (vec3 multiply-add).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5f50",
+   "name": "Vec3_Dot",
+   "signature": "long double Vec3_Dot(const float *a, const float *b)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: dot product, summed z + y + x.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5f84",
+   "name": "Float_SelectNonNegative_080c5f84",
+   "signature": "float Float_SelectNonNegative_080c5f84(float cond, float a, float b)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body returns a when x>=0 else b (fucompp/sahf); same family as Float_SelectNonNegative_080982de. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_select_by_sign, Float_SelectNonNegative_0805d552, Float_Select_0805fafc; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5fae",
+   "name": "Vec3_Scale_080c5fae",
+   "signature": "void Vec3_Scale_080c5fae(const float *v, float scale, float *out)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_scale, cm_vec3_scale_copy, cm_vec3_scale_local; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5fe6",
+   "name": "Vec3_RotateTransposed",
+   "signature": "void Vec3_RotateTransposed(const float *v, const float *axis9, float *out)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: out[j] = sum_i v[i] * axis[i*3 + j] (multiply by the transposed 3x3).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c6090",
+   "name": "Vec3_Rotate",
+   "signature": "void Vec3_Rotate(const float *v, const float *axis9, float *out)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: out[j] = dot(v, axis row j) (multiply by the 3x3).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c77cc",
+   "name": "Float_Sqrt_080c77cc",
+   "signature": "float Float_Sqrt_080c77cc(float x)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body (float)sqrt((double)x) through libm; same shape as Float_Sqrt_080aaebe. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c77ec",
+   "name": "Vec3_Clear",
+   "signature": "void Vec3_Clear(float *v)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: zeroes three 32-bit words.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7816",
+   "name": "Vec3_Set",
+   "signature": "void Vec3_Set(float *v, float x, float y, float z)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: v = (x, y, z). Callers pass raw bit patterns (FLT_MAX / -FLT_MAX).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c783a",
+   "name": "Vec3_CopyBits_080c783a",
+   "signature": "void Vec3_CopyBits_080c783a(const float *src, float *dst)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c786a",
+   "name": "Vec3_Sub_080c786a",
+   "signature": "void Vec3_Sub_080c786a(const float *a, const float *b, float *out)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub, cm_vec3_sub_b, cm_vec3_sub_c; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c78ae",
+   "name": "Vec3_Midpoint",
+   "signature": "void Vec3_Midpoint(const float *a, const float *b, float *out)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: out = (a + b) * 0.5. The constant 0.5 is a double in the binary.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c790a",
+   "name": "Vec3_LengthSq",
+   "signature": "long double Vec3_LengthSq(const float *v)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: squared length, summed z + y + x.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c793e",
+   "name": "Vec4_LengthSq",
+   "signature": "long double Vec4_LengthSq(const float *v)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: squared length of a 4-vector, summed w + z + y + x.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7984",
+   "name": "Vec3_Scale_080c7984",
+   "signature": "void Vec3_Scale_080c7984(const float *v, float scale, float *out)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_scale, cm_vec3_scale_copy, cm_vec3_scale_local; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3cf4",
+   "name": "XAnim_ReadQuat4",
+   "signature": "void XAnim_ReadQuat4(byte **cursor, short *out)",
+   "subsystem": "xanim/loader",
+   "confidence": "unknown",
+   "evidence": "Reads x, y, z int16 and reconstructs w = round(sqrt(32767^2 - x^2 - y^2 - z^2)), 0 when not positive.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3dd6",
+   "name": "XAnim_ReadQuat2",
+   "signature": "void XAnim_ReadQuat2(byte **cursor, short *out)",
+   "subsystem": "xanim/loader",
+   "confidence": "unknown",
+   "evidence": "Reads x int16 and reconstructs y = round(sqrt(32767^2 - x^2)), 0 when not positive.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3e62",
+   "name": "XAnim_LoadNotifies",
+   "signature": "void XAnim_LoadNotifies(const char *name, byte **cursor, struct XAnimParts *parts, void * alloc)",
+   "subsystem": "xanim/loader",
+   "confidence": "unknown",
+   "evidence": "Loads the notify list of an xanim: count byte, then (name string, uint16 frame) pairs, followed by an implicit \"end\" notify at time 1.0. Times are frame / numFrames.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c3f8a",
+   "name": "XAnim_LoadParts",
+   "signature": "struct XAnimParts *XAnim_LoadParts(const char *name, void * alloc)",
+   "subsystem": "xanim/loader",
+   "confidence": "inferred",
+   "evidence": "Evidence: reads \"xanim/%s\" and reports \"xanim '%s' ... (version %d, expecting %d)\"; the parsed object matches the IW-engine XAnimParts (frame rate, frequency, per-bone key lists, notifies). Format version 14. Returns 0 on any failure after printing the matching error.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5320",
+   "name": "XModel_IsDefault",
+   "signature": "uint8 XModel_IsDefault(const struct XModel *model)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Returns the byte at +0x8d, which the default-model initialiser sets to 1 and the replacement path (XModel_ReplaceWith) treats as \"this is the default model\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5330",
+   "name": "Global_Set_085e4ff8",
+   "signature": "void Global_Set_085e4ff8(uint32 value)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: stores its argument in global g_085e4ff8. Meaning of the global unknown.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c533e",
+   "name": "XModelParts_ReleaseBoneNames",
+   "signature": "void XModelParts_ReleaseBoneNames(struct XModelParts *parts)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Releases the script-string reference of every bone name of an xmodelparts.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c538e",
+   "name": "XModel_ReleaseSurfNames",
+   "signature": "void XModel_ReleaseSurfNames(struct XModel *model)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "For a non-default model, releases the script-string references of each lod's surface name list and clears the list pointer.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5450",
+   "name": "XModelParts_GetDefault",
+   "signature": "struct XModelParts *XModelParts_GetDefault(void)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Fills the static default xmodelparts (one root bone, no animation data) and returns it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c54ce",
+   "name": "XModelSurfs_GetDefault",
+   "signature": "struct XModelSurfs *XModelSurfs_GetDefault(void)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Zeroes and returns the static default xmodelsurfs.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c54ea",
+   "name": "XModel_InitDefault",
+   "signature": "void XModel_InitDefault(struct XModel *model)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Initialises a freshly allocated XModel as the \"DEFAULT\" model: default parts, four empty lods (one dummy surface name each), bounds -16..16 and isDefault = 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5646",
+   "name": "XModel_AllocDefault",
+   "signature": "struct XModel *XModel_AllocDefault(void * alloc)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Allocates 0x90 bytes with the supplied allocator and initialises them as the default model.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c566c",
+   "name": "DB_FindXModelParts",
+   "signature": "struct XModelParts *DB_FindXModelParts(const char *name)",
+   "subsystem": "assets/db",
+   "confidence": "inferred",
+   "evidence": "Asset-table lookup, asset type 3 (xmodelparts; the loader error strings name the type).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5688",
+   "name": "DB_RegisterXModelParts",
+   "signature": "void DB_RegisterXModelParts(const char *name, struct XModelParts *parts, void * alloc)",
+   "subsystem": "assets/db",
+   "confidence": "inferred",
+   "evidence": "Asset-table registration, asset type 3 (xmodelparts).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c56b2",
+   "name": "DB_FindXModelSurfs",
+   "signature": "struct XModelSurfs *DB_FindXModelSurfs(const char *name)",
+   "subsystem": "assets/db",
+   "confidence": "inferred",
+   "evidence": "Asset-table lookup, asset type 2 (xmodelsurfs).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c56ce",
+   "name": "DB_RegisterXModelSurfs",
+   "signature": "void DB_RegisterXModelSurfs(const char *name, struct XModelSurfs *surfs, void * alloc)",
+   "subsystem": "assets/db",
+   "confidence": "inferred",
+   "evidence": "Asset-table registration, asset type 2 (xmodelsurfs).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5714",
+   "name": "XModel_RegisterDefault",
+   "signature": "struct XModel *XModel_RegisterDefault(const char *name, void * alloc)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Creates the default model and registers it as xmodel (asset type 4) under the requested name.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c574e",
+   "name": "XModel_ReplaceWith",
+   "signature": "void XModel_ReplaceWith(struct XModel *dst, const struct XModel *src)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Evidence: error string \"Could not load replacement model.\". Overwrites dst with the 0x90 bytes of src keeping dst's name, then takes a script-string reference for every lod surface name that is now shared.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5840",
+   "name": "XModel_FindOrLoad",
+   "signature": "struct XModel *XModel_FindOrLoad(const char *name, void * alloc, void * allocColl)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Evidence: error string \"Cannot find xmodel '%s'.\". Lookup in the asset table (type 4); on a miss loads the model, registers it and stores the registered name pointer at +0x88; when loading fails prints the error and falls back to a registered default model.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c58f0",
+   "name": "XModel_GetBoneNames",
+   "signature": "uint16 *XModel_GetBoneNames(const struct XModel *model)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Returns the bone-name script string array of the model's parts.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5900",
+   "name": "XModel_GetBoneIndex",
+   "signature": "int XModel_GetBoneIndex(const struct XModel *model, uint32 boneName)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Searches the bone names from the last bone down for boneName; returns the index or -1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5958",
+   "name": "XModel_GetBounds",
+   "signature": "void XModel_GetBounds(const struct XModel *model, float *mins, float *maxs)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Copies the model bounds (mins at +0x64, maxs at +0x70) to the caller's vectors.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c598a",
+   "name": "XModel_GetLodName",
+   "signature": "const char *XModel_GetLodName(const struct XModel *model, int lod)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Returns the surface-asset name of lod index.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c59a6",
+   "name": "XModel_GetContents",
+   "signature": "int XModel_GetContents(const struct XModel *model)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Returns the OR of all collision surface contents (+0x5c).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c59b2",
+   "name": "XModel_GetCollLod",
+   "signature": "int XModel_GetCollLod(const struct XModel *model)",
+   "subsystem": "xmodel",
+   "confidence": "unknown",
+   "evidence": "Returns the int16 at +0x7e sign-extended (low half of a header int).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c59be",
+   "name": "XModel_GetUnknown80",
+   "signature": "int XModel_GetUnknown80(const struct XModel *model)",
+   "subsystem": "xmodel",
+   "confidence": "unknown",
+   "evidence": "Returns the 32-bit field at +0x80 (never written by the loaders).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c59cc",
+   "name": "XModel_GetMemUsage",
+   "signature": "int XModel_GetMemUsage(const struct XModel *model)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Returns the allocation byte count accumulated by the loaders at +0x84.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c79f0",
+   "name": "XModel_GetName",
+   "signature": "const char *XModel_GetName(const struct XModel *model)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Returns the model name pointer at +0x88.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c59da",
+   "name": "XModel_TraceLine",
+   "signature": "int XModel_TraceLine(struct XModel *model, struct XModelTrace *results, struct DObjBone *boneMats, const float *start, const float *end, uint32 contentMask)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Traces the segment start..end against the collision surfaces whose contents intersect contentMask, in each surface's bone space. On a closer hit fills results (fraction, normal, surfaceFlags, contents, allSolid = startSolid = 0) and remembers the bone; returns that bone index with the normal rotated back by the bone matrix, or -1 when nothing was hit.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c5dfc",
+   "name": "String_IsXModelPath",
+   "signature": "int String_IsXModelPath(const char *name)",
+   "subsystem": "assets/db",
+   "confidence": "inferred",
+   "evidence": "Evidence: strncasecmp(name, \"xmodel\", 6) followed by a '/' check (the binary tests '/' twice).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c613c",
+   "name": "XModelParts_ReadQuat4",
+   "signature": "void XModelParts_ReadQuat4(byte **cursor, short *out)",
+   "subsystem": "xmodel",
+   "confidence": "unknown",
+   "evidence": "Duplicate of XAnim_ReadQuat4 (own copy of the sqrt wrapper, Float_SqrtB).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c621e",
+   "name": "XModelParts_BuildBaseMats",
+   "signature": "void XModelParts_BuildBaseMats(struct XModelParts *parts)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Builds the base-pose matrices of an xmodelparts: identity-like (quat 0,0,0,1; trans 0; weight 2.0) for the root bones, then for each other bone quat = short/32767 combined with the parent matrix, weight recomputed and translation transformed by the parent. Finally sets both 16-byte bone masks to 0xff.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c63c4",
+   "name": "XModelParts_Load",
+   "signature": "struct XModelParts *XModelParts_Load(struct XModel *model, const char *name, void * alloc)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Evidence: reads \"xmodelparts/%s\"; errors \"xmodelparts '%s' not found / has 0 length / out of date (version %d, expecting %d)\" and \"xmodel '%s' has more than %d bones\" (limit 0x7f). Format version 20. Updates model->memUsage with every allocation (also before the bone limit check, as the original does).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c685c",
+   "name": "XModel_ReadHeader",
+   "signature": "int XModel_ReadHeader(const char *name, byte **cursor, struct XModelFileHeader *hdr)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Evidence: error \"xmodel '%s' out of date (version %d, expecting %d).\" Parses the xmodel header (version 20): flag byte, mins, maxs, then four (float dist, string name) lods and a 32-bit word. Returns 1 on success, 0 on a version mismatch.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c69d0",
+   "name": "XModel_ReadCollision",
+   "signature": "void XModel_ReadCollision(byte **cursor, struct XModel *model, void * alloc)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Reads the collision section: surface count, then per surface the triangle list (12 floats each), bounds (mins widened by -0.001, maxs by +0.001), bone index, contents (masked with 0xdffffffb), surface flags. Accumulates model->contents.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c6c66",
+   "name": "XModel_FindOrLoadParts",
+   "signature": "struct XModelParts *XModel_FindOrLoadParts(struct XModel *model, const char *name, void * alloc)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Evidence: error \"Cannot find xmodelparts '%s'.\". Asset-table lookup (type 3); on a miss loads the parts and registers them.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c6cea",
+   "name": "XModel_LoadFile",
+   "signature": "struct XModel *XModel_LoadFile(const char *name, void * allocModel, void * allocColl)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Evidence: reads \"xmodel/%s\"; errors \"xmodel '%s' not found / has 0 length\", \"filename '%s' too long\". Loads one xmodel file: header, one block holding the model and the lod name strings, collision surfaces (allocColl), per-lod surface-name script strings, the parts (via the asset table) and per-bone bounds. Returns 0 on failure.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7418",
+   "name": "Stub_ReturnZero_080c7418",
+   "signature": "int Stub_ReturnZero_080c7418(void)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: returns 0, no arguments (unreferenced in this chunk).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7422",
+   "name": "Stub_ReturnZero_080c7422",
+   "signature": "int Stub_ReturnZero_080c7422(void)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "Behaviour only: returns 0, no arguments (unreferenced in this chunk).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c742c",
+   "name": "XModel_SurfsLoadingEnabled",
+   "signature": "int XModel_SurfsLoadingEnabled(void)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Always 0 in this (dedicated server) build; gates the xmodelsurfs loading in XModel_LoadWithSurfs.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7436",
+   "name": "XModelSurfs_Load",
+   "signature": "int XModelSurfs_Load(struct XModel *model, const char *name, void * alloc, int numSurfNames, const char *modelName)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Dedicated-server stub of the xmodelsurfs loader: ignores its five arguments (only the int16 is spilled) and returns 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7450",
+   "name": "XModelSurfs_FindOrLoad",
+   "signature": "struct XModelSurfs *XModelSurfs_FindOrLoad(struct XModel *model, const char *name, void * alloc, short numSurfNames, const char *modelName)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Evidence: error \"Cannot find 'xmodelsurfs '%s'.\". Asset-table lookup (type 2); on a miss calls the (stubbed) loader, prints the error on failure, registers on success.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c74ea",
+   "name": "XModel_LoadAllSurfs",
+   "signature": "int XModel_LoadAllSurfs(struct XModel *model, void * alloc)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Loads the surfaces of every lod with a non-empty name; returns 0 as soon as one fails.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7586",
+   "name": "XModel_LoadWithSurfs",
+   "signature": "struct XModel *XModel_LoadWithSurfs(const char *name, void * allocModel, void * allocColl)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Loads the model file, then (when surface loading is enabled) the lod surfaces; on a surface failure releases the surface names and returns 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c75f6",
+   "name": "XModel_ComputeBounds",
+   "signature": "int XModel_ComputeBounds(const struct XModel *model, const float *axis9, float *mins, float *maxs)",
+   "subsystem": "xmodel",
+   "confidence": "inferred",
+   "evidence": "Transforms the 8 corners of every collision-surface box by the 3x3 axis and accumulates their bounds into mins/maxs (initialised to +FLT_MAX / -FLT_MAX). Returns 0 (outputs untouched) when the model has no collision surfaces.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x085e4f40",
+   "name": "g_085e4f40",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "default xmodelparts bone name slot; pointed to by g_085e4f44.names"
+  },
+  {
+   "addr": "0x085e4f44",
+   "name": "g_085e4f44",
+   "type": "struct XModelBoneHierarchy",
+   "confidence": "inferred",
+   "evidence": "set up in 0x080c5450 as default parts hierarchy"
+  },
+  {
+   "addr": "0x085e4f4c",
+   "name": "g_xmodelDefaultParts",
+   "type": "struct XModelParts",
+   "confidence": "inferred",
+   "evidence": "returned by 0x080c5450; numBones=numRootBones=1"
+  },
+  {
+   "addr": "0x085e4fb0",
+   "name": "g_xmodelDefaultSurfs",
+   "type": "struct XModelSurfs",
+   "confidence": "inferred",
+   "evidence": "zeroed and returned by 0x080c54ce; assigned to default lod0.surfs"
+  },
+  {
+   "addr": "0x085e4fc4",
+   "name": "g_xmodelDefaultBoneInfo",
+   "type": "struct XBoneInfo",
+   "confidence": "inferred",
+   "evidence": "default model bone info, bounds -16..+16 in 0x080c54ea"
+  },
+  {
+   "addr": "0x085e4fec",
+   "name": "g_085e4fec",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "default part classification byte, set to 0 in 0x080c5450"
+  },
+  {
+   "addr": "0x085e4fee",
+   "name": "g_085e4fee",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "default lod surface-name list element, zeroed in 0x080c54ea"
+  },
+  {
+   "addr": "0x085e4ff8",
+   "name": "g_085e4ff8",
+   "type": "uint32",
+   "confidence": "unknown",
+   "evidence": "written only by 0x080c5330; no reader in this chunk"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "XAnimParts",
+   "size": "0x2c",
+   "evidence": "alloc(0x2c) in 0x080c3f8a; field offsets from stores"
+  },
+  {
+   "name": "xanim_track_s",
+   "size": "0x8+",
+   "evidence": "rot/trans key list headers in 0x080c3f8a"
+  },
+  {
+   "name": "XModel",
+   "size": "0x90",
+   "evidence": "alloc(0x90) in 0x080c5646; memcpy 0x24 dwords in 0x080c574e"
+  },
+  {
+   "name": "XModelParts",
+   "size": "0x44+n*0x20",
+   "evidence": "alloc(n*0x20+0x44) in 0x080c63c4; 0x080c621e fills 0x20-byte DObjBone entries at +0x44"
+  },
+  {
+   "name": "DObjBone",
+   "size": "0x20",
+   "evidence": "0x080c621e stride 0x20: quat[4], trans[3], transWeight"
+  },
+  {
+   "name": "XModelCollSurf",
+   "size": "0x2c",
+   "evidence": "0x080c69d0 alloc n*0x2c"
+  },
+  {
+   "name": "XModelCollTri",
+   "size": "0x30",
+   "evidence": "0x080c69d0 alloc n*0x30, 12 floats"
+  },
+  {
+   "name": "XBoneInfo",
+   "size": "0x28",
+   "evidence": "0x080c6cea alloc n*0x28"
+  },
+  {
+   "name": "XModelFileHeader",
+   "size": "0x1030",
+   "evidence": "stack buffer in 0x080c6cea / 0x080c685c"
+  },
+  {
+   "name": "XModelTrace",
+   "size": "0x24",
+   "evidence": "result struct of 0x080c59da (writes +0..+0x14, +0x22, +0x23)"
+  }
+ ],
+ "open_questions": [
+  "XModel offset 0x7e (read as int16 via 0x080c59b2, filled from the low 16 bits of the header word at file-header +0x1028) is named collLod by analogy only; 0x80 is never written.",
+  "XModelParts bone masks at +0x14 and +0x34 (set to 0xff in 0x080c621e) and the 16 unwritten bytes at +0x24 have no identified consumer in this chunk.",
+  "Meaning of g_085e4ff8 (written by 0x080c5330) and of the two allocator arguments (allocModel vs allocColl); xmodelsurfs loading is stubbed on this server (0x080c742c/0x080c7436 return 0).",
+  "fn_080a76d6 argument order (q, parentQuat, out) and fn_080bc34e/fn_080ab3f8 semantics are taken from their pseudocode in other chunks, not validated."
+ ]
+}

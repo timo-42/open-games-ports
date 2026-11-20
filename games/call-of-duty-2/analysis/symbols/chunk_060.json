@@ -1,0 +1,1108 @@
+{
+ "chunk": 60,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x08138e64",
+   "name": "LocText_ReadChar",
+   "signature": "uint16 LocText_ReadChar(char **cursor, uint32 *is_punct)",
+   "subsystem": "localization/text",
+   "confidence": "inferred",
+   "evidence": "no literal names this function; it reads one character of localized text. The two-byte branches use codepage classes from the 0x0813815x..0x08138dxx helpers (outside this chunk) and the single-byte branch flags the sentence punctuation !?,.;: (0x21 0x3f 0x2c 0x2e 0x3b 0x3a). Descriptive name LocText_ReadChar. Ghidra label FUN_08138e64 at 0x08138e64, size 636.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081390e0",
+   "name": "LocText_MultibyteEnabled",
+   "signature": "int32 LocText_MultibyteEnabled(void)",
+   "subsystem": "localization/text",
+   "confidence": "inferred",
+   "evidence": "returns the global g_08a6e554 that gates the double-byte branch of LocText_ReadChar. Descriptive name LocText_MultibyteEnabled. Ghidra label FUN_081390e0 at 0x081390e0, size 10.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081390ea",
+   "name": "LocText_ClassIsSingleByte",
+   "signature": "bool LocText_ClassIsSingleByte(void)",
+   "subsystem": "localization/text",
+   "confidence": "inferred",
+   "evidence": "true when the current position's byte class is not one of the double-byte classes 9, 10, 11 (unsigned range test 2 < cls-9). Descriptive name LocText_ClassIsSingleByte. Ghidra label FUN_081390ea at 0x081390ea, size 40.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08139112",
+   "name": "LocText_CountVisibleChars",
+   "signature": "int32 LocText_CountVisibleChars(char *text)",
+   "subsystem": "localization/text",
+   "confidence": "inferred",
+   "evidence": "counts displayed characters of a localized string: the color code ^<digit> is skipped and CR/LF are not counted. Descriptive name LocText_CountVisibleChars. Ghidra label FUN_08139112 at 0x08139112, size 139.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813919e",
+   "name": "LocLanguage_Name",
+   "signature": "const char *LocLanguage_Name(int32 index)",
+   "subsystem": "localization/language",
+   "confidence": "inferred",
+   "evidence": "indexes the language table g_08188ae0 (first entry \"english\"); out-of-range indices fall back to entry 0. Descriptive name LocLanguage_Name. Ghidra label FUN_0813919e at 0x0813919e, size 48.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081391ce",
+   "name": "LocLanguage_Find",
+   "signature": "int32 LocLanguage_Find(const char *name, int32 *index)",
+   "subsystem": "localization/language",
+   "confidence": "inferred",
+   "evidence": "linear search of the 15-entry language table with Q_stricmp; writes the index (0 when absent). Descriptive name LocLanguage_Find. Ghidra label FUN_081391ce at 0x081391ce, size 95.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813922e",
+   "name": "LocText_IsEucKrHangulPair",
+   "signature": "int32 LocText_IsEucKrHangulPair(uint8 lead, uint8 trail)",
+   "subsystem": "localization/text",
+   "confidence": "inferred",
+   "evidence": "EUC-KR style two-byte pair test: lead 0xB0..0xC8, trail above 0xA0 and not 0xFF. Descriptive name LocText_IsEucKrHangulPair. Ghidra label FUN_0813922e at 0x0813922e, size 61.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813926c",
+   "name": "LocText_IsEucKrHangul",
+   "signature": "uint8 LocText_IsEucKrHangul(uint16 code)",
+   "subsystem": "localization/text",
+   "confidence": "inferred",
+   "evidence": "splits a 16-bit code into bytes and applies LocText_IsEucKrHangulPair. Descriptive name LocText_IsEucKrHangul. Ghidra label FUN_0813926c at 0x0813926c, size 36.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08139290",
+   "name": "LocText_IsDbcsPairClass10",
+   "signature": "uint8 LocText_IsDbcsPairClass10(uint16 code)",
+   "subsystem": "localization/text",
+   "confidence": "inferred",
+   "evidence": "class-10 pair test; forwards the two bytes to fn_08138cb6. Descriptive name LocText_IsDbcsPairClass10. Ghidra label FUN_08139290 at 0x08139290, size 36.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081392b4",
+   "name": "LocText_IsDbcsPairClassB",
+   "signature": "uint8 LocText_IsDbcsPairClassB(uint16 code)",
+   "subsystem": "localization/text",
+   "confidence": "inferred",
+   "evidence": "class-11 pair test; forwards the two bytes to fn_08138dac. Descriptive name LocText_IsDbcsPairClassB. Ghidra label FUN_081392b4 at 0x081392b4, size 36.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081392d8",
+   "name": "LocFile_LoadText",
+   "signature": "void *LocFile_LoadText(const char *qpath)",
+   "subsystem": "localization/files",
+   "confidence": "inferred",
+   "evidence": "loads a whole file through FS_ReadFile; returns the buffer, or NULL when the length is below 1. Descriptive name LocFile_LoadText. Ghidra label FUN_081392d8 at 0x081392d8, size 53.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813930e",
+   "name": "LocFile_Free",
+   "signature": "void LocFile_Free(void *buffer)",
+   "subsystem": "localization/files",
+   "confidence": "inferred",
+   "evidence": "releases a buffer from LocFile_LoadText through FS_FreeFile. Descriptive name LocFile_Free. Ghidra label FUN_0813930e at 0x0813930e, size 19.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08139322",
+   "name": "FS_CollectFilesRecursive",
+   "signature": "void FS_CollectFilesRecursive(const char *extension, const char *dir, struct cod2_string_s *list)",
+   "subsystem": "localization/files",
+   "confidence": "inferred",
+   "evidence": "recursive directory walk. Lists subdirectories (extension \"/\"), recurses into each except names starting with '.', then appends every \"dir/file\" that matches the extension to the ';'-separated list and counts it in g_08a6f180. Descriptive name FS_CollectFilesRecursive. Ghidra label FUN_08139322 at 0x08139322, size 391.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081394aa",
+   "name": "FS_CollectLocalizedFiles",
+   "signature": "int32 FS_CollectLocalizedFiles(const char *dir, struct cod2_string_s *list)",
+   "subsystem": "localization/files",
+   "confidence": "inferred",
+   "evidence": "resets the count and the list, collects every \".str\" file under dir (the extension is the literal \"str\" at 0x08160add), and returns the count. Descriptive name FS_CollectLocalizedFiles. Ghidra label FUN_081394aa at 0x081394aa, size 68.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081394f0",
+   "name": "LocTable_Reset",
+   "signature": "void LocTable_Reset(struct cod2_loc_table_s *t)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "clears the entry map, the ENDMARKER flag and the two strings (last keyword, last English value). Descriptive name LocTable_Reset. Ghidra label FUN_081394f0 at 0x081394f0, size 75.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813953c",
+   "name": "LocPath_GetDirectory",
+   "signature": "char *LocPath_GetDirectory(void *ctx, const char *path)",
+   "subsystem": "localization/paths",
+   "confidence": "inferred",
+   "evidence": "copies a path into g_08a6f1c0 (64 bytes) and cuts it at the last '/' or '\\' (directory part). Descriptive name LocPath_GetDirectory. Ghidra label FUN_0813953c at 0x0813953c, size 130.",
+   "status": "translated",
+   "notes": "The first argument is unused in the binary; kept as void *ctx."
+  },
+  {
+   "addr": "0x081395be",
+   "name": "LocPath_StripExtension",
+   "signature": "char *LocPath_StripExtension(void *ctx, const char *path)",
+   "subsystem": "localization/paths",
+   "confidence": "inferred",
+   "evidence": "copies a path into g_08a6f200 and cuts the last '.' when no '\\' or '/' follows it (extension removal). Descriptive name LocPath_StripExtension. Ghidra label FUN_081395be at 0x081395be, size 157.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813965c",
+   "name": "LocPath_GetBaseName",
+   "signature": "char *LocPath_GetBaseName(void *ctx, const char *path)",
+   "subsystem": "localization/paths",
+   "confidence": "inferred",
+   "evidence": "copies the part after the last '/' or '\\' into g_08a6f240 (base name). Descriptive name LocPath_GetBaseName. Ghidra label FUN_0813965c at 0x0813965c, size 80.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081396ac",
+   "name": "LocPath_GetParentBaseName",
+   "signature": "void LocPath_GetParentBaseName(void *ctx, const char *path)",
+   "subsystem": "localization/paths",
+   "confidence": "inferred",
+   "evidence": "base name of the directory of a path (calls LocPath_GetDirectory then LocPath_GetBaseName). Descriptive name LocPath_GetParentBaseName. Ghidra label FUN_081396ac at 0x081396ac, size 41.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081396d6",
+   "name": "LocTable_SetFileBaseName",
+   "signature": "void LocTable_SetFileBaseName(struct cod2_loc_table_s *t, const char *path)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "stores the upper-cased file base name (extension removed) in table->file_base; this prefix builds every entry key. Descriptive name LocTable_SetFileBaseName. Ghidra label FUN_081396d6 at 0x081396d6, size 88.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813972e",
+   "name": "LocLine_ConsumeKeyword",
+   "signature": "int32 LocLine_ConsumeKeyword(struct cod2_loc_table_s *t, const char *keyword, char **cursor)",
+   "subsystem": "localization/parser",
+   "confidence": "inferred",
+   "evidence": "case-insensitive keyword match at the cursor; on a match, advances past the keyword and any following spaces or tabs. Descriptive name LocLine_ConsumeKeyword. Ghidra label FUN_0813972e at 0x0813972e, size 123.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081397aa",
+   "name": "LocLine_CheckAmpersandSlots",
+   "signature": "int32 LocLine_CheckAmpersandSlots(const char *line)",
+   "subsystem": "localization/parser",
+   "confidence": "inferred",
+   "evidence": "checks the \"&&<digit>\" slot markers in a localized line: each digit (1..9 by value) may appear once, and a non-digit after \"&&\" fails. Descriptive name LocLine_CheckAmpersandSlots. Quirk: the binary indexes the flags by digit-'0'-1, so digit '0' reads the byte before the flag array; that byte is uninitialised there and is zeroed here (open question). Ghidra label FUN_081397aa at 0x081397aa, size 183.",
+   "status": "translated",
+   "notes": "Digit \"0\" indexes one byte before the flag array; that byte is uninitialised in the binary and zeroed here."
+  },
+  {
+   "addr": "0x08139862",
+   "name": "LocLine_UnescapeNewlines",
+   "signature": "struct cod2_string_s *LocLine_UnescapeNewlines(struct cod2_string_s *out, void *ctx, const struct cod2_string_s *in)",
+   "subsystem": "localization/parser",
+   "confidence": "inferred",
+   "evidence": "copies the input string and replaces each two-character escape \"\\n\" (0x08160b04) with a real newline. Descriptive name LocLine_UnescapeNewlines. Ghidra label FUN_08139862 at 0x08139862, size 126.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813990a",
+   "name": "LocLine_StripComment",
+   "signature": "void LocLine_StripComment(void *ctx, char *line)",
+   "subsystem": "localization/parser",
+   "confidence": "inferred",
+   "evidence": "removes a \"//\" comment outside quotes and trims trailing whitespace. The quote count accumulates across searches (binary behaviour kept). Descriptive name LocLine_StripComment. Ghidra label FUN_0813990a at 0x0813990a, size 211.",
+   "status": "translated",
+   "notes": "The quote count accumulates across searches (binary behaviour kept)."
+  },
+  {
+   "addr": "0x081399de",
+   "name": "LocLine_ReadNext",
+   "signature": "int32 LocLine_ReadNext(struct cod2_loc_table_s *t, char **cursor, char *line)",
+   "subsystem": "localization/parser",
+   "confidence": "inferred",
+   "evidence": "reads the next line from the file text (skipping CR/LF after it), copies it to line, strips trailing whitespace and comments; returns 0 at end of text. Descriptive name LocLine_ReadNext. Ghidra label FUN_081399de at 0x081399de, size 316.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08139b1a",
+   "name": "LocLine_ParseValue",
+   "signature": "struct cod2_string_s *LocLine_ParseValue(struct cod2_string_s *out, void *ctx, const char *text)",
+   "subsystem": "localization/parser",
+   "confidence": "inferred",
+   "evidence": "value unquoting: skips leading blanks and one opening quote, copies the rest, then removes trailing blanks and one closing quote. Descriptive name LocLine_ParseValue. Ghidra label FUN_08139b1a at 0x08139b1a, size 329.",
+   "status": "translated",
+   "notes": "If trimming leaves an empty string, the binary reads the byte before the buffer on the next pass. This translation returns instead (open question)."
+  },
+  {
+   "addr": "0x08139c8e",
+   "name": "LocLine_Parse",
+   "signature": "const char *LocLine_Parse(struct cod2_loc_table_s *t, char *line, uint8 english_only)",
+   "subsystem": "localization/parser",
+   "confidence": "inferred",
+   "evidence": "dispatches the .str keywords \"VERSION\", \"CONFIG\", \"FILENOTES\", \"NOTES\", \"FLAGS\", \"REFERENCE\", \"ENDMARKER\", \"LANG_\" (literals in the binary) and reports \"Unexpected version number %d, expecting %d!\", \"Unknown keyword at linestart\", \"Illegal string format\"; the literals describe the file format, not this function's name. Descriptive name LocLine_Parse. Ghidra label FUN_08139c8e at 0x08139c8e, size 156.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813a104",
+   "name": "LocTable_LastKeyword",
+   "signature": "const char *LocTable_LastKeyword(struct cod2_loc_table_s *t)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "returns the C string of the last REFERENCE key (table field at +0x04). Descriptive name LocTable_LastKeyword. Ghidra label FUN_0813a104 at 0x0813a104, size 22.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813a11a",
+   "name": "LocTable_DeclareKey",
+   "signature": "void LocTable_DeclareKey(struct cod2_loc_table_s *t, const char *keyword)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "REFERENCE handling. Makes sure the entry \"<file base>_<key>\" exists (creating it with an empty value when missing) and sets the last keyword to the key. Descriptive name LocTable_DeclareKey. Ghidra label FUN_0813a11a at 0x0813a11a, size 124.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813a31e",
+   "name": "LocTable_SetValue",
+   "signature": "void LocTable_SetValue(struct cod2_loc_table_s *t, const char *keyword, const char *value, uint8 is_english)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "stores a value under \"<file base>_<key>\". English values also update last_english, and \"#same\" in a non-English value takes last_english. The key is assumed to exist (REFERENCE); a missing key writes into the sentinel node (binary behaviour kept). Descriptive name LocTable_SetValue. Ghidra label FUN_0813a31e at 0x0813a31e, size 124.",
+   "status": "translated",
+   "notes": "Assumes the REFERENCE key exists. If it does not, the slot is the sentinel header value (binary behaviour kept)."
+  },
+  {
+   "addr": "0x0813a46c",
+   "name": "LocList_NextEntry",
+   "signature": "char *LocList_NextEntry(struct cod2_string_s *list)",
+   "subsystem": "localization/parser",
+   "confidence": "inferred",
+   "evidence": "pops the first ';'-terminated entry of the file list into g_08a6f280 (at most 63 characters) and returns it, or NULL when the list is empty. Descriptive name LocList_NextEntry. Ghidra label FUN_0813a46c at 0x0813a46c, size 188.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813a528",
+   "name": "LocTable_LoadFile",
+   "signature": "const char *LocTable_LoadFile(const char *qpath, uint8 english_only)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "loads one .str file into the current table; reports \"Unable to load \\\"%s\\\"!\" and \"Truncated file, failed to find \\\"%s\\\" at file end!\" (ENDMARKER check). Descriptive name LocTable_LoadFile. Ghidra label FUN_0813a528 at 0x0813a528, size 295.",
+   "status": "translated",
+   "notes": "Returns a static va() message on error; the buffer is freed before the ENDMARKER check."
+  },
+  {
+   "addr": "0x0813a650",
+   "name": "LocTable_Lookup",
+   "signature": "const char *LocTable_Lookup(const char *name)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "looks up a key in the current table (no prefix); returns the value's C string, or NULL when absent. Descriptive name LocTable_Lookup. Ghidra label FUN_0813a650 at 0x0813a650, size 84.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813a752",
+   "name": "LocTable_ResetCurrent",
+   "signature": "void LocTable_ResetCurrent(void)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "resets the current table. Descriptive name LocTable_ResetCurrent. Ghidra label FUN_0813a752 at 0x0813a752, size 21.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813a768",
+   "name": "LocTable_Create",
+   "signature": "void LocTable_Create(void)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "allocates, constructs and resets a new table and makes it the current one. Descriptive name LocTable_Create. Ghidra label FUN_0813a768 at 0x0813a768, size 46.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813a7d0",
+   "name": "LocTable_Destroy",
+   "signature": "void LocTable_Destroy(void)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "resets and destroys the current table, then clears the global. Descriptive name LocTable_Destroy. Ghidra label FUN_0813a7d0 at 0x0813a7d0, size 78.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813a81e",
+   "name": "LocTable_LoadAll",
+   "signature": "const char *LocTable_LoadAll(uint8 english_only)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "loads every .str file under the literal directory \"localizedstrings\" into the current table, stopping at the first error. Descriptive name LocTable_LoadAll. Ghidra label FUN_0813a81e at 0x0813a81e, size 124.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813a8c2",
+   "name": "LocIter_Equal",
+   "signature": "bool LocIter_Equal(struct cod2_rb_node_s **a, struct cod2_rb_node_s **b)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "iterator equality (node pointers). Descriptive name LocIter_Equal. Ghidra label FUN_0813a8c2 at 0x0813a8c2, size 21.",
+   "status": "translated",
+   "notes": "Iterator arguments are pointers to iterator objects (verified in the disassembly: the callee dereferences them); internal callers compare node pointers directly."
+  },
+  {
+   "addr": "0x0813a8d8",
+   "name": "LocMap_Find",
+   "signature": "struct cod2_rb_node_s *LocMap_Find(struct cod2_str_map_s *m, const struct cod2_string_s *key)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "find through the tree search (0x0813aff6). Descriptive name LocMap_Find. Ghidra label FUN_0813a8d8 at 0x0813a8d8, size 44.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813a904",
+   "name": "LocMap_End",
+   "signature": "struct cod2_rb_node_s *LocMap_End(struct cod2_str_map_s *m)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "end() of the map (the sentinel header). Descriptive name LocMap_End. Ghidra label FUN_0813a904 at 0x0813a904, size 37.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813a92a",
+   "name": "LocMap_Subscript",
+   "signature": "struct cod2_string_s *LocMap_Subscript(struct cod2_str_map_s *m, const struct cod2_string_s *key)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "operator[] of the map: lower_bound, insert a pair (key, \"\") when the key is absent, return the value. Descriptive name LocMap_Subscript. Ghidra label FUN_0813a92a at 0x0813a92a, size 264.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813aaa8",
+   "name": "LocIter_KeyAddrWrap",
+   "signature": "struct cod2_string_s *LocIter_KeyAddrWrap(struct cod2_rb_node_s **it)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "wrapper of LocIter_KeyAddr (the key slot of the node). Descriptive name LocIter_KeyAddrWrap. Ghidra label FUN_0813aaa8 at 0x0813aaa8, size 19.",
+   "status": "translated",
+   "notes": "Iterator arguments are pointers to iterator objects (verified in the disassembly: the callee dereferences them); internal callers compare node pointers directly."
+  },
+  {
+   "addr": "0x0813aabc",
+   "name": "LocIter_NotEqual",
+   "signature": "bool LocIter_NotEqual(struct cod2_rb_node_s **a, struct cod2_rb_node_s **b)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "iterator inequality. Descriptive name LocIter_NotEqual. Ghidra label FUN_0813aabc at 0x0813aabc, size 21.",
+   "status": "translated",
+   "notes": "Iterator arguments are pointers to iterator objects (verified in the disassembly: the callee dereferences them); internal callers compare node pointers directly."
+  },
+  {
+   "addr": "0x0813aad2",
+   "name": "LocMap_InsertAt",
+   "signature": "struct cod2_rb_node_s *LocMap_InsertAt(struct cod2_str_map_s *m, struct cod2_rb_node_s *hint, const struct cod2_string_s *pair)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "insert with a hint: copies the hint, then _M_insert_unique with the hint. Descriptive name LocMap_InsertAt. Ghidra label FUN_0813aad2 at 0x0813aad2, size 69.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ab18",
+   "name": "Str_FindChar",
+   "signature": "char *Str_FindChar(char *s, int c)",
+   "subsystem": "util/string",
+   "confidence": "inferred",
+   "evidence": "thin wrapper of libc strchr (the call is a tail call; its result is the return value). Descriptive name Str_FindChar. Ghidra label FUN_0813ab18 at 0x0813ab18, size 26.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ab32",
+   "name": "Str_FindLastChar",
+   "signature": "char *Str_FindLastChar(char *s, int c)",
+   "subsystem": "util/string",
+   "confidence": "inferred",
+   "evidence": "thin wrapper of libc strrchr. Descriptive name Str_FindLastChar. Ghidra label FUN_0813ab32 at 0x0813ab32, size 26.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ab4c",
+   "name": "Str_FindSubstr",
+   "signature": "char *Str_FindSubstr(const char *haystack, const char *needle)",
+   "subsystem": "util/string",
+   "confidence": "inferred",
+   "evidence": "thin wrapper of libc strstr. Descriptive name Str_FindSubstr. Ghidra label FUN_0813ab4c at 0x0813ab4c, size 26.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ab66",
+   "name": "LocTable_Construct",
+   "signature": "void LocTable_Construct(struct cod2_loc_table_s *t)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "constructor of the table: three empty strings, then the map. Descriptive name LocTable_Construct. Ghidra label FUN_0813ab66 at 0x0813ab66, size 65.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813abf8",
+   "name": "LocTable_Dispose",
+   "signature": "void LocTable_Dispose(struct cod2_loc_table_s *t)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "destructor of the table: map first, then the strings in reverse order. Descriptive name LocTable_Dispose. Ghidra label FUN_0813abf8 at 0x0813abf8, size 23.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ac92",
+   "name": "LocTable_Alloc",
+   "signature": "void *LocTable_Alloc(void)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "allocates one zeroed 0x20-byte table (the caller's size argument is ignored by the binary too). Descriptive name LocTable_Alloc. Ghidra label FUN_0813ac92 at 0x0813ac92, size 20.",
+   "status": "translated",
+   "notes": "Caller passes 0x20; the binary ignores its argument and always allocates 0x20 zeroed bytes."
+  },
+  {
+   "addr": "0x0813aca6",
+   "name": "LocTable_Free",
+   "signature": "void LocTable_Free(void *p)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "frees a table through Com_Free_A. Descriptive name LocTable_Free. Ghidra label FUN_0813aca6 at 0x0813aca6, size 19.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813acba",
+   "name": "LocTable_EndMarkerSeen",
+   "signature": "int32 LocTable_EndMarkerSeen(struct cod2_loc_table_s *t)",
+   "subsystem": "localization/table",
+   "confidence": "inferred",
+   "evidence": "reads the ENDMARKER flag of the table. Descriptive name LocTable_EndMarkerSeen. Ghidra label FUN_0813acba at 0x0813acba, size 10.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813acc4",
+   "name": "LocMap_ClearWrap",
+   "signature": "void LocMap_ClearWrap(struct cod2_str_map_s *m)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "wrapper that clears a map. Descriptive name LocMap_ClearWrap. Ghidra label FUN_0813acc4 at 0x0813acc4, size 19.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813acd8",
+   "name": "LocMap_Clear",
+   "signature": "void LocMap_Clear(struct cod2_str_map_s *m)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "_M_erase of the whole tree: erases the subtree from the root, resets the sentinel to point at itself, and zeroes the count. Descriptive name LocMap_Clear. Ghidra label FUN_0813acd8 at 0x0813acd8, size 114.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ad4a",
+   "name": "LocMap_Root",
+   "signature": "struct cod2_rb_node_s **LocMap_Root(const struct cod2_str_map_s *m)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "the root of the tree (sentinel parent link). Returns the address of this link (verified against the disassembly). Descriptive name LocMap_Root. Ghidra label FUN_0813ad4a at 0x0813ad4a, size 14.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ad58",
+   "name": "LocPair_Destroy",
+   "signature": "void LocPair_Destroy(struct cod2_string_s *pair)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "destroys a pair of strings (second, then first). Descriptive name LocPair_Destroy. Ghidra label FUN_0813ad58 at 0x0813ad58, size 33.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ad7a",
+   "name": "LocMap_EraseSubtree",
+   "signature": "void LocMap_EraseSubtree(struct cod2_str_map_s *m, struct cod2_rb_node_s *x)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "_M_erase(x): erases the right subtree recursively, then destroys x and continues with its left child. Descriptive name LocMap_EraseSubtree. Ghidra label FUN_0813ad7a at 0x0813ad7a, size 87.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813add2",
+   "name": "LocMap_Leftmost",
+   "signature": "struct cod2_rb_node_s **LocMap_Leftmost(const struct cod2_str_map_s *m)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "the leftmost link of the sentinel (returns the address of the link). Descriptive name LocMap_Leftmost. Ghidra label FUN_0813add2 at 0x0813add2, size 14.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ade0",
+   "name": "LocMap_Rightmost",
+   "signature": "struct cod2_rb_node_s **LocMap_Rightmost(const struct cod2_str_map_s *m)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "the rightmost link of the sentinel (returns the address of the link). Descriptive name LocMap_Rightmost. Ghidra label FUN_0813ade0 at 0x0813ade0, size 14.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813adee",
+   "name": "LocIter_Copy",
+   "signature": "struct cod2_rb_node_s *LocIter_Copy(struct cod2_rb_node_s *src)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "iterator copy (the no-op prelude 0x0813b730 has no effect). Descriptive name LocIter_Copy. Ghidra label FUN_0813adee at 0x0813adee, size 29.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ae0c",
+   "name": "LocMap_Construct",
+   "signature": "void LocMap_Construct(struct cod2_str_map_s *m)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "map constructor: runs the compare-tag no-op, then LocMap_Init. Descriptive name LocMap_Construct. Ghidra label FUN_0813ae0c at 0x0813ae0c, size 44.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ae38",
+   "name": "LocMap_CompareInit",
+   "signature": "void LocMap_CompareInit(void *tag)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "no-op (empty key comparator initialisation). Descriptive name LocMap_CompareInit. Ghidra label FUN_0813ae38 at 0x0813ae38, size 5.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ae3e",
+   "name": "LocMap_Init",
+   "signature": "void LocMap_Init(struct cod2_str_map_s *m, const void *compare_tag, const void *alloc_tag)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "map initialisation: allocates the sentinel, sets the count to 0 and initialises the sentinel links. Descriptive name LocMap_Init. Ghidra label FUN_0813ae3e at 0x0813ae3e, size 47.",
+   "status": "translated",
+   "notes": "Compare and allocator tags are address-only parameters in the binary and unused here."
+  },
+  {
+   "addr": "0x0813ae6e",
+   "name": "LocMap_AllocHeader",
+   "signature": "void LocMap_AllocHeader(struct cod2_str_map_s *m, const void *alloc_tag)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "allocates the sentinel header (clears the pointer first, as the binary does). Descriptive name LocMap_AllocHeader. Ghidra label FUN_0813ae6e at 0x0813ae6e, size 48.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813ae9e",
+   "name": "LocMap_ResetHeaderPtr",
+   "signature": "void LocMap_ResetHeaderPtr(struct cod2_str_map_s *m, const void *alloc_tag)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "clears the sentinel pointer (the allocator no-op runs first). Descriptive name LocMap_ResetHeaderPtr. Ghidra label FUN_0813ae9e at 0x0813ae9e, size 36.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813aec2",
+   "name": "LocAlloc_Noop",
+   "signature": "void LocAlloc_Noop(void)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "no-op. Descriptive name LocAlloc_Noop. Ghidra label FUN_0813aec2 at 0x0813aec2, size 5.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813aec8",
+   "name": "LocNode_AllocHeader",
+   "signature": "void *LocNode_AllocHeader(const void *alloc_tag)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "allocates one node (0x18 bytes) for the sentinel. Descriptive name LocNode_AllocHeader. Ghidra label FUN_0813aec8 at 0x0813aec8, size 27.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813aee4",
+   "name": "LocNode_AllocArray",
+   "signature": "void *LocNode_AllocArray(const void *alloc_tag, int32 count)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "malloc(count * 0x18): the node array allocation. Descriptive name LocNode_AllocArray. Ghidra label FUN_0813aee4 at 0x0813aee4, size 28.",
+   "status": "translated",
+   "notes": "malloc(count * 0x18), node size of _Rb_tree_node<pair<string,string>>."
+  },
+  {
+   "addr": "0x0813af00",
+   "name": "LocMap_ResetHeader",
+   "signature": "void LocMap_ResetHeader(struct cod2_str_map_s *m)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "resets the sentinel: colour red, no root, left and right point at the sentinel itself. Descriptive name LocMap_ResetHeader. Ghidra label FUN_0813af00 at 0x0813af00, size 87.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813af58",
+   "name": "LocNode_Identity",
+   "signature": "void *LocNode_Identity(void *p)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "identity on a pointer argument. Descriptive name LocNode_Identity. Ghidra label FUN_0813af58 at 0x0813af58, size 8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813af60",
+   "name": "LocNode_Left",
+   "signature": "struct cod2_rb_node_s **LocNode_Left(struct cod2_rb_node_s *n)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "the left child link of a node (returns the address of the link). Descriptive name LocNode_Left. Ghidra label FUN_0813af60 at 0x0813af60, size 11.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813af6c",
+   "name": "LocMap_DestroyNode",
+   "signature": "void LocMap_DestroyNode(struct cod2_str_map_s *m, struct cod2_rb_node_s *n)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "destroys a node: its pair first, then frees the node. Descriptive name LocMap_DestroyNode. Ghidra label FUN_0813af6c at 0x0813af6c, size 40.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813af94",
+   "name": "LocMap_KeyLess",
+   "signature": "uint8 LocMap_KeyLess(const void *comparator, const struct cod2_string_s *a, const struct cod2_string_s *b)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "key comparator call (comparator object is empty); returns a < b through the string comparison. Descriptive name LocMap_KeyLess. Ghidra label FUN_0813af94 at 0x0813af94, size 29.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813afb2",
+   "name": "LocKey_IsLess",
+   "signature": "uint32 LocKey_IsLess(const struct cod2_string_s *a, const struct cod2_string_s *b)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "string less-than: compare(a, b) is negative (the sign bit of the result). Descriptive name LocKey_IsLess. Ghidra label FUN_0813afb2 at 0x0813afb2, size 29.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813afd0",
+   "name": "LocMap_EndIter",
+   "signature": "struct cod2_rb_node_s *LocMap_EndIter(struct cod2_str_map_s *m)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "end() iterator (the sentinel header). Descriptive name LocMap_EndIter. Ghidra label FUN_0813afd0 at 0x0813afd0, size 38.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813aff6",
+   "name": "LocRb_Find",
+   "signature": "struct cod2_rb_node_s *LocRb_Find(struct cod2_str_map_s *m, const struct cod2_string_s *key)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "map find: lower bound, then an equality test (not less either way). Returns end() when absent. Descriptive name LocRb_Find. Ghidra label FUN_0813aff6 at 0x0813aff6, size 274.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b108",
+   "name": "LocRb_LowerBoundWrap",
+   "signature": "struct cod2_rb_node_s *LocRb_LowerBoundWrap(struct cod2_str_map_s *m, const struct cod2_string_s *key)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "wrapper of LocRb_LowerBound. Descriptive name LocRb_LowerBoundWrap. Ghidra label FUN_0813b108 at 0x0813b108, size 44.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b134",
+   "name": "LocRb_LowerBound",
+   "signature": "struct cod2_rb_node_s *LocRb_LowerBound(struct cod2_str_map_s *m, const struct cod2_string_s *key)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "lower_bound: first node whose key is not less than key (end() when none). Descriptive name LocRb_LowerBound. Ghidra label FUN_0813b134 at 0x0813b134, size 148.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b1c8",
+   "name": "LocIter_KeyAddr",
+   "signature": "struct cod2_string_s *LocIter_KeyAddr(struct cod2_rb_node_s **it)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "address of the key slot of a node (node + 0x10). Descriptive name LocIter_KeyAddr. Ghidra label FUN_0813b1c8 at 0x0813b1c8, size 13.",
+   "status": "translated",
+   "notes": "Iterator arguments are pointers to iterator objects (verified in the disassembly: the callee dereferences them); internal callers compare node pointers directly."
+  },
+  {
+   "addr": "0x0813b1d6",
+   "name": "LocIter_Passthrough2",
+   "signature": "void *LocIter_Passthrough2(void *dst, const void *src)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "returns its first argument; the second is only forwarded to an identity helper. Descriptive name LocIter_Passthrough2. Ghidra label FUN_0813b1d6 at 0x0813b1d6, size 37.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b1fc",
+   "name": "LocIter_Identity",
+   "signature": "void *LocIter_Identity(void *p)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "identity on a pointer argument. Descriptive name LocIter_Identity. Ghidra label FUN_0813b1fc at 0x0813b1fc, size 10.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b206",
+   "name": "LocPair_Init",
+   "signature": "void LocPair_Init(struct cod2_string_s *pair, const struct cod2_string_s *key, const struct cod2_string_s *value)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "value_type constructor: copies key into pair[0] and value into pair[1]. Descriptive name LocPair_Init. Ghidra label FUN_0813b206 at 0x0813b206, size 48.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b25c",
+   "name": "LocRb_InsertHint",
+   "signature": "struct cod2_rb_node_s *LocRb_InsertHint(struct cod2_str_map_s *m, struct cod2_rb_node_s *hint, const struct cod2_string_s *pair)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "_M_insert_unique with a hint (libstdc++ 3.x shape): checks the hint against its neighbours; inserts at the leftmost, rightmost or hint position when the key fits, otherwise falls back to LocMap_InsertUnique. Descriptive name LocRb_InsertHint. Ghidra label FUN_0813b25c at 0x0813b25c, size 720.",
+   "status": "translated",
+   "notes": "Hint-based _M_insert_unique. Out-of-chunk fn_0813b90a is called with the sret convention (its first argument is the result slot); the fallback fn_0813b52c is LocMap_InsertUnique."
+  },
+  {
+   "addr": "0x0813b52c",
+   "name": "LocMap_InsertUnique",
+   "signature": "void LocMap_InsertUnique(struct cod2_rb_insert_s *ret, struct cod2_str_map_s *m, const struct cod2_string_s *pair)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "_M_insert_unique(pair): walks to the insertion point, detects an existing key (returns it with second = 0) or inserts a node and returns it with second = 1. Descriptive name LocMap_InsertUnique. Ghidra label FUN_0813b52c at 0x0813b52c, size 481.",
+   "status": "translated",
+   "notes": "_M_insert_unique returns pair<iterator,bool> through the first argument. The binary calls fn_0813bae2 to build the pair; this translation writes the two fields directly (same result). Depends on fn_0813bab4 (begin) and fn_0813b90a (insert)."
+  },
+  {
+   "addr": "0x0813b70e",
+   "name": "LocRb_DecrementAt",
+   "signature": "struct cod2_rb_node_s *LocRb_DecrementAt(struct cod2_rb_node_s *x)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "wrapper that decrements an iterator. Descriptive name LocRb_DecrementAt. Ghidra label FUN_0813b70e at 0x0813b70e, size 22.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b724",
+   "name": "LocNode_RightLink",
+   "signature": "struct cod2_rb_node_s **LocNode_RightLink(struct cod2_rb_node_s *n)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "the right child link of a node (node + 0x0c, value returned). Descriptive name LocNode_RightLink. Ghidra label FUN_0813b724 at 0x0813b724, size 11.",
+   "status": "translated",
+   "notes": "Iterator arguments are pointers to iterator objects (verified in the disassembly: the callee dereferences them); internal callers compare node pointers directly."
+  },
+  {
+   "addr": "0x0813b730",
+   "name": "LocIter_NoopPrep",
+   "signature": "void LocIter_NoopPrep(void)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "no-op (iterator assignment prelude). Descriptive name LocIter_NoopPrep. Ghidra label FUN_0813b730 at 0x0813b730, size 5.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b736",
+   "name": "LocRb_Decrement",
+   "signature": "struct cod2_rb_node_s *LocRb_Decrement(struct cod2_rb_node_s *x)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "_Rb_tree_decrement: header maps to the rightmost node; a node without a left child goes to the first ancestor it is a right child of; otherwise the rightmost node of the left subtree. Descriptive name LocRb_Decrement. Ghidra label FUN_0813b736 at 0x0813b736, size 158.",
+   "status": "translated",
+   "notes": "_Rb_tree_decrement shape. The binary works on the iterator through its address; here it is passed and returned by value."
+  },
+  {
+   "addr": "0x0813b7d4",
+   "name": "LocMap_DestroyMap",
+   "signature": "void LocMap_DestroyMap(struct cod2_str_map_s *m)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "destroys the map (wrapper of LocMap_Destroy). Descriptive name LocMap_DestroyMap. Ghidra label FUN_0813b7d4 at 0x0813b7d4, size 19.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b7e8",
+   "name": "LocNode_RightAlt",
+   "signature": "struct cod2_rb_node_s **LocNode_RightAlt(struct cod2_rb_node_s *n)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "the right child link of a node (node + 0x0c, returns the address of the link), used by the recursive erase and find. Descriptive name LocNode_RightAlt. Ghidra label FUN_0813b7e8 at 0x0813b7e8, size 11.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b7f4",
+   "name": "LocMap_FreeNode",
+   "signature": "void LocMap_FreeNode(struct cod2_str_map_s *m, struct cod2_rb_node_s *n)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "frees a node through LocNode_Free. Descriptive name LocMap_FreeNode. Ghidra label FUN_0813b7f4 at 0x0813b7f4, size 34.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b816",
+   "name": "LocNode_Free",
+   "signature": "void LocNode_Free(const void *unused, void *node)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "libc free of the node. Descriptive name LocNode_Free. Ghidra label FUN_0813b816 at 0x0813b816, size 19.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b82a",
+   "name": "LocMap_Destroy",
+   "signature": "void LocMap_Destroy(struct cod2_str_map_s *m)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "clears the map, then releases the sentinel header. Descriptive name LocMap_Destroy. Ghidra label FUN_0813b82a at 0x0813b82a, size 20.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b86e",
+   "name": "LocPair_DestroyAt",
+   "signature": "void LocPair_DestroyAt(struct cod2_string_s *pair)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "wrapper that destroys a pair. Descriptive name LocPair_DestroyAt. Ghidra label FUN_0813b86e at 0x0813b86e, size 19.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b882",
+   "name": "LocNode_KeyOf",
+   "signature": "struct cod2_string_s *LocNode_KeyOf(struct cod2_rb_node_s *n)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "key of a node (node + 0x10 through identity). Descriptive name LocNode_KeyOf. Ghidra label FUN_0813b882 at 0x0813b882, size 34.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b8a4",
+   "name": "LocNode_KeyAddr",
+   "signature": "struct cod2_string_s *LocNode_KeyAddr(struct cod2_rb_node_s *n)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "address of the key slot (node + 0x10). Descriptive name LocNode_KeyAddr. Ghidra label FUN_0813b8a4 at 0x0813b8a4, size 11.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b8b0",
+   "name": "LocIter_Identity2",
+   "signature": "void *LocIter_Identity2(void *unused, void *p)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "returns its second argument. Descriptive name LocIter_Identity2. Ghidra label FUN_0813b8b0 at 0x0813b8b0, size 8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b8b8",
+   "name": "LocIter_FromNode",
+   "signature": "struct cod2_rb_node_s *LocIter_FromNode(struct cod2_rb_node_s **dst, struct cod2_rb_node_s *node)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "iterator assignment from a node (no-op prelude, then the node). Descriptive name LocIter_FromNode. Ghidra label FUN_0813b8b8 at 0x0813b8b8, size 27.",
+   "status": "translated",
+   "notes": "Iterator arguments are pointers to iterator objects (verified in the disassembly: the callee dereferences them); internal callers compare node pointers directly."
+  },
+  {
+   "addr": "0x0813b8d4",
+   "name": "LocNode_KeyFromIter",
+   "signature": "struct cod2_string_s *LocNode_KeyFromIter(struct cod2_rb_node_s *it)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "key of a node reached through an iterator (same shape as LocNode_KeyOf). Descriptive name LocNode_KeyFromIter. Ghidra label FUN_0813b8d4 at 0x0813b8d4, size 34.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813b8f6",
+   "name": "LocKey_Passthrough",
+   "signature": "const struct cod2_string_s *LocKey_Passthrough(const void *unused, const struct cod2_string_s *key)",
+   "subsystem": "container/rbtree-map",
+   "confidence": "inferred",
+   "evidence": "returns its second argument (the search key, forwarded). Descriptive name LocKey_Passthrough. Ghidra label FUN_0813b8f6 at 0x0813b8f6, size 8.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08a6e554",
+   "name": "g_08a6e554",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "read by LocText_MultibyteEnabled; nonzero enables the double-byte branch of LocText_ReadChar"
+  },
+  {
+   "addr": "0x08188ae0",
+   "name": "loc_languageTable",
+   "type": "struct cod2_lang_entry_s[15]",
+   "confidence": "observed",
+   "evidence": "15 pointer/zero pairs in .data (0x08188ae0..0x08188b58); entry 0 points at \"english\"; indexed with 8-byte stride by LocLanguage_Name and LocLanguage_Find"
+  },
+  {
+   "addr": "0x08a6f1a0",
+   "name": "loc_currentTable",
+   "type": "struct cod2_loc_table_s *",
+   "confidence": "inferred",
+   "evidence": "current localized-string table; set by LocTable_Create and cleared by LocTable_Destroy; used by LocTable_LoadFile, LocTable_Lookup and LocTable_LoadAll"
+  },
+  {
+   "addr": "0x08a6f1c0",
+   "name": "loc_pathDirBuf",
+   "type": "char[64]",
+   "confidence": "inferred",
+   "evidence": "directory buffer of LocPath_GetDirectory (Q_strncpyz with size 0x40)"
+  },
+  {
+   "addr": "0x08a6f200",
+   "name": "loc_pathStemBuf",
+   "type": "char[64]",
+   "confidence": "inferred",
+   "evidence": "path-without-extension buffer of LocPath_StripExtension (strcpy, no bound)"
+  },
+  {
+   "addr": "0x08a6f240",
+   "name": "loc_pathBaseNameBuf",
+   "type": "char[64]",
+   "confidence": "inferred",
+   "evidence": "base-name buffer of LocPath_GetBaseName (strcpy, no bound)"
+  },
+  {
+   "addr": "0x08a6f280",
+   "name": "loc_listEntryBuf",
+   "type": "char[64]",
+   "confidence": "inferred",
+   "evidence": "current file-list entry of LocList_NextEntry (strncpy 63 + terminator at byte 63)"
+  },
+  {
+   "addr": "0x08a6f180",
+   "name": "loc_strFileCount",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "count of .str files appended by FS_CollectFilesRecursive; reset by FS_CollectLocalizedFiles"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "cod2_string_s",
+   "size": "0x04",
+   "evidence": "libstdc++ 3.x copy-on-write std::string, one pointer; shim imports chunk_000 PLT _ZNSsC1Ev, _ZNSsaSEPKc, _ZNKSs5c_strEv and others"
+  },
+  {
+   "name": "cod2_rb_node_s",
+   "size": "0x18",
+   "evidence": "_Rb_tree node: colour, parent, left, right (16 bytes) + pair<string,string> at +0x10; malloc(count*0x18) in LocNode_AllocArray"
+  },
+  {
+   "name": "cod2_str_map_s",
+   "size": "0x10",
+   "evidence": "std::map<string,string> object: header pointer at +0x04, node_count at +0x08, empty key comparator at +0x0c; LocMap_Init and LocTable_Construct"
+  },
+  {
+   "name": "cod2_loc_table_s",
+   "size": "0x20",
+   "evidence": "localized-string table: end flag +0x00, last keyword +0x04, last English value +0x08, file base +0x0c, map +0x10; Com_MallocZeroed(0x20) in LocTable_Alloc"
+  },
+  {
+   "name": "cod2_rb_insert_s",
+   "size": "0x08",
+   "evidence": "pair<iterator,bool> result of _M_insert_unique (LocMap_InsertUnique)"
+  },
+  {
+   "name": "cod2_lang_entry_s",
+   "size": "0x08",
+   "evidence": "language table entry: name pointer and a zero word; 15 entries in g_08188ae0"
+  }
+ ],
+ "open_questions": [
+  "Out-of-chunk fn_0813b90a (insert node), fn_0813bab4 (begin), fn_0813bcc0 (release sentinel) and fn_0813b8fe (non-empty test) have signatures inferred from their call sites in this chunk only. Confirm argument order and the sret convention for fn_0813b90a and fn_0813bab4 against their disassembly.",
+  "Classifier placeholders fn_08138154, fn_08138bcc, fn_08138c2c, fn_08138cb6, fn_08138d12, fn_08138dac, fn_08138dea are owned by a neighbouring chunk; return widths (int8/uint32) are taken from the call sites.",
+  "Iterator-returning helpers in this chunk pass iterators by value; the binary passes them by address and returns through a hidden pointer. Other chunks must not rely on this ABI for the LocMap/LocRb/LocIter helpers.",
+  "std::string operations are declared as cod2_string_* shims commented with the imported mangled symbols. Confirm the merge lane links them to the libstdc++ imports, and confirm the shim for operator+=(const char *) (_ZNSspLEPKc) against chunk_000.",
+  "Ampersand slot check indexes flags by digit-\"0\"-1 and reads one byte before the flag array for digit \"0\"; that byte is uninitialised in the binary and zeroed here.",
+  "LocLine_ParseValue on an empty result after trimming: binary reads the byte before the buffer on the next pass; translation returns early. Confirm this is unreachable from real .str files.",
+  "LocTable_SetValue with a missing REFERENCE key writes the sentinel node value slot (binary behaviour, no check).",
+  "Globals g_08a6e554, g_08188ae0, g_08a6f180, g_08a6f1a0 and the 64-byte buffers are declared extern in chunk_060_types.h and defined by an owning chunk or the merge lane (not defined here).",
+  "The pair-constructor call 0x0813bae2 used by the insert paths is replaced by direct field writes; confirm 0x0813bae2 has no side effects besides filling the pair.",
+  "Verified in rodata: g_08188ae0[0] points at \"english\" (0x08160740), followed by \"french\", \"german\", \"italian\". Language index logic is consistent with this order."
+ ]
+}

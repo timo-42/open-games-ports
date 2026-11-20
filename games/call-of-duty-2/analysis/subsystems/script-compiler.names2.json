@@ -1,0 +1,469 @@
+{
+ "functions": [
+  {
+   "addr": "0x0806fda2",
+   "old": "EmitAssign_20",
+   "new": "ScrCompile_EmitEvalArrayExpr",
+   "confidence": "descriptive",
+   "evidence": "Body: ScrCompile_ExprPush(rhs); ScrCompile_PrimaryExprPush(lhs); EmitEvalArray(srcPosA,srcPosB) (chunk_010). Opcode-numbered placeholder replaced by the emitted operation; not an assignment."
+  },
+  {
+   "addr": "0x0806fde0",
+   "old": "EmitAssign_23",
+   "new": "ScrCompile_EmitEvalArrayRefExpr",
+   "confidence": "descriptive",
+   "evidence": "Body: ExprPush(rhs); ScrCompile_StoreLvalueChecked(lhs); EmitEvalArrayRef (chunk_010)."
+  },
+  {
+   "addr": "0x0806fe40",
+   "old": "EmitAssign_24",
+   "new": "ScrCompile_EmitClearArrayExpr",
+   "confidence": "descriptive",
+   "evidence": "Body: ExprPush(rhs); StoreLvalueChecked(lhs); EmitClearArray (chunk_010)."
+  },
+  {
+   "addr": "0x0806fe26",
+   "old": "Compile_Forward_080723ae",
+   "new": "ScrCompile_LvalueFromObjectBaseThunk",
+   "confidence": "descriptive",
+   "evidence": "Body is a single tail call to ScrCompile_LvalueFromObjectBase(a,b) (0x080723ae); the address suffix was a placeholder."
+  },
+  {
+   "addr": "0x0806f25e",
+   "old": "ScrLocalBlock_AddVarA",
+   "new": "ScrLocalBlock_AddVarThunk1",
+   "confidence": "descriptive",
+   "evidence": "Single forward to ScrLocalBlock_AddVar; identical duplicate at 0x0806f8fa (A/B suffix replaced by ordinal)."
+  },
+  {
+   "addr": "0x0806f8fa",
+   "old": "ScrLocalBlock_AddVarB",
+   "new": "ScrLocalBlock_AddVarThunk2",
+   "confidence": "descriptive",
+   "evidence": "Second byte-identical forwarder to ScrLocalBlock_AddVar."
+  },
+  {
+   "addr": "0x08071f7c",
+   "old": "ScrCompile_LvalueVariantWrapper",
+   "new": "ScrCompile_LvalueVariantThunk",
+   "confidence": "descriptive",
+   "evidence": "Single forward (lvalue,scope) to ScrCompile_LvalueVariant (0x080722f8); Wrapper-style name replaced."
+  },
+  {
+   "addr": "0x08072736",
+   "old": "ScrCompile_LvalueVariantArg3",
+   "new": "ScrCompile_LvalueVariantThunkSkipArg2",
+   "confidence": "descriptive",
+   "evidence": "Forwards args 1 and 3 to ScrCompile_LvalueVariant, ignoring the middle int (signature in chunk_011)."
+  },
+  {
+   "addr": "0x080858dc",
+   "old": "fn_080858dc",
+   "new": "ScrParse_ReinternIdentifierLower",
+   "confidence": "descriptive",
+   "evidence": "Returns ScrStr_ReinternLower(a, g_lex_param, 0xd) (lowercase re-intern, chunk_013 0x08079a44); called 14 times from yyparse reduction actions on identifier values (chunk_018 lines 379..808) with the flags byte passed to Lex_RunParser (md section 4.4: 0x083deecc = lexer param)."
+  },
+  {
+   "addr": "0x08085902",
+   "old": "fn_08085902",
+   "new": "ScrParse_ReleaseStringWithLexParam",
+   "confidence": "descriptive",
+   "evidence": "Calls ScrStr_SetFlagOrDecRef(a, g_lex_param) (0x08079b28); no caller inside yyparse in chunk_018 (only definition found), so only the body is evidenced."
+  },
+  {
+   "addr": "0x0807a318",
+   "old": "ScrBuf_AdvanceA",
+   "new": "ScrBuf_AdvanceThunk1",
+   "confidence": "descriptive",
+   "evidence": "Byte-identical forwarder to ScrBuf_Advance(delta); md notes duplicate at 0x0807a32c."
+  },
+  {
+   "addr": "0x0807a32c",
+   "old": "ScrBuf_AdvanceB",
+   "new": "ScrBuf_AdvanceThunk2",
+   "confidence": "descriptive",
+   "evidence": "Second identical forwarder to ScrBuf_Advance(delta)."
+  },
+  {
+   "addr": "0x08117cb2",
+   "old": "Scr_GetFunction_08117cb2",
+   "new": "Scr_LookupBuiltinFunction",
+   "confidence": "descriptive",
+   "evidence": "strcmp scan of the 0x91-entry builtin table at 0x08188040, rewrites *name to canonical string, outputs developer flag, returns handler (chunk_050); called from ScrCompile_FunctionCall (chunk_011:142). The IW name Scr_GetFunction is already taken in symbols (different function), so a descriptive name is used; method counterpart is Scr_GetMethod 0x08117dea."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x083deecc",
+   "old": "g_083deecc",
+   "new": "g_lex_param",
+   "type_hint": "unsigned char",
+   "confidence": "observed",
+   "evidence": "md 4.4 and Lex_RunParser: param stored at 0x083deecc, passed as flags into string interning in reductions (chunk_018 0x080858dc/0x08085902)."
+  },
+  {
+   "addr": "0x083deec0",
+   "old": "g_083deec0",
+   "new": "g_scr_parse_result",
+   "type_hint": "int *",
+   "confidence": "observed",
+   "evidence": "md section 1/4.4: parse-result pointer written via ScrBox_Make*(g_083deec0,...) for start rules; chunk 18 'int[5]' typing is wrong per md."
+  },
+  {
+   "addr": "0x08205c84",
+   "old": "g_08205c84",
+   "new": "g_scr_dependency_record_count",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "md 4.3/6.4: incremented by parser rules 31/33/129, decremented by EmitFunctionRef, Scr_CompileScriptUnit allocates count*12 bytes."
+  },
+  {
+   "addr": "0x08205c88",
+   "old": "g_08205c88",
+   "new": "g_scr_loaded_scripts_table",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "md: loaded-scripts var object keyed by normalised name id, used by Scr_LoadScriptFile cache lookup."
+  },
+  {
+   "addr": "0x08205c8c",
+   "old": "g_08205c8c",
+   "new": "g_scr_file_function_tables",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "md: per-file function tables keyed by name id (Compile_AddFuncRecord, Scr_LoadScriptFile)."
+  },
+  {
+   "addr": "0x08205c90",
+   "old": "g_08205c90",
+   "new": "g_scr_builtin_function_cache",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "md: builtin function cache name id -> {fn ptr, tag}, written by ScrCompile_FunctionCall after Scr_LookupBuiltinFunction."
+  },
+  {
+   "addr": "0x08205c94",
+   "old": "g_08205c94",
+   "new": "g_scr_builtin_method_cache",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "md: builtin method cache used by ScrCompile_MethodCall (Scr_GetMethod 0x08117dea)."
+  },
+  {
+   "addr": "0x08205c98",
+   "old": "g_08205c98",
+   "new": "g_scr_slot_table",
+   "type_hint": "unsigned short *",
+   "confidence": "observed",
+   "evidence": "md: 0x20000-byte u16[0x10000] table indexed by string handle, Scr_AssignSlot (0x08076034)."
+  },
+  {
+   "addr": "0x08205c9c",
+   "old": "g_08205c9c",
+   "new": "g_scr_source_cursor",
+   "type_hint": "const char *",
+   "confidence": "observed",
+   "evidence": "md: lexer read cursor, initialised to 0x0814445f, switched to g_08205ca0 at NUL by Scr_ReadSourceLine."
+  },
+  {
+   "addr": "0x08205ca0",
+   "old": "g_08205ca0",
+   "new": "g_scr_source_text",
+   "type_hint": "const char *",
+   "confidence": "observed",
+   "evidence": "md: loaded source text pointer; cursor switches to it once at end of the initial prefix."
+  },
+  {
+   "addr": "0x08205cb0",
+   "old": "g_08205cb0",
+   "new": "g_scr_code_length",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "md: code length = pos - base recomputed after each unit's top-level compile; read by Scr_IsInCodeRange and Scr_GetStatSnapshot."
+  },
+  {
+   "addr": "0x08397548",
+   "old": "g_08397548",
+   "new": "g_scr_code_base",
+   "type_hint": "char *",
+   "confidence": "observed",
+   "evidence": "md: Hunk_AllocLow(0) in Scr_InitCompileState; base for Scr_IsInCodeRange; md table names it scr_code_base."
+  },
+  {
+   "addr": "0x0839754c",
+   "old": "g_0839754c",
+   "new": "g_scr_global_window_end",
+   "type_hint": "char *",
+   "confidence": "inferred",
+   "evidence": "md: global-window end used by Scr_IsInGlobalRange [g_08397548, g_0839754c)."
+  },
+  {
+   "addr": "0x0839753c",
+   "old": "g_0839753c",
+   "new": "g_scr_code_hash",
+   "type_hint": "unsigned int",
+   "confidence": "observed",
+   "evidence": "md: EmitOpcode maintains hash = hash*0x1f + opcode; saved/restored in EmitFunctionEpilogue; md name scrCompileCodeHash."
+  },
+  {
+   "addr": "0x08397510",
+   "old": "g_08397510",
+   "new": "g_scr_compile_error_message",
+   "type_hint": "const char *",
+   "confidence": "observed",
+   "evidence": "md: constant-fold/compile error message printed with \"%s\"; same variable as scrVarPub_error_message."
+  },
+  {
+   "addr": "0x08397504",
+   "old": "g_08397504",
+   "new": "g_scr_symbol_pool_mark",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "chunk_012:1198 = Hunk_GetHighPermanent() in Scr_InitSymbolPools, later Hunk_SetHighMark(g_08397504) at 1208 (pool release)."
+  },
+  {
+   "addr": "0x08397508",
+   "old": "g_08397508",
+   "new": "g_scr_next_slot_number",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "md: slots numbered from 1 via this counter in Scr_AssignSlot."
+  },
+  {
+   "addr": "0x08397500",
+   "old": "g_08397500",
+   "new": "g_scr_field_table",
+   "type_hint": "char *",
+   "confidence": "inferred",
+   "evidence": "md: field-table pointer cleared by Scr_InitCompileState; chunk 15 reads it as a pointer."
+  },
+  {
+   "addr": "0x0839750b",
+   "old": "g_0839750b",
+   "new": "g_scr_developer_script",
+   "type_hint": "unsigned char",
+   "confidence": "observed",
+   "evidence": "md: developer_script flag; nonzero enables /# #/ developer-block compilation (Scr_CompileTopLevelItem, Scr_CompileMarker)."
+  },
+  {
+   "addr": "0x08206cc8",
+   "old": "g_08206cc8",
+   "new": "g_scr_current_file_symtab",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "md: current file's function table (var object) consulted first by ScrCompile_FunctionCall/EmitFunctionRef."
+  },
+  {
+   "addr": "0x08206ccc",
+   "old": "g_08206ccc",
+   "new": "g_scr_current_function_varid",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "md: current function var id, write-only in Scr_CompileFunctionBody."
+  },
+  {
+   "addr": "0x08206cdd",
+   "old": "g_08206cdd",
+   "new": "g_scr_in_dev_block",
+   "type_hint": "unsigned char",
+   "confidence": "observed",
+   "evidence": "chunk_012:795-962: set at /# top-level item, cleared at #/, error \"/# has no matching #/\" when still set at end."
+  },
+  {
+   "addr": "0x08206ce0",
+   "old": "g_08206ce0",
+   "new": "g_scr_dev_block_open_pos",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "chunk_012:797,962: position of the open /#, passed to ScrCompile_ErrorInFile."
+  },
+  {
+   "addr": "0x08206ce4",
+   "old": "g_08206ce4",
+   "new": "g_scr_frame_open_flags",
+   "type_hint": "unsigned char[2]",
+   "confidence": "inferred",
+   "evidence": "md: per-function-kind open-frame flags, cleared in Scr_ResetCompileFrame."
+  },
+  {
+   "addr": "0x08206ce6",
+   "old": "g_08206ce6",
+   "new": "g_scr_in_switch",
+   "type_hint": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "md: switch-active flag."
+  },
+  {
+   "addr": "0x08206ce8",
+   "old": "g_08206ce8",
+   "new": "g_scr_switch_case_list",
+   "type_hint": "struct cod2_case_entry *",
+   "confidence": "inferred",
+   "evidence": "md: active switch case list, appended by Scr_AddCaseEntry."
+  },
+  {
+   "addr": "0x08206cec",
+   "old": "g_08206cec",
+   "new": "g_scr_can_break",
+   "type_hint": "unsigned char",
+   "confidence": "observed",
+   "evidence": "md: break legal only when set."
+  },
+  {
+   "addr": "0x08206ced",
+   "old": "g_08206ced",
+   "new": "g_scr_can_break_dev",
+   "type_hint": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "md: breakable-in-dev secondary flag."
+  },
+  {
+   "addr": "0x08206cf0",
+   "old": "g_08206cf0",
+   "new": "g_scr_break_patch_list",
+   "type_hint": "struct ScriptPatchEntry *",
+   "confidence": "observed",
+   "evidence": "md: break patch list, 12-byte records {slotPtr,pos,next}, patched at loop end."
+  },
+  {
+   "addr": "0x08206cf4",
+   "old": "g_08206cf4",
+   "new": "g_scr_can_continue",
+   "type_hint": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "md: continuable flag."
+  },
+  {
+   "addr": "0x08206cf5",
+   "old": "g_08206cf5",
+   "new": "g_scr_can_continue_dev",
+   "type_hint": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "md: continuable-in-dev flag; zeroed in Scr_ResetCompileFrame (chunk_012:866)."
+  },
+  {
+   "addr": "0x08206cf8",
+   "old": "g_08206cf8",
+   "new": "g_scr_continue_patch_list",
+   "type_hint": "struct ScriptPatchEntry *",
+   "confidence": "observed",
+   "evidence": "md: continue patch list, resolved before loop back-jump."
+  },
+  {
+   "addr": "0x08206cfc",
+   "old": "g_08206cfc",
+   "new": "g_scr_scope_list_primary",
+   "type_hint": "struct ScriptScope **",
+   "confidence": "observed",
+   "evidence": "md: scope-collection list; appended by ScrScope_PushPrimaryList."
+  },
+  {
+   "addr": "0x08206d00",
+   "old": "g_08206d00",
+   "new": "g_scr_scope_list_primary_count",
+   "type_hint": "int *",
+   "confidence": "inferred",
+   "evidence": "chunk_012:246-381: pointer saved/restored around scans, aimed at a local counter."
+  },
+  {
+   "addr": "0x08206d04",
+   "old": "g_08206d04",
+   "new": "g_scr_current_case_scope",
+   "type_hint": "struct ScriptScope *",
+   "confidence": "observed",
+   "evidence": "md table: current case scope block (ScrLocalBlock*), chunk 12 'case label slot' typing is wrong."
+  },
+  {
+   "addr": "0x08206d08",
+   "old": "g_08206d08",
+   "new": "g_scr_scope_list_secondary",
+   "type_hint": "struct ScriptScope **",
+   "confidence": "observed",
+   "evidence": "md: secondary list used by ScrScope_PushSecondaryList."
+  },
+  {
+   "addr": "0x08206d18",
+   "old": "g_08206d18",
+   "new": "g_scr_include_block_chain",
+   "type_hint": "struct cod2_include_rec *",
+   "confidence": "observed",
+   "evidence": "md: include-record block chain freed by Scr_FreeIncludeBlocks."
+  },
+  {
+   "addr": "0x08205a58",
+   "old": "g_08205a58",
+   "new": "g_scr_animtree_groups_active",
+   "type_hint": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "md: animtree-groups-active flag set at chunk_012:1278, cleared at 1423/1435 and chunk_016:93."
+  },
+  {
+   "addr": "0x0828733c",
+   "old": "g_0828733c",
+   "new": "g_scr_current_source_name",
+   "type_hint": "char *",
+   "confidence": "observed",
+   "evidence": "md: current source name written around nested loads."
+  },
+  {
+   "addr": "0x08297484",
+   "old": "g_08297484",
+   "new": "g_scr_buffer_offset",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "md: ScrBuf running offset adjusted by ScrBuf_Advance / ScrBuf_Rewind."
+  }
+ ],
+ "left_unknown": [
+  {
+   "addr": "0x08206d0c",
+   "name": "g_08206d0c",
+   "why": "Not in symbols.json; only md note 'secondary list counter' (not read here); no direct body evidence."
+  },
+  {
+   "addr": "0x08423008",
+   "name": "g_08423008",
+   "why": "Chunk 19 flex-region frame-time/dvar toggles, not script-compiler state."
+  },
+  {
+   "addr": "0x08423088",
+   "name": "g_08423088",
+   "why": "Same as above; out of subsystem."
+  },
+  {
+   "addr": "0x08440200",
+   "name": "g_08440200",
+   "why": "Same as above; out of subsystem."
+  },
+  {
+   "addr": "0x08440204",
+   "name": "g_08440204",
+   "why": "Same as above; out of subsystem."
+  },
+  {
+   "addr": "0x08440208",
+   "name": "g_08440208",
+   "why": "Same as above; out of subsystem."
+  },
+  {
+   "addr": "0x08397520",
+   "name": "g_08397520",
+   "why": "Notify-root handle, belongs to script-vm subsystem."
+  },
+  {
+   "addr": "0x08397540",
+   "name": "g_08397540",
+   "why": "Pending entity id of 0xfffe marker; script-vm."
+  },
+  {
+   "addr": "0x08397544",
+   "name": "g_08397544",
+   "why": "Pending field name of 0xfffe marker; script-vm."
+  },
+  {
+   "addr": "0x0814445f",
+   "name": "g_0814445f",
+   "why": "rodata string \"+\", not a variable; md documents it."
+  }
+ ]
+}

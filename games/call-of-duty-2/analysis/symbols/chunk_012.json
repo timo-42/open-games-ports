@@ -1,0 +1,1234 @@
+{
+ "chunk": 12,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x08073902",
+   "name": "Scr_CompileIncrement",
+   "signature": "void Scr_CompileIncrement(struct ScriptNode *expr, int label, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "caller Scr_CompileStmt dispatch case 0x29; emits opcode 100 with (1,0) and patches label. [rename script-compiler: objdump: StoreLvalue, EmitOpcode(0x64) (OP_inc), then EmitOp_39 SetVariableField]",
+   "status": "translated",
+   "notes": "Sets g_08206d10 around the expression compile."
+  },
+  {
+   "addr": "0x08073964",
+   "name": "Scr_ScanExprStmt",
+   "signature": "void Scr_ScanExprStmt(struct ScriptNode *expr, struct ScriptScope *state)",
+   "subsystem": "script/compiler/scan",
+   "confidence": "inferred",
+   "evidence": "scan-pass partner of Scr_CompileExprStmt_Op100/Op101 (cases 0x29/0x2a in Scr_ScanStmt).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807397e",
+   "name": "Scr_CompileDecrement",
+   "signature": "void Scr_CompileDecrement(struct ScriptNode *expr, int label, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "same shape as Scr_CompileExprStmt_Op100 but emits opcode 101 (case 0x2a). [rename script-compiler: objdump: same as 0x08073902 with EmitOpcode(0x65) (OP_dec)]",
+   "status": "translated",
+   "notes": "Same as Op100 with opcode 101."
+  },
+  {
+   "addr": "0x080739e0",
+   "name": "Scr_EmitParamSets",
+   "signature": "void Scr_EmitParamSets(struct ScriptListItem *head, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "walks a list of (first, second) pairs and calls fn_0806f1dc on each; no string. [rename script-compiler: doc 12.2: walks param list emitting SafeSetVariableFieldCached (0x31/0x32) per item, same walk as other ForEachPair helpers]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08073a22",
+   "name": "Scr_AddVarList",
+   "signature": "void Scr_AddVarList(struct ScriptListItem *head, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "same walk as Scr_ForEachPairEmit_1 calling fn_0806f25e. [rename script-compiler: chunk_012.cpp comment at ~line 131: same walk as ForEachPairEmit_1 calling ScrLocalBlock_AddVarA (scan pass: registers variables)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08073a64",
+   "name": "Scr_EmitWaittillSets",
+   "signature": "void Scr_EmitWaittillSets(struct ScriptListItem *head, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "same walk as Scr_ForEachPairEmit_1 calling fn_0806f280. [rename script-compiler: objdump: loop body calls 0x0806f280 (opcode 0x33) per list item; called from Scr_CompileLoop_Single]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08073aa6",
+   "name": "Scr_CompileWaittill",
+   "signature": "void Scr_CompileWaittill(int label_head, int *seq_ref, int cont_label, int brk_label, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "loop-statement codegen (opcode 0x78, closing 0x34); no string. [rename script-compiler: objdump: compiles two operand exprs, EmitOpcode(0x78, -2), then Scr_ForEachPairEmit_3 -> EmitClearLocalVariableFieldCached (opcode 0x33 SafeSetWaittill...), then EmitOpcode(0x34) clearparams; not a loop (no jumps/labels)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08073b80",
+   "name": "Scr_ScanWaittill",
+   "signature": "void Scr_ScanWaittill(int *seq_ref, struct ScriptScope *state)",
+   "subsystem": "script/compiler/scan",
+   "confidence": "inferred",
+   "evidence": "scan pass for Scr_CompileLoop_Single; forwards the seq list to Scr_ForEachPairEmit_2. [rename script-compiler: scan helper paired with Scr_CompileLoop_Single (adds variables via ForEachPairEmit_2)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08073ba8",
+   "name": "Scr_CompileWaittillmatch",
+   "signature": "void Scr_CompileWaittillmatch(int label_head, int *seq_ref, int cont_label, int brk_label, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "multi-target loop codegen (opcode 0x77, closing 0x34), no string. [rename script-compiler: objdump: compiles object + N args via ScrCompile_ExprPush, EmitOpcode(0x77) then count byte, 0x34 clearparams; sibling of 0x08073aa6 (OP_waittillmatch)]",
+   "status": "translated",
+   "notes": "Reads the list head item without a null check when the list is empty (kept)."
+  },
+  {
+   "addr": "0x08073cf4",
+   "name": "Scr_CompileNotify",
+   "signature": "void Scr_CompileNotify(int label_head, struct ScriptListItem **head_ref, int label_b, int label_c, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "list-of-cases codegen (opcode 0x7b, closing 0x79), no string. [rename script-compiler: objdump: EmitOpcode(0x7b) voidCodepos, args via ExprPush, EmitOpcode(0x79) notify, stack deltas match notify]",
+   "status": "translated",
+   "notes": "head_ref is struct cod2_scr_list **. Dereferences the last cell without a null check when the list is empty (kept)."
+  },
+  {
+   "addr": "0x08073dea",
+   "name": "Scr_CompileEndon",
+   "signature": "void Scr_CompileEndon(int a, int b, int c, int d, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "single-expression statement codegen (opcode 0x7a), no string. [rename script-compiler: objdump: compiles one expression then EmitOpcode(0x7a, -2) = OP_endon]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08073e58",
+   "name": "Scr_CompareCaseKeyDesc",
+   "signature": "int Scr_CompareCaseKeyDesc(const void *a, const void *b)",
+   "subsystem": "script/compiler/switch",
+   "confidence": "unknown",
+   "evidence": "qsort comparator over 8-byte (value, label) records; unsigned, descending.",
+   "status": "translated",
+   "notes": "qsort comparator; unsigned compare, descending."
+  },
+  {
+   "addr": "0x08073e94",
+   "name": "Scr_ListTailAllType2D",
+   "signature": "int Scr_ListTailAllType2D(struct ScriptListItem *list)",
+   "subsystem": "script/compiler/switch",
+   "confidence": "unknown",
+   "evidence": "returns 1 for an empty list or one whose nodes all have kind 0x2d (only when g_0839750b is 0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08073ef0",
+   "name": "Scr_CompileCaseLabel",
+   "signature": "void Scr_CompileCaseLabel(struct ScriptNode *label, int error_ctx)",
+   "subsystem": "script/compiler/switch",
+   "confidence": "inferred",
+   "evidence": "strings \"case index %d out of range\", \"case expression must be an int or string\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08073fac",
+   "name": "Scr_AddDefaultCase",
+   "signature": "void Scr_AddDefaultCase(int error_ctx)",
+   "subsystem": "script/compiler/switch",
+   "confidence": "inferred",
+   "evidence": "default label registers a case entry with value 0 (see Scr_AddCaseEntry).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08073fc8",
+   "name": "Scr_CompileSwitchBody",
+   "signature": "void Scr_CompileSwitchBody(int *seq_ref, unsigned char flag, int ctx, struct ScriptScope *label_state)",
+   "subsystem": "script/compiler/switch",
+   "confidence": "inferred",
+   "evidence": "strings \"missing case statement\"; walks switch body, saves/restores pool and label slots.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08074210",
+   "name": "Scr_BuildSwitchTable",
+   "signature": "void Scr_BuildSwitchTable(int *seq_ref, struct ScriptScope *state)",
+   "subsystem": "script/compiler/switch",
+   "confidence": "unknown",
+   "evidence": "builds the switch jump table from the case labels; scan helper for 0x3c nodes.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08074404",
+   "name": "Scr_CompileSwitchStmt",
+   "signature": "void Scr_CompileSwitchStmt(struct ScriptNode *expr, int body_ref, int end_label, unsigned char flag, int loc, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/switch",
+   "confidence": "inferred",
+   "evidence": "string \"duplicate case expression\"; switch statement codegen with qsort of case values.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08074668",
+   "name": "Scr_AddCaseEntry",
+   "signature": "void Scr_AddCaseEntry(int value, int location)",
+   "subsystem": "script/compiler/switch",
+   "confidence": "unknown",
+   "evidence": "prepends a 0x10-byte case record to the active switch list.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080746c6",
+   "name": "Scr_CompileBreakStmt",
+   "signature": "void Scr_CompileBreakStmt(int loc, struct ScriptScope *state)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "string \"illegal break statement\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080747a0",
+   "name": "Scr_CompileContinueStmt",
+   "signature": "void Scr_CompileContinueStmt(int loc, struct ScriptScope *state)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "string \"illegal continue statement\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08074878",
+   "name": "Scr_CompileNop",
+   "signature": "void Scr_CompileNop(int unused)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "unknown",
+   "evidence": "empty handler (kind 0x4b); the single operand is ignored.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807487e",
+   "name": "Scr_CompileMarker",
+   "signature": "void Scr_CompileMarker(int a, int b, unsigned char op)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "unknown",
+   "evidence": "marker statement; emits op (with a trailing 0) only in dev mode (g_0839750b != 0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080748d6",
+   "name": "Scr_CompileProfBegin",
+   "signature": "void Scr_CompileProfBegin(int a, int b)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "Scr_CompileMarker with opcode 0x85 (kind 0x4c). [rename script-compiler: objdump: passes op 0x85 to Scr_CompileMarker (0x0807487e); OP_prof_begin per doc section 12.2 (opcode name inferred from VM enum)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080748f8",
+   "name": "Scr_CompileProfEnd",
+   "signature": "void Scr_CompileProfEnd(int a, int b)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "inferred",
+   "evidence": "Scr_CompileMarker with opcode 0x86 (kind 0x4d). [rename script-compiler: objdump: passes op 0x86 to Scr_CompileMarker; OP_prof_end]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807491a",
+   "name": "Scr_CompileStmt",
+   "signature": "void Scr_CompileStmt(struct ScriptNode *node, unsigned char flag, int ctx, struct ScriptScope *label_state)",
+   "subsystem": "script/compiler/dispatch",
+   "confidence": "inferred",
+   "evidence": "strings \"illegal case statement\", \"illegal default statement\"; statement dispatch on kind.",
+   "status": "translated",
+   "notes": "Statement dispatch; 40+ kinds."
+  },
+  {
+   "addr": "0x08074e8a",
+   "name": "Scr_ScanStmt",
+   "signature": "void Scr_ScanStmt(struct ScriptNode *node, struct ScriptScope *state)",
+   "subsystem": "script/compiler/scan",
+   "confidence": "unknown",
+   "evidence": "pre-pass over statements (state 1/2/3 markers); mirror of Scr_CompileStmt.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080750c2",
+   "name": "Scr_CompileStmtList",
+   "signature": "void Scr_CompileStmtList(int *seq_ref, unsigned char flag, int ctx, struct ScriptScope *label_state)",
+   "subsystem": "script/compiler/dispatch",
+   "confidence": "unknown",
+   "evidence": "compiles a statement list; the flag is set when the remaining tail is all kind 0x2d.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807513e",
+   "name": "Scr_ScanStmtList",
+   "signature": "void Scr_ScanStmtList(int *seq_ref, struct ScriptScope *state)",
+   "subsystem": "script/compiler/scan",
+   "confidence": "unknown",
+   "evidence": "scan pass over a statement list (calls Scr_ScanStmt per item).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807517c",
+   "name": "Scr_ScanStmtListTail",
+   "signature": "void Scr_ScanStmtListTail(int *seq_ref, struct ScriptScope *state, int *slot)",
+   "subsystem": "script/compiler/scan",
+   "confidence": "unknown",
+   "evidence": "scan of a guarded block: saves state into slot, scans the list, then restores with flag 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080751c4",
+   "name": "Scr_CompileDevBlock",
+   "signature": "void Scr_CompileDevBlock(int seq_arg, int loc, struct ScriptScope *ctx, int *slot)",
+   "subsystem": "script/compiler/dispatch",
+   "confidence": "inferred",
+   "evidence": "string \"cannot recurse /#\". [rename script-compiler: objdump: errors via string at 0x0814435c if scrCompileMode != 0 (nested), sets mode 2 then 1 around Scr_CompileStmtList, restores code hash, only emits when developer_script (0x0839750b) set: the /# ... #/ developer block]",
+   "status": "translated",
+   "notes": "Drops the fifth argument word the binary pushes for Scr_CompileStmtList."
+  },
+  {
+   "addr": "0x080752b2",
+   "name": "Scr_CompileParamList",
+   "signature": "void Scr_CompileParamList(struct ScriptListItem **list_ref, int loc, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/codegen",
+   "confidence": "unknown",
+   "evidence": "parameter list codegen (opcode 0x35) calling Scr_ForEachPairEmit_1.",
+   "status": "translated",
+   "notes": "list_ref is struct cod2_scr_list **."
+  },
+  {
+   "addr": "0x080752fe",
+   "name": "Scr_ScanParamList",
+   "signature": "void Scr_ScanParamList(struct ScriptListItem **list_ref, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/scan",
+   "confidence": "unknown",
+   "evidence": "scan pass over a parameter list (Scr_ForEachPairEmit_2).",
+   "status": "translated",
+   "notes": "list_ref is struct cod2_scr_list **."
+  },
+  {
+   "addr": "0x0807531a",
+   "name": "Scr_PreScanDevComment",
+   "signature": "void Scr_PreScanDevComment(struct ScriptNode *node)",
+   "subsystem": "script/compiler/devcomment",
+   "confidence": "inferred",
+   "evidence": "strings \"cannot recurse /#\", \"#/ has no matching /#\"; handles dev-comment markers.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075436",
+   "name": "Scr_CompileFunctionBody",
+   "signature": "void Scr_CompileFunctionBody(int name, struct ScriptNode *fn, int loc, int ctx, struct ScriptScope *out)",
+   "subsystem": "script/compiler/function",
+   "confidence": "inferred",
+   "evidence": "string \"function exceeds operand stack size\"; compiles params and body of one function.",
+   "status": "translated",
+   "notes": "Writes g_08206ccc (aliasing g_08206cc8)."
+  },
+  {
+   "addr": "0x08075520",
+   "name": "Scr_CreateFunctionContext",
+   "signature": "void Scr_CreateFunctionContext(struct ScriptListItem **params, int *body_ref, int *out)",
+   "subsystem": "script/compiler/function",
+   "confidence": "unknown",
+   "evidence": "allocates the 0x118-byte function compile context and runs the parameter and body scans.",
+   "status": "translated",
+   "notes": "params is struct cod2_scr_list **."
+  },
+  {
+   "addr": "0x080755bc",
+   "name": "Scr_ResetCompileFrame",
+   "signature": "void Scr_ResetCompileFrame(int idx)",
+   "subsystem": "script/compiler/function",
+   "confidence": "unknown",
+   "evidence": "clears the per-function frame; closes an open frame (flag at g_08206ce4[idx]).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075662",
+   "name": "Scr_CompileFunctionNode",
+   "signature": "void Scr_CompileFunctionNode(struct ScriptNode *node, int *out)",
+   "subsystem": "script/compiler/function",
+   "confidence": "unknown",
+   "evidence": "compiles a plain (non-dev) function node after symbol resolution.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080756e4",
+   "name": "Scr_CompileFunctionNodeDev",
+   "signature": "void Scr_CompileFunctionNodeDev(struct ScriptNode *node, int *out)",
+   "subsystem": "script/compiler/function",
+   "confidence": "unknown",
+   "evidence": "compiles a dev-mode function node (g_0839750b selects the path).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080757fc",
+   "name": "Scr_CompileTopLevelItem",
+   "signature": "void Scr_CompileTopLevelItem(struct ScriptNode *node)",
+   "subsystem": "script/compiler/toplevel",
+   "confidence": "inferred",
+   "evidence": "string \"cannot put #using_animtree inside /# ... #/ comment\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075902",
+   "name": "Scr_CompileTopLevelList",
+   "signature": "void Scr_CompileTopLevelList(int *seq_ref)",
+   "subsystem": "script/compiler/toplevel",
+   "confidence": "inferred",
+   "evidence": "string \"/# has no matching #/\"; two passes over the top-level list.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807599c",
+   "name": "Scr_RegisterIncludeRef",
+   "signature": "void Scr_RegisterIncludeRef(struct ScriptNode *node)",
+   "subsystem": "script/compiler/include",
+   "confidence": "unknown",
+   "evidence": "registers one include reference through the symbol lookup and fn_080700b8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080759ee",
+   "name": "Scr_RegisterIncludeList",
+   "signature": "void Scr_RegisterIncludeList(int *seq_ref)",
+   "subsystem": "script/compiler/include",
+   "confidence": "unknown",
+   "evidence": "walks an include list and calls Scr_RegisterIncludeRef for each item.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075a26",
+   "name": "Scr_CompileScriptUnit",
+   "signature": "void Scr_CompileScriptUnit(int *unit, int symtab, struct ScriptScope *ctx)",
+   "subsystem": "script/compiler/unit",
+   "confidence": "inferred",
+   "evidence": "strings \"Duplicate #include\", \"Could not find script '%s'\"; include resolution and compile.",
+   "status": "translated",
+   "notes": "Include resolution and compile of one script unit."
+  },
+  {
+   "addr": "0x08075da0",
+   "name": "Scr_FreeIncludeBlocks",
+   "signature": "void Scr_FreeIncludeBlocks(void)",
+   "subsystem": "script/compiler/include",
+   "confidence": "unknown",
+   "evidence": "frees the include-block chain (g_08206d18), following each record's chain link.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075dd4",
+   "name": "Scr_AddRefToValue",
+   "signature": "void Scr_AddRefToValue(struct VariableValue *value)",
+   "subsystem": "script/symbols",
+   "confidence": "inferred",
+   "evidence": "releases one symbol reference through fn_0807c064. [rename script-compiler: objdump: loads pair->type,pair->value and calls 0x0807c064 which symbols.json names ScrVar_AddRefValue: it adds a reference, not release]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075df4",
+   "name": "Scr_RemoveRefToValue",
+   "signature": "void Scr_RemoveRefToValue(struct VariableValue *value)",
+   "subsystem": "script/symbols",
+   "confidence": "inferred",
+   "evidence": "releases one symbol reference through fn_0807c0b4. [rename script-compiler: same shape as 0x08075dd4 but calls the release routine (ScrVar_ReleaseValue) per script-compiler.md 12.2]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075e14",
+   "name": "Scr_IsInCodeRange",
+   "signature": "bool Scr_IsInCodeRange(int p)",
+   "subsystem": "script/symbols",
+   "confidence": "unknown",
+   "evidence": "range test against the code window [g_08397548, g_08397548 + g_08205cb0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075e40",
+   "name": "Scr_IsInGlobalRange",
+   "signature": "int Scr_IsInGlobalRange(unsigned int p)",
+   "subsystem": "script/symbols",
+   "confidence": "unknown",
+   "evidence": "range test against [g_08397548, g_0839754c).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075e70",
+   "name": "Scr_IsIdentifier",
+   "signature": "int Scr_IsIdentifier(const char *s)",
+   "subsystem": "script/symbols",
+   "confidence": "unknown",
+   "evidence": "identifier check (alnum or underscore) over a NUL-terminated string.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075eb6",
+   "name": "Scr_ResolveFunctionOffset",
+   "signature": "int Scr_ResolveFunctionOffset(const char *script, const char *label)",
+   "subsystem": "script/symbols",
+   "confidence": "inferred",
+   "evidence": "resolves a script-function reference to a code offset via symbol tables.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08075fe8",
+   "name": "Scr_InitSymbolPools",
+   "signature": "void Scr_InitSymbolPools(void)",
+   "subsystem": "script/symbols",
+   "confidence": "unknown",
+   "evidence": "creates the symbol pool and its 0x20000-byte table.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076014",
+   "name": "Scr_FreeSymbolPools",
+   "signature": "void Scr_FreeSymbolPools(void)",
+   "subsystem": "script/symbols",
+   "confidence": "unknown",
+   "evidence": "releases the symbol pool and its table.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076034",
+   "name": "Scr_AssignSlot",
+   "signature": "short Scr_AssignSlot(int id)",
+   "subsystem": "script/symbols",
+   "confidence": "unknown",
+   "evidence": "assigns the next slot number to an id in the short table.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080760a2",
+   "name": "Scr_GetOrAssignSlot",
+   "signature": "unsigned int Scr_GetOrAssignSlot(int ref)",
+   "subsystem": "script/symbols",
+   "confidence": "unknown",
+   "evidence": "returns the slot for a reference, assigning one when it has none.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080760fc",
+   "name": "Scr_InitCompileState",
+   "signature": "void Scr_InitCompileState(void)",
+   "subsystem": "script/init",
+   "confidence": "unknown",
+   "evidence": "one-time compile-state initialisation (pools, tables, ranges).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076196",
+   "name": "Scr_InitCompileStateMin",
+   "signature": "void Scr_InitCompileStateMin(void)",
+   "subsystem": "script/init",
+   "confidence": "unknown",
+   "evidence": "reduced initialisation used when only the symbol table is needed.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080761b4",
+   "name": "Scr_InitAnimTrees",
+   "signature": "void Scr_InitAnimTrees(int idx)",
+   "subsystem": "script/init",
+   "confidence": "inferred",
+   "evidence": "resets one table slot (g_08205a4c[idx], 0x200-byte block) and sets its table. [rename script-compiler: objdump: sets byte 0x8205a58=1 and zeroes per-group count at 0x8205a4c[idx*4]; anim-tree registry group init]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076200",
+   "name": "Scr_ReadSourceLine",
+   "signature": "int Scr_ReadSourceLine(char *buf, int max)",
+   "subsystem": "script/source",
+   "confidence": "unknown",
+   "evidence": "reads one line of source text (at most max bytes) from g_08205c9c, handling the end of the buffer.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076296",
+   "name": "Scr_LoadScriptFile",
+   "signature": "int Scr_LoadScriptFile(const char *script)",
+   "subsystem": "script/source",
+   "confidence": "inferred",
+   "evidence": "string \"%s.gsc\" and \"Could not find script '%s'\"; loads and parses a script by name.",
+   "status": "translated",
+   "notes": "Loads '<name>.gsc' and returns the compiled unit."
+  },
+  {
+   "addr": "0x08076452",
+   "name": "Scr_ReleasePools",
+   "signature": "void Scr_ReleasePools(void)",
+   "subsystem": "script/init",
+   "confidence": "unknown",
+   "evidence": "releases the parser pools.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076460",
+   "name": "Scr_ShutdownCompileState",
+   "signature": "void Scr_ShutdownCompileState(void)",
+   "subsystem": "script/init",
+   "confidence": "unknown",
+   "evidence": "tears down the four symbol tables and the symbol pool.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076510",
+   "name": "Scr_LoadAnimTrees",
+   "signature": "void Scr_LoadAnimTrees(int arg, int idx)",
+   "subsystem": "script/init",
+   "confidence": "inferred",
+   "evidence": "visits entries 1..g_08205a4c[idx] of one table slot. [rename script-compiler: objdump: loops i=1..count[group] calling 0x0806dcb0 (Scr_LoadAnimTree(i,arg,group))]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076550",
+   "name": "Scr_ShutdownAnimTrees",
+   "signature": "void Scr_ShutdownAnimTrees(void)",
+   "subsystem": "script/init",
+   "confidence": "inferred",
+   "evidence": "tears down one table slot (g_08205640/g_08205644). [rename script-compiler: objdump: releases object 0x8205640 (anim tree object) via release helpers; counterpart of Scr_InitAnimTrees]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080765b6",
+   "name": "Scr_ResetAll",
+   "signature": "void Scr_ResetAll(uint8 flag)",
+   "subsystem": "script/init",
+   "confidence": "unknown",
+   "evidence": "full reset of the compile state, the table slot and the symbol ranges.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076628",
+   "name": "Bucket_TreeNodeCount",
+   "signature": "int Bucket_TreeNodeCount(int idx)",
+   "subsystem": "alloc/bucket-tree",
+   "confidence": "inferred",
+   "evidence": "counts the nodes of one bucket subtree (used by the stats dump).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076680",
+   "name": "Mem_PrintBucketStats",
+   "signature": "void Mem_PrintBucketStats(void)",
+   "subsystem": "alloc/bucket-tree",
+   "confidence": "inferred",
+   "evidence": "strings \"%d subtree has %d * %d = %d free buckets\", \"total memory alloc buckets: %d (%d instances)\". [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Statistics dump."
+  },
+  {
+   "addr": "0x0807676a",
+   "name": "Mem_GetAllocatedBuckets",
+   "signature": "int Mem_GetAllocatedBuckets(void)",
+   "subsystem": "alloc/bucket-tree",
+   "confidence": "inferred",
+   "evidence": "returns the allocated-bucket counter printed by Mem_PrintBucketStats.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076774",
+   "name": "Mem_InitBucketTables",
+   "signature": "void Mem_InitBucketTables(void)",
+   "subsystem": "alloc/bucket-tree",
+   "confidence": "unknown",
+   "evidence": "fills the popcount, trailing-zero (capped at 8) and bit-length tables for 0..255.",
+   "status": "translated",
+   "notes": "Popcount, trailing-zero (cap 8) and bit-length tables."
+  },
+  {
+   "addr": "0x08076836",
+   "name": "Mem_BucketKey",
+   "signature": "int Mem_BucketKey(int idx)",
+   "subsystem": "alloc/bucket-tree",
+   "confidence": "unknown",
+   "evidence": "subtree-size key for a 16-bit position: lowbit size plus the count of the complement's unset bits.",
+   "status": "translated",
+   "notes": "Priority key for the bucket trees; exact meaning unknown."
+  },
+  {
+   "addr": "0x080768aa",
+   "name": "Mem_BucketTree_Insert",
+   "signature": "void Mem_BucketTree_Insert(unsigned int node, int klass)",
+   "subsystem": "alloc/bucket-tree",
+   "confidence": "inferred",
+   "evidence": "bucket-tree insert (heap-ordered by Mem_BucketKey, search by pool index); no string.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076a0a",
+   "name": "Mem_BucketTree_Remove",
+   "signature": "int Mem_BucketTree_Remove(unsigned int node, int klass)",
+   "subsystem": "alloc/bucket-tree",
+   "confidence": "inferred",
+   "evidence": "bucket-tree remove of a node by pool index; returns 1 when removed, 0 when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08076be0",
+   "name": "Mem_BucketTree_PopRoot",
+   "signature": "void Mem_BucketTree_PopRoot(int klass)",
+   "subsystem": "alloc/bucket-tree",
+   "confidence": "inferred",
+   "evidence": "removes the root of a size-class bucket tree and sifts its children up.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08205640",
+   "name": "g_08205640",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "table slot 1 object (compile table)"
+  },
+  {
+   "addr": "0x08205644",
+   "name": "g_08205644",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "table slot 1 secondary object"
+  },
+  {
+   "addr": "0x0820564c",
+   "name": "g_0820564c",
+   "type": "unsigned char[]",
+   "confidence": "unknown",
+   "evidence": "per-slot 0x200-byte blocks; int at stride 0x200"
+  },
+  {
+   "addr": "0x08205a4c",
+   "name": "g_08205a4c",
+   "type": "int[]",
+   "confidence": "unknown",
+   "evidence": "per-slot counters, stride 4"
+  },
+  {
+   "addr": "0x08205a54",
+   "name": "g_08205a54",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "reset in Scr_CompileScriptUnit"
+  },
+  {
+   "addr": "0x08205a58",
+   "name": "g_scr_animtree_groups_active",
+   "type": "unsigned char",
+   "confidence": "unknown",
+   "evidence": "table-slot active flag"
+  },
+  {
+   "addr": "0x08205c80",
+   "name": "g_08205c80",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "zeroed in Scr_InitCompileState"
+  },
+  {
+   "addr": "0x08205c84",
+   "name": "g_scr_dependency_record_count",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "include record count; 12-byte records"
+  },
+  {
+   "addr": "0x08205c88",
+   "name": "g_scr_loaded_scripts_table",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "symbol table A (Scr_LoadScriptFile cache lookup)"
+  },
+  {
+   "addr": "0x08205c8c",
+   "name": "g_scr_file_function_tables",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "symbol table B (function references)"
+  },
+  {
+   "addr": "0x08205c90",
+   "name": "scrCompileFuncCallArrayId",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "symbol table C"
+  },
+  {
+   "addr": "0x08205c94",
+   "name": "g_scr_builtin_method_cache",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "symbol table D"
+  },
+  {
+   "addr": "0x08205c98",
+   "name": "g_scr_slot_table",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "short table base (0x20000 bytes) for slot numbers"
+  },
+  {
+   "addr": "0x08205c9c",
+   "name": "g_scr_source_cursor",
+   "type": "char *",
+   "confidence": "inferred",
+   "evidence": "source read cursor"
+  },
+  {
+   "addr": "0x08205ca0",
+   "name": "g_scr_source_text",
+   "type": "char *",
+   "confidence": "inferred",
+   "evidence": "saved source cursor at end-of-buffer"
+  },
+  {
+   "addr": "0x08205ca4",
+   "name": "g_08205ca4",
+   "type": "unsigned char",
+   "confidence": "unknown",
+   "evidence": "compile-state active flag"
+  },
+  {
+   "addr": "0x08205ca8",
+   "name": "g_08205ca8",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "compile mode: 0 idle, 1 or 2 inside a guarded block"
+  },
+  {
+   "addr": "0x08205cb0",
+   "name": "g_scr_code_length",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "code window length"
+  },
+  {
+   "addr": "0x08205cb4",
+   "name": "g_08205cb4",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "zeroed in Scr_InitCompileState"
+  },
+  {
+   "addr": "0x08205648",
+   "name": "g_08205648",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "zeroed when a script source is loaded"
+  },
+  {
+   "addr": "0x08205cdc",
+   "name": "g_08205cdc",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "zeroed in Scr_CompileScriptUnit"
+  },
+  {
+   "addr": "0x0814445f",
+   "name": "g_0814445f",
+   "type": "char[]",
+   "confidence": "observed",
+   "evidence": "empty source literal used as the initial source cursor (rodata address)"
+  },
+  {
+   "addr": "0x08206cc0",
+   "name": "g_08206cc0",
+   "type": "int *",
+   "confidence": "inferred",
+   "evidence": "code cursor; stores patch addresses"
+  },
+  {
+   "addr": "0x08206cc8",
+   "name": "g_scr_current_file_symtab",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "current symbol table handle"
+  },
+  {
+   "addr": "0x08206ccc",
+   "name": "g_scr_current_function_varid",
+   "type": "int",
+   "confidence": "observed",
+   "evidence": "written by Scr_CompileFunctionBody; overlaps g_08206cc8+4 (see open questions)"
+  },
+  {
+   "addr": "0x08206cd0",
+   "name": "g_08206cd0",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "operand stack depth term"
+  },
+  {
+   "addr": "0x08206cd4",
+   "name": "g_08206cd4",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "operand stack depth term"
+  },
+  {
+   "addr": "0x08206cd8",
+   "name": "g_08206cd8",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "operand stack depth multiplier"
+  },
+  {
+   "addr": "0x08206cdc",
+   "name": "g_08206cdc",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "zeroed in Scr_CompileScriptUnit"
+  },
+  {
+   "addr": "0x08206cdd",
+   "name": "g_scr_in_dev_block",
+   "type": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "inside /# ... #/ comment"
+  },
+  {
+   "addr": "0x08206ce0",
+   "name": "g_scr_dev_block_open_pos",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "location of the open /#"
+  },
+  {
+   "addr": "0x08206ce4",
+   "name": "g_scr_frame_open_flags",
+   "type": "unsigned char[2]",
+   "confidence": "inferred",
+   "evidence": "per-frame active flags (index 0 and 1)"
+  },
+  {
+   "addr": "0x08206ce6",
+   "name": "g_scr_in_switch",
+   "type": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "switch-context flag"
+  },
+  {
+   "addr": "0x08206ce8",
+   "name": "g_scr_switch_case_list",
+   "type": "struct cod2_case_entry *",
+   "confidence": "inferred",
+   "evidence": "active switch case list"
+  },
+  {
+   "addr": "0x08206cec",
+   "name": "g_scr_can_break",
+   "type": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "breakable context flag"
+  },
+  {
+   "addr": "0x08206ced",
+   "name": "g_scr_can_break_dev",
+   "type": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "switch-context secondary flag"
+  },
+  {
+   "addr": "0x08206cf0",
+   "name": "g_scr_break_patch_list",
+   "type": "struct cod2_loop_jump *",
+   "confidence": "inferred",
+   "evidence": "pending break jumps"
+  },
+  {
+   "addr": "0x08206cf4",
+   "name": "g_scr_can_continue",
+   "type": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "continuable context flag"
+  },
+  {
+   "addr": "0x08206cf5",
+   "name": "g_scr_can_continue_dev",
+   "type": "unsigned char",
+   "confidence": "unknown",
+   "evidence": "zeroed in Scr_ResetCompileFrame"
+  },
+  {
+   "addr": "0x08206cf8",
+   "name": "g_scr_continue_patch_list",
+   "type": "struct cod2_loop_jump *",
+   "confidence": "inferred",
+   "evidence": "pending continue jumps"
+  },
+  {
+   "addr": "0x08206cfc",
+   "name": "g_scr_scope_list_primary",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "scratch pool base (0x1000-byte allocations)"
+  },
+  {
+   "addr": "0x08206d00",
+   "name": "g_scr_scope_list_primary_count",
+   "type": "int *",
+   "confidence": "inferred",
+   "evidence": "scratch counter slot"
+  },
+  {
+   "addr": "0x08206d04",
+   "name": "g_scr_current_case_scope",
+   "type": "int *",
+   "confidence": "inferred",
+   "evidence": "current case label slot"
+  },
+  {
+   "addr": "0x08206d08",
+   "name": "g_scr_scope_list_secondary",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "zeroed in Scr_ResetCompileFrame"
+  },
+  {
+   "addr": "0x08206d10",
+   "name": "g_08206d10",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "expression-compile-in-progress flag"
+  },
+  {
+   "addr": "0x08206d14",
+   "name": "g_08206d14",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "last allocated include block"
+  },
+  {
+   "addr": "0x08206d18",
+   "name": "g_scr_include_block_chain",
+   "type": "struct cod2_include_rec *",
+   "confidence": "inferred",
+   "evidence": "free chain of include blocks"
+  },
+  {
+   "addr": "0x08206f80",
+   "name": "g_08206f80",
+   "type": "struct cod2_bucket_node[0x10000]",
+   "confidence": "observed",
+   "evidence": "bucket-tree node pool; the 0x08206f82 and 0x08206f84 references are child[1] and aux"
+  },
+  {
+   "addr": "0x08287280",
+   "name": "g_08287280",
+   "type": "uint16[17]",
+   "confidence": "observed",
+   "evidence": "bucket-tree roots per size class (2^k)"
+  },
+  {
+   "addr": "0x08287080",
+   "name": "g_08287080",
+   "type": "unsigned char[256]",
+   "confidence": "inferred",
+   "evidence": "popcount table"
+  },
+  {
+   "addr": "0x08286f80",
+   "name": "g_08286f80",
+   "type": "unsigned char[256]",
+   "confidence": "inferred",
+   "evidence": "trailing-zero table (cap 8)"
+  },
+  {
+   "addr": "0x08287180",
+   "name": "g_08287180",
+   "type": "unsigned char[256]",
+   "confidence": "inferred",
+   "evidence": "bit-length table"
+  },
+  {
+   "addr": "0x082872a4",
+   "name": "g_082872a4",
+   "type": "int",
+   "confidence": "observed",
+   "evidence": "instance count printed by Mem_PrintBucketStats"
+  },
+  {
+   "addr": "0x082872a8",
+   "name": "g_082872a8",
+   "type": "int",
+   "confidence": "observed",
+   "evidence": "allocated bucket count printed by Mem_PrintBucketStats"
+  },
+  {
+   "addr": "0x0828733c",
+   "name": "g_scr_current_source_name",
+   "type": "char *",
+   "confidence": "inferred",
+   "evidence": "current source name"
+  },
+  {
+   "addr": "0x08287340",
+   "name": "g_08287340",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "saved unit handle in Scr_LoadScriptFile"
+  },
+  {
+   "addr": "0x08397500",
+   "name": "g_scr_field_table",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "zeroed in Scr_InitCompileState"
+  },
+  {
+   "addr": "0x08397504",
+   "name": "g_scr_symbol_pool_mark",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "symbol pool handle"
+  },
+  {
+   "addr": "0x08397508",
+   "name": "g_scr_next_slot_number",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "slot counter (short in use)"
+  },
+  {
+   "addr": "0x0839750b",
+   "name": "g_scr_developer_script",
+   "type": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "debug/dev mode flag; nonzero enables /# handling paths"
+  },
+  {
+   "addr": "0x0839753c",
+   "name": "g_scr_code_hash",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "saved/restored around guarded blocks"
+  },
+  {
+   "addr": "0x08397548",
+   "name": "g_scr_code_base",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "code window base"
+  },
+  {
+   "addr": "0x0839754c",
+   "name": "scrGlobalWindowEnd",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "global window end"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "cod2_scr_node",
+   "size": "unknown (>= 0x24)",
+   "evidence": "kind at +0, op[8] at +4; operands read through op[0..7]"
+  },
+  {
+   "name": "cod2_scr_list",
+   "size": "0x8",
+   "evidence": "item at +0, next at +4 in every list walk"
+  },
+  {
+   "name": "cod2_scr_seq",
+   "size": "unknown (list at +4)",
+   "evidence": "struct reached through an int * seq reference; list at +4"
+  },
+  {
+   "name": "cod2_scr_pair",
+   "size": "0x8",
+   "evidence": "(first, second) items in pair lists"
+  },
+  {
+   "name": "cod2_case_entry",
+   "size": "0x10",
+   "evidence": "allocated 0x10 bytes in Scr_AddCaseEntry; next at +0xc"
+  },
+  {
+   "name": "cod2_loop_jump",
+   "size": "0xc",
+   "evidence": "allocated 0xc bytes in break/continue; next at +8"
+  },
+  {
+   "name": "cod2_include_rec",
+   "size": "0xc",
+   "evidence": "12-byte stride in Scr_CompileScriptUnit; chain at +8"
+  },
+  {
+   "name": "cod2_fn_ctx",
+   "size": "0x118",
+   "evidence": "allocated 0x118 bytes in Scr_CreateFunctionContext; state at +0"
+  },
+  {
+   "name": "cod2_bucket_node",
+   "size": "0x8",
+   "evidence": "8-byte pool entries; child[2] uint16 at +0, aux at +4"
+  }
+ ],
+ "open_questions": [
+  "g_08206ccc: Scr_CompileFunctionBody writes a 4-byte word at 0x08206ccc, which overlaps the 4-byte symbol-table handle g_08206cc8 (bytes 4..7 of its range). Is this an intended second global or a binary-level aliasing quirk? The translation keeps the same two addresses.",
+  "Callee arity: 173 external placeholders are varargs. Several arities were recovered from stack stores, not from callee prototypes (for example fn_080ab65e receives g_08205c84*12 and fn_0807caac receives a two-word argument frame). The merge lane should confirm them.",
+  "Parse node and container layouts (cod2_scr_node size, cod2_scr_seq layout, pair items) are inferred from consistent offsets across 73 functions; no allocation site in this chunk fixes the node size.",
+  "Empty-list paths: Scr_CompileListStmt_3a dereferences the last cell and Scr_CompileLoop_Multi dereferences the list head item without a null check. Both are preserved as in the binary, not fixed.",
+  "Scr_CompileGuardedBlock calls Scr_CompileStmtList with a fifth stack word that the callee does not read. Translated with four arguments; the observable behaviour is identical.",
+  "Meaning of g_0839750b (dev/debug mode), Mem_BucketKey (priority key) and the symbol tables g_08205c88..94 is unknown; names are descriptive only."
+ ]
+}

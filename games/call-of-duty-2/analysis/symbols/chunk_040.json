@@ -1,0 +1,1263 @@
+{
+ "chunk": 40,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080dafa6",
+   "name": "PlayerAnim_SetMoveParams",
+   "signature": "void PlayerAnim_SetMoveParams(struct entityState_s *es, struct clientInfo_s *vs)",
+   "subsystem": "player/animation",
+   "confidence": "inferred",
+   "evidence": "no string; calls fn_080eb9a4 (weapon table at ps+0xc8) and fn_080d9806 with indices 0..8 driven by pmFlags and vs+0x3e8 forward speed",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080db362",
+   "name": "PlayerView_ComputeSway",
+   "signature": "void PlayerView_ComputeSway(unsigned int unusedArg0, struct entityState_s *es, unsigned int unusedArg2, struct clientInfo_s *vs, float *out)",
+   "subsystem": "player/view",
+   "confidence": "inferred",
+   "evidence": "no string; builds 0x60-byte sway block (six vec3 + two offset vec3) read by PlayerView_ApplySwayBlend; zero-fill when pmFlags&0x300",
+   "status": "translated",
+   "notes": "stack locals local_5c..local_20 are one contiguous 18-float run; kept as lane[18] L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dbafc",
+   "name": "Vec3_StepToward",
+   "signature": "void Vec3_StepToward(const float *target, float maxStep, float *cur)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "per-component step of cur toward target; no string or caller name evidence",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dbbdc",
+   "name": "Vec3_ApproachLimited",
+   "signature": "void Vec3_ApproachLimited(const float *target, float maxDist, float *cur)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "normalised step via inverse sqrt, copies target when within reach; no string",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dbc70",
+   "name": "PlayerView_ApplySwayBlend",
+   "signature": "void PlayerView_ApplySwayBlend(unsigned int h1, struct entityState_s *es, unsigned int h3, struct clientInfo_s *vs, int scale)",
+   "subsystem": "player/view",
+   "confidence": "inferred",
+   "evidence": "calls PlayerView_ComputeSway, fn_080bbea4, fn_080bbf22; bone ids read from image table 0x08184ca8",
+   "status": "translated",
+   "notes": "bone table read via COD2_ROM_U16 L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dbdbc",
+   "name": "PlayerView_Update",
+   "signature": "void PlayerView_Update(unsigned int unusedHandle, struct entityState_s *es, struct clientInfo_s *vs)",
+   "subsystem": "player/view",
+   "confidence": "inferred",
+   "evidence": "per-frame sequence: fn_080da9c8, PlayerAnim_SetMoveParams, fn_080da776/fn_080da42a; no string",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dbeb0",
+   "name": "PlayerAnim_UpdateTree",
+   "signature": "void PlayerAnim_UpdateTree(int forceRebuild, struct entityState_s *es, struct clientInfo_s *vs, int flagArg)",
+   "subsystem": "player/animation",
+   "confidence": "inferred",
+   "evidence": "rebuild or release of the anim list through the global-block callback slots 0xb3bec/0xb3bf0/0xb3bf4; no string",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dc0e2",
+   "name": "Player_RegisterMpAnimSlots",
+   "signature": "void Player_RegisterMpAnimSlots(void)",
+   "subsystem": "mp/anim",
+   "confidence": "inferred",
+   "evidence": "calls fn_0806dfca with names \"multiplayer\",\"root\",\"torso\",\"legs\",\"turning\" (literals at 0x08152910, 0x08153292 and in code)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc1ae",
+   "name": "Player_LookupAnimTree",
+   "signature": "int *Player_LookupAnimTree(int *out, const char *name, int required)",
+   "subsystem": "mp/anim",
+   "confidence": "inferred",
+   "evidence": "string \"Could not find animation tree '%s'\" at 0x081532a0 [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc202",
+   "name": "Player_InitMpAnimCache",
+   "signature": "void Player_InitMpAnimCache(void)",
+   "subsystem": "mp/anim",
+   "confidence": "inferred",
+   "evidence": "loads \"multiplayer\" tree and copies handle and 16-bit anim indices into cache slots",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc2a2",
+   "name": "Player_LoadMultiplayerAnims",
+   "signature": "void Player_LoadMultiplayerAnims(void)",
+   "subsystem": "mp/anim",
+   "confidence": "inferred",
+   "evidence": "scratch buffer 0x9000 with release on both normal and exception path (catch handler 0x080dc324)",
+   "status": "translated",
+   "notes": "C++ try/catch retained"
+  },
+  {
+   "addr": "0x080dc354",
+   "name": "Float_Abs_080dc354",
+   "signature": "long double Float_Abs_080dc354(float v)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body fabs stored to float; same shape as Float_Abs_080aaea4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Float_Abs_080551fc, Float_Abs_0805618c, Float_Abs_0805d57c; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc36e",
+   "name": "Math_InvSqrtApprox",
+   "signature": "long double Math_InvSqrtApprox(float x)",
+   "subsystem": "math/scalar",
+   "confidence": "inferred",
+   "evidence": "magic 0x5f3759df reciprocal square root with one Newton step; verified by disassembly (bit reinterpretation, not int conversion)",
+   "status": "translated",
+   "notes": "constants 0.5f and 1.5f taken from the binary"
+  },
+  {
+   "addr": "0x080dc3d2",
+   "name": "Math_SinCos",
+   "signature": "void Math_SinCos(float angle, float *s, float *c)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "sin and cos pair from double-precision libm calls",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc400",
+   "name": "Vec3_Zero",
+   "signature": "void Vec3_Zero(float *v)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "zeroes three words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc42a",
+   "name": "Vec3_Set",
+   "signature": "void Vec3_Set(float *v, float x, float y, float z)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "stores three words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc44e",
+   "name": "Vec3_Copy",
+   "signature": "void Vec3_Copy(const float *src, float *dst)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "copies three words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc47e",
+   "name": "Vec3_Sub",
+   "signature": "void Vec3_Sub(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "out = a - b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc4c2",
+   "name": "Vec3_MA_080dc4c2",
+   "signature": "void Vec3_MA_080dc4c2(const float *a, float s, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a + s*dir per component (VectorMA); same byte family as Vec3_MA_080bc1f4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_madd, Vec3_MA_b, Vec3_MA_080bc1f4; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc516",
+   "name": "Vec3_LengthSq",
+   "signature": "long double Vec3_LengthSq(const float *v)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "sum of squares in extended precision",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc54a",
+   "name": "Vec3_Length_080dc54a",
+   "signature": "float Vec3_Length_080dc54a(const float *v)",
+   "subsystem": "math/vec",
+   "confidence": "inferred",
+   "evidence": "computes sqrt of the squared length and returns it in st0 (0x080d7557 in chunk 039 divides by it); L12 corrected from \"void/result discarded\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc588",
+   "name": "Math_SqrtF",
+   "signature": "long double Math_SqrtF(float x)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "sqrt wrapper (libm sqrt)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc5a8",
+   "name": "BitSet_Test",
+   "signature": "unsigned int BitSet_Test(const unsigned int *bits, int idx)",
+   "subsystem": "math/bitset",
+   "confidence": "unknown",
+   "evidence": "bit test in a 32-bit word array",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc5ce",
+   "name": "BitSet_Set",
+   "signature": "void BitSet_Set(unsigned int *bits, int idx)",
+   "subsystem": "math/bitset",
+   "confidence": "unknown",
+   "evidence": "bit set in a 32-bit word array",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc60c",
+   "name": "Player_RegisterJumpDvars",
+   "signature": "void Player_RegisterJumpDvars(void)",
+   "subsystem": "cvar/jump",
+   "confidence": "inferred",
+   "evidence": "strings jump_height, jump_stepSize, jump_slowdownEnable, jump_ladderPushVel, jump_spreadAdd at registration [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dc718",
+   "name": "Player_ClearJumpBaseZ",
+   "signature": "void Player_ClearJumpBaseZ(struct playerState_s *ps)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "clears pmFlags2 bit 0x80000 and zeroes jumpBaseZ",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dc73a",
+   "name": "Player_CheckStepUp",
+   "signature": "int Player_CheckStepUp(const struct playerState_s *ps, const float *pos, float *stepOut)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "uses jump_height and jump_stepSize dvars (observed names)",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dc7c8",
+   "name": "Player_IsAboveJumpBase",
+   "signature": "int Player_IsAboveJumpBase(const struct playerState_s *ps)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "jumpBaseZ + jump_height <= origin.z",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dc7ee",
+   "name": "Player_SetJumpPending",
+   "signature": "void Player_SetJumpPending(struct playerState_s *ps)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "sets pmFlags2 bit 0x80000 and jumpPhase 0x708 when phase is 0",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dc818",
+   "name": "Player_UpdateJumpPhase",
+   "signature": "void Player_UpdateJumpPhase(struct playerState_s *ps)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "phase thresholds 0x4b0, 0x708, 0x709; uses jump_slowdownEnable (observed name)",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dc8ca",
+   "name": "Player_JumpSpeedFactor",
+   "signature": "long double Player_JumpSpeedFactor(const struct playerState_s *ps)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "phase-based factor, 2.5 cap above 0x6a4",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dc91c",
+   "name": "Player_JumpScale",
+   "signature": "long double Player_JumpScale(struct playerState_s *ps)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "wraps Player_JumpSpeedFactor for phase < 0x709",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dc95c",
+   "name": "Player_ClampJumpVelocity",
+   "signature": "void Player_ClampJumpVelocity(struct playerState_s *ps, const float *pos)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "apex clamp: sqrt(gravity*2*remaining height), zero below 0.1",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dc9ee",
+   "name": "Player_JumpSpeedFactorB",
+   "signature": "long double Player_JumpSpeedFactorB(const struct playerState_s *ps)",
+   "subsystem": "player/jump",
+   "confidence": "unknown",
+   "evidence": "duplicate of Player_JumpSpeedFactor in the binary",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dca40",
+   "name": "Player_BeginJump",
+   "signature": "void Player_BeginJump(struct pmove_s *pm, struct pml_s *out, float jumpHeight)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "initial velocity sqrt(2*gravity*jump_height); uses jump_spreadAdd (observed name), cap 255",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dcb48",
+   "name": "Player_ApplyJumpPush",
+   "signature": "void Player_ApplyJumpPush(struct playerState_s *ps, const float *dir)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "wall/ladder push: uses jump_ladderPushVel (observed name) and wall normal",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dcc52",
+   "name": "Player_PlayJumpAnim",
+   "signature": "void Player_PlayJumpAnim(struct playerState_s *ps, void *ent)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "anim 0x5b or entity anim lookup + 0x46",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dcca8",
+   "name": "Player_TryJump",
+   "signature": "int Player_TryJump(struct pmove_s *pm, struct pml_s *out)",
+   "subsystem": "player/jump",
+   "confidence": "inferred",
+   "evidence": "500 ms re-jump window, button 0x400 edge trigger on oldButtons",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dce30",
+   "name": "Float_Sqrt_080dce30",
+   "signature": "long double Float_Sqrt_080dce30(float x)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body (float)sqrt((double)x) through libm; same shape as Float_Sqrt_080aaebe. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dce50",
+   "name": "Vec2_Scale",
+   "signature": "void Vec2_Scale(const float *in, float s, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "scales x and y only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dce76",
+   "name": "Vec3_Set_080dce76",
+   "signature": "void Vec3_Set_080dce76(float *v, float x, float y, float z)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body stores three scalar arguments into dst[0..2]; same byte family as Vec3_Set_080b5810/080bc0e0. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec3_SetBits, cm_vec3_set, Vec3_Set_080b5810; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dce9a",
+   "name": "Vec3_CopyBits_080dce9a",
+   "signature": "void Vec3_CopyBits_080dce9a(const float *src, float *dst)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dceca",
+   "name": "Vec3_Scale",
+   "signature": "void Vec3_Scale(const float *in, float s, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "out = s*in",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dcf02",
+   "name": "Vec3_MA_080dcf02",
+   "signature": "void Vec3_MA_080dcf02(const float *a, float s, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a + s*dir per component (VectorMA); same byte family as Vec3_MA_080bc1f4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_madd, Vec3_MA_b, Vec3_MA_080bc1f4; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dcf56",
+   "name": "Vec3_Dot",
+   "signature": "long double Vec3_Dot(const float *a, const float *b)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "dot product in extended precision",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dcf8c",
+   "name": "Mantle_RegisterDvars",
+   "signature": "void Mantle_RegisterDvars(void)",
+   "subsystem": "cvar/mantle",
+   "confidence": "inferred",
+   "evidence": "strings mantle_enable, mantle_debug, mantle_check_range, mantle_check_radius, mantle_check_angle, mantle_view_yawcap [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dd0dc",
+   "name": "Mantle_OnAnimEvent",
+   "signature": "void Mantle_OnAnimEvent(unsigned int handle)",
+   "subsystem": "mantle/anim",
+   "confidence": "inferred",
+   "evidence": "callback registered per mantle anim name, forwards to fn_080abf94 with code 4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dd0f8",
+   "name": "Mantle_DebugPrint",
+   "signature": "void Mantle_DebugPrint(const char *msg)",
+   "subsystem": "mantle/debug",
+   "confidence": "inferred",
+   "evidence": "prints \"%s\\n\" when mantle_debug is set (format string at 0x08153485)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dd120",
+   "name": "Mantle_UpAnimDuration",
+   "signature": "int Mantle_UpAnimDuration(const struct MantleState *m)",
+   "subsystem": "mantle/state",
+   "confidence": "inferred",
+   "evidence": "duration of the stage up anim in the mantle tree",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dd15a",
+   "name": "Mantle_OverAnimDuration",
+   "signature": "int Mantle_OverAnimDuration(const struct MantleState *m)",
+   "subsystem": "mantle/state",
+   "confidence": "inferred",
+   "evidence": "duration of the stage over anim when flags bit 0 is set",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dd1b2",
+   "name": "Mantle_SelectAnim",
+   "signature": "int Mantle_SelectAnim(const struct MantleState *m)",
+   "subsystem": "mantle/state",
+   "confidence": "inferred",
+   "evidence": "over anim after the up duration, else up anim",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dd216",
+   "name": "Mantle_EvalStagePos",
+   "signature": "void Mantle_EvalStagePos(struct MantleState *m, int time, float *out)",
+   "subsystem": "mantle/state",
+   "confidence": "inferred",
+   "evidence": "blends up and over anim positions by stage time, then applies stage yaw",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dd35c",
+   "name": "Mantle_FindNearestStage",
+   "signature": "int Mantle_FindNearestStage(float a, float b)",
+   "subsystem": "mantle/state",
+   "confidence": "inferred",
+   "evidence": "index of the stage whose height is closest to (b - a); z table at 0x08184d08",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dd3dc",
+   "name": "Mantle_ComputeLedgeTarget",
+   "signature": "void Mantle_ComputeLedgeTarget(struct pmove_s *pm, struct MantleLedge *ledge)",
+   "subsystem": "mantle/probe",
+   "confidence": "inferred",
+   "evidence": "mantle-bounds trace writes the hit height into ledge end.z; no string",
+   "status": "partial",
+   "notes": "trace out byte mapping (allSolid/startSolid) is inferred from the decompiler locals; see open questions L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dd552",
+   "name": "Mantle_Start",
+   "signature": "void Mantle_Start(struct pmove_s *pm, struct playerState_s *ps, struct MantleLedge *ledge)",
+   "subsystem": "mantle/state",
+   "confidence": "inferred",
+   "evidence": "records yaw, stage and flags, sets origin, pmFlags2 bit 4 and pmFlags3 bit 0x4000",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080dd65a",
+   "name": "Mantle_CheckLedge",
+   "signature": "int Mantle_CheckLedge(struct pmove_s *pm, const float *eye, struct MantleLedge *ledge, float probeDist)",
+   "subsystem": "mantle/probe",
+   "confidence": "inferred",
+   "evidence": "strings \"Checking for ledge at %f units\", \"Mantle Failed: Ledge is too far away\", \"...too steep\", \"Mantle available!\", \"...can't fit crouched on ledge\", \"...Can't find ledge\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "partial",
+   "notes": "trace byte used for the solid test is mapped to allSolid; second-trace start and end coincide as in the binary L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080ddaa4",
+   "name": "Mantle_ValidateAnims",
+   "signature": "void Mantle_ValidateAnims(unsigned int ent)",
+   "subsystem": "mantle/debug",
+   "confidence": "inferred",
+   "evidence": "strings \"PLAYER_MANTLE\" and \"Mantle anim [%s] has {X,Y,Z} translation %f, should be %f\\n\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dddee",
+   "name": "Mantle_ResetTree",
+   "signature": "void Mantle_ResetTree(void)",
+   "subsystem": "mantle/state",
+   "confidence": "inferred",
+   "evidence": "clears the mantle tree handle",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080dddfe",
+   "name": "Mantle_FindSurface",
+   "signature": "int Mantle_FindSurface(struct pmove_s *pm, const float *eye, struct trace_s *tr, float *normalOut)",
+   "subsystem": "mantle/probe",
+   "confidence": "inferred",
+   "evidence": "strings \"Mantle Failed: No mantle surface found\", \"...MANTLE_ON or MANTLE_OVER found\", \"...vertical normal\", \"...not facing mantle surface\", \"...brush is too thick\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "partial",
+   "notes": "trace byte mapping as in Mantle_CheckLedge; surface-flag masks 0x6000000 tested directly L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080de088",
+   "name": "Mantle_TryStart",
+   "signature": "void Mantle_TryStart(struct pmove_s *pm, struct pml_s *pml)",
+   "subsystem": "mantle/debug",
+   "confidence": "inferred",
+   "evidence": "strings \"====== Mantle Debug ======\", \"Mantle Failed: Not enabled\", \"...using binoculars\", \"...not standing\", \"...already mantling\", \"...is dead\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred] [rename pmove: Called every frame as Mantle_Debug(pm,&pml) from PM_Pmove path at 0x80e9189. Function body prints 'mantle_debug'-gated strings (incl. '====== Mantle Debug ======' at 0x8153820 area) but its calls are Mantle_FindSurface/CheckLedge/Start per pmove.md section 2.5; it is the attempt, debug output is only incidental.]",
+   "status": "partial",
+   "notes": "trace flags read through the trace struct at +0x10; ledge record memset clears 0x34 bytes (the binary clears 0x38) L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080de260",
+   "name": "Mantle_UpdateMove",
+   "signature": "void Mantle_UpdateMove(struct pmove_s *pm, struct playerState_s *ps, struct pml_s *cmd)",
+   "subsystem": "mantle/move",
+   "confidence": "inferred",
+   "evidence": "advances mantle time by usercmd delta, moves origin along the stage curve, sets velocity, ends the mantle at total time",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080de47a",
+   "name": "Mantle_ApplyYawCap",
+   "signature": "void Mantle_ApplyYawCap(struct playerState_s *ps)",
+   "subsystem": "mantle/view",
+   "confidence": "inferred",
+   "evidence": "wraps yaw difference into mantle_view_yawcap (observed dvar name); deltaYaw += round(d*182.04445)",
+   "status": "translated",
+   "notes": "ROUND is lrintf (default rounding mode) L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080de5ba",
+   "name": "Mantle_ClearSurfaceFlag",
+   "signature": "void Mantle_ClearSurfaceFlag(struct playerState_s *ps)",
+   "subsystem": "mantle/state",
+   "confidence": "inferred",
+   "evidence": "clears mantleFlags bit 0x8",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080de5d4",
+   "name": "Mantle_OverAnimNotLow",
+   "signature": "int Mantle_OverAnimNotLow(const struct playerState_s *ps)",
+   "subsystem": "mantle/state",
+   "confidence": "inferred",
+   "evidence": "mantling and stage over anim != 10",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080de63a",
+   "name": "Float_Abs_080de63a",
+   "signature": "long double Float_Abs_080de63a(float v)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body fabs stored to float; same shape as Float_Abs_080aaea4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Float_Abs_080551fc, Float_Abs_0805618c, Float_Abs_0805d57c; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080de654",
+   "name": "Vec3_Set_080de654",
+   "signature": "void Vec3_Set_080de654(float *v, float x, float y, float z)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body stores three scalar arguments into dst[0..2]; same byte family as Vec3_Set_080b5810/080bc0e0. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Vec3_SetBits, cm_vec3_set, Vec3_Set_080b5810; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080de678",
+   "name": "Vec3_CopyBits_080de678",
+   "signature": "void Vec3_CopyBits_080de678(const float *src, float *dst)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080de6a8",
+   "name": "Vec3_NegateBits",
+   "signature": "void Vec3_NegateBits(const unsigned int *in, unsigned int *out)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "negation by sign-bit xor",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080de6e6",
+   "name": "Vec3_Add",
+   "signature": "void Vec3_Add(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "out = a + b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080de72a",
+   "name": "Vec3_Sub_080de72a",
+   "signature": "void Vec3_Sub_080de72a(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a-b per component; same byte family as Vec3_Subtract_0809e546. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_sub, cm_vec3_sub_b, cm_vec3_sub_c; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080de76e",
+   "name": "Vec3_ScaleAlt",
+   "signature": "void Vec3_ScaleAlt(const float *in, float s, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "out = s*in",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080de7a6",
+   "name": "Vec3_MA_080de7a6",
+   "signature": "void Vec3_MA_080de7a6(const float *a, float s, const float *b, float *out)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a + s*dir per component (VectorMA); same byte family as Vec3_MA_080bc1f4. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_madd, Vec3_MA_b, Vec3_MA_080bc1f4; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080de7fa",
+   "name": "Vec3_DotAlt",
+   "signature": "long double Vec3_DotAlt(const float *a, const float *b)",
+   "subsystem": "math/vec",
+   "confidence": "unknown",
+   "evidence": "dot product in extended precision",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080de830",
+   "name": "Player_RegisterDvars",
+   "signature": "void Player_RegisterDvars(void)",
+   "subsystem": "cvar/player",
+   "confidence": "inferred",
+   "evidence": "registration strings player_view_pitch_*, bg_*, inertia*, friction, stopspeed, player_breath_*, player_*Threshhold, player_dmgtimer_* (all observed) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "then calls Player_RegisterJumpDvars and Mantle_RegisterDvars"
+  },
+  {
+   "addr": "0x080df20a",
+   "name": "BG_GetItemByIndex",
+   "signature": "struct gitem_s *BG_GetItemByIndex(int index)",
+   "subsystem": "bg/items",
+   "confidence": "inferred",
+   "evidence": "returns item record at index (stride 0x2c)",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080df226",
+   "name": "BG_FindItemByName",
+   "signature": "struct gitem_s *BG_FindItemByName(const char *name)",
+   "subsystem": "bg/items",
+   "confidence": "inferred",
+   "evidence": "item search over indices 0x81..0x82 by alias or classname, then fn_08120dd0 fallback",
+   "status": "translated",
+   "notes": "loop bounds 0x81..0x82 kept as observed L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080df2da",
+   "name": "BG_PlayerNearEntityTrajectory",
+   "signature": "int BG_PlayerNearEntityTrajectory(const struct playerState_s *ps, const void *ent, int atTime)",
+   "subsystem": "bg/trajectory",
+   "confidence": "inferred",
+   "evidence": "box test (+/-36 xy, -88..+18 z) against the evaluated trajectory position",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080df39e",
+   "name": "BG_CanItemBeGrabbed",
+   "signature": "int BG_CanItemBeGrabbed(const struct entityState_s *ent, const struct playerState_s *ps, int checkOnly)",
+   "subsystem": "bg/items",
+   "confidence": "observed",
+   "evidence": "strings \"BG_CanItemBeGrabbed: index out of range (index is %i, eType is %i)\" and \"BG_CanItemBeGrabbed: IT_BAD\"",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080df5d4",
+   "name": "BG_EvaluateTrajectory",
+   "signature": "void BG_EvaluateTrajectory(const struct trajectory_s *tr, int atTime, float *result)",
+   "subsystem": "bg/trajectory",
+   "confidence": "observed",
+   "evidence": "string \"BG_EvaluateTrajectory: unknown trType: %i\"",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  },
+  {
+   "addr": "0x080df948",
+   "name": "BG_EvaluateTrajectoryDelta",
+   "signature": "void BG_EvaluateTrajectoryDelta(const struct trajectory_s *tr, int atTime, float *result)",
+   "subsystem": "bg/trajectory",
+   "confidence": "observed",
+   "evidence": "string \"BG_EvaluateTrajectoryDelta: unknown trType: %i\"",
+   "status": "translated",
+   "notes": "L12: signature moved to canonical types."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08626f80",
+   "name": "dvar_jump_height",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626f84",
+   "name": "dvar_jump_stepSize",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626f88",
+   "name": "dvar_jump_slowdownEnable",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626f8c",
+   "name": "dvar_jump_ladderPushVel",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626f90",
+   "name": "dvar_jump_spreadAdd",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626f98",
+   "name": "dvar_mantle_enable",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626f9c",
+   "name": "dvar_mantle_debug",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fa0",
+   "name": "dvar_mantle_check_range",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fa4",
+   "name": "dvar_mantle_check_radius",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fa8",
+   "name": "dvar_mantle_check_angle",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fac",
+   "name": "dvar_mantle_view_yawcap",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fb4",
+   "name": "dvar_player_view_pitch_up",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fb8",
+   "name": "dvar_player_view_pitch_down",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fbc",
+   "name": "dvar_bg_ladder_yawcap",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fc0",
+   "name": "dvar_bg_prone_yawcap",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fc4",
+   "name": "dvar_bg_foliagesnd_minspeed",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fc8",
+   "name": "dvar_bg_foliagesnd_maxspeed",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fcc",
+   "name": "dvar_bg_foliagesnd_slowinterval",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fd0",
+   "name": "dvar_bg_foliagesnd_fastinterval",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fd4",
+   "name": "dvar_bg_foliagesnd_resetinterval",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fd8",
+   "name": "dvar_bg_fallDamageMinHeight",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fdc",
+   "name": "dvar_bg_fallDamageMaxHeight",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fe0",
+   "name": "dvar_inertiaMax",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fe4",
+   "name": "dvar_inertiaDebug",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fe8",
+   "name": "dvar_inertiaAngle",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626fec",
+   "name": "dvar_stopspeed",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626ff0",
+   "name": "dvar_friction",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626ff4",
+   "name": "dvar_bg_swingSpeed",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626ff8",
+   "name": "dvar_bg_bobAmplitudeStanding",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08626ffc",
+   "name": "dvar_bg_bobAmplitudeDucked",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627000",
+   "name": "dvar_bg_bobAmplitudeProne",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627004",
+   "name": "dvar_bg_bobMax",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627008",
+   "name": "dvar_bg_aimSpreadMoveSpeedThreshold",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x0862700c",
+   "name": "dvar_player_breath_hold_time",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627010",
+   "name": "dvar_player_breath_gasp_time",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627014",
+   "name": "dvar_player_breath_fire_delay",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627018",
+   "name": "dvar_player_breath_gasp_scale",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x0862701c",
+   "name": "dvar_player_breath_hold_lerp",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627020",
+   "name": "dvar_player_breath_gasp_lerp",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627024",
+   "name": "dvar_player_breath_snd_lerp",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627028",
+   "name": "dvar_player_breath_snd_delay",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x0862702c",
+   "name": "dvar_player_toggleBinoculars",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627030",
+   "name": "dvar_player_scopeExitOnDamage",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627034",
+   "name": "dvar_player_adsExitDelay",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627038",
+   "name": "dvar_player_moveThreshhold",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x0862703c",
+   "name": "dvar_player_footstepsThreshhold",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627040",
+   "name": "dvar_player_strafeSpeedScale",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627044",
+   "name": "dvar_player_backSpeedScale",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627048",
+   "name": "dvar_player_spectateSpeedScale",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x0862704c",
+   "name": "dvar_player_turnAnims",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627050",
+   "name": "dvar_player_dmgtimer_timePerPoint",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627054",
+   "name": "dvar_player_dmgtimer_maxTime",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627058",
+   "name": "dvar_player_dmgtimer_minScale",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x0862705c",
+   "name": "dvar_player_dmgtimer_stumbleTime",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x08627060",
+   "name": "dvar_player_dmgtimer_flinchTime",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar registration name observed in the Player, Mantle and BG registration functions of this chunk"
+  },
+  {
+   "addr": "0x0860b420",
+   "name": "g_gameContextPtr",
+   "type": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "base of the global block; slot accesses at +0xb3bb4..+0xb3bf8 and fn-pointer slots 0xb3bec..0xb3bf4 in chunk 040"
+  },
+  {
+   "addr": "0x08184d00",
+   "name": "g_mantleStages",
+   "type": "struct MantleStage [7]",
+   "confidence": "observed",
+   "evidence": "7 entries of {upAnim, overAnim, zHeight}; values read from .rodata; anim indices name the entries in g_08184d60"
+  },
+  {
+   "addr": "0x08184d60",
+   "name": "g_mantleAnimNames",
+   "type": "const char *const [11]",
+   "confidence": "observed",
+   "evidence": "pointer table to mp_mantle_root, mp_mantle_up_57..21, mp_mantle_over_high/mid, player_mantle_over_low (decoded from .rodata)"
+  },
+  {
+   "addr": "0x081850c0",
+   "name": "g_081850c0",
+   "type": "struct gitem_s []",
+   "confidence": "inferred",
+   "evidence": "item table, stride 0x2c; contents not extracted in this chunk (declared extern only)"
+  },
+  {
+   "addr": "0x08626fb0",
+   "name": "g_mantleAnimTree",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "mantle animation tree handle, set from the \"PLAYER_MANTLE\" lookup in Mantle_ValidateAnims"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "clientInfo_s",
+   "size": "0x4ac (minimum; animSlot4a8 at 0x4a8)",
+   "evidence": "vs offsets 0x380..0x4a8 used by dafa6, db362, dbc70, dbdbc, dbeb0"
+  },
+  {
+   "name": "MantleLedge",
+   "size": "0x34",
+   "evidence": "ledge record in dd552, dd65a, dd3dc, dddfe; flags at 0x30, start at 0xc, ledgePos at 0x18, end at 0x24"
+  },
+  {
+   "name": "MantleStage",
+   "size": "0xc",
+   "evidence": "g_08184d00 stride 0xc, values decoded from .rodata"
+  },
+  {
+   "name": "gitem_s",
+   "size": "0x2c",
+   "evidence": "g_081850c0 stride 0x2c; giType at 0x1c, giTag at 0x20, pickupAlias at 0x14"
+  },
+  {
+   "name": "SlotRecord040",
+   "size": "0x60",
+   "evidence": "g_0860b420 + slot*0x60; flags at 0x50, 64-bit timer halves at 0x54 and 0x58"
+  }
+ ],
+ "open_questions": [
+  "Trace040 layout: the allSolid (0x22) and startSolid (0x23) bytes are the only trace fields used for solid tests here; the decompiler locals (local_29, local_19) are mapped to allSolid. Confirm against fn_080e1308 before promoting Mantle_CheckLedge, Mantle_ComputeLedgeTarget and Mantle_FindSurface from partial.",
+  "Signatures of out-of-chunk callees fn_080e1308 (trace), fn_080d9806 (anim param set), fn_080c177c (anim position), fn_080a8364 (mixed float and raw-word args) and fn_080b8c60 (raw-word arg) are inferred from call shape; confirm argument types.",
+  "The leading 0x15 byte in the image strings at 0x08154c80, 0x08154cc4, 0x08154d00, 0x08154d80 and 0x081532a0 is kept in the format strings; confirm whether the engine prints it or whether it is a string-table tag.",
+  "PlayerState has unnamed gaps (0x2c..0x33, 0x84..0x8f, 0x138..0x543); the layout is only what this chunk touches.",
+  "BG_FindItemByName loop starts at 0x81 and stops past 0x82 (observed); confirm against the item count of the item table.",
+  "g_081850c0 (item table) and the function-pointer slot targets at g_0860b420+0xb3bec/0xb3bf0/0xb3bf4 are not defined in this chunk."
+ ]
+}

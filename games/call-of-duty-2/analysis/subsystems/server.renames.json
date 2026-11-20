@@ -1,0 +1,44 @@
+{
+ "renames": [
+  {
+   "addr": "0x080960e2",
+   "old": "SV_ReadPackets_080960e2",
+   "new": "SV_PacketEvent",
+   "confidence": "inferred",
+   "evidence": "objdump: called only from Com_EventLoop sites 0x0806196d and 0x08061a78 with (netadr, msg). Tests msg->cursize>3 and first dword==-1 then calls 0x0809594e (SV_ConnectionlessPacket); otherwise MSG_BeginReading, reads sequence and qport (0x080683f2 & 0xffff), loops svs.clients matching address/qport and runs Netchan_Process. This is exactly the Q3 SV_PacketEvent. Old name was a merge-collision artefact."
+  },
+  {
+   "addr": "0x08094b56",
+   "old": "SV_ReadPackets",
+   "new": "SV_VoiceConnectionlessPacket",
+   "confidence": "inferred",
+   "evidence": "objdump: sole caller 0x08095bde sits in SV_ConnectionlessPacket after a Q_stricmp against rodata 0x0814b6e0 which is the string 'v'. Body loops clients (stride 0xb1064), matches address (0x080b..) and qport (+0x6e6dc), prints 'SV_ReadPackets: fixing up a translated port' (0x0814b540) on mismatch, then dispatches to the voice parsers 0x0809c3c6 (state<=3) or 0x0809c2ee (state>3). Name SV_ReadPackets is a Q3-style string leak shared with the real packet event and misleading."
+  }
+ ],
+ "rejected": [
+  {
+   "addr": "0x0809c2ee",
+   "old": "SV_ParseVoicePacketsLocal",
+   "suggested": "SV_ParseVoicePacketsActive",
+   "reason": "Caller 0x08094c44 sends ACTIVE clients (state>3) to 0x0809c2ee and state<=3 to 0x0809c3c6, but both parsers share the same string and structure; the Local/non-Local semantic is not settled by the disassembly, so a rename is not clearly better."
+  },
+  {
+   "addr": "0x0809c3c6",
+   "old": "SV_ParseVoicePackets",
+   "suggested": "SV_ParseVoicePacketsInactive",
+   "reason": "Same as 0x0809c2ee: only caller state test is observed; keep the current name."
+  },
+  {
+   "addr": "0x0808be3e",
+   "old": "SV_MapRestart_f",
+   "suggested": "SV_MapRestart",
+   "reason": "Helper taking fast flag, wrappers 0x0808c0a8/0x0808c0bc are the registered handlers; current name is acceptable, rename gains nothing."
+  },
+  {
+   "addr": "0x081a218c",
+   "old": "sv_running",
+   "suggested": "(none)",
+   "reason": "Data symbol, outside function rename scope; chunk 6/7 name sv_running is already the correct one."
+  }
+ ]
+}

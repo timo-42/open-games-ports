@@ -1,0 +1,1097 @@
+{
+ "chunk": 102,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080b30a0",
+   "name": "Dvar_GetVec2",
+   "signature": "const float *Dvar_GetVec2(const char *name)",
+   "subsystem": "dvar/config",
+   "confidence": "inferred",
+   "evidence": "dispatch on dvar type 2 (vec2) returns stored float pointer, else Dvar_ParseVec2; zero fallback rodata 0x0814cfc0; sibling of 0x080b30ee/0x080b313c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b30ee",
+   "name": "Dvar_GetVec3",
+   "signature": "const float *Dvar_GetVec3(const char *name)",
+   "subsystem": "dvar/config",
+   "confidence": "inferred",
+   "evidence": "type 3 twin of Dvar_GetVec2 (Dvar_ParseVec3, zero vec at 0x0814cfc8)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b313c",
+   "name": "Dvar_GetVec4",
+   "signature": "const float *Dvar_GetVec4(const char *name)",
+   "subsystem": "dvar/config",
+   "confidence": "inferred",
+   "evidence": "type 4 twin of Dvar_GetVec2 (Dvar_ParseVec4, zero vec at 0x0814cfd4)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b3614",
+   "name": "Dvar_SetResetForward",
+   "signature": "void Dvar_SetResetForward(struct dvar_s *d, uint32 value)",
+   "subsystem": "dvar/config",
+   "confidence": "unknown",
+   "evidence": "tail forwarder to Dvar_SetReset (0x080b3570)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b3a80",
+   "name": "Dvar_LatchCurrentIfPending",
+   "signature": "void Dvar_LatchCurrentIfPending(struct dvar_s *d)",
+   "subsystem": "dvar/config",
+   "confidence": "unknown",
+   "evidence": "if Dvar_HasPendingLatch(d) then Dvar_SetLatched(d, d->value)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b40de",
+   "name": "Dvar_RegisterVec2",
+   "signature": "void Dvar_RegisterVec2(const char *name, float x, float y, uint32 min, uint32 max, uint16 flags)",
+   "subsystem": "dvar/config",
+   "confidence": "inferred",
+   "evidence": "Vec2_Set_080b5760 into a stack buffer, then Dvar_Register type 2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4148",
+   "name": "Dvar_RegisterVec3",
+   "signature": "void Dvar_RegisterVec3(const char *name, float x, float y, float z, uint32 min, uint32 max, uint16 flags)",
+   "subsystem": "dvar/config",
+   "confidence": "inferred",
+   "evidence": "Vec3_Set_080b5810 then Dvar_Register type 3",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b41ba",
+   "name": "Dvar_RegisterVec4",
+   "signature": "void Dvar_RegisterVec4(const char *name, float x, float y, float z, float w, uint32 min, uint32 max, uint16 flags)",
+   "subsystem": "dvar/config",
+   "confidence": "inferred",
+   "evidence": "Vec4_Set then Dvar_Register type 4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b4e02",
+   "name": "Dvar_SetVec4OrRegisterString",
+   "signature": "void Dvar_SetVec4OrRegisterString(const char *name, float x, float y, float z, float w)",
+   "subsystem": "dvar/config",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): If dvar missing registers string \"%g %g %g %g\" with flags 0x4000 else Dvar_SetVec4.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5202",
+   "name": "Dvar_GetCombinedString",
+   "signature": "int Dvar_GetCombinedString(char *buf, uint16 mask)",
+   "subsystem": "dvar/config",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Walks all 256 hash buckets under critical section 4 and writes name\\0value\\0 pairs for dvars matching a flag mask (buf==NULL measures length); IW/CoD4 lineage Dvar_GetCombinedString.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b52ee",
+   "name": "Dvar_SetFromCombinedString",
+   "signature": "void Dvar_SetFromCombinedString(const char *buf, int len)",
+   "subsystem": "dvar/config",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Parses name\\0value\\0 pairs over [buf,buf+len): known dvar -> Dvar_SetVariant, unknown -> Dvar_RegisterString flags 0x4000; counterpart of Dvar_GetCombinedString.",
+   "status": "translated",
+   "notes": "Ghidra argument list was stack-trampoline noise; translated from disassembly"
+  },
+  {
+   "addr": "0x080b53e4",
+   "name": "Dvar_ResetAllWithFlags",
+   "signature": "void Dvar_ResetAllWithFlags(uint16 mask, int source)",
+   "subsystem": "dvar/config",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Walks dvar_vars under critical section 4 and calls Dvar_ResetToDefault for dvars whose flags match the mask.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5440",
+   "name": "Dvar_FormatNamedAsConfigLines",
+   "signature": "int Dvar_FormatNamedAsConfigLines(const char *const *names, int count, char *buf, size_t size)",
+   "subsystem": "dvar/config",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): snprintf \"%s \\\"%s\\\"\\n\" for each named dvar into buf; returns 1 on success, 0 on snprintf failure (observed format).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b54e2",
+   "name": "Dvar_LoadNamedSetFromFile",
+   "signature": "int Dvar_LoadNamedSetFromFile(const char *const *names, size_t count, const char *data, const char *filename)",
+   "subsystem": "dvar/config",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Resets named dvars, parses file tokens, applies values with Dvar_SetFromString; prints \"^1ERROR: the following dvars were not specified in file '%s'\" (observed).",
+   "status": "translated",
+   "notes": "Found-flag array is 0x4000 bytes on the stack as in the original"
+  },
+  {
+   "addr": "0x080b5ae4",
+   "name": "MsgBuf_WriteBytes",
+   "signature": "void MsgBuf_WriteBytes(struct msgbuf_s *buf, uint32 len, const void *src)",
+   "subsystem": "msgbuf",
+   "confidence": "unknown",
+   "evidence": "forwarder to MsgBuf_WriteData",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5cac",
+   "name": "MsgBuf_WriteString",
+   "signature": "void MsgBuf_WriteString(struct msgbuf_s *buf, const char *s)",
+   "subsystem": "msgbuf",
+   "confidence": "inferred",
+   "evidence": "writes strlen+1 bytes via MsgBuf_WriteData; lineage Q3 MSG_WriteString",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5cd8",
+   "name": "MsgBuf_Skip",
+   "signature": "void MsgBuf_Skip(struct msgbuf_s *msg, int count)",
+   "subsystem": "msgbuf",
+   "confidence": "inferred",
+   "evidence": "'Couldn't skip %i bytes from %i-byte buffer (only %i bytes left)'; lineage Q3 MSG_ReadSkip",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b5e0c",
+   "name": "MsgBuf_ReadString",
+   "signature": "const char *MsgBuf_ReadString(struct msgbuf_s *msg)",
+   "subsystem": "msgbuf",
+   "confidence": "inferred",
+   "evidence": "'End of memory file while reading string (%i bytes read)'; returns buffer pointer or empty string; lineage Q3 MSG_ReadString",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b6f24",
+   "name": "Com_SeekBracedBlock",
+   "signature": "int Com_SeekBracedBlock(const char **data_p, int depth)",
+   "subsystem": "parse",
+   "confidence": "unknown",
+   "evidence": "token walk counting '{' '}' single-character tokens until block at depth found",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b704a",
+   "name": "Com_ParseJoinedLine",
+   "signature": "char *Com_ParseJoinedLine(const char **data_p)",
+   "subsystem": "parse",
+   "confidence": "unknown",
+   "evidence": "joins Com_ParseOnLine tokens with spaces into the parse-session buffer (+0x45cc, 0x400 bytes)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b70c6",
+   "name": "Com_ParseFloat",
+   "signature": "float Com_ParseFloat(const char **data_p)",
+   "subsystem": "parse",
+   "confidence": "unknown",
+   "evidence": "Com_Parse token through atof, rounded to float",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b70f4",
+   "name": "Com_ParseOnLineFloat",
+   "signature": "float Com_ParseOnLineFloat(const char **data_p)",
+   "subsystem": "parse",
+   "confidence": "unknown",
+   "evidence": "Com_ParseOnLine token through atof, rounded to float",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7122",
+   "name": "Com_ParseIntDiscard",
+   "signature": "void Com_ParseIntDiscard(const char **data_p)",
+   "subsystem": "parse",
+   "confidence": "unknown",
+   "evidence": "Com_Parse token through atoi, discarded",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7144",
+   "name": "Com_ParseOnLineIntDiscard",
+   "signature": "void Com_ParseOnLineIntDiscard(const char **data_p)",
+   "subsystem": "parse",
+   "confidence": "unknown",
+   "evidence": "Com_ParseOnLine token through atoi, discarded",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7266",
+   "name": "Com_ParseFloatBlocks",
+   "signature": "void Com_ParseFloatBlocks(const char **data_p, int count, int y, int x, float *out)",
+   "subsystem": "parse",
+   "confidence": "unknown",
+   "evidence": "'(' and ')' literal tokens around count Com_Parse2DMatrix calls with stride y*x*4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b734c",
+   "name": "FS_JoinPathChecked",
+   "signature": "void FS_JoinPathChecked(const char *a, const char *b, const char *c, char *dest, int destsize)",
+   "subsystem": "fs/path",
+   "confidence": "unknown",
+   "evidence": "'filepath '%s%s%s' is longer than %i characters'; memcpy of three parts with the third NUL",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7602",
+   "name": "Swap_CallFloatHook",
+   "signature": "void Swap_CallFloatHook(uint32 bits)",
+   "subsystem": "util/hook",
+   "confidence": "unknown",
+   "evidence": "indirect call through g_085bc814 (float-returning hook), result discarded",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b7618",
+   "name": "Swap_CallIntHook",
+   "signature": "void Swap_CallIntHook(uint32 bits)",
+   "subsystem": "util/hook",
+   "confidence": "unknown",
+   "evidence": "indirect call through g_085bc818 (int-returning hook), result discarded",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b9b80",
+   "name": "DObj_PropagatePartBits",
+   "signature": "void DObj_PropagatePartBits(struct DObj *obj, uint32 *bits)",
+   "subsystem": "dobj/xanim",
+   "confidence": "unknown",
+   "evidence": "part-group walk over DObj slot table (+0x1c), block header (count, skip, values), part-map handle (+0x10) bit and pair tables; ORs marked parts into bits",
+   "status": "translated",
+   "notes": "Goto structure kept from the decompiled body; semantic naming open"
+  },
+  {
+   "addr": "0x080ba706",
+   "name": "DObj_InitFromTemplate",
+   "signature": "void DObj_InitFromTemplate(const uint32 *src, struct XAnimTree *tree, struct DObj *dst)",
+   "subsystem": "dobj/xanim",
+   "confidence": "unknown",
+   "evidence": "copies 25 words, clears +0x04, ScrStr_AddRef(handle at +0x10) when handle differs from g_085bc828, DObj_BindAnimTree",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ba7f2",
+   "name": "XModelParts_CollectPartInfo",
+   "signature": "void XModelParts_CollectPartInfo(int32 *parts, int32 *out, uint16 *outCount, int32 *outModel, uint16 *outFirst)",
+   "subsystem": "xmodel",
+   "confidence": "unknown",
+   "evidence": "fills (id, text, flag) triples per part; text via XModel_GetBoneNames and ScrStr_TextFromHandle",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bbc4e",
+   "name": "XModel_TouchLodForPart",
+   "signature": "void XModel_TouchLodForPart(const struct XModelParts *parts, int part, float distance)",
+   "subsystem": "xmodel",
+   "confidence": "unknown",
+   "evidence": "calls XModel_GetLodIndexForDistance on the part model, result discarded",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080bbc70",
+   "name": "XModel_GetMaxLastLodDistance",
+   "signature": "float XModel_GetMaxLastLodDistance(const struct XModelParts *parts)",
+   "subsystem": "xmodel",
+   "confidence": "unknown",
+   "evidence": "maximum of XModel_GetLastLodDistance over the part models (count +0x18)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c0ffc",
+   "name": "XAnim_ReleaseSlot",
+   "signature": "void XAnim_ReleaseSlot(int32 *slot, uint32 *ref, uint32 arg)",
+   "subsystem": "xanim",
+   "confidence": "unknown",
+   "evidence": "release helper fn_080bf112 with scratch record, then fn_080beeea(slot, ref)",
+   "status": "translated",
+   "notes": "Ghidra scratch fields zeroed; they were indeterminate"
+  },
+  {
+   "addr": "0x080c10c6",
+   "name": "XAnim_ResetSlot",
+   "signature": "void XAnim_ResetSlot(int32 *slot, uint32 arg)",
+   "subsystem": "xanim",
+   "confidence": "unknown",
+   "evidence": "clears g_085e4f20, fn_080bf112 scratch release, then fn_080beb06",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c1e76",
+   "name": "XAnim_NotifyNodeChildren",
+   "signature": "void XAnim_NotifyNodeChildren(int32 *tree, int32 node, float time)",
+   "subsystem": "xanim",
+   "confidence": "unknown",
+   "evidence": "node k at table+0x0c+8k; child count +0, first child index +6; fn_080c191e per child",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c2d6a",
+   "name": "XAnim_ApplyBlendSlots",
+   "signature": "void XAnim_ApplyBlendSlots(int32 *tree, uint32 ctx)",
+   "subsystem": "xanim",
+   "confidence": "unknown",
+   "evidence": "for nodes with non-zero uint16 slot (tree+8), fn_080c1886 value applied to g_085bc900[slot] (0x28 stride)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c56f8",
+   "name": "Hunk_FindUserEntryType4",
+   "signature": "void Hunk_FindUserEntryType4(const char *name)",
+   "subsystem": "hunk",
+   "confidence": "unknown",
+   "evidence": "Hunk_FindUserEntryByName(4, name), result discarded",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080c7a0e",
+   "name": "XAnim_LookupNameOrDefault",
+   "signature": "const char *XAnim_LookupNameOrDefault(const void *table, int32 col, int32 row)",
+   "subsystem": "xanim",
+   "confidence": "unknown",
+   "evidence": "script string of table[row].ptr[col]; literal 'DEFAULT' when handle is zero",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d3bdc",
+   "name": "Sys_Warn",
+   "signature": "void Sys_Warn(const char *fmt, ...)",
+   "subsystem": "sys",
+   "confidence": "inferred",
+   "evidence": "'Warning: %s' to stderr with ttycon_on tty toggling; lineage Q3 unix Sys_Warn (naming reference)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d43c8",
+   "name": "Sys_DllLoadFailed",
+   "signature": "void Sys_DllLoadFailed(void)",
+   "subsystem": "sys/dll",
+   "confidence": "unknown",
+   "evidence": "Com_Error(0, 'Unable to load shared library')",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d43e4",
+   "name": "Sys_LoadDll",
+   "signature": "int Sys_LoadDll(const char *name, char *outPath, int32 *vmMainOut, uint32 arg)",
+   "subsystem": "sys/dll",
+   "confidence": "observed",
+   "evidence": "literal 'Sys_LoadDll(%s)... ' and 'Sys_LoadDll(%s) succeeded!' in the function; dlopen search over cwd, fs_homepath, fs_basepath; dllEntry/vmMain via dlsym",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d4f7c",
+   "name": "main",
+   "signature": "int main(int argc, char **argv)",
+   "subsystem": "sys/main",
+   "confidence": "inferred",
+   "evidence": "process entry body (never returns): uid setup, Dvar/Sys init, command line build, Com_Init, Com_Frame loop; lineage Q3 unix_main.c main()",
+   "status": "translated",
+   "notes": "Probably the ELF main; entry wiring not verified in this lane"
+  },
+  {
+   "addr": "0x080d5120",
+   "name": "Sys_LoadRenderer",
+   "signature": "int Sys_LoadRenderer(void)",
+   "subsystem": "sys/renderer",
+   "confidence": "observed",
+   "evidence": "literal 'Sys_LoadRenderer is unimplemented' in the function",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d5142",
+   "name": "Sys_UnloadRenderer",
+   "signature": "void Sys_UnloadRenderer(void)",
+   "subsystem": "sys/renderer",
+   "confidence": "observed",
+   "evidence": "literal 'Sys_UnloadRenderer is unimplemented' in the function",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d65fa",
+   "name": "Sys_SetInstallPath",
+   "signature": "void Sys_SetInstallPath(const char *path)",
+   "subsystem": "sys/paths",
+   "confidence": "inferred",
+   "evidence": "copies into sys_installpath (0x100 bytes; global name from symbols)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6644",
+   "name": "Sys_SetHomePath",
+   "signature": "void Sys_SetHomePath(const char *path)",
+   "subsystem": "sys/paths",
+   "confidence": "inferred",
+   "evidence": "copies into sys_homepath (0x100 bytes; global name from symbols)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6c7c",
+   "name": "Snd_RegisterErrorOnMissing",
+   "signature": "void Snd_RegisterErrorOnMissing(void)",
+   "subsystem": "snd/dvar",
+   "confidence": "unknown",
+   "evidence": "registers bool dvar 'snd_errorOnMissing' flags 0x1001 into g_0860b3ec",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d9cac",
+   "name": "NonFinite_FieldTest",
+   "signature": "bool NonFinite_FieldTest(const int32 *obj, uint32 flags)",
+   "subsystem": "util",
+   "confidence": "unknown",
+   "evidence": "record lookup (obj[2], flags & ~0x200) then exponent-bit test of float at +0x54",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080eb9b4",
+   "name": "WeaponDef_CopyDefaultFields",
+   "signature": "void WeaponDef_CopyDefaultFields(int32 index)",
+   "subsystem": "weapon",
+   "confidence": "unknown",
+   "evidence": "looks up 'defaultweapon_mp' (fn_080ebcc0) and copies fields 0x0c, 0x10, 0x14..0x5c into the weapon record at index",
+   "status": "translated",
+   "notes": "Literal 'defaultweapon_mp' is a lookup key, not the function name"
+  },
+  {
+   "addr": "0x080ebaf8",
+   "name": "WeaponDef_FindAmmoType",
+   "signature": "int32 WeaponDef_FindAmmoType(const char *name)",
+   "subsystem": "weapon",
+   "confidence": "unknown",
+   "evidence": "linear search of g_086272c0 by ammoName (+0x1c4); Com_DPrintf on miss",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ebb64",
+   "name": "WeaponDef_FindAmmoClip",
+   "signature": "int32 WeaponDef_FindAmmoClip(const char *name)",
+   "subsystem": "weapon",
+   "confidence": "unknown",
+   "evidence": "linear search of g_08627700 by clipName (+0x1cc); Com_DPrintf on miss",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ec706",
+   "name": "Player_GetAmmoTotalForWeapon",
+   "signature": "int32 Player_GetAmmoTotalForWeapon(struct gclient_s *cl, int32 weapon)",
+   "subsystem": "weapon/player",
+   "confidence": "unknown",
+   "evidence": "sums ammo (+0x144) or clip (+0x344) of owned weapons sharing the weapon class, deduplicated by slot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2de8",
+   "name": "WeaponDef_ParseEnumField",
+   "signature": "int32 WeaponDef_ParseEnumField(struct weaponParse_s *wp, const char *text, int32 fieldType)",
+   "subsystem": "weapon/parse",
+   "confidence": "unknown",
+   "evidence": "switch over field types 8..0xf; name tables lookup; 'Unknown weapon <kind> \"%s\" in \"%s\"' and 'Bad field type %i in %s' errors",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f729a",
+   "name": "DObj_ServerAnimUpdate",
+   "signature": "void DObj_ServerAnimUpdate(int32 *ent, uint32 arg)",
+   "subsystem": "dobj/server",
+   "confidence": "unknown",
+   "evidence": "sets g_0860b420 to g_0864f9c0; fn_080dbc70(server DObj, ent, arg, anim record at g_087035bc + 0x4b8*k, g_0864c574)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7d90",
+   "name": "Player_ReadOnlyField",
+   "signature": "void Player_ReadOnlyField(uint32 unused, const uint32 *field)",
+   "subsystem": "script/player",
+   "confidence": "unknown",
+   "evidence": "'player field %s is read-only' through Scr_Error",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7db6",
+   "name": "Player_SetSessionTeam",
+   "signature": "void Player_SetSessionTeam(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "unknown",
+   "evidence": "maps script team string to 0 none, 1 allies, 2 axis, 3 spectator; error 'illegal sessionteam string'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7e84",
+   "name": "Player_GetSessionTeam",
+   "signature": "void Player_GetSessionTeam(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "unknown",
+   "evidence": "pushes the script string id for the session team",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7efc",
+   "name": "Player_SetSessionState",
+   "signature": "void Player_SetSessionState(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "unknown",
+   "evidence": "session state parser; intermission toggles flags 0x2 at +0xa0; error 'illegal sessionstate string'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f7fc0",
+   "name": "Player_GetSessionState",
+   "signature": "void Player_GetSessionState(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "unknown",
+   "evidence": "pushes the script string id for the session state",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8038",
+   "name": "Player_SetMaxHealth",
+   "signature": "void Player_SetMaxHealth(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "unknown",
+   "evidence": "requested health (min 1) into +0x2728, clamps maxHealth (+0x12c), copies max to entity health (+0x194), sets health (+0x134)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f80e4",
+   "name": "Player_SetScore",
+   "signature": "void Player_SetScore(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "observed",
+   "evidence": "naming pass 2: player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"score\" names this function as its score setter: stores Scr_GetInt(0) at +0x26b8 (field offset 9912) then G_CalculateRanks slot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f810c",
+   "name": "Player_SetSpectatorClient",
+   "signature": "void Player_SetSpectatorClient(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "unknown",
+   "evidence": "spectatorclient parser (-1 or 0..0x3f); error otherwise",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f814a",
+   "name": "Player_SetStatusIcon",
+   "signature": "void Player_SetStatusIcon(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "observed",
+   "evidence": "naming pass 2: player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"statusicon\" names this function as its statusicon setter (G_StatusIconIndex of the string) slot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f817a",
+   "name": "Player_GetStatusIcon",
+   "signature": "void Player_GetStatusIcon(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "observed",
+   "evidence": "naming pass 2: player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"statusicon\" names this function as its statusicon getter slot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f81d4",
+   "name": "Player_SetHeadIcon",
+   "signature": "void Player_SetHeadIcon(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "unknown",
+   "evidence": "entity headIconIndex (+0x94) from fn_08113770 of the script value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f822a",
+   "name": "Player_GetHeadIcon",
+   "signature": "void Player_GetHeadIcon(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "unknown",
+   "evidence": "head icon text via configstring +0x1e for indices below 0x10, else empty",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f82b6",
+   "name": "Player_SetHeadIconTeam",
+   "signature": "void Player_SetHeadIconTeam(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "unknown",
+   "evidence": "head icon team parser (none 0, allies 1, axis 2, other 3); spectator is an error",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8388",
+   "name": "Player_GetHeadIconTeam",
+   "signature": "void Player_GetHeadIconTeam(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "unknown",
+   "evidence": "pushes the head icon team script string id",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8420",
+   "name": "Player_SetArchiveTime",
+   "signature": "void Player_SetArchiveTime(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "observed",
+   "evidence": "naming pass 2: player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"archivetime\" names this function as its archivetime setter (offset 0x26b4): stores int(1000*float) slot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8460",
+   "name": "Player_GetArchiveTime",
+   "signature": "void Player_GetArchiveTime(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "observed",
+   "evidence": "naming pass 2: player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"archivetime\" names this function as its archivetime getter: pushes 0.001*value slot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f8482",
+   "name": "Player_SetPsOffsetTime",
+   "signature": "void Player_SetPsOffsetTime(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "observed",
+   "evidence": "naming pass 2: player field table 0x08157ce0 ({name,offset,type,setter,getter}) row \"psoffsettime\" names this function as its psoffsettime setter (offset 0x27a4) slot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f84a4",
+   "name": "Player_GetPsOffsetTime",
+   "signature": "void Player_GetPsOffsetTime(struct gclient_s *cl)",
+   "subsystem": "script/player",
+   "confidence": "observed",
+   "evidence": "naming pass 2: g_playerFields entry 'psoffsettime' getter slot 0x080f84a4. Caveat: the reconstructed body pushes the +0x26b4 value, not +0x27a4; the table assignment is the evidence for the name.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f9b8c",
+   "name": "PlayerCmd_giveweapon",
+   "signature": "void PlayerCmd_giveweapon(uint32 entRef)",
+   "subsystem": "script/player/weapon",
+   "confidence": "observed",
+   "evidence": "naming pass 2: player method table 0x08158a40 entry \"giveweapon\" -> this handler (script-vm.md sec.11 also maps it); naming style of sibling PlayerCmd_* entries",
+   "status": "translated",
+   "notes": "Entity ref high 16 bits must be zero; otherwise 'not an entity'"
+  },
+  {
+   "addr": "0x080f9d8a",
+   "name": "PlayerCmd_takeweapon",
+   "signature": "void PlayerCmd_takeweapon(uint32 entRef)",
+   "subsystem": "script/player/weapon",
+   "confidence": "observed",
+   "evidence": "zeroes ammo and clip of the named weapon's slots and runs fn_080ebffe [rename script-vm: Player method table 0x08158a40 (name,handler,flag triples read from ELF) maps handler 0x080f9d8a to string 'takeweapon'; matches PlayerCmd_* convention already used in symbols.json.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f9e64",
+   "name": "PlayerCmd_takeallweapons",
+   "signature": "void PlayerCmd_takeallweapons(uint32 entRef)",
+   "subsystem": "script/player/weapon",
+   "confidence": "observed",
+   "evidence": "clears weapon+0xd4 and every weapon's ammo, clip and state [rename script-vm: Player method table 0x08158a40 (name,handler,flag triples read from ELF) maps handler 0x080f9e64 to string 'takeallweapons'; matches PlayerCmd_* convention already used in symbols.json.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f9f6a",
+   "name": "PlayerCmd_getcurrentweapon",
+   "signature": "void PlayerCmd_getcurrentweapon(uint32 entRef)",
+   "subsystem": "script/player/weapon",
+   "confidence": "observed",
+   "evidence": "pushes the name of the weapon at +0xd4, or 'none' [rename script-vm: Player method table 0x08158a40 (name,handler,flag triples read from ELF) maps handler 0x080f9f6a to string 'getcurrentweapon'; matches PlayerCmd_* convention already used in symbols.json.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fa030",
+   "name": "PlayerCmd_getcurrentoffhand",
+   "signature": "void PlayerCmd_getcurrentoffhand(uint32 entRef)",
+   "subsystem": "script/player/weapon",
+   "confidence": "observed",
+   "evidence": "pushes the name of the weapon at +0xd0, or 'none' [rename script-vm: Player method table 0x08158a40 (name,handler,flag triples read from ELF) maps handler 0x080fa030 to string 'getcurrentoffhand'; matches PlayerCmd_* convention already used in symbols.json.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fa0f6",
+   "name": "PlayerCmd_hasweapon",
+   "signature": "void PlayerCmd_hasweapon(uint32 entRef)",
+   "subsystem": "script/player/weapon",
+   "confidence": "observed",
+   "evidence": "naming pass 2: player method table 0x08158a40 entry \"hasweapon\" -> this handler (script-vm.md sec.11 also maps it); naming style of sibling PlayerCmd_* entries",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080fa1b6",
+   "name": "PlayerCmd_switchtoweapon",
+   "signature": "void PlayerCmd_switchtoweapon(uint32 entRef)",
+   "subsystem": "script/player/weapon",
+   "confidence": "observed",
+   "evidence": "'unknown weapon '%s'' error; when owned runs fn_08120e0a and pushes 1, else pushes 0 [rename script-vm: Player method table 0x08158a40 (name,handler,flag triples read from ELF) maps handler 0x080fa1b6 to string 'switchtoweapon'; matches PlayerCmd_* convention already used in symbols.json.]",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0814cfc0",
+   "name": "g_0814cfc0",
+   "type": "const float[2]",
+   "confidence": "observed",
+   "evidence": "rodata zero vec2 (bytes are zero); read by Dvar_GetVec2"
+  },
+  {
+   "addr": "0x0814cfd4",
+   "name": "g_0814cfd4",
+   "type": "const float[4]",
+   "confidence": "observed",
+   "evidence": "rodata zero vec4 (bytes are zero); read by Dvar_GetVec4"
+  },
+  {
+   "addr": "0x08157c54",
+   "name": "g_08157c54",
+   "type": "const float",
+   "confidence": "observed",
+   "evidence": "rodata float 1000.0f (bits 0x447a0000), used by Player_SetScaledValue"
+  },
+  {
+   "addr": "0x08157c58",
+   "name": "g_08157c58",
+   "type": "const float",
+   "confidence": "observed",
+   "evidence": "rodata float 0.001f (bits 0x3a83126f), used by Player_GetScaledValue"
+  },
+  {
+   "addr": "0x0864c380",
+   "name": "level_clients",
+   "type": "struct gclient_s *",
+   "confidence": "inferred",
+   "evidence": "client array base; client index = pointer difference / 0x28a4 (inverse multiplier 0x644b3219 in the code)"
+  },
+  {
+   "addr": "0x08716400",
+   "name": "g_gentities",
+   "type": "struct gentity_s[]",
+   "confidence": "inferred",
+   "evidence": "entity array, stride 0x230 indexed by client number; +0x158 client pointer, +0x194 health"
+  },
+  {
+   "addr": "0x08627080",
+   "name": "g_08627080",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "registered weapon count (loop bound in Player_GetAmmoTotalForWeapon)"
+  },
+  {
+   "addr": "0x086270a0",
+   "name": "g_086270a0",
+   "type": "struct weaponDef_s *[]",
+   "confidence": "inferred",
+   "evidence": "weapon record table used by WeaponDef_CopyDefaultFields"
+  },
+  {
+   "addr": "0x086272c0",
+   "name": "g_086272c0",
+   "type": "struct weaponDef_s *[]",
+   "confidence": "inferred",
+   "evidence": "weapon records searched by ammoName (+0x1c4)"
+  },
+  {
+   "addr": "0x086274c0",
+   "name": "g_086274c0",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "count of g_086272c0"
+  },
+  {
+   "addr": "0x08627700",
+   "name": "g_08627700",
+   "type": "struct weaponDef_s *[]",
+   "confidence": "inferred",
+   "evidence": "weapon records searched by clipName (+0x1cc)"
+  },
+  {
+   "addr": "0x08627900",
+   "name": "g_08627900",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "count of g_08627700"
+  },
+  {
+   "addr": "0x08627f44",
+   "name": "g_playerAnimTypeCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "count of the playerAnimType name table g_08627f60"
+  },
+  {
+   "addr": "0x08627f60",
+   "name": "g_playerAnimTypeStrings",
+   "type": "const char *[]",
+   "confidence": "unknown",
+   "evidence": "playerAnimType name table filled at runtime (bss)"
+  },
+  {
+   "addr": "0x0860b3ec",
+   "name": "g_0860b3ec",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "dvar 'snd_errorOnMissing' registered by Snd_RegisterErrorOnMissing"
+  },
+  {
+   "addr": "0x0864f9c0",
+   "name": "g_levelBlock",
+   "type": "byte[]",
+   "confidence": "unknown",
+   "evidence": "game-locals block address stored in g_0860b420 by DObj_ServerAnimUpdate"
+  },
+  {
+   "addr": "0x0864c574",
+   "name": "level_frameTime",
+   "type": "int32",
+   "confidence": "unknown",
+   "evidence": "value passed to fn_080dbc70 by DObj_ServerAnimUpdate"
+  },
+  {
+   "addr": "0x087035bc",
+   "name": "g_087035bc",
+   "type": "byte[]",
+   "confidence": "inferred",
+   "evidence": "per-client animation records, stride 0x4b8 (DObj_ServerAnimUpdate)"
+  },
+  {
+   "addr": "0x085bc900",
+   "name": "g_xanimSlotRing",
+   "type": "byte[]",
+   "confidence": "inferred",
+   "evidence": "blend slot pool, 0x28-byte entries (chunk 032 names the same array)"
+  },
+  {
+   "addr": "0x085e5044",
+   "name": "g_085e5044",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "effective uid saved at Sys_Main start"
+  },
+  {
+   "addr": "0x08853222",
+   "name": "scr_str_allies",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "script string id compared in team and head-icon parsers ('axis' by lineage of the enum mapping)"
+  },
+  {
+   "addr": "0x08853224",
+   "name": "scr_str_axis",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "script string id ('allies' by enum mapping)"
+  },
+  {
+   "addr": "0x08853268",
+   "name": "scr_str_spectator",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "script string id ('spectator' by enum mapping)"
+  },
+  {
+   "addr": "0x08853292",
+   "name": "scr_str_playing",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "script string id ('playing' by sessionstate mapping)"
+  },
+  {
+   "addr": "0x08853294",
+   "name": "scr_str_none",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "script string id ('none' by enum mapping)"
+  },
+  {
+   "addr": "0x08853296",
+   "name": "scr_str_dead",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "script string id ('dead' by sessionstate mapping)"
+  },
+  {
+   "addr": "0x0885328e",
+   "name": "scr_str_intermission",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "script string id ('intermission' by sessionstate mapping)"
+  },
+  {
+   "addr": "0x081869e0",
+   "name": "bg_weaponTypeNames",
+   "type": "const char *const[4]",
+   "confidence": "unknown",
+   "evidence": "weapon type name table (rodata pointer table)"
+  },
+  {
+   "addr": "0x08186a20",
+   "name": "bg_weaponClassNames",
+   "type": "const char *const[10]",
+   "confidence": "unknown",
+   "evidence": "weapon class name table"
+  },
+  {
+   "addr": "0x08186a08",
+   "name": "bg_overlayReticleNames",
+   "type": "const char *const[5]",
+   "confidence": "unknown",
+   "evidence": "overlay reticle name table"
+  },
+  {
+   "addr": "0x081869f0",
+   "name": "bg_weaponSlotNames",
+   "type": "const char *const[3]",
+   "confidence": "unknown",
+   "evidence": "weapon slot name table"
+  },
+  {
+   "addr": "0x08186a48",
+   "name": "bg_weaponStanceNames",
+   "type": "const char *const[3]",
+   "confidence": "unknown",
+   "evidence": "weapon stance name table"
+  },
+  {
+   "addr": "0x081869fc",
+   "name": "bg_projExplosionNames",
+   "type": "const char *const[3]",
+   "confidence": "unknown",
+   "evidence": "projectile explosion name table"
+  },
+  {
+   "addr": "0x08186a54",
+   "name": "bg_offhandClassNames",
+   "type": "const char *const[3]",
+   "confidence": "unknown",
+   "evidence": "offhand class name table"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "client_s",
+   "size": "0x28a4",
+   "evidence": "stride from client-index multipliers (0x644b3219 = inverse of 0xa29 = 0x28a4/4) and chunk 051 size assert; name at 0x2784, ammo 0x144, clip 0x344, weapon bits 0x544, slots 0x555"
+  },
+  {
+   "name": "gentity_s",
+   "size": "0x230",
+   "evidence": "array stride 0x230 of g_08716400; client pointer +0x158 (chunk 051 names it clientData)"
+  },
+  {
+   "name": "dvar_s",
+   "size": "unknown (offsets 0x00..0x20 asserted)",
+   "evidence": "list link +0x1c and hash link +0x20 from dvar_vars walk and bucket walk"
+  },
+  {
+   "name": "msgbuf_s",
+   "size": "unknown (offsets 0x00..0x0d asserted)",
+   "evidence": "same layout as chunk 029"
+  },
+  {
+   "name": "weaponDef_s",
+   "size": "unknown (offsets to 0x1e4)",
+   "evidence": "name +0, displayName +4, maxAmmo 0x1c0, ammoName 0x1c4, ammoIndex 0x1c8, clipName 0x1cc, weaponClass 0x1e4"
+  },
+  {
+   "name": "weaponParse_s",
+   "size": "unknown (offsets to 0x390)",
+   "evidence": "enum field targets of WeaponDef_ParseEnumField, name at +0"
+  },
+  {
+   "name": "dobj_part_block_s",
+   "size": "unknown",
+   "evidence": "count +0, skip +2, values +4 used by DObj_PropagatePartBits"
+  },
+  {
+   "name": "xanim_node_chunk102_s",
+   "size": "0x8",
+   "evidence": "XAnim node k at table+0x0c+8k; child_count +0, first child +6"
+  }
+ ],
+ "open_questions": [
+  "Scr_ReleaseAnyValue is declared void in the shared prototypes and symbols, but FUN_08084bb2 returns a value consumed by Player_SetConfigIndex, Player_GiveWeapon and others. Chunk 102 declares fn_08084bb2 returning uint32; the merge lane should decide the real signature and rename the placeholder.",
+  "Field conflicts with chunk 051: gentity +0x158 is the client pointer here (not clientData void*), weaponDef name is at +0 with the display name at +4 (chunk 051 names only +0), and the client weapon bitset is 4 words (0x544..0x553) with slot bytes at 0x555/0x556, not the 8-word bitset named in chunk 040.",
+  "client_s is a partial layout defined in this chunk; chunk 051 defines client_t (size 0x28a4) with a different field set. The merge lane must reconcile the two definitions before linking.",
+  "Sys_Main (0x080d4f7c) is probably the ELF main body (argc/argv, never returns); confirm the entry-point wiring from the _start/__libc_start_main path.",
+  "DObj_PropagatePartBits (0x080b9b80), XModelParts_CollectPartInfo (0x080ba7f2) and XAnim_NotifyNodeChildren (0x080c1e76) are translated structurally from the goto-form pseudocode; their semantic names are unknown and should be confirmed against the DObj/XAnim owners.",
+  "Placeholders fn_080beb06, fn_080beeea, fn_080bf112, fn_080c1886, fn_080c191e, fn_080c2d0a, fn_080d37fa, fn_080d3842, fn_080d99dc, fn_080dbc70, fn_080dc5a8, fn_080eb9a4, fn_080eba56, fn_080ebbd0, fn_080ebcc0, fn_080ebfb6, fn_080ebffe, fn_080ec344, fn_080ed3ae, fn_080ed3c8, fn_080ed3e2, fn_080f2d92, fn_080f8c5e, fn_080f9f4e, fn_08104b94, fn_08113770, fn_081135d2, fn_08120b26, fn_08120dd0, fn_08120e0a, fn_081097e6, fn_0813c02c, fn_0813c07a need merged names; some are declared by chunks 039/040/043/044 with differing types (bool vs char, float vs uint32).",
+  "Dvar_GetVec2/3/4 return const float * (the Ghidra return type is undefined*); the rodata zero vectors are modelled as static const arrays."
+ ]
+}

@@ -1,0 +1,94 @@
+{
+ "renames": [
+  {
+   "addr": "0x0811d634",
+   "old": "G_SoundIndex",
+   "new": "G_ShellShockIndex",
+   "confidence": "inferred",
+   "evidence": "Wrapper passes CS base 0x48e, max 0x10 to generic configstring-index routine 0x0811d300; callers precacheshellshock 0x081148e6 and setchannelvolumes (shock name). Disassembly verified."
+  },
+  {
+   "addr": "0x0811d668",
+   "old": "G_AnimIndex",
+   "new": "G_SoundIndex",
+   "confidence": "inferred",
+   "evidence": "Same wrapper with base 0x24e, max 0x100, returns movzx byte; callers are playsound/playloopsound/playlocalsound/item pickup, none pass animation names. Must be applied together with the 0x0811d634 rename (name swap)."
+  },
+  {
+   "addr": "0x080a40ea",
+   "old": "Vec3_DeltaProcess",
+   "new": "Vec3_Distance",
+   "confidence": "inferred",
+   "evidence": "Disassembly: lea tmp; call Vec3_Sub 0x080ab14c; call Vec3_Length 0x080ab2fe; leave; ret - returns length of difference in st(0)."
+  },
+  {
+   "addr": "0x080a41e0",
+   "old": "Vec2_DeltaProcess",
+   "new": "Vec2_Distance",
+   "confidence": "inferred",
+   "evidence": "Same shape: sub into 8-byte temp (0x080ab010), then length call; result left in st(0). Signature should return float."
+  },
+  {
+   "addr": "0x080dc54a",
+   "old": "Vec3_LengthDiscard",
+   "new": "Vec3_Length_080dc54a",
+   "confidence": "inferred",
+   "evidence": "Body is x*x+y*y(+z*z) then sqrt wrapper, result in st0: a byte-equivalent copy of Vec3_Length 0x080ab2fe. Suffix needed because Vec3_Length is taken."
+  },
+  {
+   "addr": "0x08120ff6",
+   "old": "Vec3_LengthDiscard_08120ff6",
+   "new": "Vec3_Length_08120ff6",
+   "confidence": "inferred",
+   "evidence": "Duplicate Vec3_Length body per subsystem notes (same pattern as 0x080dc54a); suffixed for uniqueness."
+  },
+  {
+   "addr": "0x080b11e8",
+   "old": "Float_SelectChainDiscard",
+   "new": "Float_Clamp_080b11e8",
+   "confidence": "inferred",
+   "evidence": "Disassembly: two nested calls to select 0x080b1226 with args (a-c,c,a) and (b-a,b,inner) = clamp(x,lo,hi); returns st0. Same semantics as Float_Clamp 0x080f2954, so suffixed."
+  },
+  {
+   "addr": "0x080b1250",
+   "old": "Snd_SetFlagByte",
+   "new": "Dvar_SetSetterGate",
+   "confidence": "inferred",
+   "evidence": "Stores byte to 0x085b7655, which is tested only at 0x080b5045 (Dvar set path); nothing sound-related."
+  },
+  {
+   "addr": "0x080b1268",
+   "old": "Snd_GetFlagByte",
+   "new": "Dvar_GetSvCheatsReady",
+   "confidence": "inferred",
+   "evidence": "Reads byte 0x085b7654, which is set to 1 at 0x080b513e (Dvar_InitSvCheats per notes)."
+  },
+  {
+   "addr": "0x080ad49c",
+   "old": "Com_FindFalloffCurve",
+   "new": "Com_FindFalloffCurve_Stub",
+   "confidence": "inferred",
+   "evidence": "Disassembly is mov eax,0; leave; ret: stub that always returns NULL. Keeps lookup name lineage with stub suffix."
+  }
+ ],
+ "rejected": [
+  {
+   "addr": "0x08084bb2",
+   "old": "Scr_ReleaseAnyValue",
+   "suggested": "Scr_GetString",
+   "reason": "Name Scr_GetString is already used at 0x08084c2c in symbols.json; body (Scr_GetAny then string-from-handle) does match a string getter, so a unique name like Scr_GetStringFromAny would be needed but the 0x08084c2c identity is unresolved."
+  },
+  {
+   "addr": "0x08085164",
+   "old": "Scr_AddIndex",
+   "suggested": "Scr_AddInt",
+   "reason": "Byte-identical to Scr_AddInt 0x08085140 (type 6 + value), but name Scr_AddInt is taken and the current name is not shown wrong by evidence; leave as duplicate."
+  },
+  {
+   "addr": "0x080ad47a",
+   "old": "SND_PickAliasByName",
+   "suggested": "SND_GetAliasListName",
+   "reason": "Notes say name is ok; no evidence for change."
+  }
+ ]
+}

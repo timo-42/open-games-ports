@@ -1,0 +1,852 @@
+[
+ {
+  "kind": "function",
+  "addr": "0x08a70010",
+  "issue": "invalid identifier",
+  "name": "std::string::operator="
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a70018",
+  "issue": "invalid identifier",
+  "name": "std::string::compare"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a7002c",
+  "issue": "invalid identifier",
+  "name": "std::allocator<char>::allocator"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a70070",
+  "issue": "invalid identifier",
+  "name": "std::string::string"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a7009c",
+  "issue": "invalid identifier",
+  "name": "operator.delete"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a700a8",
+  "issue": "invalid identifier",
+  "name": "std::string::c_str"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a700bc",
+  "issue": "invalid identifier",
+  "name": "std::string::operator="
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a700c8",
+  "issue": "invalid identifier",
+  "name": "std::string::~string"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a700d4",
+  "issue": "invalid identifier",
+  "name": "std::string::operator[]"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a700e8",
+  "issue": "invalid identifier",
+  "name": "std::string::string"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a7013c",
+  "issue": "invalid identifier",
+  "name": "std::string::erase"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a70144",
+  "issue": "invalid identifier",
+  "name": "std::string::operator+="
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a70150",
+  "issue": "invalid identifier",
+  "name": "std::string::find"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a70184",
+  "issue": "invalid identifier",
+  "name": "std::string::string"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a70188",
+  "issue": "invalid identifier",
+  "name": "std::allocator<char>::~allocator"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a70204",
+  "issue": "invalid identifier",
+  "name": "std::string::operator+="
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a70218",
+  "issue": "invalid identifier",
+  "name": "operator new[]"
+ },
+ {
+  "kind": "function",
+  "addr": "0x08a70220",
+  "issue": "invalid identifier",
+  "name": "operator delete[]"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Abs",
+  "kept": "0x0804fd28",
+  "renamed": "0x080aaea4",
+  "to": "Float_Abs_080aaea4"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Abs",
+  "kept": "0x0804fd28",
+  "renamed": "0x080f28cc",
+  "to": "Float_Abs_080f28cc"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Abs",
+  "kept": "0x0804fd28",
+  "renamed": "0x080b92f6",
+  "to": "Float_Abs_080b92f6"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Abs",
+  "kept": "0x0804fd28",
+  "renamed": "0x0810ccd8",
+  "to": "Float_Abs_0810ccd8"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Max",
+  "kept": "0x08055216",
+  "renamed": "0x080aaede",
+  "to": "Float_Max_080aaede"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Max",
+  "kept": "0x08055216",
+  "renamed": "0x081049ec",
+  "to": "Float_Max_081049ec"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Max",
+  "kept": "0x08055216",
+  "renamed": "0x080c5e64",
+  "to": "Float_Max_080c5e64"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Min",
+  "kept": "0x0805523a",
+  "renamed": "0x08104a10",
+  "to": "Float_Min_08104a10"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Sqrt",
+  "kept": "0x080553b2",
+  "renamed": "0x080aaebe",
+  "to": "Float_Sqrt_080aaebe"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Sqrt",
+  "kept": "0x080553b2",
+  "renamed": "0x0811882e",
+  "to": "Float_Sqrt_0811882e"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Sqrt",
+  "kept": "0x080553b2",
+  "renamed": "0x080b9310",
+  "to": "Float_Sqrt_080b9310"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Identity",
+  "kept": "0x080553f2",
+  "renamed": "0x080b933a",
+  "to": "Float_Identity_080b933a"
+ },
+ {
+  "kind": "function",
+  "name": "VectorAdd",
+  "kept": "0x080561d6",
+  "renamed": "0x080f7cb2",
+  "to": "VectorAdd_080f7cb2"
+ },
+ {
+  "kind": "function",
+  "name": "VectorSubtract",
+  "kept": "0x0805621a",
+  "renamed": "0x080f7cf6",
+  "to": "VectorSubtract_080f7cf6"
+ },
+ {
+  "kind": "function",
+  "name": "Vec2_Dot",
+  "kept": "0x0805d616",
+  "renamed": "0x080ab03c",
+  "to": "Vec2_Dot_080ab03c"
+ },
+ {
+  "kind": "function",
+  "name": "Vec2_Dot",
+  "kept": "0x0805d616",
+  "renamed": "0x080bc094",
+  "to": "Vec2_Dot_080bc094"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Clear",
+  "kept": "0x0805d638",
+  "renamed": "0x080ab08a",
+  "to": "Vec3_Clear_080ab08a"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Clear",
+  "kept": "0x0805d638",
+  "renamed": "0x0810cd5c",
+  "to": "Vec3_Clear_0810cd5c"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Clear",
+  "kept": "0x0805d638",
+  "renamed": "0x0810eb84",
+  "to": "Vec3_Clear_0810eb84"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Clear",
+  "kept": "0x0805d638",
+  "renamed": "0x0811864a",
+  "to": "Vec3_Clear_0811864a"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Clear",
+  "kept": "0x0805d638",
+  "renamed": "0x080bc0b6",
+  "to": "Vec3_Clear_080bc0b6"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Clear",
+  "kept": "0x0805d638",
+  "renamed": "0x080c77ec",
+  "to": "Vec3_Clear_080c77ec"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Copy",
+  "kept": "0x0805d662",
+  "renamed": "0x080ab0d8",
+  "to": "Vec3_Copy_080ab0d8"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Copy",
+  "kept": "0x0805d662",
+  "renamed": "0x080f29ea",
+  "to": "Vec3_Copy_080f29ea"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Copy",
+  "kept": "0x0805d662",
+  "renamed": "0x0810cdaa",
+  "to": "Vec3_Copy_0810cdaa"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Copy",
+  "kept": "0x0805d662",
+  "renamed": "0x0810ebae",
+  "to": "Vec3_Copy_0810ebae"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Copy",
+  "kept": "0x0805d662",
+  "renamed": "0x08118698",
+  "to": "Vec3_Copy_08118698"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Copy",
+  "kept": "0x0805d662",
+  "renamed": "0x08120ec2",
+  "to": "Vec3_Copy_08120ec2"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Copy",
+  "kept": "0x0805d662",
+  "renamed": "0x080bc104",
+  "to": "Vec3_Copy_080bc104"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Copy",
+  "kept": "0x0805d662",
+  "renamed": "0x080dc44e",
+  "to": "Vec3_Copy_080dc44e"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Add",
+  "kept": "0x0805d6d0",
+  "renamed": "0x080ab108",
+  "to": "Vec3_Add_080ab108"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Add",
+  "kept": "0x0805d6d0",
+  "renamed": "0x080f2a1a",
+  "to": "Vec3_Add_080f2a1a"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Add",
+  "kept": "0x0805d6d0",
+  "renamed": "0x0810cdda",
+  "to": "Vec3_Add_0810cdda"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Add",
+  "kept": "0x0805d6d0",
+  "renamed": "0x0810ebde",
+  "to": "Vec3_Add_0810ebde"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Add",
+  "kept": "0x0805d6d0",
+  "renamed": "0x081186c8",
+  "to": "Vec3_Add_081186c8"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Add",
+  "kept": "0x0805d6d0",
+  "renamed": "0x0812237a",
+  "to": "Vec3_Add_0812237a"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Add",
+  "kept": "0x0805d6d0",
+  "renamed": "0x080bc134",
+  "to": "Vec3_Add_080bc134"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Add",
+  "kept": "0x0805d6d0",
+  "renamed": "0x080de6e6",
+  "to": "Vec3_Add_080de6e6"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Add",
+  "kept": "0x0805d6d0",
+  "renamed": "0x0811d2ba",
+  "to": "Vec3_Add_0811d2ba"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Subtract",
+  "kept": "0x0805d714",
+  "renamed": "0x0810ec22",
+  "to": "Vec3_Subtract_0810ec22"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Subtract",
+  "kept": "0x0805d714",
+  "renamed": "0x08120ef2",
+  "to": "Vec3_Subtract_08120ef2"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Dot",
+  "kept": "0x0805d758",
+  "renamed": "0x080ab260",
+  "to": "Vec3_Dot_080ab260"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Dot",
+  "kept": "0x0805d758",
+  "renamed": "0x0810ceb6",
+  "to": "Vec3_Dot_0810ceb6"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Dot",
+  "kept": "0x0805d758",
+  "renamed": "0x0810ecf2",
+  "to": "Vec3_Dot_0810ecf2"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Dot",
+  "kept": "0x0805d758",
+  "renamed": "0x08118788",
+  "to": "Vec3_Dot_08118788"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Dot",
+  "kept": "0x0805d758",
+  "renamed": "0x08120fc2",
+  "to": "Vec3_Dot_08120fc2"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Dot",
+  "kept": "0x0805d758",
+  "renamed": "0x080b93c4",
+  "to": "Vec3_Dot_080b93c4"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Dot",
+  "kept": "0x0805d758",
+  "renamed": "0x080c5f50",
+  "to": "Vec3_Dot_080c5f50"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Dot",
+  "kept": "0x0805d758",
+  "renamed": "0x080dcf56",
+  "to": "Vec3_Dot_080dcf56"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Dot",
+  "kept": "0x0805d758",
+  "renamed": "0x0811f644",
+  "to": "Vec3_Dot_0811f644"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Equal",
+  "kept": "0x0805d78c",
+  "renamed": "0x080ab294",
+  "to": "Vec3_Equal_080ab294"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_LengthSquared",
+  "kept": "0x0805d7f6",
+  "renamed": "0x081187bc",
+  "to": "Vec3_LengthSquared_081187bc"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_LengthSquared",
+  "kept": "0x0805d7f6",
+  "renamed": "0x081224c2",
+  "to": "Vec3_LengthSquared_081224c2"
+ },
+ {
+  "kind": "function",
+  "name": "Stub_ReturnZero",
+  "kept": "0x080800e2",
+  "renamed": "0x081185dc",
+  "to": "Stub_ReturnZero_081185dc"
+ },
+ {
+  "kind": "function",
+  "name": "Float_RoundToInt",
+  "kept": "0x080aaf4a",
+  "renamed": "0x08104a34",
+  "to": "Float_RoundToInt_08104a34"
+ },
+ {
+  "kind": "function",
+  "name": "Float_RoundToInt",
+  "kept": "0x080aaf4a",
+  "renamed": "0x08085744",
+  "to": "Float_RoundToInt_08085744"
+ },
+ {
+  "kind": "function",
+  "name": "Lerp_Float",
+  "kept": "0x0809bf50",
+  "renamed": "0x080c3ce2",
+  "to": "Lerp_Float_080c3ce2"
+ },
+ {
+  "kind": "function",
+  "name": "Vec2_Add",
+  "kept": "0x0809e4a6",
+  "renamed": "0x0810cd30",
+  "to": "Vec2_Add_0810cd30"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Scale",
+  "kept": "0x0809e58a",
+  "renamed": "0x080ab190",
+  "to": "Vec3_Scale_080ab190"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Scale",
+  "kept": "0x0809e58a",
+  "renamed": "0x080f2a5e",
+  "to": "Vec3_Scale_080f2a5e"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Scale",
+  "kept": "0x0809e58a",
+  "renamed": "0x0810cf14",
+  "to": "Vec3_Scale_0810cf14"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Scale",
+  "kept": "0x0809e58a",
+  "renamed": "0x0810ec66",
+  "to": "Vec3_Scale_0810ec66"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Scale",
+  "kept": "0x0809e58a",
+  "renamed": "0x08118750",
+  "to": "Vec3_Scale_08118750"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Scale",
+  "kept": "0x0809e58a",
+  "renamed": "0x08120f36",
+  "to": "Vec3_Scale_08120f36"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Scale",
+  "kept": "0x0809e58a",
+  "renamed": "0x080bc1bc",
+  "to": "Vec3_Scale_080bc1bc"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Scale",
+  "kept": "0x0809e58a",
+  "renamed": "0x080dceca",
+  "to": "Vec3_Scale_080dceca"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Scale",
+  "kept": "0x0809e58a",
+  "renamed": "0x0811f678",
+  "to": "Vec3_Scale_0811f678"
+ },
+ {
+  "kind": "function",
+  "name": "Mat3_Identity",
+  "kept": "0x080a577a",
+  "renamed": "0x080a92d2",
+  "to": "Mat3_Identity_080a92d2"
+ },
+ {
+  "kind": "function",
+  "name": "Mat3_Transpose",
+  "kept": "0x080a6792",
+  "renamed": "0x080a9394",
+  "to": "Mat3_Transpose_080a9394"
+ },
+ {
+  "kind": "function",
+  "name": "AnglesToAxis",
+  "kept": "0x080a94aa",
+  "renamed": "0x0810ee88",
+  "to": "AnglesToAxis_0810ee88"
+ },
+ {
+  "kind": "function",
+  "name": "SinCos_Float",
+  "kept": "0x080aaf80",
+  "renamed": "0x080bc046",
+  "to": "SinCos_Float_080bc046"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Set",
+  "kept": "0x080ab0b4",
+  "renamed": "0x0810cd86",
+  "to": "Vec3_Set_0810cd86"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Set",
+  "kept": "0x080ab0b4",
+  "renamed": "0x08118674",
+  "to": "Vec3_Set_08118674"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Set",
+  "kept": "0x080ab0b4",
+  "renamed": "0x080bc0e0",
+  "to": "Vec3_Set_080bc0e0"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Set",
+  "kept": "0x080ab0b4",
+  "renamed": "0x080c7816",
+  "to": "Vec3_Set_080c7816"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Set",
+  "kept": "0x080ab0b4",
+  "renamed": "0x080dc42a",
+  "to": "Vec3_Set_080dc42a"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Sub",
+  "kept": "0x080ab14c",
+  "renamed": "0x0810ce1e",
+  "to": "Vec3_Sub_0810ce1e"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Sub",
+  "kept": "0x080ab14c",
+  "renamed": "0x0811870c",
+  "to": "Vec3_Sub_0811870c"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Sub",
+  "kept": "0x080ab14c",
+  "renamed": "0x080bc178",
+  "to": "Vec3_Sub_080bc178"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Sub",
+  "kept": "0x080ab14c",
+  "renamed": "0x080dc47e",
+  "to": "Vec3_Sub_080dc47e"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Sub",
+  "kept": "0x080ab14c",
+  "renamed": "0x0811f600",
+  "to": "Vec3_Sub_0811f600"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_MA",
+  "kept": "0x080ab20c",
+  "renamed": "0x0810ec9e",
+  "to": "Vec3_MA_0810ec9e"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_MA",
+  "kept": "0x080ab20c",
+  "renamed": "0x080bc1f4",
+  "to": "Vec3_MA_080bc1f4"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_MA",
+  "kept": "0x080ab20c",
+  "renamed": "0x080c5efc",
+  "to": "Vec3_MA_080c5efc"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Length",
+  "kept": "0x080ab2fe",
+  "renamed": "0x0810ed26",
+  "to": "Vec3_Length_0810ed26"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Length",
+  "kept": "0x080ab2fe",
+  "renamed": "0x081187f0",
+  "to": "Vec3_Length_081187f0"
+ },
+ {
+  "kind": "function",
+  "name": "Vec4_LengthSq",
+  "kept": "0x080ab388",
+  "renamed": "0x080bc308",
+  "to": "Vec4_LengthSq_080bc308"
+ },
+ {
+  "kind": "function",
+  "name": "Vec4_LengthSq",
+  "kept": "0x080ab388",
+  "renamed": "0x080c793e",
+  "to": "Vec4_LengthSq_080c793e"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Select",
+  "kept": "0x080ab3ce",
+  "renamed": "0x0810ceea",
+  "to": "Float_Select_0810ceea"
+ },
+ {
+  "kind": "function",
+  "name": "SND_GetAliasListName",
+  "kept": "0x080acf36",
+  "renamed": "0x080ad2e2",
+  "to": "SND_GetAliasListName_080ad2e2"
+ },
+ {
+  "kind": "function",
+  "name": "Float_SelectIfNonNegative",
+  "kept": "0x080b1226",
+  "renamed": "0x08104a98",
+  "to": "Float_SelectIfNonNegative_08104a98"
+ },
+ {
+  "kind": "function",
+  "name": "Vec4_Set",
+  "kept": "0x080b5904",
+  "renamed": "0x080bc2b0",
+  "to": "Vec4_Set_080bc2b0"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Set_b",
+  "kept": "0x08110066",
+  "renamed": "0x080b934c",
+  "to": "Vec3_Set_b_080b934c"
+ },
+ {
+  "kind": "function",
+  "name": "Vec2_Copy",
+  "kept": "0x080e966c",
+  "renamed": "0x080bc074",
+  "to": "Vec2_Copy_080bc074"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Dot_b",
+  "kept": "0x08110180",
+  "renamed": "0x080bc248",
+  "to": "Vec3_Dot_b_080bc248"
+ },
+ {
+  "kind": "function",
+  "name": "Quat_MultiplyInPlace",
+  "kept": "0x080bc452",
+  "renamed": "0x080bc58a",
+  "to": "Quat_MultiplyInPlace_080bc58a"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_LengthSq",
+  "kept": "0x080c790a",
+  "renamed": "0x080dc516",
+  "to": "Vec3_LengthSq_080dc516"
+ },
+ {
+  "kind": "function",
+  "name": "Math_SinCos",
+  "kept": "0x08120e94",
+  "renamed": "0x080dc3d2",
+  "to": "Math_SinCos_080dc3d2"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_Zero",
+  "kept": "0x080dc400",
+  "renamed": "0x0811f562",
+  "to": "Vec3_Zero_0811f562"
+ },
+ {
+  "kind": "function",
+  "name": "Math_SqrtF",
+  "kept": "0x08137482",
+  "renamed": "0x080dc588",
+  "to": "Math_SqrtF_080dc588"
+ },
+ {
+  "kind": "function",
+  "name": "Vec2_Scale",
+  "kept": "0x080e96e4",
+  "renamed": "0x080dce50",
+  "to": "Vec2_Scale_080dce50"
+ },
+ {
+  "kind": "function",
+  "name": "VectorClear",
+  "kept": "0x080e103c",
+  "renamed": "0x080f7c34",
+  "to": "VectorClear_080f7c34"
+ },
+ {
+  "kind": "function",
+  "name": "VectorSet",
+  "kept": "0x080e1066",
+  "renamed": "0x080f7c5e",
+  "to": "VectorSet_080f7c5e"
+ },
+ {
+  "kind": "function",
+  "name": "VectorCopy",
+  "kept": "0x080e108a",
+  "renamed": "0x080f7c82",
+  "to": "VectorCopy_080f7c82"
+ },
+ {
+  "kind": "function",
+  "name": "Float_Clamp",
+  "kept": "0x080f2954",
+  "renamed": "0x0810ccf2",
+  "to": "Float_Clamp_0810ccf2"
+ },
+ {
+  "kind": "function",
+  "name": "Vec3_MultiplyAdd",
+  "kept": "0x0810ce62",
+  "renamed": "0x08120f6e",
+  "to": "Vec3_MultiplyAdd_08120f6e"
+ }
+]

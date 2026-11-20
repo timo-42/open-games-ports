@@ -1,0 +1,904 @@
+{
+ "chunk": 9,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x08069c98",
+   "name": "MSG_ReadDeltaFieldsAll",
+   "signature": "void MSG_ReadDeltaFieldsAll(struct msg_s *msg, const void *from, void *to, int count, const struct netField_s *fields);",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 MSG_ReadDelta* family; reads or copies every field of a netField table. The caller passes a netField table whose entries carry byte offsets (evidence: g_08142b80 field layout).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08069d4a",
+   "name": "MSG_ReadDeltaStruct",
+   "signature": "int MSG_ReadDeltaStruct(struct msg_s *msg, const void *from, void *to, int number, int numFields, int reserved6, const struct netField_s *fields);",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 MSG_ReadDeltaEntity/Struct. Bit 1 = removed, bit 0 = unchanged; then a byte count of changed fields, each read through a netField entry; the rest is copied from the baseline. param_6 is passed by every caller but never read by this routine.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08069e88",
+   "name": "MSG_ReadDeltaEntity",
+   "signature": "void MSG_ReadDeltaEntity(struct msg_s *msg, const void *from, void *to, int number);",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "naming: entityState delta reader. Table g_081417a0 has first field \"pos.trTime\" (evidence: rodata).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08069ece",
+   "name": "MSG_ReadDeltaSharedEntity",
+   "signature": "void MSG_ReadDeltaSharedEntity(struct msg_s *msg, const void *from, void *to, int number);",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "naming: shared-entity delta reader. Table g_08141ae0 has fields \"absmin[1]\", \"absmax[1]\" (evidence: rodata).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08069f14",
+   "name": "MSG_ReadDeltaClientState",
+   "signature": "void MSG_ReadDeltaClientState(struct msg_s *msg, const void *from, void *to, int number);",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "naming: clientState delta reader. Table g_08141f60 has fields \"team\", \"name[0]\", \"modelindex\" (evidence: rodata). A NULL baseline is replaced by a zeroed 0x5c-byte record.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08069f84",
+   "name": "MSG_WriteDeltaHudElemArray",
+   "signature": "void MSG_WriteDeltaHudElemArray(struct msg_s *msg, const unsigned char *from, const unsigned char *to, int maxCount);",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Table recordFields32 (0x08142b80) has field names x,y,z,type,color,font,fontScale,alignOrg,alignScreen,text,label,fade/move/scale times (rodata, network.md section hudelemFields); record stride 0x80 = hudelem size; two 31-entry arrays at playerState+0x7a8/+0x1728 written from MSG_WriteDeltaPlayerState; terminated by first dword (type)==0. CoD4 lineage name MSG_WriteDeltaHudElems.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806a0d0",
+   "name": "MSG_ReadDeltaHudElemArray",
+   "signature": "void MSG_ReadDeltaHudElemArray(struct msg_s *msg, const unsigned char *from, unsigned char *to, int maxCount);",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Reader counterpart of 0x08069f84 using the same recordFields32 hudelem table; called twice from MSG_ReadDeltaPlayerState with the same two playerState offsets and max 0x1f.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806a200",
+   "name": "MSG_WriteDeltaPlayerState",
+   "signature": "void MSG_WriteDeltaPlayerState(struct msg_s *msg, const unsigned char *from, const unsigned char *to);",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 MSG_WriteDeltaPlayerstate. Table g_08142520 starts with \"commandTime\" (evidence: rodata). Sub-groups: 6 misc dwords at 0x12c, two 4x16 dword masks at 0x144 and 0x344, 16 x 7-dword records at 0x5e4, and two 31-record arrays at 0x1728 and 0x7a8.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806aaca",
+   "name": "MSG_ReadDeltaPlayerState",
+   "signature": "void MSG_ReadDeltaPlayerState(struct msg_s *msg, const unsigned char *from, unsigned char *to);",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 MSG_ReadDeltaPlayerstate, reader counterpart of MSG_WriteDeltaPlayerState.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b12c",
+   "name": "MSG_InitHuffmanTables",
+   "signature": "void MSG_InitHuffmanTables(void);",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 MSG_initHuffman. Feeds per-byte symbol counts (g_08142d00) into two Huffman trees.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b1a0",
+   "name": "MSG_InitHuffmanOnce",
+   "signature": "void MSG_InitHuffmanOnce(void);",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "naming: one-shot Huffman initialisation wrapper (sets g_081f7c98 then calls MSG_InitHuffmanTables).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b1b8",
+   "name": "LittleShort_0806b1b8",
+   "signature": "int LittleShort_0806b1b8(short value);",
+   "subsystem": "net/util",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: 16-bit sign-extension identity used only by MSG_WriteShort (0x080680be) and MSG_ReadShort (0x08068421); id Tech 3 LittleShort on a little-endian host.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b1cc",
+   "name": "LittleLong_0806b1cc",
+   "signature": "int LittleLong_0806b1cc(int value);",
+   "subsystem": "net/util",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: 32-bit identity used only by MSG_WriteLong (0x0806810d) and MSG_ReadLong (0x0806847e); id Tech 3 LittleLong on little-endian host.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b1d4",
+   "name": "NET_AdrToString",
+   "signature": "char *NET_AdrToString(struct netadr_s adr)",
+   "subsystem": "net/address",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 NET_AdrToString. Format strings \"loopback\" and \"%i.%i.%i.%i:%i\" (evidence: rodata).",
+   "status": "translated",
+   "notes": "netadr_s is passed by value in the binary; the signature uses a struct pointer placeholder."
+  },
+  {
+   "addr": "0x0806b2da",
+   "name": "NetProfile_Sync",
+   "signature": "void NetProfile_Sync(struct netProfile_s **slot);",
+   "subsystem": "net/profile",
+   "confidence": "inferred",
+   "evidence": "naming: Q3-lineage net profiling allocator. Strings \"Net Profiling turned on/off\" (evidence: rodata). Allocates a 0x5e0-byte profile block while net_profile is nonzero, frees it otherwise.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b3ca",
+   "name": "NetProfile_AddSample",
+   "signature": "void NetProfile_AddSample(struct netProfileStream_s *half, int bytes, int fragmented);",
+   "subsystem": "net/profile",
+   "confidence": "inferred",
+   "evidence": "naming: ring-buffer sample recorder for one profile half (60 samples; time, bytes, fragmented).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b450",
+   "name": "Netchan_ProfileSend",
+   "signature": "void Netchan_ProfileSend(struct netchan_s *chan, int bytes, int fragmented);",
+   "subsystem": "net/profile",
+   "confidence": "inferred",
+   "evidence": "naming: Q3-lineage send-side profile hook; prints \"%s send%s: %i\" with netsrc name (evidence: rodata).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b4d2",
+   "name": "Netchan_ProfileRecv",
+   "signature": "void Netchan_ProfileRecv(struct netchan_s *chan, int bytes, int fragmented);",
+   "subsystem": "net/profile",
+   "confidence": "inferred",
+   "evidence": "naming: receive-side counterpart of Netchan_ProfileSend (prints \"recieve\", as in the binary).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b55a",
+   "name": "NetProfile_ComputeStats",
+   "signature": "void NetProfile_ComputeStats(struct netProfileStream_s *half);",
+   "subsystem": "net/profile",
+   "confidence": "inferred",
+   "evidence": "naming: Q3-lineage profile statistics over the 60-sample window of one half.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b892",
+   "name": "NET_DumpProfile_f",
+   "signature": "void NET_DumpProfile_f(void);",
+   "subsystem": "net/cvars",
+   "confidence": "inferred",
+   "evidence": "naming: observed. Registered as command \"net_dumpprofile\" in NET_InitCvars; message text in rodata. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b8be",
+   "name": "NET_InitCvars",
+   "signature": "void NET_InitCvars(unsigned int qport);",
+   "subsystem": "net/cvars",
+   "confidence": "inferred",
+   "evidence": "naming: observed. Registers cvars showpackets, showdrop, packetDebug, net_profile, net_showprofile, net_lanauthorize and command net_dumpprofile (string evidence, rodata). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806b9d0",
+   "name": "Netchan_Setup",
+   "signature": "void Netchan_Setup(int sock, struct netchan_s *chan, struct netadr_s remote, int qport)",
+   "subsystem": "net/netchan",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 Netchan_Setup. Clears the 0x40040-byte channel, stores sock, remote address (20 bytes), qport, sets incomingSequence = 0 and outgoingSequence = 1, then syncs net profiling.",
+   "status": "translated",
+   "notes": "netadr_s is passed by value (20 bytes) in the binary; the signature shows the struct by value form only as a pointer placeholder."
+  },
+  {
+   "addr": "0x0806ba4c",
+   "name": "Netchan_TransmitNextFragment",
+   "signature": "bool Netchan_TransmitNextFragment(struct netchan_s *chan);",
+   "subsystem": "net/netchan",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 Netchan_TransmitNextFragment. Sends the next up-to-0x514-byte slice of the pending payload. Evidence: debug string \"[client %i] %s send %4i : s=%i fragment=%i,%i\" (rodata).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806bc6c",
+   "name": "Netchan_Transmit",
+   "signature": "bool Netchan_Transmit(struct netchan_s *chan, int length, const void *data);",
+   "subsystem": "net/netchan",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 Netchan_Transmit. Sends payloads up to 0x513 bytes directly, otherwise queues them and starts fragmented transmission. Evidence: \"Netchan_Transmit: length = %i\" (rodata).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806be8a",
+   "name": "Netchan_Process",
+   "signature": "int Netchan_Process(struct netchan_s *chan, struct msg_s *msg);",
+   "subsystem": "net/netchan",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 Netchan_Process. Validates sequence, counts drops, reassembles fragments. Evidence: \"[client %i] %s recv %4i : s=%i fragment=%i,%i\" and out-of-order/drop messages (rodata).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806c34e",
+   "name": "NET_CompareBaseAdrSigned",
+   "signature": "int NET_CompareBaseAdrSigned(const struct netadr_s *a, const struct netadr_s *b);",
+   "subsystem": "net/address",
+   "confidence": "observed",
+   "evidence": "naming: observed. Anchor and error string \"NET_CompareBaseAdrSigned: bad address type\" (rodata).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806c424",
+   "name": "NET_CompareBaseAdr",
+   "signature": "bool NET_CompareBaseAdr(struct netadr_s a, struct netadr_s b)",
+   "subsystem": "net/address",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 NET_CompareBaseAdr. Thin wrapper over NET_CompareBaseAdrSigned (evidence: call structure).",
+   "status": "translated",
+   "notes": "netadr_s is passed by value in the binary; the signature uses a struct pointer placeholder."
+  },
+  {
+   "addr": "0x0806c452",
+   "name": "NET_CompareAdrSigned",
+   "signature": "int NET_CompareAdrSigned(const struct netadr_s *a, const struct netadr_s *b);",
+   "subsystem": "net/address",
+   "confidence": "observed",
+   "evidence": "naming: observed. Anchor and error string \"NET_CompareAdrSigned: bad address type\" (rodata).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806c54c",
+   "name": "NET_CompareAdr",
+   "signature": "bool NET_CompareAdr(struct netadr_s a, struct netadr_s b)",
+   "subsystem": "net/address",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 NET_CompareAdr. Thin wrapper over NET_CompareAdrSigned (evidence: call structure).",
+   "status": "translated",
+   "notes": "netadr_s is passed by value in the binary; the signature uses a struct pointer placeholder."
+  },
+  {
+   "addr": "0x0806c57a",
+   "name": "NET_IsLocalAddress",
+   "signature": "int NET_IsLocalAddress(struct netadr_s adr)",
+   "subsystem": "net/address",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 NET_IsLocalAddress. Returns true for address types 2 (loopback) and 0. The routine reads only the type dword of the by-value netadr_s argument.",
+   "status": "translated",
+   "notes": "netadr_s is passed by value in the binary; the signature uses a struct pointer placeholder."
+  },
+  {
+   "addr": "0x0806c5ba",
+   "name": "NET_GetLoopPacket",
+   "signature": "bool NET_GetLoopPacket(int sock, struct netadr_s *from, struct msg_s *msg);",
+   "subsystem": "net/loopback",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 NET_GetLoopPacket. 16-slot loopback queue per index; clamps get to send-16.",
+   "status": "translated",
+   "notes": "netadr_s is passed by value in the binary; the signature uses a struct pointer placeholder."
+  },
+  {
+   "addr": "0x0806c700",
+   "name": "NET_PollLoopPacket",
+   "signature": "int NET_PollLoopPacket(int sock, struct netadr_s *from, struct msg_s *msg);",
+   "subsystem": "net/loopback",
+   "confidence": "inferred",
+   "evidence": "naming: wrapper that discards NET_GetLoopPacket's result (called from the receive loop).",
+   "status": "translated",
+   "notes": "netadr_s is passed by value in the binary; the signature uses a struct pointer placeholder."
+  },
+  {
+   "addr": "0x0806c722",
+   "name": "NET_SendLoopPacket",
+   "signature": "void NET_SendLoopPacket(unsigned int sock, size_t length, const void *data, int unusedType, int unusedIp, unsigned short toPort);",
+   "subsystem": "net/loopback",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 NET_SendLoopPacket. The queue index is the sock value, or the port when sock == 1. Parameters after data are not read by the routine (only the low 16 bits of the last one are used).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806c7ec",
+   "name": "NET_SendPacket",
+   "signature": "byte NET_SendPacket(int sock, int length, const void *data, struct netadr_s to)",
+   "subsystem": "net/transport",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 NET_SendPacket. Routes loopback to the loop queue; types 0 and 1 are dropped; other types go to fn_080d54a4 (the IP transport). Debug text \"[client %i] send packet %4i\".",
+   "status": "translated",
+   "notes": "netadr_s is passed by value in the binary; the signature uses a struct pointer placeholder."
+  },
+  {
+   "addr": "0x0806c8cc",
+   "name": "NET_OutOfBandPrint",
+   "signature": "bool NET_OutOfBandPrint(int sock, struct netadr_s to, const char *text)",
+   "subsystem": "net/oob",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 NET_OutOfBandPrint. Sends 0xffffffff-prefixed text. Evidence: \"OOB Print: %s\" and \"OOB Packet is %i bytes - too large to send\" (rodata).",
+   "status": "translated",
+   "notes": "netadr_s is passed by value in the binary; the signature uses a struct pointer placeholder."
+  },
+  {
+   "addr": "0x0806ca3e",
+   "name": "NET_OutOfBandData",
+   "signature": "bool NET_OutOfBandData(int sock, struct netadr_s to, const unsigned char *data, int len)",
+   "subsystem": "net/oob",
+   "confidence": "inferred",
+   "evidence": "naming: Q3-lineage OOB raw-data sender (0xffffffff prefix, no length check).",
+   "status": "translated",
+   "notes": "netadr_s is passed by value in the binary; the signature uses a struct pointer placeholder."
+  },
+  {
+   "addr": "0x0806cb5c",
+   "name": "NET_OutOfBandSend",
+   "signature": "void NET_OutOfBandSend(int sock, struct netadr_s to, const void *data, int len)",
+   "subsystem": "net/oob",
+   "confidence": "inferred",
+   "evidence": "naming: Q3-lineage OOB send. Evidence: \"OOB Packet is %i bytes - too large to send\" (rodata).",
+   "status": "translated",
+   "notes": "netadr_s is passed by value in the binary; the signature uses a struct pointer placeholder."
+  },
+  {
+   "addr": "0x0806cc7a",
+   "name": "NET_OutOfBandVoice",
+   "signature": "void NET_OutOfBandVoice(int sock, struct netadr_s to, const void *data, int len)",
+   "subsystem": "net/oob",
+   "confidence": "inferred",
+   "evidence": "naming: observed. Evidence: \"OOB Voice Packet is %i bytes - too large to send\" (rodata). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "netadr_s is passed by value in the binary; the signature uses a struct pointer placeholder."
+  },
+  {
+   "addr": "0x0806cd98",
+   "name": "NET_StringToAdr",
+   "signature": "int NET_StringToAdr(const char *text, struct netadr_s *adr);",
+   "subsystem": "net/address",
+   "confidence": "inferred",
+   "evidence": "naming: Q3 NET_StringToAdr. Handles \"localhost\", \"host[:port]\" with default port 0x7120 (evidence: rodata).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806cf00",
+   "name": "LittleLong_0806cf00",
+   "signature": "int LittleLong_0806cf00(int value);",
+   "subsystem": "net/util",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: 32-bit identity; sole caller Netchan_Process (0x0806c2d2) at the sequence read, matching Q3 LittleLong(*(int*)msg->data).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806cf08",
+   "name": "Net_CurrentClientNum",
+   "signature": "int Net_CurrentClientNum(void);",
+   "subsystem": "net/util",
+   "confidence": "unknown",
+   "evidence": "naming: returns 0 in this binary; used as the client number in debug output.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806cf14",
+   "name": "Net_Noop",
+   "signature": "void Net_Noop(void);",
+   "subsystem": "net/util",
+   "confidence": "unknown",
+   "evidence": "naming: empty function kept as a call target.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806cf1a",
+   "name": "Net_GetStaticRecord",
+   "signature": "void Net_GetStaticRecord(void **record, int *count);",
+   "subsystem": "net/util",
+   "confidence": "unknown",
+   "evidence": "naming: returns the address and count of the static 0x38-byte record g_08205600.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806cf32",
+   "name": "Net_ClearStaticRecord",
+   "signature": "void Net_ClearStaticRecord(void);",
+   "subsystem": "net/util",
+   "confidence": "unknown",
+   "evidence": "naming: clears the static 0x38-byte record g_08205600 and its count.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806cf60",
+   "name": "Anim_SetParseFlag",
+   "signature": "void Anim_SetParseFlag(int value);",
+   "subsystem": "anim/parse",
+   "confidence": "unknown",
+   "evidence": "naming: stores the anim parse flag g_08205c68 (read by Anim_ParseBlock).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806cf6e",
+   "name": "Anim_ParseError",
+   "signature": "void Anim_ParseError(const char *message);",
+   "subsystem": "anim/parse",
+   "confidence": "inferred",
+   "evidence": "naming: anim-script error reporter; reports the cursor column and the message (evidence: \"Scr_AnimTreeParse\").",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806cfa6",
+   "name": "Anim_ParseProperties",
+   "signature": "unsigned int Anim_ParseProperties(void);",
+   "subsystem": "anim/parse",
+   "confidence": "inferred",
+   "evidence": "naming: parser for animation property words; words are loopsync, nonloopsync, complete (evidence: rodata).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d05a",
+   "name": "Anim_LinkTreeEntry",
+   "signature": "void Anim_LinkTreeEntry(int *node, int name, int tree);",
+   "subsystem": "anim/parse",
+   "confidence": "unknown",
+   "evidence": "naming: links a new anim node into the name's list, or creates the list entry (kind 7). Anim_LinkTreeEntry is named by structure only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d0dc",
+   "name": "Anim_AddNodeToCurrentTree",
+   "signature": "void Anim_AddNodeToCurrentTree(int *node, int name, int line);",
+   "subsystem": "anim/parse",
+   "confidence": "inferred",
+   "evidence": "naming: observed. Error text \"#using_animtree was not specified\" (rodata). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d124",
+   "name": "Anim_ParseBlock",
+   "signature": "byte Anim_ParseBlock(int node, int tree, char emitDefaultVoid, char loopsync, char forceReset);",
+   "subsystem": "anim/parse",
+   "confidence": "inferred",
+   "evidence": "naming: recursive anim-block parser. Words \"void\" / \"void_loop\" (evidence: rodata). Returns 1 when the input ends before the closing brace, 0 when a closing brace terminates the block.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d4bc",
+   "name": "Scr_AnimTreeParse",
+   "signature": "void Scr_AnimTreeParse(char *text, int node, int tree);",
+   "subsystem": "anim/parse",
+   "confidence": "observed",
+   "evidence": "naming: observed. Profiler/marker string \"Scr_AnimTreeParse\" passed to fn_080b5f32 (rodata anchor).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d51c",
+   "name": "Anim_FreeEntry",
+   "signature": "void *Anim_FreeEntry(int value);",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "naming: per-entry callback that frees an anim node (calls fn_080abf94 with size 4).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d538",
+   "name": "Anim_CountTreeEntries",
+   "signature": "int Anim_CountTreeEntries(int node);",
+   "subsystem": "anim/tree",
+   "confidence": "unknown",
+   "evidence": "naming: recursive count of tree entries (leaves count 1; a non-empty subtree adds one).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d5c6",
+   "name": "Anim_SetNodeListValue",
+   "signature": "void Anim_SetNodeListValue(int tree, unsigned short low16, int treeName, int animName, unsigned short high16);",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "naming: walks a pending anim-node list, overwriting each link with (kind << 16 | value) and clearing the list head. Reports \"duplicate animation '%s' in 'animtrees/%s.atr'\" if the list is empty.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d67c",
+   "name": "Anim_FindTreeSlot",
+   "signature": "int Anim_FindTreeSlot(int value);",
+   "subsystem": "anim/tree",
+   "confidence": "unknown",
+   "evidence": "naming: scans g_0820584c downward from g_08205a50 for value; returns the index (0 when absent).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d6bc",
+   "name": "Anim_GetTreeSlot",
+   "signature": "int Anim_GetTreeSlot(int index);",
+   "subsystem": "anim/tree",
+   "confidence": "unknown",
+   "evidence": "naming: returns g_0820584c[index].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d6cc",
+   "name": "Anim_HashAndEmitTree",
+   "signature": "int Anim_HashAndEmitTree(int node, int tree, int a3, int index, int a5, int base, int treeName, int a8);",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "naming: recursive anim-tree hash and emit walk. Mixes counts into g_0839753c with multiplier 0x1f and emits entries with fn_080bcab0 / fn_080bcb52. Structure only; no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d924",
+   "name": "Anim_ReportUnresolved",
+   "signature": "void Anim_ReportUnresolved(int tree, int treeName);",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "naming: observed. Error text \"animation '%s' not defined in anim tree '%s'\" (rodata). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806d9fc",
+   "name": "Anim_ReleaseTreeEntries",
+   "signature": "void Anim_ReleaseTreeEntries(int node);",
+   "subsystem": "anim/tree",
+   "confidence": "inferred",
+   "evidence": "naming: recursive release of an anim tree; leaf names are passed to Anim_FreeEntry through fn_080bc986.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x081fa580",
+   "name": "net_loopbacks",
+   "type": "struct loopback_s[]",
+   "confidence": "inferred",
+   "evidence": "Loopback queues: index*0x5808; 16 slots of 0x580 bytes plus get/send counters (NET_GetLoopPacket/NET_SendLoopPacket)."
+  },
+  {
+   "addr": "0x081fa500",
+   "name": "cvar_showpackets",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Cvar_Get(\"showpackets\") in NET_InitCvars; string at 0x814322b."
+  },
+  {
+   "addr": "0x081fa504",
+   "name": "cvar_showdrop",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Cvar_Get(\"showdrop\") in NET_InitCvars."
+  },
+  {
+   "addr": "0x081fa508",
+   "name": "cvar_packetDebug",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Cvar_Get(\"packetDebug\") in NET_InitCvars."
+  },
+  {
+   "addr": "0x081fa50c",
+   "name": "cvar_net_profile",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Cvar_GetRanged(\"net_profile\", 0..2) in NET_InitCvars."
+  },
+  {
+   "addr": "0x081fa510",
+   "name": "cvar_net_showprofile",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Cvar_GetRanged(\"net_showprofile\", 0..3) in NET_InitCvars."
+  },
+  {
+   "addr": "0x081fa514",
+   "name": "cvar_net_lanauthorize",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Cvar_Get(\"net_lanauthorize\") in NET_InitCvars; string at 0x8143268."
+  },
+  {
+   "addr": "0x081fa518",
+   "name": "net_qport",
+   "type": "unsigned short",
+   "confidence": "inferred",
+   "evidence": "Written from the qport argument of NET_InitCvars (16-bit store)."
+  },
+  {
+   "addr": "0x081fa51c",
+   "name": "net_profile_mode",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "0 off, 1 client1 profiling, 2 server profiling; indexes g_0817d900."
+  },
+  {
+   "addr": "0x081a218c",
+   "name": "g_081a218c",
+   "type": "struct dvar_s *",
+   "confidence": "unknown",
+   "evidence": "Cvar-like object whose low byte at +8 gates profiling mode (NetProfile_Sync)."
+  },
+  {
+   "addr": "0x0817d838",
+   "name": "g_0817d838",
+   "type": "void *",
+   "confidence": "unknown",
+   "evidence": "Pointer to a block whose int at +4 gates profiling mode 2 (NetProfile_Sync)."
+  },
+  {
+   "addr": "0x0817d900",
+   "name": "net_profile_names",
+   "type": "const char *const[]",
+   "confidence": "inferred",
+   "evidence": "Indexed by net_profile_mode; entries 1 and 2 are \"client1\" and \"server\" pointers (rodata 0x8143100, 0x8143108)."
+  },
+  {
+   "addr": "0x0817d904",
+   "name": "net_sock_names",
+   "type": "const char *const[]",
+   "confidence": "observed",
+   "evidence": "Indexed by netchan sock: [0] \"client1\" (0x8143100), [1] \"server\" (0x8143108)."
+  },
+  {
+   "addr": "0x0817d90c",
+   "name": "anim_property_words",
+   "type": "const char *const[]",
+   "confidence": "observed",
+   "evidence": "Anim property words loopsync (0x8143603), nonloopsync (0x814360f), complete."
+  },
+  {
+   "addr": "0x08142d00",
+   "name": "huff_symbol_counts",
+   "type": "const int[256]",
+   "confidence": "inferred",
+   "evidence": "Per-byte symbol counts consumed by MSG_InitHuffmanTables."
+  },
+  {
+   "addr": "0x08142520",
+   "name": "playerStateFields",
+   "type": "const struct netField_s[105]",
+   "confidence": "inferred",
+   "evidence": "Field table starting with commandTime (rodata 0x8142068) used by MSG_*DeltaPlayerState."
+  },
+  {
+   "addr": "0x08142a20",
+   "name": "originFields",
+   "type": "const struct netField_s[3]",
+   "confidence": "inferred",
+   "evidence": "Field table starting with origin[0] (rodata 0x814207e), used by the 7-dword records."
+  },
+  {
+   "addr": "0x08142b80",
+   "name": "recordFields32",
+   "type": "const struct netField_s[32]",
+   "confidence": "inferred",
+   "evidence": "Field table x, y, type, color.rgba (color.rgba at 0x8142a6f) for 0x80-byte records."
+  },
+  {
+   "addr": "0x081417a0",
+   "name": "entityStateFields",
+   "type": "const struct netField_s[59]",
+   "confidence": "inferred",
+   "evidence": "Field table starting pos.trTime (rodata 0x81414d6); MSG_ReadDeltaEntity."
+  },
+  {
+   "addr": "0x08141ae0",
+   "name": "entitySharedFields",
+   "type": "const struct netField_s[68]",
+   "confidence": "inferred",
+   "evidence": "Field table starting absmin[1] (rodata 0x8141a64); MSG_ReadDeltaSharedEntity."
+  },
+  {
+   "addr": "0x08141f60",
+   "name": "clientStateFields",
+   "type": "const struct netField_s[22]",
+   "confidence": "inferred",
+   "evidence": "Field table team, name[0], name[4], modelindex (modelindex at 0x8141e25); MSG_ReadDeltaClientState."
+  },
+  {
+   "addr": "0x081e9c60",
+   "name": "msgHuff",
+   "type": "byte[]",
+   "confidence": "unknown",
+   "evidence": "Huffman compressor tree (opaque; Huff_Init and Huff_addRef targets)."
+  },
+  {
+   "addr": "0x081f0c7c",
+   "name": "msgHuffDecompressor",
+   "type": "byte[]",
+   "confidence": "inferred",
+   "evidence": "Huffman second tree receiving the same symbol references as g_081e9c60."
+  },
+  {
+   "addr": "0x081f7c98",
+   "name": "msg_huffmanInitialized",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Huffman tables initialised flag set by MSG_InitHuffmanOnce."
+  },
+  {
+   "addr": "0x08205a50",
+   "name": "g_08205a50",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "Depth or count used by Anim_FindTreeSlot."
+  },
+  {
+   "addr": "0x0820584c",
+   "name": "g_0820584c",
+   "type": "int[]",
+   "confidence": "unknown",
+   "evidence": "Slot id stack indexed by g_08205a50."
+  },
+  {
+   "addr": "0x08205a60",
+   "name": "g_animParseTextStart",
+   "type": "char *",
+   "confidence": "inferred",
+   "evidence": "Anim parse text start; used for the column in Anim_ParseError."
+  },
+  {
+   "addr": "0x08205a64",
+   "name": "g_animParseCursor",
+   "type": "char *",
+   "confidence": "inferred",
+   "evidence": "Anim parse text cursor passed by address to the token readers."
+  },
+  {
+   "addr": "0x08205648",
+   "name": "g_08205648",
+   "type": "void *",
+   "confidence": "inferred",
+   "evidence": "Current animtree; NULL triggers \"#using_animtree was not specified\" (string at 0x8143640)."
+  },
+  {
+   "addr": "0x08205c68",
+   "name": "g_animParseSkipPrimitives",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "Anim parse flag set by Anim_SetParseFlag; suppresses primitive registration when nonzero."
+  },
+  {
+   "addr": "0x08205600",
+   "name": "g_08205600",
+   "type": "byte[56]",
+   "confidence": "unknown",
+   "evidence": "Static 0x38-byte record returned by Net_GetStaticRecord and cleared by Net_ClearStaticRecord."
+  },
+  {
+   "addr": "0x08205638",
+   "name": "g_08205638",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "Count paired with g_08205600."
+  },
+  {
+   "addr": "0x0839753c",
+   "name": "g_scr_code_hash",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "Running hash accumulator updated with multiplier 0x1f in Anim_HashAndEmitTree."
+  },
+  {
+   "addr": "0x082055a0",
+   "name": "net_adrToStringBuf",
+   "type": "char[64]",
+   "confidence": "inferred",
+   "evidence": "Static text buffer returned by NET_AdrToString."
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "msg_s",
+   "size": "unknown (>= 0x14)",
+   "evidence": "Offsets: overflowed@0x00 (set to 1 on overflow), data@0x04, maxsize@0x08 (MSG_Init length), cursize@0x0c, readcount@0x10. Full size and bit cursor not recovered in this chunk."
+  },
+  {
+   "name": "netField_s",
+   "size": "0x0c",
+   "evidence": "Rodata field tables: name ptr, byte offset, bits (0 float, -100 float with zero flag, else integer width)."
+  },
+  {
+   "name": "cvar_s",
+   "size": "unknown (>= 0x0c)",
+   "evidence": "Cvar_Get results: integer read at +0x08 (low byte as bool); name/string prefix."
+  },
+  {
+   "name": "netadr_s",
+   "size": "0x14",
+   "evidence": "Five dwords passed by value; type@0x00, ip[4]@0x04, port@0x08, ipx[10]@0x0a (NET_AdrToString, NET_CompareBaseAdrSigned, NET_CompareAdrSigned)."
+  },
+  {
+   "name": "netprof_sample_s",
+   "size": "0x0c",
+   "evidence": "Profile sample: time, bytes, fragmented (NetProfile_AddSample)."
+  },
+  {
+   "name": "netprof_half_s",
+   "size": "0x2f0",
+   "evidence": "60 samples then sampleIndex@0x2d0, bytesPerSecond@0x2d4, lastUpdateTime@0x2d8, numPackets@0x2dc, numFragmented@0x2e0, percentFragmented@0x2e4, max@0x2e8, min@0x2ec."
+  },
+  {
+   "name": "netprof_s",
+   "size": "0x5e0",
+   "evidence": "Two halves: outgoing at 0x000 (Transmit paths), incoming at 0x2f0 (Netchan_Process); allocated by NetProfile_Sync with malloc(0x5e0)."
+  },
+  {
+   "name": "netchan_s",
+   "size": "0x40040",
+   "evidence": "memset length in Netchan_Setup. sock@0x04, dropped@0x08, incomingSequence@0x0c, remoteAddress@0x10, qport@0x24, fragmentSequence@0x28, fragmentLength@0x2c, fragmentBuffer@0x30, unsentFragments@0x20030, unsentFragmentStart@0x20034, unsentLength@0x20038, unsentBuffer@0x2003c, profile@0x4003c."
+  },
+  {
+   "name": "loopmsg_s",
+   "size": "0x580",
+   "evidence": "Loopback slot: data[0x578], datalen@0x578, source@0x57c (NET_SendLoopPacket writes, NET_GetLoopPacket reads as port)."
+  },
+  {
+   "name": "loopback_s",
+   "size": "0x5808",
+   "evidence": "16 loopmsg_s slots then get@0x5800 and send@0x5804 (stride of g_081fa580)."
+  },
+  {
+   "name": "netbuf_s",
+   "size": "0x20 (reserved; true size not recovered)",
+   "evidence": "Temporary buffer object used by fn_080ac58e/fn_080ac5d8/fn_080ac5c2; caller locals observed at 20, 24 and 28 bytes."
+  }
+ ],
+ "open_questions": [
+  "msg_s full layout (bit cursor, allowoverflow/oob flags, total size) is not recovered; only offsets 0x00-0x10 are observed here. Confirm against MSG_Init in the msg lane.",
+  "fn_08067ece is read as MSG_ReadBit (used as the removed flag and unchanged flag in the delta readers); fn_08067d28/fn_08067d86 are WriteBit0/WriteBit1. These are inferred from call structure only.",
+  "Read-side integer paths of MSG_ReadDeltaPlayerState are translated as raw int bits. Ghidra types them as float; the write side was verified in disassembly (raw loads, sar shifts). The read-side low-bits and shift sequence should be confirmed by disassembly.",
+  "netadr_s, and several chunk functions taking it, pass the 20-byte struct by value; the signatures show pointer forms. The merge lane should choose the by-value ABI.",
+  "NET_SendLoopPacket parameters 4 and 5 are never read; NET_SendPacket passes literal 2 for type and a zero ip. Confirm against other callers in the send path.",
+  "NET_IsLocalAddress receives the address by value; only the type dword is read.",
+  "Anim_ParseBlock parameter roles (emitDefaultVoid, loopsync, forceReset) are inferred from the \"void\"/\"void_loop\" strings and the flag tests. The anim lane should confirm the names.",
+  "Anim_HashAndEmitTree hash inputs (0x1f multiplier over base, index, leaf count and first key) need confirmation from the anim tree writer.",
+  "Placeholder callees (fn_08xxxxxx) in chunk_009_types.h carry signatures inferred from this chunk only; reconcile with their owning chunks."
+ ]
+}

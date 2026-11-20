@@ -1,0 +1,940 @@
+{
+ "chunk": 8,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x08065f94",
+   "name": "FS_SetServerReferencedIwds",
+   "signature": "void FS_SetServerReferencedIwds(const char *checksumList, const char *nameList)",
+   "subsystem": "filesystem/iwd",
+   "confidence": "inferred",
+   "evidence": "string 'iwd sum/name mismatch' (error path); stores Cmd_Argv atoi values and name hashes; no string names the function [rename filesystem: Writes 0x084a64c0 (atoi per token, store at 0x08065fea) and 0x084a74c0 names consumed by FS_BuildMissingIwdList ('Need iwds'); not a general checksum setter.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080660a2",
+   "name": "MapNameFromPath",
+   "signature": "char *MapNameFromPath(const char *path)",
+   "subsystem": "filesystem/map",
+   "confidence": "inferred",
+   "evidence": "strings 'maps/mp/' and 'bsp' stripped from the path; '%' mapped to '_'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08066158",
+   "name": "Huff_offsetPutBit",
+   "signature": "void Huff_offsetPutBit(int bit, byte *fout, int32 *offset)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "Huffman bit writer with caller-held cursor; Quake III huffman.c structure",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080661c8",
+   "name": "Huff_offsetGetBit",
+   "signature": "int Huff_offsetGetBit(const byte *fin, int32 *offset)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "paired reader of Huff_offsetPutBit",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08066210",
+   "name": "Huff_putBit",
+   "signature": "void Huff_putBit(int bit, byte *fout)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "bit writer on global cursor g_081e9544",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806627a",
+   "name": "Huff_getBit",
+   "signature": "int Huff_getBit(const byte *fin)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "bit reader on global cursor g_081e9544",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080662ae",
+   "name": "Huff_allocPtr",
+   "signature": "struct node_s **Huff_allocPtr(struct huffman_s *h)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "AllocNode counterpart: nodePtrs slot or free-list pop",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080662fe",
+   "name": "Huff_freePtr",
+   "signature": "void Huff_freePtr(struct huffman_s *h, struct node_s **slot)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "free-list push of a node-pointer slot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806631e",
+   "name": "Huff_swapTreePos",
+   "signature": "void Huff_swapTreePos(struct huffman_s *h, struct node_s *a, struct node_s *b)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "swaps parent child links and root pointer for two nodes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080663a6",
+   "name": "Huff_swapListPos",
+   "signature": "void Huff_swapListPos(struct node_s *a, struct node_s *b)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "swaps next/prev weight-list positions (swaplist counterpart)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08066466",
+   "name": "Huff_increment",
+   "signature": "void Huff_increment(struct huffman_s *h, struct node_s *node)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "recursive weight increment with weight-block head slots; Quake III Huff_increment structure",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080665ce",
+   "name": "Huff_addRef",
+   "signature": "void Huff_addRef(struct huffman_s *h, uint32 ch)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "first transmission splits NYT (0x100) into internal (0x101) and leaf; else Huff_increment(loc[ch])",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08066854",
+   "name": "Huff_Receive",
+   "signature": "int Huff_Receive(struct node_s *node, int *ch, const byte *fin)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "tree walk with Huff_getBit until a non-internal symbol",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080668b6",
+   "name": "Huff_offsetReceive",
+   "signature": "void Huff_offsetReceive(struct node_s *node, int *ch, const byte *fin, int32 *offset)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "offset-carrying tree walk; cursor written back only on a leaf",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08066926",
+   "name": "Huff_recursiveBitTransmit",
+   "signature": "void Huff_recursiveBitTransmit(struct node_s *node, struct node_s *child, byte *fout)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "recursive root-to-leaf bit path emission",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806698c",
+   "name": "Huff_transmit",
+   "signature": "void Huff_transmit(struct huffman_s *h, int ch, byte *fout)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "NYT code plus 8 raw bits for unseen symbols, else tree path",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08066a10",
+   "name": "Huff_offsetTransmitKnown",
+   "signature": "void Huff_offsetTransmitKnown(struct huffman_s *h, int ch, byte *fout, int32 *offset)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "tree-path emission with caller cursor; no NYT fallback in this variant",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08066f30",
+   "name": "Huff_Init",
+   "signature": "void Huff_Init(struct huff_s *huff)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "zeroes both halves, seeds each with one NYT node (symbol 0x100, weight 0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080670c8",
+   "name": "NoOp_080670c8",
+   "signature": "void NoOp_080670c8(void)",
+   "subsystem": "unknown",
+   "confidence": "unknown",
+   "evidence": "bare return; no identifying string or caller",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080670ce",
+   "name": "NoOp_080670ce",
+   "signature": "void NoOp_080670ce(void)",
+   "subsystem": "unknown",
+   "confidence": "unknown",
+   "evidence": "bare return; no identifying string or caller",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080670d4",
+   "name": "MD4_Init",
+   "signature": "void MD4_Init(struct md4_ctx_s *ctx)",
+   "subsystem": "common/checksum",
+   "confidence": "inferred",
+   "evidence": "standard MD4 initial state constants 0x67452301 0xefcdab89 0x98badcfe 0x10325476",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067114",
+   "name": "MD4_Update",
+   "signature": "void MD4_Update(struct md4_ctx_s *ctx, const byte *input, uint32 inputLen)",
+   "subsystem": "common/checksum",
+   "confidence": "inferred",
+   "evidence": "MD4Update structure: bit count, 64-byte buffer, transform per full block",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067210",
+   "name": "MD4_Final",
+   "signature": "void MD4_Final(byte *digest, struct md4_ctx_s *ctx)",
+   "subsystem": "common/checksum",
+   "confidence": "inferred",
+   "evidence": "MD4Final structure: count encode, pad to 56 mod 64, digest encode, memset 0x58",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080672d2",
+   "name": "MD4_Transform",
+   "signature": "void MD4_Transform(uint32 *state, const byte *block)",
+   "subsystem": "common/checksum",
+   "confidence": "inferred",
+   "evidence": "48-step MD4 transform; round constants 0/0x5a827999/0x6ed9eba1; rotations 3/7/11/19, 3/5/9/13, 3/9/11/15",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080679de",
+   "name": "MD4_Encode",
+   "signature": "void MD4_Encode(byte *output, const uint32 *input, uint32 len)",
+   "subsystem": "common/checksum",
+   "confidence": "inferred",
+   "evidence": "little-endian word-to-byte encode",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067a86",
+   "name": "MD4_Decode",
+   "signature": "void MD4_Decode(uint32 *output, const byte *input, uint32 len)",
+   "subsystem": "common/checksum",
+   "confidence": "inferred",
+   "evidence": "little-endian byte-to-word decode",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067b02",
+   "name": "Com_BlockChecksum",
+   "signature": "uint32 Com_BlockChecksum(const void *buffer, int length)",
+   "subsystem": "common/checksum",
+   "confidence": "inferred",
+   "evidence": "MD4 over buffer, returns XOR of digest words",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067b5e",
+   "name": "Com_BlockChecksumKey",
+   "signature": "uint32 Com_BlockChecksumKey(const void *buffer, int length, int key)",
+   "subsystem": "common/checksum",
+   "confidence": "inferred",
+   "evidence": "as Com_BlockChecksum with a 4-byte key hashed first",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067bd8",
+   "name": "MSG_Init",
+   "signature": "void MSG_Init(struct msg_s *msg, byte *data, int32 maxsize)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "zeroes 0x18-byte header, stores data and maxsize; guarded one-time call fn_0806b1a0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067c1c",
+   "name": "MSG_BeginReading",
+   "signature": "void MSG_BeginReading(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "resets overflow flag, readcount and bit cursor",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067c3e",
+   "name": "MSG_BitCount",
+   "signature": "int MSG_BitCount(const struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "unknown",
+   "evidence": "cursize*8 minus unused bits of the last byte, from bit cursor",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067c62",
+   "name": "MSG_WriteBits",
+   "signature": "void MSG_WriteBits(struct msg_s *msg, uint32 value, int bits)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "LSB-first bit writer, fixed 4-byte overflow margin",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067d28",
+   "name": "MSG_WriteBit0",
+   "signature": "void MSG_WriteBit0(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "writes a zero bit or sets overflow",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067d86",
+   "name": "MSG_WriteBit1",
+   "signature": "void MSG_WriteBit1(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "writes a one bit or sets overflow",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067e20",
+   "name": "MSG_ReadBits",
+   "signature": "int MSG_ReadBits(struct msg_s *msg, int bits)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "LSB-first bit reader; returns -1 and sets overflow on exhaustion",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067ece",
+   "name": "MSG_ReadBit",
+   "signature": "int MSG_ReadBit(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "one-bit reader; returns -1 and sets overflow on exhaustion",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067f4e",
+   "name": "Huff_CompressBytes",
+   "signature": "int Huff_CompressBytes(const byte *in, byte *out, int count)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "static encode over compressor tree; returns bytes produced",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08067fa2",
+   "name": "Huff_DecompressBytes",
+   "signature": "int Huff_DecompressBytes(const byte *in, byte *out, int compressedLen)",
+   "subsystem": "net/huffman",
+   "confidence": "inferred",
+   "evidence": "decode until compressedLen*8 bits consumed; returns bytes written",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806800c",
+   "name": "MSG_WriteByte",
+   "signature": "void MSG_WriteByte(struct msg_s *msg, int c)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "raw byte append with overflow check",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068044",
+   "name": "MSG_WriteData",
+   "signature": "void MSG_WriteData(struct msg_s *msg, const void *data, int length)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "raw block append (memcpy) with overflow check",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806809a",
+   "name": "MSG_WriteShort",
+   "signature": "void MSG_WriteShort(struct msg_s *msg, int c)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "16-bit append via fn_0806b1b8 byte-order helper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080680ea",
+   "name": "MSG_WriteLong",
+   "signature": "void MSG_WriteLong(struct msg_s *msg, int c)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "32-bit append via fn_0806b1cc byte-order helper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068138",
+   "name": "MSG_WriteInt64",
+   "signature": "void MSG_WriteInt64(struct msg_s *msg, uint32 lo, uint32 hi)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "64-bit append built from two words via fn_080b75a6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080681a4",
+   "name": "MSG_WriteString",
+   "signature": "void MSG_WriteString(struct msg_s *msg, const char *s)",
+   "subsystem": "net/msg",
+   "confidence": "observed",
+   "evidence": "string 'MSG_WriteString: MAX_STRING_CHARS' in body; 1024-byte per-char map then NUL-terminated write",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068256",
+   "name": "MSG_WriteBigString",
+   "signature": "void MSG_WriteBigString(struct msg_s *msg, const char *s)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "string 'MSG_WriteString: BIG_INFO_STRING' in body; 8 KiB variant",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806831c",
+   "name": "MSG_WriteAngle8",
+   "signature": "void MSG_WriteAngle8(struct msg_s *msg, float angle)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "(angle*256/360) truncated to a byte (x87 round-toward-zero)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068366",
+   "name": "MSG_WriteAngle16",
+   "signature": "void MSG_WriteAngle16(struct msg_s *msg, float angle)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "angle*182.04445 truncated to 16 bits (float constant verified)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080683a8",
+   "name": "MSG_ReadByte",
+   "signature": "int MSG_ReadByte(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "unsigned byte read; -1 and overflow on exhaustion",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080683f2",
+   "name": "MSG_ReadShort",
+   "signature": "int MSG_ReadShort(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "16-bit read via fn_0806b1b8, sign-extended",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068450",
+   "name": "MSG_ReadLong",
+   "signature": "int MSG_ReadLong(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "32-bit read via fn_0806b1cc",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080684ac",
+   "name": "MSG_ReadInt64",
+   "signature": "uint64 MSG_ReadInt64(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "64-bit read via fn_080b75a6; 0 on overflow",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068522",
+   "name": "MSG_ReadString",
+   "signature": "char *MSG_ReadString(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "NUL-terminated read into 1 KiB static buffer",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806858c",
+   "name": "MSG_ReadBigString",
+   "signature": "char *MSG_ReadBigString(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "8 KiB read; '%' mapped to '.'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068606",
+   "name": "MSG_ReadStringLine",
+   "signature": "char *MSG_ReadStringLine(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "line read stopping at '\\n'; '%' mapped to '.'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068688",
+   "name": "MSG_ReadAngle16",
+   "signature": "float MSG_ReadAngle16(struct msg_s *msg)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "16-bit read scaled by 360/65536 (float constant verified exact)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080686ac",
+   "name": "MSG_ReadData",
+   "signature": "void MSG_ReadData(struct msg_s *msg, void *dst, int length)",
+   "subsystem": "net/msg",
+   "confidence": "inferred",
+   "evidence": "raw block read; fills 0xff on overflow",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806871c",
+   "name": "MSG_WriteDeltaKey",
+   "signature": "void MSG_WriteDeltaKey(struct msg_s *msg, uint32 key, uint32 oldValue, uint32 newValue, int bits)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "Quake III MSG_WriteDeltaKey structure: changed bit then key^new in bits",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068760",
+   "name": "MSG_ReadDeltaKey",
+   "signature": "uint32 MSG_ReadDeltaKey(struct msg_s *msg, uint32 key, uint32 oldValue, int bits)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "reader of MSG_WriteDeltaKey; mask table g_0817d880",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080687a8",
+   "name": "MSG_WriteKeyedBits",
+   "signature": "void MSG_WriteKeyedBits(struct msg_s *msg, uint32 key, uint32 value, int bits)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "writes bits of key ^ value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080687cc",
+   "name": "MSG_ReadKeyedBits",
+   "signature": "uint32 MSG_ReadKeyedBits(struct msg_s *msg, uint32 key, int bits)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "reads bits and xors with masked key",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080687fa",
+   "name": "MSG_WriteDeltaKeyByte",
+   "signature": "void MSG_WriteDeltaKeyByte(struct msg_s *msg, uint32 key, int8 oldValue, uint32 newValue)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "changed bit then key-xored byte",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068838",
+   "name": "MSG_ReadDeltaKeyByte",
+   "signature": "uint32 MSG_ReadDeltaKeyByte(struct msg_s *msg, uint8 key, uint32 oldValue)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "reader of MSG_WriteDeltaKeyByte; key is a byte here",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806886e",
+   "name": "MSG_WriteDeltaKeyShort",
+   "signature": "void MSG_WriteDeltaKeyShort(struct msg_s *msg, uint32 key, int16 oldValue, uint32 newValue)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "changed bit then key-xored 16-bit value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080688ac",
+   "name": "MSG_ReadDeltaKeyShort",
+   "signature": "int MSG_ReadDeltaKeyShort(struct msg_s *msg, uint16 key, int oldValue)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "reader of MSG_WriteDeltaKeyShort",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080688e4",
+   "name": "CopyReliableCommand",
+   "signature": "void CopyReliableCommand(const char *src, char *dst, int dstSize)",
+   "subsystem": "net/reliable-command",
+   "confidence": "inferred",
+   "evidence": "strings 'WARNING: Reliable command is too long' and 'WARNING: Empty reliable command'; char map and '%' to '.'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080689a6",
+   "name": "CL_CreateCmd",
+   "signature": "void CL_CreateCmd(const struct playerState_s *ps, struct usercmd_s *cmd)",
+   "subsystem": "client/usercmd",
+   "confidence": "inferred",
+   "evidence": "Quake III CL_CreateCmd structure: angles minus delta angles, flags from pm_flags and move axis",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068b20",
+   "name": "UserCmd_MoveClass",
+   "signature": "uint32 UserCmd_MoveClass(int forward, int right)",
+   "subsystem": "client/usercmd",
+   "confidence": "unknown",
+   "evidence": "classifies forward/right by thresholds of +/-10; no identifying string",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068b66",
+   "name": "UserCmd_MoveFromClass",
+   "signature": "void UserCmd_MoveFromClass(uint32 cls, int8 *forward, int8 *right)",
+   "subsystem": "client/usercmd",
+   "confidence": "unknown",
+   "evidence": "inverse of UserCmd_MoveClass: maps flags to +127, -127 or 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068bc0",
+   "name": "MSG_WriteDeltaUsercmdKey",
+   "signature": "void MSG_WriteDeltaUsercmdKey(struct msg_s *msg, uint32 key, const struct usercmd_s *from, const struct usercmd_s *to)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "Quake III MSG_WriteDeltaUsercmdKey structure: serverTime byte delta, key-xored buttons/angles/classes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08068f9e",
+   "name": "MSG_ReadDeltaUsercmdKey",
+   "signature": "void MSG_ReadDeltaUsercmdKey(struct msg_s *msg, uint32 key, const struct usercmd_s *from, struct usercmd_s *to)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "reader of MSG_WriteDeltaUsercmdKey, same key sequencing",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080692dc",
+   "name": "MSG_WriteDeltaField",
+   "signature": "void MSG_WriteDeltaField(struct msg_s *msg, const void *from, const void *to, const struct netField_s *field)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "Quake III netField-driven field delta; bits 0/-99/-100 select special float encodings",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08069602",
+   "name": "MSG_WriteDeltaFieldGroup",
+   "signature": "void MSG_WriteDeltaFieldGroup(struct msg_s *msg, const void *from, const void *to, int force, int count, const struct netField_s *fields)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "group changed bit then fields; int compare when not forced",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080696bc",
+   "name": "MSG_WriteDeltaStruct",
+   "signature": "void MSG_WriteDeltaStruct(struct msg_s *msg, const void *from, const void *to, int force, int numFields, int numBits, const struct netField_s *fields, int print)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "Quake III MSG_WriteDeltaStruct structure; removal writes the number alone",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806984c",
+   "name": "MSG_WriteDeltaEntity",
+   "signature": "void MSG_WriteDeltaEntity(struct msg_s *msg, const void *from, const void *to, int force)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "entity delta: 59 fields from g_081417a0 (first name 'pos.trTime'), 10 index bits",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806989a",
+   "name": "MSG_WriteDeltaSharedEntity",
+   "signature": "void MSG_WriteDeltaSharedEntity(struct msg_s *msg, const void *from, const void *to, int force)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "shared-entity delta: 68 fields from g_08141ae0 (first name 'absmin'), 10 index bits",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080698e8",
+   "name": "MSG_WriteDeltaClientState",
+   "signature": "void MSG_WriteDeltaClientState(struct msg_s *msg, const void *from, const void *to, int force)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "player-state delta: 22 fields from g_08141f60, 6 index bits, print on; NULL from uses zeroed 0x5c default [rename network: objdump: field count 0x16 (22) at 0x080698f1, memset of 0x5c bytes at 0x08069904, field table 0x08141f60 at 0x08069927 (clientState table: team, name, modelindex, attach*). Callers 0x0809853b/0x08098574/0x080985ac/0x0809b33f/0x0809b3f5/0x0809b7b0 are snapshot client-state emitters; reader twin 0x08069f14 is already MSG_ReadDeltaClientState. Also removes case-only clash with MSG_WriteDeltaPlayerState 0x0806a200.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08069960",
+   "name": "MSG_ReadDeltaField",
+   "signature": "void MSG_ReadDeltaField(struct msg_s *msg, const void *from, void *to, const struct netField_s *field, int print)",
+   "subsystem": "net/delta",
+   "confidence": "inferred",
+   "evidence": "reader of MSG_WriteDeltaField; prints '%s:%i ' / '%s:%f ' traces",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x084a64a0",
+   "name": "fs_numReferencedIwds",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "iwd checksum count written at end of FS_SetIwdChecksums"
+  },
+  {
+   "addr": "0x084a64c0",
+   "name": "fs_referencedIwdSums",
+   "type": "int32[1024]",
+   "confidence": "inferred",
+   "evidence": "iwd checksum values filled from Cmd_Argv via atoi"
+  },
+  {
+   "addr": "0x084a74c0",
+   "name": "fs_referencedIwdNames",
+   "type": "char *[1024]",
+   "confidence": "inferred",
+   "evidence": "iwd name hashes filled via fn_080ab740"
+  },
+  {
+   "addr": "0x081e9c60",
+   "name": "msgHuff",
+   "type": "struct huff_s",
+   "confidence": "inferred",
+   "evidence": "compressor at +0, decompressor at +0x701c (decompressor.tree at 0x081f0c84)"
+  },
+  {
+   "addr": "0x081e9544",
+   "name": "huff_bitCursor",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "global Huffman bit cursor used by the non-offset bit helpers"
+  },
+  {
+   "addr": "0x081e9500",
+   "name": "g_081e9500",
+   "type": "char[]",
+   "confidence": "inferred",
+   "evidence": "map-name buffer returned by MapNameFromPath; the bit cursor sits 0x44 bytes later"
+  },
+  {
+   "addr": "0x081f7c98",
+   "name": "msg_huffmanInitialized",
+   "type": "int32",
+   "confidence": "unknown",
+   "evidence": "one-time guard tested in MSG_Init before calling fn_0806b1a0"
+  },
+  {
+   "addr": "0x081f7ca0",
+   "name": "msg_readStringBuf",
+   "type": "char[1024]",
+   "confidence": "inferred",
+   "evidence": "MSG_ReadString buffer; terminator at +1023"
+  },
+  {
+   "addr": "0x081f80a0",
+   "name": "msg_readBigStringBuf",
+   "type": "char[8192]",
+   "confidence": "inferred",
+   "evidence": "MSG_ReadBigString buffer; terminator at +8191"
+  },
+  {
+   "addr": "0x081fa0a0",
+   "name": "msg_readStringLineBuf",
+   "type": "char[1024]",
+   "confidence": "inferred",
+   "evidence": "MSG_ReadStringLine buffer; terminator at +1023"
+  },
+  {
+   "addr": "0x081413e2",
+   "name": "str_empty",
+   "type": "const char[1]",
+   "confidence": "observed",
+   "evidence": "empty string literal (rodata bytes are zero at this address)"
+  },
+  {
+   "addr": "0x0817d840",
+   "name": "md4_padding",
+   "type": "const byte[64]",
+   "confidence": "observed",
+   "evidence": "MD4 padding block (0x80 followed by zeros) in .data"
+  },
+  {
+   "addr": "0x0817d880",
+   "name": "msg_lowBitMasks",
+   "type": "const uint32[32]",
+   "confidence": "observed",
+   "evidence": "bit-mask table 0,1,3,7,...,0xffffffff used by delta key helpers"
+  },
+  {
+   "addr": "0x081417a0",
+   "name": "entityStateFields",
+   "type": "const struct netField_s[59]",
+   "confidence": "inferred",
+   "evidence": "entity field table; first name pointer labelled s_pos_trTime"
+  },
+  {
+   "addr": "0x08141ae0",
+   "name": "sharedEntityFields",
+   "type": "const struct netField_s[68]",
+   "confidence": "inferred",
+   "evidence": "shared entity field table; first name pointer labelled s_absmin"
+  },
+  {
+   "addr": "0x08141f60",
+   "name": "clientStateFields",
+   "type": "const struct netField_s[22]",
+   "confidence": "inferred",
+   "evidence": "player state field table used with 22 fields, 6 index bits"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "md4_ctx_s",
+   "size": "0x58",
+   "evidence": "MD4_Init/Update/Final; memset 0x58 in MD4_Final; count at 0x10, buffer at 0x18"
+  },
+  {
+   "name": "netField_s",
+   "size": "0xc",
+   "evidence": "name/offset/bits triples iterated with 12-byte stride in delta writers"
+  },
+  {
+   "name": "node_s",
+   "size": "0x20",
+   "evidence": "Huffman node: left/right/parent/next/prev/head/weight/symbol; allocated 768 per half"
+  },
+  {
+   "name": "huffman_s",
+   "size": "0x701c",
+   "evidence": "blocNode, blocPtrs, tree, lhead, ltail, loc[257], freelist at 0x418, nodeList at 0x41c, nodePtrs at 0x641c"
+  },
+  {
+   "name": "huff_s",
+   "size": "0xe038",
+   "evidence": "Huff_Init memsets two 0x701c halves; decompressor at 0x701c"
+  },
+  {
+   "name": "msg_s",
+   "size": "0x18",
+   "evidence": "MSG_Init memsets 0x18 bytes; overflowed, data, maxsize, cursize, readcount, bit"
+  },
+  {
+   "name": "usercmd_s",
+   "size": "0x1c",
+   "evidence": "CL_CreateCmd memsets 0x1c; delta writer offsets 0,4,8,9,0xc..0x14,0x18,0x19"
+  },
+  {
+   "name": "playerState_s",
+   "size": "partial (offsets 0x0c..0xf4 used)",
+   "evidence": "CL_CreateCmd reads pmFlags 0x0c, moveAxis 0x4c, deltaAngles 0x54, buttons 0xa0, 0xd0, 0xd4, 0xdc, viewAngles 0xe8; full size unknown"
+  }
+ ],
+ "open_questions": [
+  "Names of out-of-chunk placeholders fn_080601e0, fn_080601f4, fn_08060630, fn_08060dea, fn_08061124, fn_080ab740, fn_080a2b4e, fn_080b7ae2, fn_080b7edc, fn_080b7ab6, fn_080b75a6, fn_0806b1a0, fn_0806b1b8, fn_0806b1cc are unresolved; the merge lane should map them to Com_/Cmd_/Q_ names once other chunks confirm them.",
+  "Huff_offsetTransmitKnown (0x08066a10) has no NYT fallback while Huff_transmit does; confirm whether the static compressor path (Huff_CompressBytes) is only called for pre-seeded symbols.",
+  "usercmd_s.unk09 (0x09) and the playerState fields at 0x4c, 0xd0, 0xdc and 0xa0 bits 2/3 are named by usage only; their gameplay meaning and the full playerState_s size are open.",
+  "The string-table entries g_081417a0, g_08141ae0 and g_08141f60 are typed as netField_s arrays from their use; element counts (59, 68, 22) come from the call sites, not from the table bounds.",
+  "Whether MSG_WriteDeltaStruct's print flag selects a debug trace in the shipping build, or whether the MSG_WriteDeltaPlayerstate print=1 is a release-visible trace, is inferred from the code and not from a string.",
+  "MSG_BitCount (0x08067c3e), UserCmd_MoveClass and UserCmd_MoveFromClass have no identifying string or caller in this chunk; their names are descriptive only."
+ ]
+}

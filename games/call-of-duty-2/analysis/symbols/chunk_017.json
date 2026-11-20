@@ -1,0 +1,1073 @@
+{
+ "chunk": 17,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080825d4",
+   "name": "Scr_PeekCallerOwner",
+   "signature": "void *Scr_PeekCallerOwner(uint32 *valueOut)",
+   "subsystem": "script/varlist",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode",
+   "status": "translated",
+   "notes": "no strings; returns the owner word of the top frame cell and its value (descriptive name only)."
+  },
+  {
+   "addr": "0x080829ae",
+   "name": "Scr_LinkObjectLists",
+   "signature": "void Scr_LinkObjectLists(uint32 headId, uint32 objId, uint32 prevId, uint32 nextId, uint32 linkValue)",
+   "subsystem": "script/object-links",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08082a16, 0x08083262, 0x0808359e",
+   "status": "translated",
+   "notes": "no strings; links an object into the two list heads and the chain tail (descriptive name only)."
+  },
+  {
+   "addr": "0x08082a16",
+   "name": "Scr_LinkObjectPair",
+   "signature": "void Scr_LinkObjectPair(uint32 objId, uint32 otherId)",
+   "subsystem": "script/object-links",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0807b8ae, 0x080831c6",
+   "status": "translated",
+   "notes": "no strings; wraps Scr_LinkObjectLists for a pair of object ids (descriptive name only)."
+  },
+  {
+   "addr": "0x08082a92",
+   "name": "Scr_SaveStack",
+   "signature": "ScrStackBuffer_s *Scr_SaveStack(int32 count, const char *owner, VariableValue *entries, int32 sideSlots, uint32 *headIo)",
+   "subsystem": "script/varlist",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08080158 [rename script-vm: Doc 10.5: copies value-stack slice plus local ids into a VAR_STACK buffer for OP_wait/waittill; no variable list involved.]",
+   "status": "translated",
+   "notes": "no strings; allocates a packed variable-list block from the value stack, popping frame cells for type-7 entries (descriptive name only)."
+  },
+  {
+   "addr": "0x08082bba",
+   "name": "Scr_PushChainIds",
+   "signature": "int32 Scr_PushChainIds(uint32 head)",
+   "subsystem": "script/varlist",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08082c0a",
+   "status": "translated",
+   "notes": "no strings; walks a link chain, appending each id to the side stack and returning the count (descriptive name only)."
+  },
+  {
+   "addr": "0x08082c0a",
+   "name": "Scr_RestoreStack",
+   "signature": "void Scr_RestoreStack(uint32 objId, uint32 *active, struct cod2_scr_varlist_s *list)",
+   "subsystem": "script/varlist",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08083d12 [rename script-vm: Doc 10.5; called from 0x08083d12 resume loop (disassembly call at 0x8083d8c).]",
+   "status": "translated",
+   "notes": "no strings; expands a packed variable list into an active working list and per-thread table cells (descriptive name only)."
+  },
+  {
+   "addr": "0x08082d9c",
+   "name": "Scr_FreeSavedStack",
+   "signature": "void Scr_FreeSavedStack(uint32 stopId, uint32 objId, struct cod2_scr_varlist_s *list)",
+   "subsystem": "script/varlist",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08083108, 0x08083262, 0x08083c88 [rename script-vm: Doc 10.5: frees saved stack buffer.]",
+   "status": "translated",
+   "notes": "no strings; unwinds a packed variable list, calling back per record until a type-7 record and object match stop id (descriptive name only)."
+  },
+  {
+   "addr": "0x08082f06",
+   "name": "Scr_DetachSavedStack",
+   "signature": "void Scr_DetachSavedStack(uint32 objId, struct cod2_scr_varlist_s *list, int8 keepTail)",
+   "subsystem": "script/varlist",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08083b24 [rename script-vm: Doc 10.5: detaches saved stack buffer from its owner thread.]",
+   "status": "translated",
+   "notes": "no strings; detaches a variable list from its object, re-linking the remaining head and optionally clearing the owner (descriptive name only)."
+  },
+  {
+   "addr": "0x08083092",
+   "name": "Scr_PruneThreadRange",
+   "signature": "void Scr_PruneThreadRange(uint32 id)",
+   "subsystem": "script/object-links",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0808352a",
+   "status": "translated",
+   "notes": "no strings; marks the trailing per-thread table cells as unused after searching for an id (descriptive name only)."
+  },
+  {
+   "addr": "0x08083108",
+   "name": "Scr_ReleaseObjectVars",
+   "signature": "void Scr_ReleaseObjectVars(uint32 stopId, uint32 objId)",
+   "subsystem": "script/object-links",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0808352a",
+   "status": "translated",
+   "notes": "no strings; releases the variable list of an object from the root table and calls Scr_RestoreVarList-style unwinding (descriptive name only)."
+  },
+  {
+   "addr": "0x080831c6",
+   "name": "Scr_DetachObjectVars",
+   "signature": "void Scr_DetachObjectVars(uint32 objId)",
+   "subsystem": "script/object-links",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08083b24",
+   "status": "translated",
+   "notes": "no strings; detaches an object from the secondary root and re-links its variable list (descriptive name only)."
+  },
+  {
+   "addr": "0x08083262",
+   "name": "Scr_SetObjectVars",
+   "signature": "void Scr_SetObjectVars(uint32 stopId, uint32 objId)",
+   "subsystem": "script/object-links",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0808352a",
+   "status": "translated",
+   "notes": "no strings; sets the variable list of an object, dispatching on the object's link id (descriptive name only)."
+  },
+  {
+   "addr": "0x080833e2",
+   "name": "Scr_LookupObjectLink",
+   "signature": "uint32 Scr_LookupObjectLink(uint32 unusedOwner, uint32 objId)",
+   "subsystem": "script/object-links",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x080834bc",
+   "status": "translated",
+   "notes": "no strings; looks up the link handle of an object in the root tables (descriptive name only)."
+  },
+  {
+   "addr": "0x080834bc",
+   "name": "Scr_IsSingletonObject",
+   "signature": "bool Scr_IsSingletonObject(uint32 objId)",
+   "subsystem": "script/object-links",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode",
+   "status": "translated",
+   "notes": "no strings; predicate that tests whether an object is an unparented class-0x10 singleton (descriptive name only)."
+  },
+  {
+   "addr": "0x0808352a",
+   "name": "Scr_DispatchObjectRelease",
+   "signature": "void Scr_DispatchObjectRelease(uint32 objId)",
+   "subsystem": "script/object-links",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0808359e",
+   "status": "translated",
+   "notes": "no strings; dispatches object release by class (0x10, 0x0f, 0x11) to the matching variable-list cleanup (descriptive name only)."
+  },
+  {
+   "addr": "0x0808359e",
+   "name": "Scr_NotifyObject",
+   "signature": "void Scr_NotifyObject(uint32 objId, uint32 nameId, VariableValue *args)",
+   "subsystem": "script/call-engine",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08080158, 0x08083a6e [rename script-vm: Doc 10.2: it is notify delivery (VM_Notify lineage): tests waittill registrations under 0x1fffe, 'w' (waittillmatch) header, wakes threads; chunk 016 comments /* notify */.]",
+   "status": "translated",
+   "notes": "header tag 'w' (byte before the owner string) selects the parameter-matching path; no direct name string (descriptive name only)."
+  },
+  {
+   "addr": "0x08083a6e",
+   "name": "Scr_NotifyNum",
+   "signature": "void Scr_NotifyNum(uint32 selfId, uint32 nameId, uint32 arg3, int32 popCount)",
+   "subsystem": "script/call-engine",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x080bf3f4, 0x080bf8d4, 0x0811b2de [rename script-vm: Disassembly: calls 0x080800ec (arg marker setup) and 0x0807e998 (entity var lookup by index/class) then delivers notify via Scr_RunVarListCalls; params are entnum, classnum, string id, count (doc 10.2).]",
+   "status": "translated",
+   "notes": "no strings; runs a nested call against the top argument block, marking the base entry as a separator (descriptive name only)."
+  },
+  {
+   "addr": "0x08083b24",
+   "name": "Scr_ClearObjectChains",
+   "signature": "void Scr_ClearObjectChains(uint32 rootId)",
+   "subsystem": "script/object-links",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0807e69a, 0x0807e716, 0x08084522",
+   "status": "translated",
+   "notes": "no strings; drains object chains under a root, detaching variable lists by link class 10 or otherwise (descriptive name only)."
+  },
+  {
+   "addr": "0x08083c88",
+   "name": "Scr_ClearThreadVars",
+   "signature": "void Scr_ClearThreadVars(uint32 rootId)",
+   "subsystem": "script/threads",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08084522",
+   "status": "translated",
+   "notes": "no strings; releases each variable list hanging off a thread root (descriptive name only)."
+  },
+  {
+   "addr": "0x08083d12",
+   "name": "Scr_ResumeSavedStacks",
+   "signature": "void Scr_ResumeSavedStacks(uint32 rootId)",
+   "subsystem": "script/threads",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x080842a4 [rename script-vm: Disassembly: calls Scr_RestoreVarList 0x08082c0a, VM_ExecuteInternal-style resume path and ScrVar_Release; resumes each saved stack, does not shut anything down. Called from tick path, not Shutdown.]",
+   "status": "translated",
+   "notes": "no strings; restores each thread's variable list into the value-stack base and releases the thread handle (descriptive name only)."
+  },
+  {
+   "addr": "0x08083df8",
+   "name": "Scr_ReserveStackSlot",
+   "signature": "void Scr_ReserveStackSlot(void)",
+   "subsystem": "script/call-engine",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08085140, 0x08085164, 0x08085188, 0x080851ac, 0x080851d0, 0x080851ea, 0x08085262, 0x080852d6, 0x08085306, 0x08085338",
+   "status": "translated",
+   "notes": "reserves one value-stack slot; overflow message 'script stack overflow' is in the sibling Scr_CallFunction. Overflow here reports via fn_08061124."
+  },
+  {
+   "addr": "0x08083e34",
+   "name": "Scr_CallFunction",
+   "signature": "uint32 Scr_CallFunction(uint32 selfId, uint32 nameId, int32 argc)",
+   "subsystem": "script/call-engine",
+   "confidence": "inferred",
+   "evidence": "string 'script stack overflow (too many embedded function calls)' at 0x8145000; caller(s) 0x08083fd6, 0x08084062, 0x080840f4, 0x0808415c",
+   "status": "translated",
+   "notes": "string 'script stack overflow (too many embedded function calls)' at this function; depth limit 0x1e."
+  },
+  {
+   "addr": "0x08083fd6",
+   "name": "Scr_CallScriptOffset",
+   "signature": "uint16 Scr_CallScriptOffset(int32 codeOffset, int32 argc)",
+   "subsystem": "script/call-engine",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x081101d0, 0x081182f4, 0x08118322, 0x0811b7ba",
+   "status": "translated",
+   "notes": "no strings; calls a script function by code offset (relative to g_08397548) on the global handle, then pops the call slot (descriptive name only)."
+  },
+  {
+   "addr": "0x08084062",
+   "name": "Scr_CallMethod",
+   "signature": "uint16 Scr_CallMethod(uint32 ownerId, uint32 nameId, int32 codeOffset, int32 argc)",
+   "subsystem": "script/call-engine",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0811b284",
+   "status": "translated",
+   "notes": "no strings; calls a script method by code offset on an object handle resolved from the id pair (descriptive name only)."
+  },
+  {
+   "addr": "0x080840f4",
+   "name": "Scr_SpawnThread",
+   "signature": "void Scr_SpawnThread(int32 codeOffset, int32 argc)",
+   "subsystem": "script/call-engine",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0811a828",
+   "status": "translated",
+   "notes": "no strings; spawns a thread on the global handle by code offset and releases the returned handle (descriptive name only)."
+  },
+  {
+   "addr": "0x0808415c",
+   "name": "Scr_SpawnMethodThread",
+   "signature": "void Scr_SpawnMethodThread(uint32 ownerId, uint32 nameId, int32 codeOffset, int32 argc)",
+   "subsystem": "script/call-engine",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0811b2b2",
+   "status": "translated",
+   "notes": "no strings; spawns a method thread on an object handle resolved from the id pair (descriptive name only)."
+  },
+  {
+   "addr": "0x080841d6",
+   "name": "Scr_ReleaseHandle",
+   "signature": "void Scr_ReleaseHandle(uint16 handle)",
+   "subsystem": "script/threads",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x081101d0, 0x081182f4, 0x08118322, 0x08118350, 0x08118384, 0x081183b8, 0x08118492, 0x0811b7ba, 0x0811ef90",
+   "status": "translated",
+   "notes": "no strings; releases one 16-bit handle (descriptive name only)."
+  },
+  {
+   "addr": "0x080842a4",
+   "name": "Scr_ResumeTickThreads",
+   "signature": "void Scr_ResumeTickThreads(void)",
+   "subsystem": "script/threads",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0808561a [rename script-vm: Doc section 10.1: per-tick scheduler finding timeArray[time] and resuming threads; 'clear thread entry' does not describe it.]",
+   "status": "translated",
+   "notes": "no strings; tears down the current thread entry if the root is live (descriptive name only)."
+  },
+  {
+   "addr": "0x08084302",
+   "name": "Scr_CountMatchingObjects",
+   "signature": "int32 Scr_CountMatchingObjects(int32 wantedClass, uint32 rootId, int32 count, int8 filterByClass, uint32 outIds)",
+   "subsystem": "script/object-links",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode",
+   "status": "translated",
+   "notes": "no strings; counts (and optionally records) object ids under a root whose class matches (descriptive name only)."
+  },
+  {
+   "addr": "0x080844de",
+   "name": "Scr_InitVariableRoots",
+   "signature": "void Scr_InitVariableRoots(void)",
+   "subsystem": "script/threads",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08109096 [rename script-vm: Doc 10.4: allocates timeArray, notify array, level, anim roots; address suffix collided with process-level Scr_Init 0x0807ff6e.]",
+   "status": "translated",
+   "notes": "no strings; initialises the four root handles and clears the generation tag (descriptive name only)."
+  },
+  {
+   "addr": "0x08084522",
+   "name": "Scr_ShutdownVariableRoots",
+   "signature": "void Scr_ShutdownVariableRoots(uint32 unusedArg, uint32 keepId)",
+   "subsystem": "script/threads",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x081094e8 [rename script-vm: Doc 10.4: drains roots at G_ShutdownGame; distinct from process-level Scr_Shutdown 0x08080002.]",
+   "status": "translated",
+   "notes": "no strings; tears down the root handles, draining thread and object chains (descriptive name only)."
+  },
+  {
+   "addr": "0x08084678",
+   "name": "Scr_IsInitialized",
+   "signature": "bool Scr_IsInitialized(bool flag)",
+   "subsystem": "script/threads",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x080f4ab6, 0x080f4c1a, 0x080f94ce, 0x081094e8, 0x0811c45c, 0x08121174, 0x08121264",
+   "status": "translated",
+   "notes": "no strings; reports whether the primary root handle is live (descriptive name only)."
+  },
+  {
+   "addr": "0x08084694",
+   "name": "Scr_GetInt",
+   "signature": "int32 Scr_GetInt(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'type %s is not an int' at 0x8145ac0; string 'parameter %d does not exist' at 0x8145ad6; caller(s) 0x081041d8, 0x08113818, 0x081150a4, 0x0811ad7e",
+   "status": "translated",
+   "notes": "strings 'type %s is not an int' and 'parameter %d does not exist' at this function."
+  },
+  {
+   "addr": "0x08084722",
+   "name": "Scr_GetAnim",
+   "signature": "struct cod2_scr_anim_s *Scr_GetAnim(struct cod2_scr_anim_s *out, uint32 param, int32 treeId)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'anim '%s' in animtree '%s' does not belong to the entity's animtree '%s'' at 0x8145b00; string 'type %s is not an anim' at 0x8145b49; string 'parameter %d does not exist' at 0x8145ad6",
+   "status": "translated",
+   "notes": "strings 'type %s is not an anim', 'anim \\'%s\\' in animtree ...' and 'parameter %d does not exist' at this function."
+  },
+  {
+   "addr": "0x08084886",
+   "name": "Scr_GetAnimTree",
+   "signature": "uint32 *Scr_GetAnimTree(uint32 *out, uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'bad anim tree' at 0x8145b60; string 'type %s is not an animtree' at 0x8145b6e; string 'parameter %d does not exist' at 0x8145ad6",
+   "status": "translated",
+   "notes": "strings 'bad anim tree', 'type %s is not an animtree' and 'parameter %d does not exist' at this function."
+  },
+  {
+   "addr": "0x08084968",
+   "name": "Scr_GetFloat",
+   "signature": "float Scr_GetFloat(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'type %s is not a float' at 0x8143c24; string 'parameter %d does not exist' at 0x8145ad6; caller(s) 0x08104124, 0x081041d8, 0x08115858, 0x08119886, 0x08119b36, 0x08119dc8, 0x0811ad7e",
+   "status": "translated",
+   "notes": "strings 'type %s is not a float' and 'parameter %d does not exist' at this function."
+  },
+  {
+   "addr": "0x08084a08",
+   "name": "Scr_GetAny",
+   "signature": "uint32 Scr_GetAny(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "unknown",
+   "evidence": "string 'parameter %d does not exist' at 0x8145ad6; caller(s) 0x08084bb2, 0x08084bce, 0x08084c10",
+   "status": "translated",
+   "notes": "no strings; returns the value of any defined parameter, otherwise raises the parameter error (descriptive name only)."
+  },
+  {
+   "addr": "0x08084a7c",
+   "name": "Scr_GetLowerString",
+   "signature": "uint32 Scr_GetLowerString(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'parameter %d does not exist' at 0x8145ad6",
+   "status": "translated",
+   "notes": "call to tolower import and string 'parameter %d does not exist'. Copies into an 8196-byte buffer without bound (original behaviour kept)."
+  },
+  {
+   "addr": "0x08084bb2",
+   "name": "Scr_ReleaseAnyValue",
+   "signature": "const char *Scr_ReleaseAnyValue(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x081034de, 0x081041d8, 0x08110720, 0x081128ce, 0x081134dc, 0x0811367a",
+   "status": "translated",
+   "notes": "no strings; reads any parameter and releases its string reference (descriptive name only)."
+  },
+  {
+   "addr": "0x08084bce",
+   "name": "Scr_GetOptionalAny",
+   "signature": "uint32 Scr_GetOptionalAny(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0811ad7e",
+   "status": "translated",
+   "notes": "no strings; returns zero for an undefined-typed parameter, otherwise delegates to Scr_GetAny (descriptive name only)."
+  },
+  {
+   "addr": "0x08084c10",
+   "name": "Scr_ReleaseAnyValueCopy",
+   "signature": "const char *Scr_ReleaseAnyValueCopy(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode",
+   "status": "translated",
+   "notes": "identical body to Scr_ReleaseAnyValue; kept as a separate entry point (descriptive name only)."
+  },
+  {
+   "addr": "0x08084c2c",
+   "name": "Scr_GetString",
+   "signature": "uint32 Scr_GetString(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'parameter %d does not exist' at 0x8145ad6; caller(s) 0x08110624",
+   "status": "translated",
+   "notes": "string 'parameter %d does not exist' at this function; returns the string text for a string parameter."
+  },
+  {
+   "addr": "0x08084c96",
+   "name": "Scr_GetLocalizedString",
+   "signature": "uint32 Scr_GetLocalizedString(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'type %s is not a localized string' at 0x8145ba0; string 'parameter %d does not exist' at 0x8145ad6; caller(s) 0x08084d24",
+   "status": "translated",
+   "notes": "strings 'type %s is not a localized string' and 'parameter %d does not exist' at this function."
+  },
+  {
+   "addr": "0x08084d24",
+   "name": "Scr_ReleaseLocalizedString",
+   "signature": "const char *Scr_ReleaseLocalizedString(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08110720",
+   "status": "translated",
+   "notes": "no strings; reads a localized-string parameter and releases its reference (descriptive name only)."
+  },
+  {
+   "addr": "0x08084d40",
+   "name": "Scr_GetVector",
+   "signature": "void Scr_GetVector(uint32 param, float *dst)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'type %s is not a vector' at 0x8145bc2; string 'parameter %d does not exist' at 0x8145ad6; caller(s) 0x08113818, 0x081150a4, 0x0811ad7e",
+   "status": "translated",
+   "notes": "strings 'type %s is not a vector' and 'parameter %d does not exist' at this function."
+  },
+  {
+   "addr": "0x08084dd0",
+   "name": "Scr_GetFunction",
+   "signature": "int32 Scr_GetFunction(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'type %s is not a function' at 0x8145bda; string 'parameter %d does not exist' at 0x8145ad6",
+   "status": "translated",
+   "notes": "strings 'type %s is not a function' and 'parameter %d does not exist' at this function."
+  },
+  {
+   "addr": "0x08084e66",
+   "name": "Scr_GetEntity",
+   "signature": "uint32 *Scr_GetEntity(uint32 *out, uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'type %s is not an entity' at 0x8145bf4; string 'type %s is not an entity' at 0x8145bf4; string 'parameter %d does not exist' at 0x8145ad6; caller(s) 0x0811b16e",
+   "status": "translated",
+   "notes": "strings 'type %s is not an entity' and 'parameter %d does not exist' at this function."
+  },
+  {
+   "addr": "0x08084f62",
+   "name": "Scr_GetObject",
+   "signature": "uint32 Scr_GetObject(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'type %s is not an object' at 0x8145c0d; string 'parameter %d does not exist' at 0x8145ad6; caller(s) 0x0811a828",
+   "status": "translated",
+   "notes": "strings 'type %s is not an object' and 'parameter %d does not exist' at this function."
+  },
+  {
+   "addr": "0x08084ff0",
+   "name": "Scr_GetParamType",
+   "signature": "uint32 Scr_GetParamType(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "unknown",
+   "evidence": "string 'parameter %d does not exist' at 0x8145ad6; caller(s) 0x08110720, 0x08113818",
+   "status": "translated",
+   "notes": "no strings; returns the type tag of a parameter (descriptive name only)."
+  },
+  {
+   "addr": "0x08085040",
+   "name": "Scr_GetParamTypeName",
+   "signature": "const char *Scr_GetParamTypeName(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'parameter %d does not exist' at 0x8145ad6",
+   "status": "translated",
+   "notes": "indexes the type-name table g_0817d960 by the parameter tag; error string 'parameter %d does not exist'."
+  },
+  {
+   "addr": "0x08085098",
+   "name": "Scr_GetPointer",
+   "signature": "int32 Scr_GetPointer(uint32 param)",
+   "subsystem": "script/args-get",
+   "confidence": "inferred",
+   "evidence": "string 'type %s is not a pointer' at 0x8145c26; string 'parameter %d does not exist' at 0x8145ad6; caller(s) 0x08110720, 0x08113818",
+   "status": "translated",
+   "notes": "strings 'type %s is not a pointer' and 'parameter %d does not exist' at this function."
+  },
+  {
+   "addr": "0x08085136",
+   "name": "Scr_GetNumParams",
+   "signature": "int32 Scr_GetNumParams(void)",
+   "subsystem": "script/args-get",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08104124, 0x081041d8, 0x08110624, 0x08110a60, 0x081150a4, 0x08115858, 0x08119886",
+   "status": "translated",
+   "notes": "no strings; returns the active parameter count (descriptive name only)."
+  },
+  {
+   "addr": "0x08085140",
+   "name": "Scr_AddInt",
+   "signature": "void Scr_AddInt(int32 value)",
+   "subsystem": "script/value-push",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode",
+   "status": "translated",
+   "notes": "pushes an integer (type 6), the type Scr_GetInt accepts."
+  },
+  {
+   "addr": "0x08085164",
+   "name": "Scr_AddIndex",
+   "signature": "void Scr_AddIndex(int32 value)",
+   "subsystem": "script/value-push",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08101c58, 0x081183b8, 0x08118492, 0x0811a4f0, 0x0811af3c, 0x0811cea8, 0x0811d096",
+   "status": "translated",
+   "notes": "body identical to Scr_AddInt; kept as a separate entry point (descriptive name only)."
+  },
+  {
+   "addr": "0x08085188",
+   "name": "Scr_AddFloatBits",
+   "signature": "void Scr_AddFloatBits(uint32 bits)",
+   "subsystem": "script/value-push",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08113818, 0x0811a4f0, 0x0811af3c",
+   "status": "translated",
+   "notes": "pushes raw float bits with type 5, the type Scr_GetFloat accepts."
+  },
+  {
+   "addr": "0x080851ac",
+   "name": "Scr_AddAnim",
+   "signature": "void Scr_AddAnim(uint32 packed)",
+   "subsystem": "script/value-push",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode",
+   "status": "translated",
+   "notes": "pushes a packed anim with type 11, the type Scr_GetAnim accepts."
+  },
+  {
+   "addr": "0x080851d0",
+   "name": "Scr_AddUndefined",
+   "signature": "void Scr_AddUndefined(void)",
+   "subsystem": "script/value-push",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08105072, 0x08113818, 0x08117f30, 0x08117f50",
+   "status": "translated",
+   "notes": "pushes an undefined-typed (type 0) value with its value word left as is."
+  },
+  {
+   "addr": "0x080851ea",
+   "name": "Scr_AddObject",
+   "signature": "void Scr_AddObject(uint32 handle)",
+   "subsystem": "script/value-push",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0808521a, 0x0808523c, 0x0811af3c",
+   "status": "translated",
+   "notes": "pushes an object handle (type 1) and takes a reference on it."
+  },
+  {
+   "addr": "0x0808521a",
+   "name": "Scr_AddObjectByLookup",
+   "signature": "void Scr_AddObjectByLookup(uint32 a, uint32 b)",
+   "subsystem": "script/value-push",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0811b150, 0x0811b1fe",
+   "status": "translated",
+   "notes": "no strings; looks up an object from an id pair and pushes it (descriptive name only)."
+  },
+  {
+   "addr": "0x0808523c",
+   "name": "GScr_spawnstruct",
+   "signature": "void GScr_spawnstruct(void)",
+   "subsystem": "script/value-push",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"spawnstruct\" -> this handler; body consistent: allocates a struct object, pushes it, releases the allocation ref; no other caller",
+   "status": "translated",
+   "notes": "no strings; allocates a new object, pushes it and releases the allocation reference (descriptive name only)."
+  },
+  {
+   "addr": "0x08085262",
+   "name": "Scr_AddString",
+   "signature": "void Scr_AddString(const char *text)",
+   "subsystem": "script/value-push",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x080f94ce, 0x08100d16, 0x08103618, 0x081105c0, 0x081105d4, 0x081105e8, 0x08113818, 0x081183b8, 0x08118492, 0x08118562, 0x081185aa, 0x0811a4f0, 0x0811af3c",
+   "status": "translated",
+   "notes": "pushes a string (type 2) interned from text."
+  },
+  {
+   "addr": "0x080852d6",
+   "name": "Scr_AddStringId",
+   "signature": "void Scr_AddStringId(uint32 id)",
+   "subsystem": "script/value-push",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x080bf3f4, 0x080bf8d4, 0x08113818, 0x081183b8, 0x08118492, 0x0811af3c",
+   "status": "translated",
+   "notes": "pushes a string id (type 2) and calls the string-id hook (descriptive name only)."
+  },
+  {
+   "addr": "0x08085306",
+   "name": "Scr_AddVector",
+   "signature": "void Scr_AddVector(const float *vec)",
+   "subsystem": "script/value-push",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08113818, 0x08117f30, 0x0811a4f0, 0x0811af3c",
+   "status": "translated",
+   "notes": "pushes a vector reference (type 4), the type Scr_GetVector accepts."
+  },
+  {
+   "addr": "0x08085338",
+   "name": "Scr_AddEntity",
+   "signature": "void Scr_AddEntity(void)",
+   "subsystem": "script/value-push",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08113818",
+   "status": "translated",
+   "notes": "no strings; pushes a fresh entity handle with type 1 (descriptive name only)."
+  },
+  {
+   "addr": "0x08085364",
+   "name": "Scr_PopAndLink",
+   "signature": "void Scr_PopAndLink(void)",
+   "subsystem": "script/value-push",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode",
+   "status": "translated",
+   "notes": "no strings; pops the top value and links it through the list helpers (descriptive name only)."
+  },
+  {
+   "addr": "0x080853b6",
+   "name": "Scr_PopAndRelease",
+   "signature": "void Scr_PopAndRelease(uint32 param1)",
+   "subsystem": "script/value-push",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08113818",
+   "status": "translated",
+   "notes": "no strings; pops the top value and releases it against the given handle (descriptive name only)."
+  },
+  {
+   "addr": "0x080853fc",
+   "name": "Scr_Error",
+   "signature": "void Scr_Error(const char *msg)",
+   "subsystem": "script/errors",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0807c21a, 0x0807ccfe, 0x0807cf02, 0x0807d228, 0x0807d288, 0x0807d56e, 0x0807d64a, 0x0807d6dc, 0x0807df3a, 0x0807e2f6, 0x0807e3b4, 0x0807ea8c, 0x0807eb54, 0x0807ec32, 0x0807eea8",
+   "status": "translated",
+   "notes": "records the first pending error message and unwinds through fn_08080050; the error mechanism is the same as the strings in sibling readers."
+  },
+  {
+   "addr": "0x0808541a",
+   "name": "Scr_ErrorWithCode",
+   "signature": "void Scr_ErrorWithCode(const char *msg, const char *code)",
+   "subsystem": "script/errors",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode",
+   "status": "translated",
+   "notes": "sets the pending error message and its numeric payload, then unwinds (sibling of Scr_Error)."
+  },
+  {
+   "addr": "0x08085438",
+   "name": "Scr_ErrorAndDisable",
+   "signature": "void Scr_ErrorAndDisable(const char *msg)",
+   "subsystem": "script/errors",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08076db6, 0x0807ab64, 0x0807b9f8, 0x08080158",
+   "status": "translated",
+   "notes": "tears down script state (fn_0807a43e, fn_0807a8e8), sets the disable flag and raises the error."
+  },
+  {
+   "addr": "0x0808545c",
+   "name": "Scr_ErrorAtParam",
+   "signature": "void Scr_ErrorAtParam(int32 param, const char *msg)",
+   "subsystem": "script/errors",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08104124, 0x081041d8, 0x081106b6, 0x08110720, 0x081128ce, 0x08119886, 0x0811b16e",
+   "status": "translated",
+   "notes": "records the 1-based parameter index of the error, then raises it."
+  },
+  {
+   "addr": "0x08085478",
+   "name": "Scr_ErrorNoParam",
+   "signature": "void Scr_ErrorNoParam(const char *msg)",
+   "subsystem": "script/errors",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x08103e18, 0x081104d2, 0x08119b36, 0x08119dc8",
+   "status": "translated",
+   "notes": "marks the error as having no parameter index (-1), then raises it."
+  },
+  {
+   "addr": "0x08085496",
+   "name": "Scr_ExecuteCall",
+   "signature": "uint32 Scr_ExecuteCall(uint32 a, uint32 b, uint32 c, VariableValue *top)",
+   "subsystem": "script/call-engine",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0807c5de, 0x0807cb6c",
+   "status": "translated",
+   "notes": "no strings; sets a single-entry argument stack, runs fn_0811ae62 and pops the entry when the call fails (descriptive name only)."
+  },
+  {
+   "addr": "0x08085512",
+   "name": "Scr_RunSetup",
+   "signature": "VariableValue *Scr_RunSetup(VariableValue *out, uint32 a, uint32 b, uint32 c)",
+   "subsystem": "script/call-engine",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0807cd7c, 0x0807eea8, 0x0807f152",
+   "status": "translated",
+   "notes": "no strings; runs fn_0811b05c on a static one-entry stack and returns the two result words through the out pointer (descriptive name only)."
+  },
+  {
+   "addr": "0x08085570",
+   "name": "Scr_FinishCallAt",
+   "signature": "void Scr_FinishCallAt(uint32 a, uint32 b)",
+   "subsystem": "script/call-engine",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x080855b2, 0x0811a828",
+   "status": "translated",
+   "notes": "no strings; finishes a call by storing the top value under a handle and popping the stack (descriptive name only)."
+  },
+  {
+   "addr": "0x080855b2",
+   "name": "Scr_FinishCallForObject",
+   "signature": "void Scr_FinishCallForObject(uint32 a, uint32 b, uint32 c)",
+   "subsystem": "script/call-engine",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0811b546",
+   "status": "translated",
+   "notes": "no strings; resolves an object from an id pair and forwards to Scr_FinishCallAt (descriptive name only)."
+  },
+  {
+   "addr": "0x080855e2",
+   "name": "Scr_AdvanceTime",
+   "signature": "void Scr_AdvanceTime(void)",
+   "subsystem": "script/threads",
+   "confidence": "observed",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x0810a13a [rename script-vm: Disassembly: calls 0x0808561a (run threads), 0x0807e69a, then inc DWORD [0x8397518] & 0xffffff (scrVarPub time); only caller G_RunFrame.]",
+   "status": "translated",
+   "notes": "no strings; enters a nested script level, resetting the current thread and advancing the 24-bit tag (descriptive name only)."
+  },
+  {
+   "addr": "0x08085604",
+   "name": "Scr_RewindTime",
+   "signature": "void Scr_RewindTime(void)",
+   "subsystem": "script/threads",
+   "confidence": "observed",
+   "evidence": "no strings; name is descriptive from the pseudocode [rename script-vm: Disassembly: dec DWORD [0x8397518]; and 0xffffff; nothing else.]",
+   "status": "translated",
+   "notes": "no strings; leaves a nested script level, decrementing the 24-bit tag (descriptive name only)."
+  },
+  {
+   "addr": "0x0808561a",
+   "name": "Scr_RunCurrentThreads",
+   "signature": "void Scr_RunCurrentThreads(void)",
+   "subsystem": "script/threads",
+   "confidence": "inferred",
+   "evidence": "no strings; name is descriptive from the pseudocode; caller(s) 0x080855e2, 0x08109f14, 0x0810a13a [rename script-vm: Disassembly: thin wrapper that calls 0x080842a4 (tick scheduler).]",
+   "status": "translated",
+   "notes": "forwards to the thread-entry teardown (descriptive name only)."
+  },
+  {
+   "addr": "0x08085628",
+   "name": "GScr_resettimeout",
+   "signature": "void GScr_resettimeout(void)",
+   "subsystem": "script/threads",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"resettimeout\" -> this handler; body consistent: re-samples script start time (scrVmGlob_starttime = Sys_Milliseconds); also invoked internally by call-engine entry points",
+   "status": "translated",
+   "notes": "no strings; samples two timing words, the first shifted to its high half (descriptive name only)."
+  },
+  {
+   "addr": "0x08085648",
+   "name": "Scr_ResetStack",
+   "signature": "void Scr_ResetStack(void)",
+   "subsystem": "script/threads",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode",
+   "status": "translated",
+   "notes": "resets the value-stack top to its base (descriptive name only)."
+  },
+  {
+   "addr": "0x08085658",
+   "name": "Scr_SkipBytecode",
+   "signature": "void Scr_SkipBytecode(const char *pc)",
+   "subsystem": "script/bytecode",
+   "confidence": "unknown",
+   "evidence": "no strings; name is descriptive from the pseudocode",
+   "status": "translated",
+   "notes": "no strings; walks a bytecode stream, skipping operands by opcode class until an unlisted opcode (descriptive name only)."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x083d8a88",
+   "name": "g_083d8a88",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d8a88 referenced in chunk_017 pseudocode: script call depth (Scr_CallFunction increments, limit 0x1e)"
+  },
+  {
+   "addr": "0x083d8a8c",
+   "name": "scrVmPub_function_frame",
+   "type": "uint32 *",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d8a8c referenced in chunk_017 pseudocode: frame stack next-free cell, 24-byte cells as 6 words"
+  },
+  {
+   "addr": "0x083d8a80",
+   "name": "g_083d8a80",
+   "type": "uint8 *",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d8a80 referenced in chunk_017 pseudocode: side-stack byte cursor advanced in 4-byte units"
+  },
+  {
+   "addr": "0x083d8a84",
+   "name": "scrVmPub_maxstack",
+   "type": "struct cod2_scr_entry_s *",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d8a84 referenced in chunk_017 pseudocode: value stack limit (overflow check in Scr_ReserveStackSlot)"
+  },
+  {
+   "addr": "0x083d8a90",
+   "name": "scrVmPub_top",
+   "type": "struct cod2_scr_entry_s *",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d8a90 referenced in chunk_017 pseudocode: value stack top, 8-byte entries"
+  },
+  {
+   "addr": "0x083d8a96",
+   "name": "g_083d8a96",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d8a96 referenced in chunk_017 pseudocode: disable flag set by Scr_ErrorAndDisable"
+  },
+  {
+   "addr": "0x083d8a98",
+   "name": "scrVmPub_inparamcount",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d8a98 referenced in chunk_017 pseudocode: live pushed entry count"
+  },
+  {
+   "addr": "0x083d8a9c",
+   "name": "scrVmPub_outparamcount",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d8a9c referenced in chunk_017 pseudocode: active parameter count (Scr_GetNumParams)"
+  },
+  {
+   "addr": "0x083d8a3c",
+   "name": "g_083d8a3c",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d8a3c referenced in chunk_017 pseudocode: initialised to -1 by Scr_Init"
+  },
+  {
+   "addr": "0x083d8aa0",
+   "name": "g_083d8aa0",
+   "type": "struct cod2_scr_thread_s[]",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d8aa0 referenced in chunk_017 pseudocode: per-thread table, 24-byte cells indexed 1..depth"
+  },
+  {
+   "addr": "0x083d8da0",
+   "name": "g_083d8da0",
+   "type": "struct cod2_scr_entry_s[]",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d8da0 referenced in chunk_017 pseudocode: value stack base"
+  },
+  {
+   "addr": "0x0839750c",
+   "name": "g_0839750c",
+   "type": "uint8",
+   "confidence": "inferred",
+   "evidence": "data at 0x0839750c referenced in chunk_017 pseudocode: nested build flag set in Scr_RunVarListCalls"
+  },
+  {
+   "addr": "0x0839751c",
+   "name": "g_0839751c",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "data at 0x0839751c referenced in chunk_017 pseudocode: primary root handle"
+  },
+  {
+   "addr": "0x08397520",
+   "name": "scrVarPub_notifyArrayId",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "data at 0x08397520 referenced in chunk_017 pseudocode: secondary root handle"
+  },
+  {
+   "addr": "0x08397524",
+   "name": "g_08397524",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "data at 0x08397524 referenced in chunk_017 pseudocode: scratch handle used by call helpers"
+  },
+  {
+   "addr": "0x0839752c",
+   "name": "g_0839752c",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "data at 0x0839752c referenced in chunk_017 pseudocode: scratch handle released in Scr_Shutdown"
+  },
+  {
+   "addr": "0x08397518",
+   "name": "g_08397518",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "data at 0x08397518 referenced in chunk_017 pseudocode: generation tag masked to 24 bits"
+  },
+  {
+   "addr": "0x08397510",
+   "name": "g_scr_compile_error_message",
+   "type": "const char *",
+   "confidence": "inferred",
+   "evidence": "data at 0x08397510 referenced in chunk_017 pseudocode: pending error message"
+  },
+  {
+   "addr": "0x08397514",
+   "name": "g_08397514",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "data at 0x08397514 referenced in chunk_017 pseudocode: 1-based parameter index of pending error, -1 if none"
+  },
+  {
+   "addr": "0x083dce90",
+   "name": "g_083dce90",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "data at 0x083dce90 referenced in chunk_017 pseudocode: error payload stored by Scr_ErrorWithCode"
+  },
+  {
+   "addr": "0x08397548",
+   "name": "g_scr_code_base",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "data at 0x08397548 referenced in chunk_017 pseudocode: code base offset added to script code offsets"
+  },
+  {
+   "addr": "0x08397534",
+   "name": "g_08397534",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "data at 0x08397534 referenced in chunk_017 pseudocode: teardown handle passed to fn_0807cc32"
+  },
+  {
+   "addr": "0x083dce98",
+   "name": "scrVmGlob_timestampHigh",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "data at 0x083dce98 referenced in chunk_017 pseudocode: timer word, high 16 bits kept by Scr_SampleTimers"
+  },
+  {
+   "addr": "0x083dce9c",
+   "name": "g_083dce9c",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "data at 0x083dce9c referenced in chunk_017 pseudocode: timer word set by Scr_SampleTimers"
+  },
+  {
+   "addr": "0x08205a50",
+   "name": "g_08205a50",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "data at 0x08205a50 referenced in chunk_017 pseudocode: animtree table bound"
+  },
+  {
+   "addr": "0x0820584c",
+   "name": "g_0820584c",
+   "type": "uint32[]",
+   "confidence": "inferred",
+   "evidence": "data at 0x0820584c referenced in chunk_017 pseudocode: animtree table"
+  },
+  {
+   "addr": "0x083dce78",
+   "name": "scrVmGlob_setupStack",
+   "type": "uint32[]",
+   "confidence": "inferred",
+   "evidence": "data at 0x083dce78 referenced in chunk_017 pseudocode: static one-entry value stack used by Scr_RunSetup; words 2 and 3 are the result pair"
+  },
+  {
+   "addr": "0x083d7600",
+   "name": "scrVm_noOwnerSentinel",
+   "type": "uint8[]",
+   "confidence": "inferred",
+   "evidence": "data at 0x083d7600 referenced in chunk_017 pseudocode: sentinel owner object (no owner)"
+  },
+  {
+   "addr": "0x08145aa0",
+   "name": "g_08145aa0",
+   "type": "const char[]",
+   "confidence": "inferred",
+   "evidence": "data at 0x08145aa0 referenced in chunk_017 pseudocode: message passed to fn_08061124 on stack overflow"
+  },
+  {
+   "addr": "0x0817d960",
+   "name": "g_0817d960",
+   "type": "const char *const[]",
+   "confidence": "inferred",
+   "evidence": "data at 0x0817d960 referenced in chunk_017 pseudocode: type-name table indexed by value type"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "cod2_scr_entry_s",
+   "size": "0x8",
+   "evidence": "value stack entry {value@0, type@4}; stride 8 from g_083d8a90 arithmetic and type checks in 0x8084694 et al."
+  },
+  {
+   "name": "cod2_scr_frame_s",
+   "size": "0x18",
+   "evidence": "frame cell stride 24 from g_083d8a8c +6 words; owner word compared to g_083d7600 in 0x80825d4"
+  },
+  {
+   "name": "cod2_scr_thread_s",
+   "size": "0x18",
+   "evidence": "per-thread table cell stride 0x18 at g_083d8aa0; owner/id/count at +0/+4/+8 from 0x8082c0a and 0x8083092"
+  },
+  {
+   "name": "cod2_scr_varlist_s",
+   "size": "0xb",
+   "evidence": "packed header owner@0, count@4, size@6, head@8, tag@0xa; records follow (0x8082a92, 0x8082c0a)"
+  },
+  {
+   "name": "cod2_scr_varrec_s",
+   "size": "0x5",
+   "evidence": "packed record {uint8 type; uint32 value}; type 7 means frame reference"
+  },
+  {
+   "name": "cod2_scr_anim_s",
+   "size": "0x4",
+   "evidence": "anim operand {index@0, tree@2} written from entry value in 0x8084722"
+  },
+  {
+   "name": "cod2_scr_result_s",
+   "size": "0x8",
+   "evidence": "two-word return of 0x8085512 via g_083dce78 words 2 and 3"
+  }
+ ],
+ "open_questions": [
+  "Frame cell layout: 0x8083e34 writes cell[7] (the next cell's word 1) for the value slot, while 0x80825d4 reads word 1 of the top cell. The literal word-index translation is kept; confirm whether the value slot is really the next cell's word 1.",
+  "Owner word of frame cells and thread cells: whether it is always an object id or sometimes a code pointer (0x8084722 and 0x8084dd0 treat values as code offsets relative to g_08397548).",
+  "Scr_GetLowerString copies lower-cased text into an 8196-byte stack buffer without a bound (0x8084a7c); the overflow behaviour is preserved, not fixed.",
+  "Names of the script-layer functions are descriptive except for the error and typed-getter family, which are inferred from strings. The type-name table g_0817d960 is not decoded, so the type-to-name mapping (type 5 float, type 6 int, type 7 frame reference, type 8 marker, type 10 handle, type 11 anim) is inferred from the checks in this chunk only.",
+  "Out-of-chunk callee signatures (fn_08xxxxxx) are guessed from call sites; return widths such as fn_0807b760 (int16) and fn_08078ee6 (uint32 used as char pointer) should be confirmed when their owning chunks are merged.",
+  "Scr_RunSetup returns a two-word result through an out pointer; the ABI for an 8-byte struct return on this target was not verified against the caller."
+ ]
+}

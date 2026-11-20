@@ -1,0 +1,897 @@
+{
+ "chunk": 48,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x08103618",
+   "name": "HudElem_AddPackedFieldString",
+   "signature": "void HudElem_AddPackedFieldString(void *base, struct hudelem_field_s *field, char **names)",
+   "subsystem": "hud/script",
+   "confidence": "unknown",
+   "evidence": "no string or call evidence; descriptive name for a packed-field getter (shift/mask at field +0x10/+0x0c, names table indexed by the extracted value, result pushed with Scr_AddString) [Scr_AddString of the packed-field value; no name evidence]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103b2e",
+   "name": "HudElem_ScriptGetField",
+   "signature": "void HudElem_ScriptGetField(int elemIndex, int fieldIndex)",
+   "subsystem": "hud/script",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: pushes field value (Scr_AddEntityFieldValue) or calls table slot +0x14; script-vm.md sec.11 item 12 shows slot +0x14 is the setter/+0x18 getter and callers route Scr_GetObjectField here; old name FieldWrite had direction reversed",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103ba6",
+   "name": "HudElem_ScriptSetField",
+   "signature": "void HudElem_ScriptSetField(int elemIndex, int fieldIndex)",
+   "subsystem": "hud/script",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: stores value (Scr_SetEntityFieldGeneric) or calls table slot +0x18; Scr_SetObjectField routes here (script-vm.md sec.11 item 12)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103c1e",
+   "name": "HudElem_ReleaseStringFields",
+   "signature": "void HudElem_ReleaseStringFields(struct game_hudelem_s *elem)",
+   "subsystem": "hud/script",
+   "confidence": "unknown",
+   "evidence": "walks the hud field table and releases each script-string field (type 3) of one element; descriptive name [walks field table, type 3 fields released via fn_08079de0]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103dca",
+   "name": "HudElem_RegisterScriptFields",
+   "signature": "void HudElem_RegisterScriptFields(void)",
+   "subsystem": "hud/script",
+   "confidence": "unknown",
+   "evidence": "registers every hud field name with script class 1 (the class list at g_0817d920 names class 1 as \"hudelem\"); descriptive name [Scr_AddClassField(1, name, index) over the field table]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08103e18",
+   "name": "HudElem_FromHandle",
+   "signature": "struct game_hudelem_s *HudElem_FromHandle(unsigned int handle)",
+   "subsystem": "hud/script",
+   "confidence": "inferred",
+   "evidence": "string \"not a hud element\" at 0x08103e18 callers; handle high word must equal 1, low word indexes the pool [string 'not a hud element' at 0x08103e18 callers] [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104124",
+   "name": "HudElem_SetTimerCommon",
+   "signature": "void HudElem_SetTimerCommon(unsigned int handle, int type, const char *usage)",
+   "subsystem": "hud/timers",
+   "confidence": "inferred",
+   "evidence": "usage string \"USAGE: <hudelem> %s(time_in_seconds);\" and \"time %g should be > 0\" name the builtin; shared body of the one-argument timer builtins (type 7 from setTimer, type 8 from other callers) [usage string 'USAGE: <hudelem> %s(time_in_seconds);' and 'time %g should be > 0']",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081041d8",
+   "name": "HudElem_SetShaderTimerCommon",
+   "signature": "void HudElem_SetShaderTimerCommon(unsigned int handle, int type, const char *usage)",
+   "subsystem": "hud/timers",
+   "confidence": "inferred",
+   "evidence": "usage string \"USAGE: <hudelem> %s(time_in_seconds, total_clock_time_in_seconds, shadername[, width, height]);\" and the duration/width/height messages; shared body of the shader timer builtin (type 0xc) [usage string with shadername[, width, height]; 'duration %g should be > 0']",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081043a6",
+   "name": "HudElem_ScrSetTimer",
+   "signature": "void HudElem_ScrSetTimer(unsigned int handle)",
+   "subsystem": "hud/timers",
+   "confidence": "inferred",
+   "evidence": "string \"setTimer\" at 0x081043a6 is passed as the builtin name [string 'setTimer' at 0x081043a6 passed as builtin name] [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081047fe",
+   "name": "HudElem_LookupMethod",
+   "signature": "void *HudElem_LookupMethod(const char **name)",
+   "subsystem": "hud/script",
+   "confidence": "unknown",
+   "evidence": "searches the 18-entry hud method table (stride 0x0c, name at +0, handler at +4) by strcmp; returns the handler and canonicalises the caller's name pointer; descriptive name [strcmp search over 18-entry method table at 0x0815a180]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104882",
+   "name": "HudElem_BuildClientLists",
+   "signature": "void HudElem_BuildClientLists(struct gclient_s *client, int targetClient, unsigned char flags)",
+   "subsystem": "hud/snapshots",
+   "confidence": "unknown",
+   "evidence": "copies the visible hud elements of the 1024-entry pool into the client's two 31-slot snapshot lists (flagged list selected by listSelector); flags bit0 clears/fills the flagged list, bit1 the unflagged list; descriptive name [snapshot copy of 0x80 bytes per visible element; list selection by listSelector]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081049ec",
+   "name": "Float_Max",
+   "signature": "float Float_Max(float a, float b)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "returns the larger of two floats via Float_SelectIfNonNegative(a - b, a, b); the result is left in st0, so the wrapper returns float [select on a-b >= 0 (0x08104a98 use); wrapper leaves result in st0]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104a10",
+   "name": "Float_Min",
+   "signature": "float Float_Min(float a, float b)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "returns the smaller of two floats via Float_SelectIfNonNegative(b - a, a, b) [select on b-a >= 0 (0x08104a98 use)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104a34",
+   "name": "Float_RoundToInt",
+   "signature": "int Float_RoundToInt(float v)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "floor(x + 0.5) then truncating integer conversion (x87 fistp with chop); round-half-up to int [floor(v + 0.5) with chop to int (fistp with 0xc00 control word)]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104a6a",
+   "name": "Float_CeilToInt",
+   "signature": "int Float_CeilToInt(float v)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "ceil() and integer conversion; ceil identity on the rounded value [ceil() then integer conversion]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104a98",
+   "name": "Float_SelectIfNonNegative",
+   "signature": "float Float_SelectIfNonNegative(float test, float ifNonNeg, float otherwise)",
+   "subsystem": "math/float",
+   "confidence": "unknown",
+   "evidence": "returns ifNonNeg when test >= 0.0 (fucompp/jae), otherwise otherwise; result in st0 as float [fucompp/jae against 0.0 in disassembly]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104ac4",
+   "name": "Client_FillClipFromAmmo",
+   "signature": "void Client_FillClipFromAmmo(struct gclient_s *client, int weapon)",
+   "subsystem": "player/ammo",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Body moves min(ps->ammo[ammoIdx], clipSize - ps->ammoclip[clipIdx]) from the reserve array (ps+0x144) into the clip array (ps+0x344); the current name states the opposite direction. Same contract as BG_ReloadClipFromAmmo on a gclient.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104b94",
+   "name": "Player_GiveWeaponAmmo",
+   "signature": "int Player_GiveWeaponAmmo(struct gentity_s *ent, int weapon, int amount, int forceFlag)",
+   "subsystem": "player/ammo",
+   "confidence": "unknown",
+   "evidence": "adds ammo to a weapon's clip slot, reconciles clip/reserve against slot maxima, applies the weapon's ammo-pool delta (ec514) and returns the total change; descriptive name [clip/reserve arithmetic with ec514 delta; returns total change]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08104e64",
+   "name": "Item_PickupAmmo",
+   "signature": "int Item_PickupAmmo(struct gentity_s *item, struct gentity_s *player)",
+   "subsystem": "item/pickup",
+   "confidence": "inferred",
+   "evidence": "\"GAME_PICKUP_AMMO\" and \"GAME_PICKUP_CLIPONLY_AMMO\" message formats at 0x0815a282 / 0x0815a260 name an ammo pickup ['GAME_PICKUP_AMMO' and 'GAME_PICKUP_CLIPONLY_AMMO' message formats]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08105072",
+   "name": "Item_PickupWeapon",
+   "signature": "int Item_PickupWeapon(struct gentity_s *item, struct gentity_s *player, int *outEvent, int dropFlag)",
+   "subsystem": "item/pickup",
+   "confidence": "inferred",
+   "evidence": "\"GAME_CANT_GET_PRIMARY_WEAP_MESSAGE\" and the weapon pickup ammo messages name a weapon pickup handler (item type 1); swaps or drops the held primary weapon when the player cannot carry both ['GAME_CANT_GET_PRIMARY_WEAP_MESSAGE' and weapon ammo messages]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081059c0",
+   "name": "Item_PickupHealth",
+   "signature": "int Item_PickupHealth(struct gentity_s *item, struct gentity_s *player)",
+   "subsystem": "item/pickup",
+   "confidence": "inferred",
+   "evidence": "\"GAME_PICKUP_HEALTH\" message format at 0x0815a34c names a health pickup (item type 3) ['GAME_PICKUP_HEALTH' format at 0x0815a34c]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08105cac",
+   "name": "Item_TouchPickup",
+   "signature": "void Item_TouchPickup(struct gentity_s *item, struct gentity_s *player, int pickupFlags)",
+   "subsystem": "item/pickup",
+   "confidence": "inferred",
+   "evidence": "\"Weapon;%d;%d;%s;%s\" and \"Item;%d;%d;%s;%s\" log formats and the \"GAME_PICKUP_CANTCARRYMOREAMMO\" message name the touch-pickup dispatcher ['Weapon;%d;%d;%s;%s' and 'Item;%d;%d;%s;%s' log formats]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08105ffa",
+   "name": "DroppedWeapon_FindSlot",
+   "signature": "int DroppedWeapon_FindSlot(void)",
+   "subsystem": "item/drop",
+   "confidence": "unknown",
+   "evidence": "returns the first free slot of the dropped-weapon list (g_0864e0d8) or, when the list is full, evicts the entry farthest from every connected client and returns its slot; descriptive name [free-slot search or farthest-from-clients eviction over g_maxDroppedWeapons]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08106130",
+   "name": "Item_SetOwnerUnset",
+   "signature": "void Item_SetOwnerUnset(struct gentity_s *ent)",
+   "subsystem": "item/drop",
+   "confidence": "inferred",
+   "evidence": "stores 0x3fe (the unowned marker used by Item_SetupDroppedWeapon) in the entity owner field at +0x90 [stores 0x3fe owner marker]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08106142",
+   "name": "Item_SetModelName",
+   "signature": "void Item_SetModelName(const struct gitem_s *def, void *dst)",
+   "subsystem": "item/drop",
+   "confidence": "inferred",
+   "evidence": "builds \"weapon_<name>\" for weapon-type definitions (index beyond the weapon count uses the definition's own string); the destination is the model field at entity +0x168 ['weapon_%s' format in the callee path]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081061cc",
+   "name": "Item_SpawnDropped",
+   "signature": "struct gentity_s *Item_SpawnDropped(const struct gitem_s *def, const float *origin, const float *dir, int owner)",
+   "subsystem": "item/drop",
+   "confidence": "inferred",
+   "evidence": "\"dropped item\" spawn: registers the definition, spawns an entity (fn_0811e9d6), records it in the dropped-weapon list and sets its bounds, owner, model and timers [spawns and configures a dropped item; returns entity]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081063d4",
+   "name": "Item_ThrowFromPlayer",
+   "signature": "struct gentity_s *Item_ThrowFromPlayer(struct gentity_s *player, const struct gitem_s *def, float forward, int dropMode)",
+   "subsystem": "item/drop",
+   "confidence": "inferred",
+   "evidence": "builds the throw direction from the player's view angles (AngleVectors, g_dropForwardSpeed / g_dropUpSpeedBase / g_dropUpSpeedRand dvars) and spawns the dropped item at the player's box top; returns the spawned entity (eax passthrough of Item_SpawnDropped) [g_dropForwardSpeed / g_dropUpSpeedBase / g_dropUpSpeedRand dvars; eax passthrough of spawn]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081064de",
+   "name": "Player_DropWeapon",
+   "signature": "struct gentity_s *Player_DropWeapon(struct gentity_s *player, int weapon, int withAim)",
+   "subsystem": "item/drop",
+   "confidence": "unknown",
+   "evidence": "drops a weapon from the player (or builds a dropped entity for a client-less player) carrying the clip and reserve amounts; optionally places it at the aim point (fn_0811e542 aim record); descriptive name [clip/reserve split, optional aim placement; def index taken from weapon value as in the binary]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08106e92",
+   "name": "ItemRegistry_Reset",
+   "signature": "void ItemRegistry_Reset(void)",
+   "subsystem": "item/registry",
+   "confidence": "inferred",
+   "evidence": "clears the 256-entry item registration table and marks entry 0 as registered [memset of 256-entry registry, entry 0 set]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08106ec0",
+   "name": "ItemRegistry_BuildNameList",
+   "signature": "void ItemRegistry_BuildNameList(void)",
+   "subsystem": "item/registry",
+   "confidence": "inferred",
+   "evidence": "concatenates the weapon names (space separated, indices 1..count) into a 0x2000-byte buffer and sends it as configstring 7 [space-joined weapon names sent as configstring 7]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08106f7c",
+   "name": "ItemRegistry_BuildBitmask",
+   "signature": "void ItemRegistry_BuildBitmask(void)",
+   "subsystem": "item/registry",
+   "confidence": "inferred",
+   "evidence": "encodes the 131 item registration flags as a hex string (4 flags per digit, digits 0-9 then lowercase letters) and sends it as configstring 8 [hex encoding of registration flags sent as configstring 8]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08107114",
+   "name": "ItemRegistry_Register",
+   "signature": "void ItemRegistry_Register(int index, int setDirty)",
+   "subsystem": "item/registry",
+   "confidence": "inferred",
+   "evidence": "\"game tried to register the item '%s' after initialization finished\" names the registration check; sets the registry flag and takes references on the definition's model slots ['game tried to register the item '%s' after initialization finished']",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08107332",
+   "name": "ItemRegistry_IsRegistered",
+   "signature": "int ItemRegistry_IsRegistered(int index)",
+   "subsystem": "item/registry",
+   "confidence": "inferred",
+   "evidence": "returns the registration flag of one item index [registry flag read]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08107342",
+   "name": "Item_SetupDroppedWeapon",
+   "signature": "void Item_SetupDroppedWeapon(struct gentity_s *ent, const struct gitem_s *def)",
+   "subsystem": "item/drop",
+   "confidence": "inferred",
+   "evidence": "initialises an entity as a dropped weapon from its definition (registration, bounds, owner marker 0x3fe, angles roll +90 for weapon-type items) and links it [entity setup from definition; owner marker 0x3fe]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810758e",
+   "name": "G_CorpseApplyTrace",
+   "signature": "void G_CorpseApplyTrace(struct gentity_s *ent, struct ent_ext_s *ext, const struct trace_s *tr, const float *vel)",
+   "subsystem": "entity/projectile",
+   "confidence": "inferred",
+   "evidence": "applies a trace result to a moving entity: either a grounded/blocked reset (state 1, velocity stored, angles from the trace normal) or a step to the trace end point; trace record layout partial (endpos at +0x04, allsolid at +0x22) [trace record layout inferred from offsets; partial] [rename game: Applies a trace result to a moving entity; part of the corpse slot update chain (eType 2).]",
+   "status": "partial",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810773a",
+   "name": "G_CorpseAlignToTrace",
+   "signature": "void G_CorpseAlignToTrace(struct gentity_s *ent, const struct trace_s *tr)",
+   "subsystem": "entity/projectile",
+   "confidence": "inferred",
+   "evidence": "derives the entity's new angles from the trace end point and its forward axis (cross products, AxisToAngles); weapon-type items (itemType 1) get roll +90 [cross products and AxisToAngles] [rename game: Derives new angles from trace end point and forward axis in the corpse slot update chain (eType 2).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08107812",
+   "name": "Ext_ReadSlotHandle",
+   "signature": "void Ext_ReadSlotHandle(struct gentity_s *ent, struct ent_ext_s *ext, void *out)",
+   "subsystem": "entity/projectile",
+   "confidence": "unknown",
+   "evidence": "queries the slot's stored handle through fn_080c1504 and writes the result to the caller's out pointer; descriptive name [calls fn_080c1504 with the slot handle]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08107846",
+   "name": "G_UpdateCorpseSlot",
+   "signature": "void G_UpdateCorpseSlot(struct gentity_s *ent)",
+   "subsystem": "entity/projectile",
+   "confidence": "inferred",
+   "evidence": "per-slot projectile update: reads the slot's velocity (Ext_ReadSlotHandle), steps the entity through a trace, and resolves impacts (Ent_ApplyTraceResult / Ent_UpdateAnglesFromTrace); trace layout inferred from the decompiler's out-buffer offsets, partial [projectile step with trace; partial] [rename game: Sole callee of G_RunCorpse (eType 2 corpse entities); steps the tracked-slot entity through traces.]",
+   "status": "partial",
+   "notes": ""
+  },
+  {
+   "addr": "0x08107d30",
+   "name": "Ent_UpdateDObj",
+   "signature": "void Ent_UpdateDObj(struct gentity_s *ent)",
+   "subsystem": "entity/projectile",
+   "confidence": "unknown",
+   "evidence": "refreshes the entity's server DObj (Com_GetServerDObj) and its per-slot animation block (slot record +0x0c) [Com_GetServerDObj and slot animation block at slot+0x0c]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08107dbc",
+   "name": "G_RunCorpse",
+   "signature": "void G_RunCorpse(struct gentity_s *ent)",
+   "subsystem": "entity/projectile",
+   "confidence": "inferred",
+   "evidence": "one projectile think step: slot update, DObj refresh, then the common entity pass [chains the slot update, DObj refresh and common pass] [rename game: Called from G_RunFrame (chunk_049 line 512) only for eType==2; PlayerCmd_cloneplayer (chunk_103) creates entities with eType=2 plus a tracked slot copying clientInfo 0x4b8 and the XAnim tree. Real missiles use eType 4 / G_RunMissile. Body = slot update, DObj refresh, G_RunThink.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08107de6",
+   "name": "Ent_StepMovement",
+   "signature": "void Ent_StepMovement(struct gentity_s *ent)",
+   "subsystem": "entity/movement",
+   "confidence": "unknown",
+   "evidence": "per-frame movement of a moving entity: follows the target entity, steps toward the next position, slides along surfaces (second trace) and settles or frees the entity; trace record layout inferred, partial [target follow, trace step and slide; partial]",
+   "status": "partial",
+   "notes": ""
+  },
+  {
+   "addr": "0x081081ee",
+   "name": "Float_RoundToInt2",
+   "signature": "int Float_RoundToInt2(float v)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "identical body to Float_RoundToInt (0x08104a34): floor(x + 0.5) truncated to int [identical body to Float_RoundToInt at 0x08104a34]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108224",
+   "name": "Vec3Clear",
+   "signature": "void Vec3Clear(float *v)",
+   "subsystem": "vector",
+   "confidence": "inferred",
+   "evidence": "zeroes a 3-float vector [zeroes three floats]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810824e",
+   "name": "Vec3Set",
+   "signature": "void Vec3Set(float *v, float x, float y, float z)",
+   "subsystem": "vector",
+   "confidence": "inferred",
+   "evidence": "stores three components [stores three floats]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108272",
+   "name": "Vec3Copy",
+   "signature": "void Vec3Copy(const float *src, float *dst)",
+   "subsystem": "vector",
+   "confidence": "inferred",
+   "evidence": "copies a 3-float vector [copies three floats]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081082a2",
+   "name": "Vec3Add",
+   "signature": "void Vec3Add(const float *a, const float *b, float *out)",
+   "subsystem": "vector",
+   "confidence": "inferred",
+   "evidence": "componentwise sum [componentwise sum]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081082e6",
+   "name": "Vec3Sub",
+   "signature": "void Vec3Sub(const float *a, const float *b, float *out)",
+   "subsystem": "vector",
+   "confidence": "inferred",
+   "evidence": "componentwise difference a - b [componentwise difference]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810832a",
+   "name": "Vec3Average",
+   "signature": "void Vec3Average(const float *a, const float *b, float *out)",
+   "subsystem": "vector",
+   "confidence": "inferred",
+   "evidence": "componentwise midpoint (a + b) * 0.5 (double multiply, float store) [midpoint with double multiply]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108386",
+   "name": "Vec3Scale",
+   "signature": "void Vec3Scale(const float *a, float s, float *out)",
+   "subsystem": "vector",
+   "confidence": "inferred",
+   "evidence": "out = s * a [scalar multiply]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081083be",
+   "name": "Vec3MulAdd",
+   "signature": "void Vec3MulAdd(const float *a, float s, const float *b, float *out)",
+   "subsystem": "vector",
+   "confidence": "inferred",
+   "evidence": "out = a + s * b [a + s*b]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108412",
+   "name": "Vec3Dot",
+   "signature": "long double Vec3Dot(const float *a, const float *b)",
+   "subsystem": "vector",
+   "confidence": "inferred",
+   "evidence": "dot product evaluated in long double, summed z, y, x [dot product in long double]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108446",
+   "name": "Vec3LengthSquared",
+   "signature": "long double Vec3LengthSquared(const float *a)",
+   "subsystem": "vector",
+   "confidence": "inferred",
+   "evidence": "squared length, same evaluation order as Vec3Dot [squared length in long double]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810847a",
+   "name": "Ent_GetTraceMask",
+   "signature": "unsigned int Ent_GetTraceMask(const struct gentity_s *ent)",
+   "subsystem": "entity/trace",
+   "confidence": "inferred",
+   "evidence": "returns the entity trace mask, defaulting to 0x491 when unset [default 0x491 when unset]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081084a4",
+   "name": "G_RegisterDvars",
+   "signature": "void G_RegisterDvars(void)",
+   "subsystem": "server/dvars",
+   "confidence": "inferred",
+   "evidence": "the dvar names registered here (sv_cheats, g_gametype, g_log, g_speed, ...) are the server cvar set; the function is the dvar init block (it ends with the call to fn_080de830); inferred from the registration strings, which do not name the function [dvar registrations with names from the call strings] [rename game: Registers sv_cheats, g_gametype, sv_maxclients, g_log, g_password, g_banIPs, g_synchronousClients etc. (chunk_048 lines 1491+); only caller is G_InitGame (chunk_049 line 121). Matches id Tech 3 G_RegisterCvars, not a generic server dvar init.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108dee",
+   "name": "Level_GetIntValue",
+   "signature": "int Level_GetIntValue(void)",
+   "subsystem": "level/globals",
+   "confidence": "unknown",
+   "evidence": "getter for a level-global int (g_0864e0d4); descriptive name [reads level-global int]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108df8",
+   "name": "Level_SetIntValue",
+   "signature": "void Level_SetIntValue(int value)",
+   "subsystem": "level/globals",
+   "confidence": "unknown",
+   "evidence": "setter for the same level-global int [writes level-global int]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108e06",
+   "name": "Float_GetLevelValue",
+   "signature": "long double Float_GetLevelValue(void)",
+   "subsystem": "level/globals",
+   "confidence": "unknown",
+   "evidence": "returns a level-global float (g_0864e15c) widened to long double [reads level-global float]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108e1a",
+   "name": "G_GetClientScore",
+   "signature": "int G_GetClientScore(int clientIndex)",
+   "subsystem": "client/records",
+   "confidence": "inferred",
+   "evidence": "reads an int field of client record i (+0x26b8); descriptive name [client record field +0x26b8] [rename game: Reads client record (stride 0x28a4) +0x26b8; G_ExitLevel (0x08109920) zeroes the same offset when state(+0x26c4)==2; chunk_021 status lines print it as score before ping and name.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108e36",
+   "name": "G_GetClientArchiveTime",
+   "signature": "int G_GetClientArchiveTime(int clientIndex)",
+   "subsystem": "client/records",
+   "confidence": "inferred",
+   "evidence": "reads an int field of client record i (+0x26b4) [client record field +0x26b4] [rename game: Reads client +0x26b4; chunk_023 passes it as the age key to SV_FindCachedSnapshotByAge and writes it back via the setter; chunk_046 names +0x26b4 archiveTime. Lower confidence: chunk_022 bot code also tests it ==0.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108e52",
+   "name": "G_SetClientArchiveTime",
+   "signature": "void G_SetClientArchiveTime(int clientIndex, int value)",
+   "subsystem": "client/records",
+   "confidence": "inferred",
+   "evidence": "writes the field read by Client_GetUnk26b4 [client record field +0x26b4 write] [rename game: Writes client +0x26b4 (objdump 0x08108e69); counterpart of G_GetClientArchiveTime.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108e72",
+   "name": "G_GetClientStateAddr",
+   "signature": "struct clientState_s *G_GetClientStateAddr(int clientIndex)",
+   "subsystem": "client/records",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body returns (int)&level[clientIndex].cs, i.e. the address of the clientState record; used by SV_GetCurrentPlayerAndClientState to copy it. Replaces the offset-based Unk2748 name.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108e8c",
+   "name": "Game_FreeAllEntities",
+   "signature": "void Game_FreeAllEntities(void)",
+   "subsystem": "level/entities",
+   "confidence": "inferred",
+   "evidence": "frees every in-use entity up to level.num_entities, then the special entity at g_087a1fa0, and resets the entity counters [frees in-use entities up to level.num_entities]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108f3c",
+   "name": "Pool_AllocGameObjects",
+   "signature": "void Pool_AllocGameObjects(void)",
+   "subsystem": "pool/objects",
+   "confidence": "inferred",
+   "evidence": "fills the 64-entry object pool (stride 0x4b8) and the 8 per-slot records (stride 0x4c8) from pool g_08703588 with Pool_ItemCallback as the release callback [fills 64 pool elements and 8 slot records]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08108fc6",
+   "name": "Pool_FreeGameObjects",
+   "signature": "void Pool_FreeGameObjects(void)",
+   "subsystem": "pool/objects",
+   "confidence": "inferred",
+   "evidence": "releases the pool elements filled by Pool_AllocGameObjects and clears their slots [releases pool elements]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08109082",
+   "name": "Hunk_AllocLowCallback",
+   "signature": "void *Hunk_AllocLowCallback(int size)",
+   "subsystem": "pool/objects",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Forwards size to Hunk_AllocLow; address stored as allocator callback in G_InitGame (0x087035b8 write) and passed in Pool_AllocGameObjects.",
+   "status": "partial",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0864c56c",
+   "name": "g_0864c56c",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "level time in ms; added to every timer endTime (0x08104124 and 0x081041d8)"
+  },
+  {
+   "addr": "0x08628f80",
+   "name": "g_08628f80",
+   "type": "struct game_hudelem_s[1024]",
+   "confidence": "inferred",
+   "evidence": "hud element pool, stride 0x8c; index = handle & 0xffff"
+  },
+  {
+   "addr": "0x08159ee0",
+   "name": "g_hudelemFieldTable",
+   "type": "struct hudelem_field_s[]",
+   "confidence": "observed",
+   "evidence": "hud field table (stride 0x1c) walked until name == NULL"
+  },
+  {
+   "addr": "0x0815a180",
+   "name": "g_hudelemMethodTable",
+   "type": "struct hudelem_method_s[18]",
+   "confidence": "inferred",
+   "evidence": "hud method table searched by HudElem_LookupMethod"
+  },
+  {
+   "addr": "0x0864c380",
+   "name": "level_clients",
+   "type": "struct gclient_s *",
+   "confidence": "inferred",
+   "evidence": "client array base (stride 0x28a4); index * 0x28a4 + base"
+  },
+  {
+   "addr": "0x0864c384",
+   "name": "level_gentities",
+   "type": "struct gentity_s *",
+   "confidence": "inferred",
+   "evidence": "entity array pointer; +0x0c used as state of target entity"
+  },
+  {
+   "addr": "0x0864c38c",
+   "name": "level_numEntities",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "level.num_entities count (0x08108e8c)"
+  },
+  {
+   "addr": "0x0864c39c",
+   "name": "level_initializing",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "nonzero once game initialization finished (0x08107114)"
+  },
+  {
+   "addr": "0x08716400",
+   "name": "g_gentities",
+   "type": "struct gentity_s[]",
+   "confidence": "inferred",
+   "evidence": "gentity array, stride 0x230"
+  },
+  {
+   "addr": "0x0864e0d8",
+   "name": "g_droppedWeapons",
+   "type": "struct gentity_s *[]",
+   "confidence": "inferred",
+   "evidence": "dropped weapon list, count from g_maxDroppedWeapons"
+  },
+  {
+   "addr": "0x0864bf80",
+   "name": "g_itemRegisteredFlags",
+   "type": "int[256]",
+   "confidence": "inferred",
+   "evidence": "item registration flags (ItemRegistry_*)"
+  },
+  {
+   "addr": "0x081850c0",
+   "name": "g_081850c0",
+   "type": "struct gitem_s[]",
+   "confidence": "inferred",
+   "evidence": "item/weapon definition table, stride 0x2c"
+  },
+  {
+   "addr": "0x0884e7b8",
+   "name": "g_trackedEntitySlots",
+   "type": "struct ent_ext_s[8]",
+   "confidence": "inferred",
+   "evidence": "per-slot records, stride 0x4c8"
+  },
+  {
+   "addr": "0x08703a60",
+   "name": "g_08703a60",
+   "type": "unsigned char[64*0x4b8]",
+   "confidence": "inferred",
+   "evidence": "object pool elements, stride 0x4b8"
+  },
+  {
+   "addr": "0x08703588",
+   "name": "g_08703588",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "pool handle used by Pool_AllocGameObjects"
+  },
+  {
+   "addr": "0x08853274",
+   "name": "scr_str_trigger",
+   "type": "void *",
+   "confidence": "inferred",
+   "evidence": "opaque argument of fn_0811b2de"
+  },
+  {
+   "addr": "0x087a2448",
+   "name": "g_087a2448",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "dvar 'g_dropForwardSpeed' registered in Dvar_RegisterServerDvars (0x081084a4); value read at +0x08"
+  },
+  {
+   "addr": "0x087a244c",
+   "name": "g_087a244c",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "dvar 'g_dropUpSpeedBase' registered in Dvar_RegisterServerDvars (0x081084a4); value read at +0x08"
+  },
+  {
+   "addr": "0x087a2450",
+   "name": "g_087a2450",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "dvar 'g_dropUpSpeedRand' registered in Dvar_RegisterServerDvars (0x081084a4); value read at +0x08"
+  },
+  {
+   "addr": "0x087a2438",
+   "name": "g_087a2438",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "dvar 'g_maxDroppedWeapons' registered in Dvar_RegisterServerDvars (0x081084a4); value read at +0x08"
+  },
+  {
+   "addr": "0x087a2434",
+   "name": "g_087a2434",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "dvar 'g_weaponAmmoPools' registered in Dvar_RegisterServerDvars (0x081084a4); value read at +0x08"
+  },
+  {
+   "addr": "0x087a2418",
+   "name": "g_087a2418",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "dvar 'sv_cheats' registered in Dvar_RegisterServerDvars (0x081084a4); value read at +0x08"
+  },
+  {
+   "addr": "0x087a2400",
+   "name": "g_087a2400",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "dvar 'g_gametype' registered in Dvar_RegisterServerDvars (0x081084a4); value read at +0x08"
+  },
+  {
+   "addr": "0x087a240c",
+   "name": "g_087a240c",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "dvar 'dedicated' registered in Dvar_RegisterServerDvars (0x081084a4); value read at +0x08"
+  },
+  {
+   "addr": "0x087a2410",
+   "name": "dvar_g_speed",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "dvar 'g_speed' registered in Dvar_RegisterServerDvars (0x081084a4); value read at +0x08"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "hudelem_s",
+   "size": "0x8c",
+   "evidence": "pool stride 0x8c (0x23 dwords) at g_08628f80; endTime +0x68, duration +0x6c, width +0x34, height +0x38, shader +0x3c, filters +0x80..0x88"
+  },
+  {
+   "name": "hudelem_snapshot_s",
+   "size": "0x80",
+   "evidence": "first 0x80 bytes of hudelem_s copied into client lists (memcpy 0x80)"
+  },
+  {
+   "name": "hudelem_field_s",
+   "size": "0x1c",
+   "evidence": "table entries at g_08159ee0: name +0, offset +4, type +8, mask +0xc, shift +0x10, getter +0x14, setter +0x18"
+  },
+  {
+   "name": "hudelem_method_s",
+   "size": "0xc",
+   "evidence": "method table at g_0815a180: name +0, handler +4"
+  },
+  {
+   "name": "gentity_s",
+   "size": "0x230",
+   "evidence": "g_entities stride 0x230 (0x0864c38c count); partial: client +0x158, health +0x194, weaponDef +0x1ac, clip +0x1a0, reserve +0x1a8"
+  },
+  {
+   "name": "gclient_s",
+   "size": "0x28a4",
+   "evidence": "g_clients stride 0x28a4; ammoClip[128] +0x144, ammoReserve[128] +0x344, weaponOwned +0x544, name +0x2784, hud lists +0x7a8 and +0x1728; partial"
+  },
+  {
+   "name": "itemdef_s",
+   "size": "0x2c",
+   "evidence": "item definition table stride 0x2c; name +0x14, defaultAmount +0x18, itemType +0x1c, weaponIndex +0x20"
+  },
+  {
+   "name": "weapon_info_s",
+   "size": "unknown",
+   "evidence": "record returned by fn_080eb9a4: name +0, displayName +4, slotGroup +0x80, altMode +0x84, +0x340, ammo range +0x370/+0x374, +0x1e4; partial"
+  },
+  {
+   "name": "ent_ext_s",
+   "size": "0x4c8",
+   "evidence": "slot records at g_0884e7b8, stride 0x4c8; handle +0, object block +0x0c, done flag +0x4c4"
+  },
+  {
+   "name": "trace_result_s",
+   "size": "unknown",
+   "evidence": "fraction +0, endpos[3] +4, entityNum +0x1c, allsolid +0x22, startsolid +0x23; partial, inferred from offset usage"
+  }
+ ],
+ "open_questions": [
+  "FUN_08084bb2 is merged as Scr_ReleaseAnyValue(void), but 0x81041d8 uses its return value as a shader name (fn_0811d44a(fn_08084bb2(2))). Placeholder fn_08084bb2 kept with uint32 return; the merged signature conflicts.",
+  "FUN_080ac15c is merged as Hunk_AllocLow(int size), but the pool callback 0x08109082 passes an object pointer. Placeholder fn_080ac15c kept; Pool_ItemCallback is partial.",
+  "FUN_080853fc is merged as Scr_Error, but ItemRegistry_Register (0x08107114) uses it for a non-script diagnostic. Confirm the callee name.",
+  "FUN_080a9558 is merged as AxisToAngles(axis, angles), but chunk 048 calls it with a 3-vector input and a 3-vector output (VectorToAngles shape). Confirm the signature.",
+  "Weapon info record (fn_080eb9a4): +0x00 and +0x04 both carry name strings in different callers; the record type may differ between callers.",
+  "Weapon index versus definition index: Player_DropWeapon(0x081064de) indexes g_081850c0 directly with its weapon argument. Confirm whether weapon indices equal definition indices.",
+  "Player_DropWeapon computes angles[2] += 90 on a vector that is not read afterwards; kept literal, effect unverified (possibly an unused local).",
+  "HudElem_FieldRead and HudElem_FieldWrite direction (getter/setter pairing with fn_0811ad7e/fn_0811af3c) is inferred; not verified against the script call sites.",
+  "Trace record layout (fraction +0, endpos +4, entityNum +0x1c, allsolid +0x22, startsolid +0x23) is inferred from offsets only; Ent_ApplyTraceResult, Ent_UpdateMissileSlot and Ent_StepMovement are partial.",
+  "Many gentity_s and gclient_s fields (for example gentity +0x04, +0x14, +0x30, +0x166, +0x208; gclient +0x26a8, +0x26b4, +0x26b8, +0x26c4, +0x2704, +0x274c) are named by position only."
+ ]
+}

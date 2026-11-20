@@ -1,0 +1,763 @@
+{
+ "chunk": 39,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080d6c32",
+   "name": "Noop_080d6c32",
+   "signature": "void Noop_080d6c32(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function (disassembly: push ebp; mov ebp,esp; pop ebp; ret). Self-referencing caller entry only.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6c38",
+   "name": "Noop_080d6c38",
+   "signature": "void Noop_080d6c38(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function, same body as Noop_080d6c32.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6c3e",
+   "name": "ReturnZero_080d6c3e",
+   "signature": "int ReturnZero_080d6c3e(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Returns 0 (mov eax,0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6c48",
+   "name": "Noop_080d6c48",
+   "signature": "void Noop_080d6c48(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6c4e",
+   "name": "ReturnZero_080d6c4e",
+   "signature": "int ReturnZero_080d6c4e(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Returns 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6c58",
+   "name": "Noop_080d6c58",
+   "signature": "void Noop_080d6c58(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6c5e",
+   "name": "Noop_080d6c5e",
+   "signature": "void Noop_080d6c5e(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6c64",
+   "name": "Noop_080d6c64",
+   "signature": "void Noop_080d6c64(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6c6a",
+   "name": "Noop_080d6c6a",
+   "signature": "void Noop_080d6c6a(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6c70",
+   "name": "Noop_080d6c70",
+   "signature": "void Noop_080d6c70(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6c76",
+   "name": "Noop_080d6c76",
+   "signature": "void Noop_080d6c76(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6ca6",
+   "name": "Noop_080d6ca6",
+   "signature": "void Noop_080d6ca6(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6cac",
+   "name": "Noop_080d6cac",
+   "signature": "void Noop_080d6cac(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function; called from 0x0806288a and 0x080628fa.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6cb2",
+   "name": "Noop_080d6cb2",
+   "signature": "void Noop_080d6cb2(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6cb8",
+   "name": "Noop_080d6cb8",
+   "signature": "void Noop_080d6cb8(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6cbe",
+   "name": "ReturnZero_080d6cbe",
+   "signature": "int ReturnZero_080d6cbe(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Returns 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6cc8",
+   "name": "Noop_080d6cc8",
+   "signature": "void Noop_080d6cc8(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6cce",
+   "name": "Noop_080d6cce",
+   "signature": "void Noop_080d6cce(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6cd4",
+   "name": "ReturnZero_080d6cd4",
+   "signature": "int ReturnZero_080d6cd4(void);",
+   "subsystem": "bg/animscript/stubs",
+   "confidence": "unknown",
+   "evidence": "Returns 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6ce0",
+   "name": "BG_StringHashValue",
+   "signature": "int BG_StringHashValue(const char *string);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Case-insensitive position-weighted string hash (sum of tolower(c) * (i + 0x77), -1 mapped to 0). Evidence: id Tech BG_StringHashValue counterpart; used by every BG_*IndexForString lookup in this chunk.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6d40",
+   "name": "BG_AnimParseError",
+   "signature": "void BG_AnimParseError(const char *fmt, ...);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Formats the message into a 1024 byte buffer and raises a drop error, adding the script name and parse line while mp/playeranim.script is being parsed (g_08184860 non-null). Evidence: every \"BG_...\" parse-error string in this chunk goes through it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6dd0",
+   "name": "BG_AnimationIndexForString",
+   "signature": "int BG_AnimationIndexForString(const char *name);",
+   "subsystem": "bg/animscript",
+   "confidence": "observed",
+   "evidence": "Looks the animation name up (hash then Q_stricmp). Without a name table it scans the animation array; with a name table (g_0860e4a8) it scans/extends that table via Scr_AddAnimTreeEntry. Evidence: string \"BG_AnimationIndexForString: unknown player animation '%s'\" at 0x081527c0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6f56",
+   "name": "BG_AnimationForString",
+   "signature": "struct animation_t *BG_AnimationForString(const char *name);",
+   "subsystem": "bg/animscript",
+   "confidence": "observed",
+   "evidence": "Returns the animation_t whose name matches, or raises an error and returns 0. Evidence: string \"BG_AnimationForString: unknown player animation '%s'\" at 0x08152820.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d6fea",
+   "name": "BG_IndexForString",
+   "signature": "int BG_IndexForString(const char *token, struct animStringItem_t *strings, int allowFail);",
+   "subsystem": "bg/animscript",
+   "confidence": "observed",
+   "evidence": "Finds a token in a { string, hash } table that ends with a null string; computes missing hashes lazily. On a miss it errors unless allowFail is set and returns -1. Evidence: string \"BG_IndexForString: unknown token '%s'\" at 0x08152860.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d7094",
+   "name": "BG_CopyStringIntoBuffer",
+   "signature": "char *BG_CopyStringIntoBuffer(const char *string, char *buffer, unsigned int bufferSize, int *offset);",
+   "subsystem": "bg/animscript",
+   "confidence": "observed",
+   "evidence": "Appends a string to a fixed buffer (offset advanced past the terminator) and returns its address. Evidence: string \"BG_CopyStringIntoBuffer: out of buffer space\" at 0x081528a0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d70fc",
+   "name": "BG_SetPlayerAnimTypeName",
+   "signature": "void BG_SetPlayerAnimTypeName(int index, const char *name);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Stores a PLAYERANIMTYPE name and its hash in g_08626b80[index] (the table referenced as the string list of condition 0 in g_08184c60). Called for each entry by fn_080f2be2.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d712c",
+   "name": "BG_ClearPlayerAnimTypeNames",
+   "signature": "void BG_ClearPlayerAnimTypeNames(void);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Clears the 128 entry PLAYERANIMTYPE name table and re-registers the names (fn_080f2be2 calls BG_SetPlayerAnimTypeName for every loaded weapon anim type).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d7156",
+   "name": "BG_AnimNameEntryForIndex",
+   "signature": "struct animNameEntry_t *BG_AnimNameEntryForIndex(unsigned int index);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Returns the name-table entry whose id equals the animation index, or 0 when absent. Errors when the index is not below the animation count. Evidence: string \"Player animation index %i out of 0 to %i range\" at 0x081528e0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d71e2",
+   "name": "BG_ClearAnimReferencedFlags",
+   "signature": "void BG_ClearAnimReferencedFlags(struct animScriptData_t *data);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Clears animation_t::referenced for all animations, then (non multiplayer only) marks every animation named by a command of scriptEvents[10]. Called at the end of BG_LoadAnim.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d72e6",
+   "name": "BG_LoadAnim",
+   "signature": "void BG_LoadAnim(void);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Builds animations[] from the loaded animation tree: entry 0 is \"root\", unreferenced slots are \"unused\", real animations get name/hash/duration (ms, min 500)/moveSpeed (delta length per second) and the looping flag, then runs BG_AnimParseAnimScript and BG_ClearAnimReferencedFlags. Evidence: strings \"root\" / \"unused\"; calls the parser and the referenced-flag clear.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d75f8",
+   "name": "BG_ParseConditionBits",
+   "signature": "void BG_ParseConditionBits(const char **text, struct animStringItem_t *stringTable, int conditionIndex, unsigned int *result);",
+   "subsystem": "bg/animscript",
+   "confidence": "observed",
+   "evidence": "Parses one comma-terminated condition expression (\"a AND b NOT c\", \"none\", \"all\", \"MINUS\"/\"NOT\") from the current line into a 64-bit mask. Words resolve first against the script-defined values (g_0860dba0/g_0860e020) and then against the condition's string table. Only the first dword of result is cleared on entry; the local mask persists between terms (quirks preserved). Evidence: strings \"BG_ParseConditionBits: unexpected end of condition\" and \"...: unexpected '%s'\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d7974",
+   "name": "BG_ParseConditions",
+   "signature": "int BG_ParseConditions(const char **text, struct animScriptItem_t *item);",
+   "subsystem": "bg/animscript",
+   "confidence": "observed",
+   "evidence": "Parses the condition list of one script item up to \"default\" or end of line. Each condition name resolves through g_08184c00; bit-flag conditions go to BG_ParseConditionBits, value conditions read one more token. The two value dwords persist across conditions (stale value[1] for value type). Evidence: strings \"BG_ParseConditions: no conditions found\" and \"...expected condition value...\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d7b48",
+   "name": "BG_ParseCommands",
+   "signature": "void BG_ParseCommands(const char **text, struct animScriptItem_t *item, struct animScriptData_t *data);",
+   "subsystem": "bg/animscript",
+   "confidence": "observed",
+   "evidence": "Parses the command block of one script item: \"<bodypart> <animation> [duration n] [turretanim] [blendtime n]\" pairs (a second part unless the first is 'both'), then \"sound <alias>\" entries, until the closing brace (which is pushed back). While not collecting names (g_0860e4a8 == 0) it also updates animation_t move-type bits, flags and blend times. Evidence: strings \"BG_ParseCommands: expected animation\", \"...unknown parameter '%s'\" etc.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d82b8",
+   "name": "BG_AnimParseAnimScript",
+   "signature": "void BG_AnimParseAnimScript(struct animScriptData_t *data, struct animNameEntry_t *animNames, int *numAnimNames);",
+   "subsystem": "bg/animscript",
+   "confidence": "observed",
+   "evidence": "Parses mp/playeranim.script (loaded once into g_0860e4c0) into scriptData: sections \"defines\" (set <type> <name> = <bits>), \"animations\", \"canned_animations\", \"statechanges\" and \"events\". Depth/stack bookkeeping: depth 0 = section level, then state / move type / item / commands. The \"unexpected end of file\" error is raised with a format that has %s but no argument (as in the binary). While parsing, g_0860b424/g_0860e4a8/g_0860e4ac are set; g_08184860 is cleared at the end. Evidence: strings \"BG_AnimParseAnimScript\", \"mp/playeranim.script\" (g_08184860), many \"BG_AnimParseAnimScript: ...\" errors.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d8fae",
+   "name": "BG_EvaluateConditions",
+   "signature": "int BG_EvaluateConditions(struct clientInfo_s *client, struct animScriptItem_t *item);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Returns 1 when every condition of the item matches the client's condition values: bit-flag conditions need a shared bit (low or high dword), value conditions need equality. Evidence: id Tech BG_EvaluateConditions counterpart; reads the g_08184c60 type per condition.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d9068",
+   "name": "BG_FirstValidItem",
+   "signature": "struct animScriptItem_t *BG_FirstValidItem(int clientNum, struct animScript_t *script);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Returns the first item of the script whose conditions match the client's current condition values (g_0860b420 client table), or 0. Evidence: id Tech BG_FirstValidItem counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d90d6",
+   "name": "BG_PlayAnim",
+   "signature": "int BG_PlayAnim(struct playerState_s *ps, unsigned int animIndex, int bodyPart, int forceDuration, int setTimer, int isContinue, int force);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Starts an animation on legs (body part 1), torso (2) or both (3) of the player state. Duration is the animation duration + 50 ms unless forced. Returns the legs duration when the legs part was (re)started, otherwise -1. For 'both' the torso part is started with animation index 0 (quirk). Evidence: id Tech BG_PlayAnim counterpart (ps legs/torso anim + timer toggling bit 0x200).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d92a0",
+   "name": "BG_PlayAnimName",
+   "signature": "void BG_PlayAnimName(struct playerState_s *ps, const char *animName, int bodyPart, int setTimer, int isContinue, int force);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "BG_PlayAnim by animation name (result discarded, forceDuration 0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d92e8",
+   "name": "BG_ExecuteCommand",
+   "signature": "int BG_ExecuteCommand(struct playerState_s *ps, struct animCommand_t *command, int setTimer, int isContinue, int force);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Executes one script command: plays each of its two parts with the part-0 duration + 50 ms (the second part also tests bodyPart[0], not bodyPart[1], when choosing the result path), then triggers the sound callback. Returns the duration when a legs/both part started, otherwise -1. Evidence: id Tech BG_ExecuteCommand counterpart; sound callback at animScriptData + 0xb3bc4.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d94a6",
+   "name": "BG_AnimScriptAnimation",
+   "signature": "unsigned int BG_AnimScriptAnimation(struct playerState_s *ps, int state, int moveType, int isContinue);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Plays the movement animation for (state, moveType): walks down from the given state to the first state whose script has a matching item, sets condition 3 (MOVETYPE) and executes the command picked by clientNum modulo the command count. Returns 1/0 (started or not) or -1 when nothing applies. Evidence: id Tech BG_AnimScriptAnimation counterpart; scriptAnims[state][moveType] indexing.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d9600",
+   "name": "BG_AnimScriptStateChange",
+   "signature": "int BG_AnimScriptStateChange(struct playerState_s *ps, int toState, int fromState);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Runs the state-change script (fromState -> toState): first matching item, random command. Returns the command duration or -1. Evidence: id Tech BG_AnimScriptStateChange counterpart; scriptStateChange[from][to] indexing.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d96ee",
+   "name": "BG_AnimScriptEvent",
+   "signature": "int BG_AnimScriptEvent(struct playerState_s *ps, int event, int isContinue, int force);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Runs the event script (pain, death, ...) for the player: first matching item, random command, timer set. Event 1 (DEATH) also runs for pm_type >= 6. Returns the duration or -1. Evidence: id Tech BG_AnimScriptEvent counterpart; scriptEvents[event]; 15 callers.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d97ce",
+   "name": "BG_GetAnimString",
+   "signature": "struct animation_t *BG_GetAnimString(int unused, unsigned int index);",
+   "subsystem": "bg/animscript",
+   "confidence": "observed",
+   "evidence": "Returns animations[index] of the parse target; errors when the index is out of range. Evidence: string \"BG_GetAnimString: anim index is out of range\" at 0x08153100.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d9806",
+   "name": "BG_UpdateConditionValue",
+   "signature": "void BG_UpdateConditionValue(int clientNum, int condition, int value, int checkConversion);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Sets a client's animation condition: bit-flag conditions (type 0) with checkConversion get a single bit set in a cleared 64-bit mask, everything else stores the raw value in the low dword. Evidence: id Tech BG_UpdateConditionValue counterpart; table type at g_08184c60[condition].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d98a4",
+   "name": "BG_GetConditionValue",
+   "signature": "unsigned int BG_GetConditionValue(struct clientInfo_s *client, int condition, int checkConversion);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Reads a client's condition value; with checkConversion on a bit-flag condition it returns the index of the first set bit (0..63) instead, or 0 when no bit is set. Evidence: id Tech BG_GetConditionValue counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d9920",
+   "name": "BG_AnimScriptEventAnimIndex",
+   "signature": "int BG_AnimScriptEventAnimIndex(struct playerState_s *ps, int event);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Like BG_AnimScriptEvent but only picks a random command of the first matching event item and returns its first animation index instead of executing it (-1 when none).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d99dc",
+   "name": "BG_GetAnimationForIndex",
+   "signature": "struct animation_t *BG_GetAnimationForIndex(int unused, unsigned int index);",
+   "subsystem": "bg/animscript",
+   "confidence": "observed",
+   "evidence": "Returns animations[index] of the parse target (g_0860b424); raises an error when out of range. Evidence: string \"BG_GetAnimationForIndex: index out of bounds\" at 0x08153140.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d9a1c",
+   "name": "BG_UpdateConditionsFromPmove",
+   "signature": "void BG_UpdateConditionsFromPmove(struct pmove_s *pm);",
+   "subsystem": "bg/animscript",
+   "confidence": "inferred",
+   "evidence": "Refreshes the animation conditions from the pmove: 0 PLAYERANIMTYPE and 1 WEAPONCLASS from the current weapon, 7 WEAPON_POSITION (eFlags 0x40000), 2 MOUNTED (eFlags 0x300), 4 UNDERHAND (ps field 0xe8 > 0), 6 FIRING (button bit 0). Evidence: condition names at g_08184c00 (index order); id Tech BG_UpdateConditionValue use.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d9c02",
+   "name": "BG_AnimFlagsTestA",
+   "signature": "bool BG_AnimFlagsTestA(struct clientInfo_s *client, unsigned int animNumber);",
+   "subsystem": "bg/animscript",
+   "confidence": "unknown",
+   "evidence": "True when the animation's move-type mask intersects lo 0xc4 or hi 0x180 (animation number with the restart toggle bit 0x200 removed).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d9c58",
+   "name": "BG_AnimFlagsTestB",
+   "signature": "bool BG_AnimFlagsTestB(struct clientInfo_s *client, unsigned int animNumber);",
+   "subsystem": "bg/animscript",
+   "confidence": "unknown",
+   "evidence": "True when the animation's low move-type mask intersects 0x308.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080d9d00",
+   "name": "BG_SetNewAnimation",
+   "signature": "void BG_SetNewAnimation(struct clientInfo_s *client, struct playerAnimLerp_t *lerp, unsigned int newAnimation, int isDeath);",
+   "subsystem": "bg/animscript/lerp",
+   "confidence": "inferred",
+   "evidence": "Switches a lerp frame (legs or torso of a client) to a new animation number: picks the blend time (170/250/120 ms defaults, never below the pending move-blend deadline), recomputes the run-cycle phase for moving animations and drives the animation tree (weights/times/roots). Legs updates do not touch the shared root animations; death animations (flag 0x40) must not loop. Evidence: string \"death animation '%s' is looping\" at 0x081531c0; id Tech CG_SetLerpFrameAnimation counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080da42a",
+   "name": "BG_RunLerpFrame",
+   "signature": "void BG_RunLerpFrame(struct clientInfo_s *client, struct playerAnimLerp_t *lerp, unsigned int newAnimation, struct entityState_s *es);",
+   "subsystem": "bg/animscript/lerp",
+   "confidence": "inferred",
+   "evidence": "Per frame update of a lerp frame: starts a new animation when the number changed, then estimates the animation speed scale from the distance moved since the last snapshot (vertical distance only for run-speed flagged animations), clamps it (0.1 minimum, move-speed dependent maximum) and applies it to the tree animation. Evidence: id Tech CG_RunLerpFrame counterpart; calls BG_SetNewAnimation with eFlags bit 19.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080da776",
+   "name": "BG_ClearFinishedAnimation",
+   "signature": "void BG_ClearFinishedAnimation(void *tree, struct playerAnimLerp_t *lerp);",
+   "subsystem": "bg/animscript/lerp",
+   "confidence": "unknown",
+   "evidence": "When the lerp frame's animation has finished (tree value 0), clears it and resets the blend time to 150 ms.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080da7dc",
+   "name": "BG_SwingAngles",
+   "signature": "void BG_SwingAngles(float destination, float swingTolerance, float clampTolerance, float speed, float *angle, int *swinging);",
+   "subsystem": "bg/animscript/lerp",
+   "confidence": "inferred",
+   "evidence": "Swings *angle toward the destination yaw/pitch: starts swinging when the difference exceeds the tolerance, moves by up to frameTime * max(0.5, |diff| * 0.05) * speed per call and clamps the final angle to within clampTolerance of the destination. Evidence: id Tech CG_SwingAngles counterpart (same parameter list and update rule).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080da9c8",
+   "name": "BG_PlayerAngles",
+   "signature": "void BG_PlayerAngles(struct entityState_s *es, struct clientInfo_s *client);",
+   "subsystem": "bg/animscript/lerp",
+   "confidence": "inferred",
+   "evidence": "Computes the client's torso/legs yaw and torso pitch swing from the view angles and the entity's eFlags / MOVETYPE condition bits, calling BG_SwingAngles for torso yaw, legs yaw and torso pitch. Evidence: id Tech CG_PlayerAngles counterpart (legs/torso yaw swing, pitch * 0.6, 150 degree clamp).",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0860b420",
+   "name": "g_gameContextPtr",
+   "type": "struct animScriptData_t *",
+   "confidence": "inferred",
+   "evidence": "runtime animation script data pointer; offsets 0xb3bdc time, 0xb3be0 snapshot time, 0xb3be4 frame time, 0xb3be8 multiplayer flag, clients at 0xb3bfc"
+  },
+  {
+   "addr": "0x0860b424",
+   "name": "g_curAnimScriptData",
+   "type": "struct animScriptData_t *",
+   "confidence": "inferred",
+   "evidence": "parse/lookup target set by BG_AnimParseAnimScript(param_1)"
+  },
+  {
+   "addr": "0x0860e4a0",
+   "name": "g_animParseMoveType",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "move type of the animations section being parsed"
+  },
+  {
+   "addr": "0x0860e4a4",
+   "name": "g_animParseEventIndex",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "event index while parsing the events section, -1 otherwise"
+  },
+  {
+   "addr": "0x0860e4a8",
+   "name": "g_animNameTable",
+   "type": "struct animNameEntry_t *",
+   "confidence": "inferred",
+   "evidence": "optional animation name table (stride 0x48) set by the parser arguments"
+  },
+  {
+   "addr": "0x0860e4ac",
+   "name": "g_animNameTableCount",
+   "type": "int *",
+   "confidence": "inferred",
+   "evidence": "entry count for g_0860e4a8"
+  },
+  {
+   "addr": "0x0860dba0",
+   "name": "g_animDefineStrings",
+   "type": "struct animStringItem_t[9][16]",
+   "confidence": "inferred",
+   "evidence": "script-defined condition define strings, memset 0x480"
+  },
+  {
+   "addr": "0x0860e020",
+   "name": "g_animDefineValues",
+   "type": "unsigned int[9][16][2]",
+   "confidence": "inferred",
+   "evidence": "script-defined condition define 64-bit values"
+  },
+  {
+   "addr": "0x0860b440",
+   "name": "g_animDefineCounts",
+   "type": "int[9]",
+   "confidence": "inferred",
+   "evidence": "number of defines per condition type, memset 0x24"
+  },
+  {
+   "addr": "0x0860b480",
+   "name": "g_animDefineStringBuf",
+   "type": "char[10000]",
+   "confidence": "inferred",
+   "evidence": "define string buffer"
+  },
+  {
+   "addr": "0x0860db90",
+   "name": "g_animDefineStringBufUsed",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "bytes used in g_0860b480"
+  },
+  {
+   "addr": "0x0860e4c0",
+   "name": "g_animScriptText",
+   "type": "char[100000]",
+   "confidence": "inferred",
+   "evidence": "mp/playeranim.script text (max length 0x1869e)"
+  },
+  {
+   "addr": "0x08626b60",
+   "name": "g_animScriptTextLoaded",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "script text loaded flag"
+  },
+  {
+   "addr": "0x08626b80",
+   "name": "g_playerAnimTypeNameTable",
+   "type": "struct animStringItem_t[128]",
+   "confidence": "inferred",
+   "evidence": "PLAYERANIMTYPE name table, memset 0x400"
+  },
+  {
+   "addr": "0x08184860",
+   "name": "g_playerAnimScriptPath",
+   "type": "const char *",
+   "confidence": "observed",
+   "evidence": "initialised to \"mp/playeranim.script\"; cleared at end of BG_AnimParseAnimScript"
+  },
+  {
+   "addr": "0x08184880",
+   "name": "g_animStateNames",
+   "type": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "states RELAXED QUERY ALERT COMBAT"
+  },
+  {
+   "addr": "0x081848c0",
+   "name": "g_animMoveTypeNames",
+   "type": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "move type names starting with ** UNUSED **, IDLE, IDLECR ..."
+  },
+  {
+   "addr": "0x08184a20",
+   "name": "g_animEventNames",
+   "type": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "event names PAIN DEATH FIREWEAPON JUMP JUMPBK LAND DROPWEAPON RAISEWEAPON CLIMBMOUNT CLIMBDISMOUNT ..."
+  },
+  {
+   "addr": "0x08184ac0",
+   "name": "g_animBodyPartNames",
+   "type": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "body parts ** UNUSED **, LEGS, TORSO, BOTH"
+  },
+  {
+   "addr": "0x08184c00",
+   "name": "g_animConditionNames",
+   "type": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "condition names PLAYERANIMTYPE WEAPONCLASS MOUNTED MOVETYPE UNDERHAND CROUCHING FIRING WEAPON_POSITION STRAFING"
+  },
+  {
+   "addr": "0x08184c60",
+   "name": "g_animConditionDefs",
+   "type": "struct animConditionDef_t[]",
+   "confidence": "inferred",
+   "evidence": "{type 0 bitflags/1 value, string table} per condition"
+  },
+  {
+   "addr": "0x08184cc0",
+   "name": "g_animScriptSectionNames",
+   "type": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "script section keywords defines animations canned_animations statechanges events"
+  },
+  {
+   "addr": "0x08626ff4",
+   "name": "g_08626ff4",
+   "type": "struct dvarFloatView_s *",
+   "confidence": "inferred",
+   "evidence": "swing speed dvar (float value at +8) passed to BG_SwingAngles"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "animation_t",
+   "size": "0x60",
+   "evidence": "stride 0x60 in animation table; name[64]@0, blendTime@0x40, moveSpeed@0x44, duration@0x48, hash@0x4c, flags@0x50, moveTypeBits@0x54, referenced@0x5c"
+  },
+  {
+   "name": "animCommand_t",
+   "size": "0x10",
+   "evidence": "commands at script item +0x74 stride 0x10"
+  },
+  {
+   "name": "animScriptItem_t",
+   "size": "0xf4",
+   "evidence": "memset/copy of 0xf4 bytes (0x3d dwords) in BG_AnimParseAnimScript; 9 conditions + 8 commands"
+  },
+  {
+   "name": "animScript_t",
+   "size": "0x204",
+   "evidence": "memset 0x204 and strides in scriptAnims/events tables; numItems + 128 pointers"
+  },
+  {
+   "name": "animNameEntry_t",
+   "size": "0x48",
+   "evidence": "stride 0x48 in BG_AnimationIndexForString and BG_AnimNameEntryForIndex"
+  },
+  {
+   "name": "playerAnimLerp_t",
+   "size": "0x30",
+   "evidence": "legs at +0x380 and torso at +0x3b0 of the client block"
+  },
+  {
+   "name": "animScriptData_t",
+   "size": "unknown (>=0xb3bfc+0x4b8)",
+   "evidence": "offsets 0xc000, 0xc004, 0x20a94, 0x35524, 0x37564, 0x39bb0, 0xb3bb0 and runtime fields up to 0xb3bfc"
+  }
+ ],
+ "open_questions": [
+  "Client count of animScriptData_t.clients (stride 0x4b8 at +0xb3bfc) and the true size of animScriptData_t are not recovered; whether g_0860b420 and g_0860b424 always point to the same block is unknown.",
+  "The 19 callbacks Noop_080d6c32..ReturnZero_080d6cd4 are empty/return-0 stubs (likely abstract interface slots); their owners are in other chunks.",
+  "Semantics of the xanim calls fn_080c1c84/fn_080c2aa2/fn_080c1664 (weight, rate, flag arguments) and of fn_080c0daa/fn_080c0dee (current time/weight) are inferred only; callee chunks should name them.",
+  "BG_ExecuteCommand uses animDuration[0] and bodyPart[0] for the second part as well (kept as observed); unclear if intended.",
+  "The 'unexpected end of file' error in BG_AnimParseAnimScript passes no %s argument (reproduced); it prints stack garbage in the original."
+ ]
+}

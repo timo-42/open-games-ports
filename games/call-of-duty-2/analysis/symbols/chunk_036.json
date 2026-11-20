@@ -1,0 +1,396 @@
+{
+ "chunk": 36,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080cbd40",
+   "name": "inflate_codes_new",
+   "signature": "inflate_codes_state_s *inflate_codes_new(byte lbits, byte dbits, inflate_huft *tl, inflate_huft *td, z_stream_s *z)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: zlib allocator of 0x1c-byte codes state via z->zalloc",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cbda5",
+   "name": "inflate_codes",
+   "signature": "int inflate_codes(inflate_blocks_state_s *s, z_stream_s *z, int r)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: strings 'invalid literal/length code','invalid distance code'; calls inflate_fast and inflate_flush [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ccb14",
+   "name": "inflate_codes_free",
+   "signature": "void inflate_codes_free(inflate_codes_state_s *c, z_stream_s *z)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: calls z->zfree(opaque, ptr)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ccb34",
+   "name": "inflate_fast",
+   "signature": "int inflate_fast(uint32 bl, uint32 bd, inflate_huft *tl, inflate_huft *td, inflate_blocks_state_s *s, z_stream_s *z)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: same error strings as inflate_codes; called with m>=258,n>=10 guard [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cd244",
+   "name": "inflateReset",
+   "signature": "int inflateReset(z_stream_s *z)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: resets totals/msg, mode METHOD or BLOCKS, calls block reset",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cd2d9",
+   "name": "inflateEnd",
+   "signature": "int inflateEnd(z_stream_s *z)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: frees blocks state and stream state via zfree",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cd355",
+   "name": "inflateInit2_",
+   "signature": "int inflateInit2_(z_stream_s *z, int w, const char *version, int stream_size)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: version[0]=='1' and stream_size 0x38 checks, window bits 8..15",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cd4ec",
+   "name": "inflateInit_",
+   "signature": "int inflateInit_(z_stream_s *z, const char *version, int stream_size)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: wrapper calling inflateInit2_ with 15",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cd515",
+   "name": "inflate",
+   "signature": "int inflate(z_stream_s *z, int flush)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "observed",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: strings 'unknown compression method','invalid window size','incorrect header check','need dictionary','incorrect data check'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cdac7",
+   "name": "inflateSetDictionary",
+   "signature": "int inflateSetDictionary(z_stream_s *z, const byte *dictionary, uint32 dictLength)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: requires mode DICT0, adler32 compare against z->adler",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cdba2",
+   "name": "inflateSync",
+   "signature": "int inflateSync(z_stream_s *z)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: scans marker 00 00 ff ff at 0x8150b9c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cdcf2",
+   "name": "inflateSyncPoint",
+   "signature": "int inflateSyncPoint(z_stream_s *z)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: forwards to block layer sync-point query",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cdd38",
+   "name": "huft_build",
+   "signature": "int huft_build(const uint32 *b, uint32 n, uint32 s, const uint32 *d, const uint32 *e, inflate_huft **t, uint32 *m, inflate_huft *hp, uint32 *hn, uint32 *v)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: table builder, MANY=0x5a0 limit, called by inflate_trees_bits/dynamic",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ce566",
+   "name": "inflate_trees_bits",
+   "signature": "int inflate_trees_bits(uint32 *c, uint32 *bb, inflate_huft **tb, inflate_huft *hp, z_stream_s *z)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: strings 'oversubscribed dynamic bit lengths tree','incomplete dynamic bit lengths tree' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ce64f",
+   "name": "inflate_trees_dynamic",
+   "signature": "int inflate_trees_dynamic(uint32 nl, uint32 nd, uint32 *c, uint32 *bl, uint32 *bd, inflate_huft **tl, inflate_huft **td, inflate_huft *hp, z_stream_s *z)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: strings for literal/length and distance tree errors [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ce832",
+   "name": "inflate_trees_fixed",
+   "signature": "int inflate_trees_fixed(uint32 *bl, uint32 *bd, inflate_huft **tl, inflate_huft **td)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: returns fixed tables 9/5 at 0x8183240..",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ce864",
+   "name": "inflate_flush",
+   "signature": "int inflate_flush(inflate_blocks_state_s *s, z_stream_s *z, int r)",
+   "subsystem": "compression/zlib/inflate",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: window to next_out copy with checkfn update; called by inflate_codes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cea64",
+   "name": "tr_static_init",
+   "signature": "void tr_static_init(void)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: empty body, called first by _tr_init",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cea69",
+   "name": "_tr_init",
+   "signature": "void _tr_init(deflate_state_s *s)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: sets tree descriptors to static descs, last_eob_len=8, calls init_block",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ceb01",
+   "name": "init_block",
+   "signature": "void init_block(deflate_state_s *s)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: zeroes 286/30/19 freqs, EOB freq=1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cebbe",
+   "name": "pqdownheap",
+   "signature": "void pqdownheap(deflate_state_s *s, ct_data *tree, int k)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: heap sift-down by freq then depth",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ced80",
+   "name": "gen_bitlen",
+   "signature": "void gen_bitlen(deflate_state_s *s, tree_desc *desc)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: bit length computation with overflow adjust, opt_len/static_len",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cf0bc",
+   "name": "gen_codes",
+   "signature": "void gen_codes(ct_data *tree, int max_code, const uint16 *bl_count)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: canonical code assignment using bi_reverse callee",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cf172",
+   "name": "build_tree",
+   "signature": "void build_tree(deflate_state_s *s, tree_desc *desc)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: Huffman tree build calling pqdownheap, gen_bitlen, gen_codes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cf511",
+   "name": "scan_tree",
+   "signature": "void scan_tree(deflate_state_s *s, ct_data *tree, int max_code)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: run-length counting into bl_tree (16/17/18 repeat codes)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080cf6a4",
+   "name": "send_tree",
+   "signature": "void send_tree(deflate_state_s *s, ct_data *tree, int max_code)",
+   "subsystem": "compression/zlib/deflate_trees",
+   "confidence": "inferred",
+   "evidence": "zlib counterpart by structure, struct offsets and constants: inlined send_bits for bl_tree codes, same run-length state machine as scan_tree",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08184360",
+   "name": "g_08184360",
+   "type": "uint32[17]",
+   "confidence": "inferred",
+   "evidence": "inflate_mask"
+  },
+  {
+   "addr": "0x08150be0",
+   "name": "cplens",
+   "type": "uint32[31]",
+   "confidence": "inferred",
+   "evidence": "cplens"
+  },
+  {
+   "addr": "0x08150c60",
+   "name": "cplext",
+   "type": "uint32[31]",
+   "confidence": "inferred",
+   "evidence": "cplext"
+  },
+  {
+   "addr": "0x08150ce0",
+   "name": "cpdist",
+   "type": "uint32[30]",
+   "confidence": "inferred",
+   "evidence": "cpdist"
+  },
+  {
+   "addr": "0x08150d60",
+   "name": "cpdext",
+   "type": "uint32[30]",
+   "confidence": "inferred",
+   "evidence": "cpdext"
+  },
+  {
+   "addr": "0x08183240",
+   "name": "fixed_bl",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "fixed_bl=9"
+  },
+  {
+   "addr": "0x08183244",
+   "name": "fixed_bd",
+   "type": "uint32",
+   "confidence": "inferred",
+   "evidence": "fixed_bd=5"
+  },
+  {
+   "addr": "0x08183260",
+   "name": "fixed_tl",
+   "type": "struct inflate_huft[]",
+   "confidence": "inferred",
+   "evidence": "fixed_tl"
+  },
+  {
+   "addr": "0x08184260",
+   "name": "fixed_td",
+   "type": "struct inflate_huft[]",
+   "confidence": "inferred",
+   "evidence": "fixed_td"
+  },
+  {
+   "addr": "0x08150b9c",
+   "name": "inflateSync_mark",
+   "type": "byte[4]",
+   "confidence": "inferred",
+   "evidence": "inflateSync marker 00 00 ff ff (bytes read from binary)"
+  },
+  {
+   "addr": "0x081843a4",
+   "name": "static_l_desc",
+   "type": "struct static_tree_desc",
+   "confidence": "inferred",
+   "evidence": "static_l_desc, fields read from binary"
+  },
+  {
+   "addr": "0x081843b8",
+   "name": "static_d_desc",
+   "type": "struct static_tree_desc",
+   "confidence": "inferred",
+   "evidence": "static_d_desc"
+  },
+  {
+   "addr": "0x081843cc",
+   "name": "static_bl_desc",
+   "type": "struct static_tree_desc",
+   "confidence": "inferred",
+   "evidence": "static_bl_desc"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "z_stream_s",
+   "size": "0x38",
+   "evidence": "offsets 0x00..0x34 used by inflate/flush/init"
+  },
+  {
+   "name": "inflate_codes_state_s",
+   "size": "0x1c",
+   "evidence": "zalloc size in inflate_codes_new"
+  },
+  {
+   "name": "inflate_blocks_state_s",
+   "size": "0x40",
+   "evidence": "fields to 0x3c used by codes/flush"
+  },
+  {
+   "name": "inflate_state_s",
+   "size": "0x18",
+   "evidence": "zalloc size in inflateInit2_"
+  },
+  {
+   "name": "inflate_huft",
+   "size": "0x8",
+   "evidence": "table stride 8 in huft_build"
+  },
+  {
+   "name": "deflate_state_s",
+   "size": "unknown",
+   "evidence": "offsets 0x8c..0x16b4 used by tree functions; total size not determined here"
+  }
+ ],
+ "open_questions": [
+  "Callee names (fn_080ca620 inflate_blocks_reset, fn_080ca6f0 inflate_blocks_new, fn_080ca832 inflate_blocks, fn_080cbc79 inflate_blocks_free, fn_080cbcee, fn_080cbd2f, fn_080c7c04 adler32, fn_080d3682/99 zcalloc/zcfree, fn_080d18bc bi_reverse) are inferred from call shape only; merge lane should confirm.",
+  "Manifest range ends at 0x80d006a but the last listed function is 0x80cf6a4 (26 functions); 0x80d006a (build_bl_tree-like) belongs to another chunk.",
+  "Exact zlib version unknown (relative-offset huft base and deflate_state without compressed_len); the project-shared deflate_state tail layout beyond 0x16b8 is not covered."
+ ]
+}

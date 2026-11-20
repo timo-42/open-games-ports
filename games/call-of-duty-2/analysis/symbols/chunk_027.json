@@ -1,0 +1,1065 @@
+{
+ "chunk": 27,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x080ab702",
+   "name": "Com_AllocZeroed",
+   "signature": "void *Com_AllocZeroed(size_t size)",
+   "subsystem": "memory/alloc",
+   "confidence": "inferred",
+   "evidence": "calloc(1,size) wrapper; address used as allocator callback for Hunk_AddUserEntry",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab71e",
+   "name": "Com_ZeroMemory",
+   "signature": "void Com_ZeroMemory(void *dest, size_t count)",
+   "subsystem": "memory/alloc",
+   "confidence": "inferred",
+   "evidence": "memset(p,0,n) wrapper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab740",
+   "name": "CopyString",
+   "signature": "char *CopyString(const char *src)",
+   "subsystem": "memory/alloc",
+   "confidence": "inferred",
+   "evidence": "strlen+alloc+strcpy: Quake III CopyString pattern; many callers",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab774",
+   "name": "Com_CopyStringInto",
+   "signature": "void Com_CopyStringInto(char **dest, const char *src)",
+   "subsystem": "memory/alloc",
+   "confidence": "inferred",
+   "evidence": "reuses *dest if strlen(*dest)>=len else frees and reallocates, then strcpy",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab980",
+   "name": "Com_InitHunkMemory",
+   "signature": "void Com_InitHunkMemory(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "strings com_hunkMegs, \"Minimum com_hunkMegs for a dedicated server\", universal/com_memory.cpp, meminfo [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aba6e",
+   "name": "Hunk_Shutdown",
+   "signature": "void Hunk_Shutdown(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "frees calloc block (DAT_085a9818) and zeroes hunk state; counterpart of Com_InitHunkMemory",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abada",
+   "name": "Hunk_FindUserEntry",
+   "signature": "int Hunk_FindUserEntry(unsigned int type, const char *name, int bucket)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "bucket walk comparing type byte and strcasecmp name; returns entry value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abb3e",
+   "name": "Hunk_FindUserEntryByName",
+   "signature": "int Hunk_FindUserEntryByName(int type, const char *name)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "hashes name with fn_0809e740(name,0x400) then Hunk_FindUserEntry",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abb76",
+   "name": "Hunk_IsInHeap",
+   "signature": "int Hunk_IsInHeap(unsigned int addr)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "unsigned range test against hunk base/total",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abbb6",
+   "name": "Hunk_AddUserEntry",
+   "signature": "char *Hunk_AddUserEntry(unsigned char type, const char *name, int value, void * allocFn)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "allocates strlen+10 via callback, links at bucket head; name at +9",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abc38",
+   "name": "Hunk_AddAnonymousUserEntry",
+   "signature": "void Hunk_AddAnonymousUserEntry(unsigned char type, int value, void * allocFn)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "allocates 9-byte entry and links into anonymous list g_084a87a0[0x400]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abc74",
+   "name": "Hunk_SetUserEntryValue",
+   "signature": "void Hunk_SetUserEntryValue(unsigned int type, const char *name, int value)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "finds entry by type+name and overwrites value",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abce4",
+   "name": "Hunk_ReleaseEntriesInRange",
+   "signature": "void Hunk_ReleaseEntriesInRange(struct hunk_user_t **link, struct hunk_user_t *lo, struct hunk_user_t *hi)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "unlinks entries whose address lies in [lo,hi) and releases by type 3/4/5/6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abd9c",
+   "name": "Hunk_ReleaseUserEntries",
+   "signature": "void Hunk_ReleaseUserEntries(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "range [low.permanent+base, total+base-high.permanent) swept over all 0x400 buckets plus anonymous list",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abe26",
+   "name": "Hunk_ForEachEntryOfType",
+   "signature": "void Hunk_ForEachEntryOfType(struct hunk_user_t *list, unsigned int type, void * cb, int arg)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "iterates a chain, calls callback for type 4 entries",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abe84",
+   "name": "Hunk_ForEachType4Entry",
+   "signature": "void Hunk_ForEachType4Entry(int mode, void * cb, int arg)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "mode 1 only: iterate all buckets for type 4 entries",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abeea",
+   "name": "Hunk_GetHighPermanent",
+   "signature": "int Hunk_GetHighPermanent(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "returns hunk high.permanent g_085a980c",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abef4",
+   "name": "Hunk_SetHighMark",
+   "signature": "void Hunk_SetHighMark(int mark)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "sets high.temp/high.permanent then releases user entries",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abf0e",
+   "name": "Hunk_GetLowPermanent",
+   "signature": "int Hunk_GetLowPermanent(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "returns hunk low.permanent g_085a9804",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abf18",
+   "name": "Hunk_SetLowMark",
+   "signature": "void Hunk_SetLowMark(int mark)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "sets low.temp/low.permanent then releases user entries",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abf32",
+   "name": "Hunk_Clear",
+   "signature": "void Hunk_Clear(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "zeroes four hunk counters then releases user entries; called from Com_InitHunkMemory",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abf68",
+   "name": "Hunk_GetUsedBytes",
+   "signature": "int Hunk_GetUsedBytes(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "low.permanent + high.permanent",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abf78",
+   "name": "Hunk_Alloc",
+   "signature": "void *Hunk_Alloc(int size)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "forwards to Hunk_AllocAlign(size,0x20)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080abf94",
+   "name": "Hunk_AllocAlign",
+   "signature": "void *Hunk_AllocAlign(size_t size, int alignment)",
+   "subsystem": "memory/hunk",
+   "confidence": "observed",
+   "evidence": "string \"Hunk_AllocAlign failed on %i bytes (total %i MB, low %i MB, high %i MB)\" at DAT_0814d440",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac088",
+   "name": "Hunk_AllocateTempMemoryHigh",
+   "signature": "void *Hunk_AllocateTempMemoryHigh(int size)",
+   "subsystem": "memory/hunk",
+   "confidence": "observed",
+   "evidence": "string \"Hunk_AllocateTempMemoryHigh: failed on %i bytes\" at DAT_0814d4a0",
+   "status": "translated",
+   "notes": "returns a buffer pointer in eax (L04-5 request, verified at callers)"
+  },
+  {
+   "addr": "0x080ac14c",
+   "name": "Hunk_ClearTempMemoryHigh",
+   "signature": "void Hunk_ClearTempMemoryHigh(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "high.temp = high.permanent",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac15c",
+   "name": "Hunk_AllocLow",
+   "signature": "void *Hunk_AllocLow(int size)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "forwards to Hunk_AllocLowAlign(size,0x20)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac178",
+   "name": "Hunk_AllocLowAlign",
+   "signature": "void *Hunk_AllocLowAlign(size_t size, int alignment)",
+   "subsystem": "memory/hunk",
+   "confidence": "observed",
+   "evidence": "string \"Hunk_AllocLowAlign failed on %i bytes\" at DAT_0814d500",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac266",
+   "name": "Hunk_CommitLowTemp",
+   "signature": "void Hunk_CommitLowTemp(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "low.permanent = low.temp",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac276",
+   "name": "Hunk_AllocateTempMemory",
+   "signature": "int *Hunk_AllocateTempMemory(int size)",
+   "subsystem": "memory/hunk",
+   "confidence": "observed",
+   "evidence": "string \"Hunk_AllocateTempMemory: failed on %i bytes ... needs %i more hunk bytes\" at DAT_0814d560; writes magic 0x89537892 header",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac3a2",
+   "name": "Hunk_ReallocateTempMemory",
+   "signature": "int Hunk_ReallocateTempMemory(int size)",
+   "subsystem": "memory/hunk",
+   "confidence": "observed",
+   "evidence": "string \"Hunk_ReallocateTempMemory: failed on %i bytes\" at DAT_0814d5e0; body is a 32-aligned low.temp allocation (no header, no copy), name kept from the string",
+   "status": "translated",
+   "notes": "Behaviour does not match the usual realloc contract; only the error string names it."
+  },
+  {
+   "addr": "0x080ac460",
+   "name": "Hunk_FreeTempMemory",
+   "signature": "void Hunk_FreeTempMemory(void *ptr)",
+   "subsystem": "memory/hunk",
+   "confidence": "observed",
+   "evidence": "string \"Hunk_FreeTempMemory: bad magic\" at DAT_0814d640; checks header magic 0x89537892",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac4bc",
+   "name": "Hunk_ClearTempMemory",
+   "signature": "void Hunk_ClearTempMemory(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "low.temp = low.permanent when hunk exists",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac4d4",
+   "name": "Hunk_PushLowPermanent",
+   "signature": "int Hunk_PushLowPermanent(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "returns old low.permanent and sets it to low.temp; paired with Hunk_SetLowPermanent in Com_LoadSoundAliases",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac4f2",
+   "name": "Hunk_SetLowPermanent",
+   "signature": "void Hunk_SetLowPermanent(int value)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "sets low.permanent",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac500",
+   "name": "Hunk_PushHighPermanent",
+   "signature": "int Hunk_PushHighPermanent(void)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "returns old high.permanent and sets it to high.temp",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac51e",
+   "name": "Hunk_SetHighPermanent",
+   "signature": "void Hunk_SetHighPermanent(int value)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "sets high.permanent",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac52c",
+   "name": "Com_PoolAlloc",
+   "signature": "int Com_PoolAlloc(int size)",
+   "subsystem": "memory/pool",
+   "confidence": "unknown",
+   "evidence": "bump allocator on g_084a97a4 rounding sizes to 4; returns offset",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac554",
+   "name": "Com_PoolSetOffset",
+   "signature": "void Com_PoolSetOffset(int offset)",
+   "subsystem": "memory/pool",
+   "confidence": "unknown",
+   "evidence": "sets g_084a97a4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac562",
+   "name": "Com_PoolAt",
+   "signature": "unsigned char *Com_PoolAt(int offset)",
+   "subsystem": "memory/pool",
+   "confidence": "unknown",
+   "evidence": "returns g_084a9800+offset",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac570",
+   "name": "Com_PoolAllocInto",
+   "signature": "void Com_PoolAllocInto(void *outOffset, int size)",
+   "subsystem": "memory/pool",
+   "confidence": "unknown",
+   "evidence": "*out = Com_PoolAlloc(size); byte-identical twin of 0x80ac58e",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac58e",
+   "name": "Com_PoolAllocInto2",
+   "signature": "void Com_PoolAllocInto2(void *outOffset, int size)",
+   "subsystem": "memory/pool",
+   "confidence": "unknown",
+   "evidence": "*out = Com_PoolAlloc(size); byte-identical twin of 0x80ac570",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac5ac",
+   "name": "Com_PoolRestoreFrom",
+   "signature": "void Com_PoolRestoreFrom(void *savedOffset)",
+   "subsystem": "memory/pool",
+   "confidence": "unknown",
+   "evidence": "Com_PoolSetOffset(*p); twin of 0x80ac5c2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac5c2",
+   "name": "Com_PoolRestoreFrom2",
+   "signature": "void Com_PoolRestoreFrom2(void *savedOffset)",
+   "subsystem": "memory/pool",
+   "confidence": "unknown",
+   "evidence": "Com_PoolSetOffset(*p); twin of 0x80ac5ac",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac5d8",
+   "name": "Com_PoolPtrFromOffset",
+   "signature": "void *Com_PoolPtrFromOffset(void *offset)",
+   "subsystem": "memory/pool",
+   "confidence": "inferred",
+   "evidence": "calls Com_PoolAt(*p) and discards result [rename common: Objdump: loads *offset, calls Com_PoolAt (0x080ac562) and returns eax; result is the pool pointer, not discarded (symbol says void).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac5ee",
+   "name": "Com_PoolReset",
+   "signature": "void Com_PoolReset(void)",
+   "subsystem": "memory/pool",
+   "confidence": "unknown",
+   "evidence": "g_084a97a4 = 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac600",
+   "name": "Com_FindTailMatch",
+   "signature": "char *Com_FindTailMatch(char *str, const char *pattern, void * cmp)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "scans str and its suffixes for one where cmp(suffix,pattern)==0; helper of Com_Filter",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac670",
+   "name": "Com_Filter",
+   "signature": "int Com_Filter(const char *filter, const char *name, int caseSensitive)",
+   "subsystem": "common/filter",
+   "confidence": "inferred",
+   "evidence": "Quake III Com_Filter structure: *, ?, [a-z] class matching, case-insensitive via toupper; callers fn_080b7bf8/fn_080b7c1a as stricmp/strcmp",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ac9b0",
+   "name": "Com_FilterPath",
+   "signature": "unsigned char Com_FilterPath(const char *filter, const char *name, int caseSensitive)",
+   "subsystem": "common/filter",
+   "confidence": "inferred",
+   "evidence": "Quake III Com_FilterPath: normalises \\\\ and : to / (63 chars max) then Com_Filter",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080acaa4",
+   "name": "Com_HashKey",
+   "signature": "unsigned int Com_HashKey(const char *str, int maxLen)",
+   "subsystem": "common/hash",
+   "confidence": "inferred",
+   "evidence": "Quake III Com_HashKey formula (i+119)*c, h ^ h>>10 ^ h>>20",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080acb04",
+   "name": "Com_RealTime",
+   "signature": "time_t Com_RealTime(struct com_qtime_t *qtime)",
+   "subsystem": "common/time",
+   "confidence": "inferred",
+   "evidence": "Quake III Com_RealTime: time()+localtime() into 9 ints",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080acbb4",
+   "name": "Com_Memcpy",
+   "signature": "void Com_Memcpy(void *dest, const void *src, size_t count)",
+   "subsystem": "common/mem",
+   "confidence": "inferred",
+   "evidence": "memcpy wrapper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080acbd6",
+   "name": "Com_Memset",
+   "signature": "void Com_Memset(void *dest, int value, size_t count)",
+   "subsystem": "common/mem",
+   "confidence": "inferred",
+   "evidence": "memset wrapper",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080acbf8",
+   "name": "SND_HashAliasName",
+   "signature": "unsigned int SND_HashAliasName(const char *name)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "tolower hash multiplier 0x7a69 masked to 0x3ff indexes g_085a9848; used by SND_FindAliasList and Com_DuplicateSoundAlias",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080acc42",
+   "name": "SND_FindAliasList",
+   "signature": "struct snd_alias_list_t *SND_FindAliasList(const char *name)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "bucket walk comparing with fn_080b7bf8 (stricmp) against list->aliasName",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080acd9e",
+   "name": "SND_InsertAliasList",
+   "signature": "int SND_InsertAliasList(const char *name, struct snd_alias_list_t *list)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "inserts list at bucket head if name absent, returns 1; 0 if present",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ace1c",
+   "name": "Com_DuplicateSoundAlias",
+   "signature": "void Com_DuplicateSoundAlias(struct snd_alias_list_t *src, const char *name)",
+   "subsystem": "sound/alias",
+   "confidence": "observed",
+   "evidence": "allocation tag string \"Com_DuplicateSoundAlias\" passed to hunk allocator",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080acf36",
+   "name": "SND_GetAliasListName",
+   "signature": "const char *SND_GetAliasListName(struct snd_alias_holder_t *holder)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "returns **(holder+0xc) i.e. alias list name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080acf44",
+   "name": "SND_GetAliasListHead",
+   "signature": "struct snd_alias_t *SND_GetAliasListHead(struct snd_alias_holder_t *holder)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "returns (*(holder+0xc))->head",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080acf52",
+   "name": "SND_InitAliasCurves",
+   "signature": "void SND_InitAliasCurves(void)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "strings \"soundaliases\", \"vfcurve\", \"Snd_Alias Curve initialization: '.vfcurve' file count (%d) exceeds maximum (%d)\", \"Failed to load sndcurve file\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad0aa",
+   "name": "Com_LoadSoundAliases",
+   "signature": "void Com_LoadSoundAliases(const char *mapName, const char *loadSpec, int bankIndex)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "strings \"maps/mp/\", \"maps/\", \"soundaliases\", \"csv\", \"WARNING: can't find any sound alias files (soundaliases/*.csv)\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad274",
+   "name": "Com_UnloadSoundAliases",
+   "signature": "void Com_UnloadSoundAliases(int bankIndex)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "clears bank flag/words and the alias hash table; counterpart of Com_LoadSoundAliases",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad312",
+   "name": "Com_GetRandSeed",
+   "signature": "unsigned int Com_GetRandSeed(void)",
+   "subsystem": "common/rand",
+   "confidence": "inferred",
+   "evidence": "returns g_085a9844 LCG seed",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad31c",
+   "name": "Com_SetRandSeed",
+   "signature": "void Com_SetRandSeed(unsigned int seed)",
+   "subsystem": "common/rand",
+   "confidence": "inferred",
+   "evidence": "sets g_085a9844",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad32a",
+   "name": "Com_PickSoundAlias",
+   "signature": "struct snd_alias_t *Com_PickSoundAlias(struct snd_alias_list_t *list)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "weighted random pick over snd_alias_t stride 0x44 using probability +0x34 and sequence +0x10; wrapper at unlisted 0x80ad47a looks the list up by name first",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad49c",
+   "name": "Com_FindFalloffCurve_Stub",
+   "signature": "struct snd_curve_t *Com_FindFalloffCurve_Stub(const char *curveName, const char *fileName)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "ignores both arguments and returns 0 (curve lookup stub); result stored to alias +0x130 for column volumefalloffcurve [rename botlib-sound-math: Disassembly is mov eax,0; leave; ret: stub that always returns NULL. Keeps lookup name lineage with stub suffix.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad4aa",
+   "name": "Com_GetDefaultFalloffCurve",
+   "signature": "struct snd_curve_t *Com_GetDefaultFalloffCurve(void)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "returns &g_085aa8d4[0], the default curve initialised by fn_080afcaa",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad4b4",
+   "name": "Com_HunkAllocTempTagged",
+   "signature": "void *Com_HunkAllocTempTagged(int size, const char *tag)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "Hunk_AllocateTempMemory(size) ignoring the tag argument; caller passes \"Com_AddBuildSoundAlias\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad4c8",
+   "name": "Com_HunkAllocTagged",
+   "signature": "void *Com_HunkAllocTagged(int size, const char *tag, int line)",
+   "subsystem": "memory/hunk",
+   "confidence": "inferred",
+   "evidence": "Hunk_Alloc(size) ignoring tag and line arguments; callers pass \"Com_DuplicateSoundAlias\",0xd",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad4dc",
+   "name": "Str_NCaseCmp",
+   "signature": "int Str_NCaseCmp(const char *s1, const char *s2, int n)",
+   "subsystem": "common/string",
+   "confidence": "inferred",
+   "evidence": "Quake III Q_stricmpn semantics: tolower per char, signed char comparison, -1/0/1 [rename common: Same tolower-based routine as 0x0809163e; the true Q_stricmpn is 0x080b7ae2 (chunk_030). Renaming frees Q_stricmpn from ambiguity.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad574",
+   "name": "Com_Rand",
+   "signature": "unsigned int Com_Rand(void)",
+   "subsystem": "common/rand",
+   "confidence": "inferred",
+   "evidence": "MSVC-style LCG 214013*seed+2531011, (seed>>16)&0x7fff",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad59c",
+   "name": "Com_GetVolumeModGroup",
+   "signature": "float Com_GetVolumeModGroup(const char *groupName, const char *fileName)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "string \"Sound alias file %s: Volume Mod Group '%s' not found.\"; searches g_085ab168 (32 x 0x44) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad622",
+   "name": "Com_InitSoundAliasBuild",
+   "signature": "void Com_InitSoundAliasBuild(struct snd_alias_build_t *alias, const char *fileName, const char *mapName)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "initialises a 0x154 alias-build record with defaults; menu loadspec flag from strcmp(mapName,\"menu\")",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad7a2",
+   "name": "Com_IsValidAliasName",
+   "signature": "int Com_IsValidAliasName(const char *name)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "first char >0x1f and alnum or _; rest alnum; no char < 0x20; used to validate alias names",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad820",
+   "name": "Com_ParseAliasChannel",
+   "signature": "void Com_ParseAliasChannel(const char *value, const char *fileName, struct snd_alias_build_t *alias)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "string \"Unknown sound channel '%s'; should be %s\" with channel table at PTR_0817e3a0 (auto, auto2d, menu, weapon, voice, item, body, local, music, announcer, shellshock) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad93c",
+   "name": "Com_ParseAliasType",
+   "signature": "void Com_ParseAliasType(const char *value, const char *fileName, struct snd_alias_build_t *alias)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "strings streamed/primed/loaded and \"Unknown sound type\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad9da",
+   "name": "Com_ParseAliasLooping",
+   "signature": "void Com_ParseAliasLooping(const char *value, const char *fileName, struct snd_alias_build_t *alias)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "strings looping/nonlooping and \"Unknown sound looping type\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ada4c",
+   "name": "Com_ParseAliasLoadSpec",
+   "signature": "unsigned char Com_ParseAliasLoadSpec(const char *mapName, const char *loadSpec, const char *value, const char *fileName)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "string \"loadspec is > %i characters\"; tokenised search of mapName inside loadspec value [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080adbba",
+   "name": "Com_ParseAliasMasterSlave",
+   "signature": "void Com_ParseAliasMasterSlave(const char *value, const char *fileName, struct snd_alias_build_t *alias)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "string \"master\" and \"SlavePercentage ... is not within the range\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080adc7e",
+   "name": "Com_ParseAliasReverb",
+   "signature": "void Com_ParseAliasReverb(const char *value, struct snd_alias_build_t *alias)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "strings fulldrylevel and nowetlevel [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080adcc8",
+   "name": "Com_ParseAliasColumn",
+   "signature": "void Com_ParseAliasColumn(const char *mapName, const char *loadSpec, const char *fileName, const char *value, int column, unsigned char *seen, struct snd_alias_build_t *alias)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "csv column switch with error strings \"Duplicate entries for the '%s' column\"; column names table at 0x817e340 [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ae282",
+   "name": "Com_ValidateSoundAlias",
+   "signature": "int Com_ValidateSoundAlias(struct snd_alias_build_t *alias)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "strings \"sound alias '%s' has pitch_min %g <= 0\", vol_min, dist_min/dist_max [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ae532",
+   "name": "Com_AddBuildSoundAlias",
+   "signature": "void Com_AddBuildSoundAlias(struct snd_alias_build_t *src)",
+   "subsystem": "sound/alias",
+   "confidence": "observed",
+   "evidence": "allocation tag string \"Com_AddBuildSoundAlias\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ae5b6",
+   "name": "Com_ClearBuildSoundAliases",
+   "signature": "void Com_ClearBuildSoundAliases(void)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "clears build list head g_085ab160 and count g_085ab164",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ae5d0",
+   "name": "Com_LoadVolumeModGroups",
+   "signature": "void Com_LoadVolumeModGroups(struct snd_volmod_group_t *groups)",
+   "subsystem": "sound/alias",
+   "confidence": "inferred",
+   "evidence": "strings VOLUMEMODGROUPS, soundaliases/volumemodgroups.def, volumemodgroups parse failure errors [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x085a9804",
+   "name": "hunk_lowPermanent",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "hunk low.permanent (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085a9808",
+   "name": "hunk_lowTemp",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "hunk low.temp (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085a980c",
+   "name": "hunk_highPermanent",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "hunk high.permanent (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085a9810",
+   "name": "hunk_highTemp",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "hunk high.temp (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085a9814",
+   "name": "hunk_base",
+   "type": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "hunk base from calloc in Com_InitHunkMemory (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085a9818",
+   "name": "hunk_rawPtr",
+   "type": "void *",
+   "confidence": "inferred",
+   "evidence": "raw hunk pointer freed in Hunk_Shutdown (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085a981c",
+   "name": "hunk_totalBytes",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "hunk total bytes (com_hunkMegs<<20) (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x084a87a0",
+   "name": "hunk_userEntryTable",
+   "type": "struct hunk_user_t *[0x401]",
+   "confidence": "inferred",
+   "evidence": "user-entry buckets plus anonymous list (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x084a97a4",
+   "name": "com_poolOffset",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "small pool bump offset (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x084a9800",
+   "name": "com_poolBase",
+   "type": "unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "small pool base (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085a9840",
+   "name": "g_soundAliasBankLoaded",
+   "type": "unsigned char[4]",
+   "confidence": "inferred",
+   "evidence": "per-bank alias loaded flags (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085a9844",
+   "name": "g_soundAliasRandSeed",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "LCG seed (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085a9848",
+   "name": "g_soundAliasHash",
+   "type": "struct snd_alias_list_t *[0x400]",
+   "confidence": "inferred",
+   "evidence": "alias name hash table (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085aa848",
+   "name": "g_soundAliasBanks",
+   "type": "struct snd_alias_bank_t[3]",
+   "confidence": "inferred",
+   "evidence": "alias bank descriptors (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085aa878",
+   "name": "g_soundAliasBankAux",
+   "type": "struct snd_alias_bank_aux_t[3]",
+   "confidence": "inferred",
+   "evidence": "alias bank aux (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085aa8d0",
+   "name": "g_soundCurvesInitialised",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "curves initialised flag (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085aa8d4",
+   "name": "g_soundFalloffCurves",
+   "type": "struct snd_curve_t[16]",
+   "confidence": "inferred",
+   "evidence": "falloff curves, slot 0 default (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085aad94",
+   "name": "g_soundFalloffCurveNames",
+   "type": "char[15][0x40]",
+   "confidence": "inferred",
+   "evidence": "curve names (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085ab160",
+   "name": "g_soundAliasBuildHead",
+   "type": "struct snd_alias_build_t *",
+   "confidence": "inferred",
+   "evidence": "build list head (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085ab164",
+   "name": "g_soundAliasBuildCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "build list count (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x085ab168",
+   "name": "g_volumeModGroups",
+   "type": "struct snd_volmod_group_t[32]",
+   "confidence": "inferred",
+   "evidence": "volume mod groups (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x081a218c",
+   "name": "g_081a218c",
+   "type": "struct dvar_value8_t *",
+   "confidence": "inferred",
+   "evidence": "dvar pointer whose boolean (+8) selects bank copy in Com_LoadSoundAliases (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x0817e340",
+   "name": "g_0817e340",
+   "type": "const char *[]",
+   "confidence": "inferred",
+   "evidence": "csv column name table (from access pattern in chunk 027)"
+  },
+  {
+   "addr": "0x0817e3a0",
+   "name": "g_soundChannelNames",
+   "type": "const char *[11]",
+   "confidence": "inferred",
+   "evidence": "channel name table (from access pattern in chunk 027)"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "hunk_user_t",
+   "size": "0x0c",
+   "evidence": "entry fields +0 value,+4 next,+8 type,+9 name"
+  },
+  {
+   "name": "snd_alias_list_t",
+   "size": "0x10",
+   "evidence": "hash bucket element copied as 4 words in Com_DuplicateSoundAlias"
+  },
+  {
+   "name": "snd_alias_t",
+   "size": "0x44",
+   "evidence": "stride in Com_PickSoundAlias"
+  },
+  {
+   "name": "snd_alias_build_t",
+   "size": "0x154",
+   "evidence": "Com_InitSoundAliasBuild offsets and Com_AddBuildSoundAlias copy size"
+  },
+  {
+   "name": "snd_volmod_group_t",
+   "size": "0x44",
+   "evidence": "stride in Com_GetVolumeModGroup and Com_LoadVolumeModGroups"
+  },
+  {
+   "name": "snd_curve_t",
+   "size": "0x48",
+   "evidence": "memset 0x480 over 16 slots, stride 0x48"
+  }
+ ],
+ "open_questions": [
+  "Gap 0x080ab7ea..0x080ab97f (meminfo command handler, used as fn_080ab7ea) and 0x080ad47a (name-based Com_PickSoundAlias wrapper) are not in this chunk manifest.",
+  "Meaning of hunk entry types 3,4,5,6 released by fn_080c533e/c538e/bc82e/bccdc (asset kinds unknown).",
+  "Whether fn_080b7bf8 (stricmp via Q_stricmpn(...,0x7fffffff)) used as the Com_FindTailMatch callback is intended: it only matches a suffix equal to the whole pattern.",
+  "Hunk_ReallocateTempMemory (0x80ac3a2) behaves as an aligned low.temp allocation, not realloc; name from error string only.",
+  "Com_FindFalloffCurve (0x80ad49c) is a stub returning 0, so volumefalloffcurve always resolves to NULL."
+ ]
+}

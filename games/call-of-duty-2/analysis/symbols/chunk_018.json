@@ -1,0 +1,309 @@
+{
+ "chunk": 18,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x08085744",
+   "name": "Float_RoundToInt",
+   "signature": "int Float_RoundToInt(float x)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "floor(x+0.5) via x87 then truncating fistp",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808577a",
+   "name": "Vec3_CopyBits_0808577a",
+   "signature": "void Vec3_CopyBits_0808577a(const uint32 *src, uint32 *dst)",
+   "subsystem": "math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080857aa",
+   "name": "Sys_ReadTimestampLow",
+   "signature": "uint32 Sys_ReadTimestampLow(void)",
+   "subsystem": "sys/timing",
+   "confidence": "inferred",
+   "evidence": "rdtsc, returns eax only",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080857be",
+   "name": "Stack_PeekFromTop",
+   "signature": "int Stack_PeekFromTop(int index)",
+   "subsystem": "script/stack",
+   "confidence": "unknown",
+   "evidence": "*(g_083d8a80 - index*4)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080857d4",
+   "name": "Stack_PeekFromTopByte",
+   "signature": "int Stack_PeekFromTopByte(const char *indexPtr)",
+   "subsystem": "script/stack",
+   "confidence": "unknown",
+   "evidence": "wraps Stack_PeekFromTop with byte index",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080857ea",
+   "name": "Cursor_ReadInt",
+   "signature": "int Cursor_ReadInt(const char **cursor)",
+   "subsystem": "script/cursor",
+   "confidence": "unknown",
+   "evidence": "read dword and advance 4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808580c",
+   "name": "Cursor_AdvanceVec3",
+   "signature": "const float *Cursor_AdvanceVec3(const char **cursor)",
+   "subsystem": "script/cursor",
+   "confidence": "unknown",
+   "evidence": "return cursor, advance 12",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808582c",
+   "name": "Cursor_AdvanceDwords",
+   "signature": "const char *Cursor_AdvanceDwords(const char **cursor, int count)",
+   "subsystem": "script/cursor",
+   "confidence": "unknown",
+   "evidence": "return cursor, advance count*4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08085850",
+   "name": "Cursor_ReadShortZx",
+   "signature": "unsigned short Cursor_ReadShortZx(const char **cursor)",
+   "subsystem": "script/cursor",
+   "confidence": "unknown",
+   "evidence": "movzx wrapper over 0x080858b6",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08085866",
+   "name": "Cursor_ReadIntAlias1",
+   "signature": "int Cursor_ReadIntAlias1(const char **cursor)",
+   "subsystem": "script/cursor",
+   "confidence": "unknown",
+   "evidence": "tail wrapper over 0x080857ea",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808587a",
+   "name": "Cursor_ReadFloat",
+   "signature": "float Cursor_ReadFloat(const char **cursor)",
+   "subsystem": "script/cursor",
+   "confidence": "unknown",
+   "evidence": "fld dword, advance 4",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080858a2",
+   "name": "Cursor_ReadIntAlias2",
+   "signature": "const char *Cursor_ReadIntAlias2(const char **cursor)",
+   "subsystem": "script/cursor",
+   "confidence": "unknown",
+   "evidence": "tail wrapper over 0x080857ea",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080858b6",
+   "name": "Cursor_ReadShort",
+   "signature": "int Cursor_ReadShort(const char **cursor)",
+   "subsystem": "script/cursor",
+   "confidence": "unknown",
+   "evidence": "movsx word, advance 2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080858dc",
+   "name": "ScrParse_ReinternIdentifierLower",
+   "signature": "int ScrParse_ReinternIdentifierLower(int a)",
+   "subsystem": "script/parser",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Returns ScrStr_ReinternLower(a, g_lex_param, 0xd) (lowercase re-intern, chunk_013 0x08079a44); called 14 times from yyparse reduction actions on identifier values (chunk_018 lines 379..808) with the flags byte passed to Lex_RunParser (md section 4.4: 0x083deecc = lexer param).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08085902",
+   "name": "ScrParse_ReleaseStringWithLexParam",
+   "signature": "int ScrParse_ReleaseStringWithLexParam(int a)",
+   "subsystem": "script/parser",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Calls ScrStr_SetFlagOrDecRef(a, g_lex_param) (0x08079b28); no caller inside yyparse in chunk_018 (only definition found), so only the body is evidenced.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08085920",
+   "name": "yydestruct",
+   "signature": "void yydestruct(const char *msg, int type, struct yy_stype_t *value)",
+   "subsystem": "script/parser",
+   "confidence": "inferred",
+   "evidence": "Bison yydestruct stub; only defaults msg to 'Deleting'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08085932",
+   "name": "yyparse",
+   "signature": "int yyparse(void)",
+   "subsystem": "script/parser",
+   "confidence": "inferred",
+   "evidence": "Bison parser; strings 'parser stack overflow','syntax error','Error: popping'",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08a6f4cc",
+   "name": "yylval",
+   "type": "struct yy_stype_t",
+   "confidence": "inferred",
+   "evidence": "yyparse copies it to the value stack on shift"
+  },
+  {
+   "addr": "0x08a6f4c4",
+   "name": "yynerrs",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "incremented at syntax error"
+  },
+  {
+   "addr": "0x08a6f4d4",
+   "name": "yychar",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "lookahead; -2 means empty"
+  },
+  {
+   "addr": "0x08205c84",
+   "name": "g_scr_dependency_record_count",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "incremented by reduction cases 0x1f,0x21,0x81"
+  },
+  {
+   "addr": "0x083deec0",
+   "name": "g_scr_parse_result",
+   "type": "int[5]",
+   "confidence": "inferred",
+   "evidence": "parser context passed to node builders; +0xc byte and +0x10 dword read"
+  },
+  {
+   "addr": "0x083deecc",
+   "name": "g_083deecc",
+   "type": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "byte read by 0x080858dc/0x08085902"
+  },
+  {
+   "addr": "0x083d8a80",
+   "name": "g_083d8a80",
+   "type": "int *",
+   "confidence": "inferred",
+   "evidence": "base for Stack_PeekFromTop"
+  },
+  {
+   "addr": "0x08145e60",
+   "name": "yytranslate",
+   "type": "const unsigned char[0x159]",
+   "confidence": "inferred",
+   "evidence": "Bison table"
+  },
+  {
+   "addr": "0x08145fc0",
+   "name": "yyr1",
+   "type": "const unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "Bison table"
+  },
+  {
+   "addr": "0x08146060",
+   "name": "yyr2",
+   "type": "const unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "Bison table"
+  },
+  {
+   "addr": "0x08146100",
+   "name": "yydefact",
+   "type": "const unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "Bison table"
+  },
+  {
+   "addr": "0x0814614c",
+   "name": "yydefgoto",
+   "type": "const short[]",
+   "confidence": "inferred",
+   "evidence": "Bison table"
+  },
+  {
+   "addr": "0x08146240",
+   "name": "yypact",
+   "type": "const short[]",
+   "confidence": "inferred",
+   "evidence": "Bison table"
+  },
+  {
+   "addr": "0x0814638c",
+   "name": "yypgoto",
+   "type": "const short[]",
+   "confidence": "inferred",
+   "evidence": "Bison table"
+  },
+  {
+   "addr": "0x08146480",
+   "name": "yytable",
+   "type": "const short[]",
+   "confidence": "inferred",
+   "evidence": "Bison table"
+  },
+  {
+   "addr": "0x08146ee0",
+   "name": "yycheck",
+   "type": "const short[]",
+   "confidence": "inferred",
+   "evidence": "Bison table"
+  },
+  {
+   "addr": "0x08147940",
+   "name": "yystos",
+   "type": "const unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "Bison table"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "yy_stype_t",
+   "size": "0x8",
+   "evidence": "yyvsp stride 8; yylval copied as two dwords (0x08a6f4cc/0x08a6f4d0)"
+  }
+ ],
+ "open_questions": [
+  "What the grammar parses (126 reduction actions, node types 0x14..0x83) and the meaning of yy_stype_t.pos; callees 0x080789e0..0x08078e3c unnamed.",
+  "Identity/size of context block at 0x083deec0 and the stack at 0x083d8a80 (used by the cursor helpers).",
+  "Cursor helpers 0x080857ea..0x080858b6 likely script VM argument readers; unconfirmed."
+ ]
+}

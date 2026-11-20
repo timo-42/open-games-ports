@@ -1,0 +1,1080 @@
+{
+ "chunk": 25,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080a2a10",
+   "name": "FS_AddGameDirectoryAllLanguages",
+   "signature": "void FS_AddGameDirectoryAllLanguages(const char *basePath, const char *gameDir)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "Q3 FS_AddGameDirectory shape: loads numbered iwd slots 14..0, then the directory itself; callers pass fs_basepath/homepath and a fixed subdirectory [rename filesystem: Loop calls FS_AddGameDirectory 0x080a27ae at 0x080a2a41/0x080a2a6a with loop value as language parameter (per-language plus base dir); objdump 0x080a2a10-0x080a2a70.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a2a72",
+   "name": "FS_FreePakList",
+   "signature": "void FS_FreePakList(struct searchpath_s *node)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "descriptive: frees a singly linked list of pak nodes and their iwd records; called from FS_Shutdown with fs_iwdList",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a2af4",
+   "name": "FS_ClearListA",
+   "signature": "void FS_ClearListA(void)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "descriptive: frees each pointer in fs_listA and resets the count; table size 1024 inferred from the adjacent globals",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a2b4e",
+   "name": "FS_ClearListB",
+   "signature": "void FS_ClearListB(void)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "descriptive: same teardown as FS_ClearListA for fs_listB",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a2ba8",
+   "name": "FS_Shutdown",
+   "signature": "void FS_Shutdown(void)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "Q3 FS_Shutdown shape: closes open handles, frees pack list, removes the fs commands path/fullpath/dir/fdir/touchFile (rodata strings)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a2c3c",
+   "name": "FS_RegisterDvars",
+   "signature": "int32 FS_RegisterDvars(void)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "dvar names (fs_debug, fs_copyfiles, fs_cdpath, fs_basepath, fs_basegame, fs_useOldAssets, fs_homepath, fs_game, fs_restrict, fs_ignoreLocalized) in rodata; registration runs once (guard is fs_debugDvar)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a2de0",
+   "name": "FS_Startup",
+   "signature": "void FS_Startup(const char *gameName)",
+   "subsystem": "filesystem",
+   "confidence": "observed",
+   "evidence": "string \"----- FS_Startup -----\" names this function; the \"%d files in iwd files\" message follows the load",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3222",
+   "name": "FS_ClearPakReferences",
+   "signature": "void FS_ClearPakReferences(void)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "descriptive: clears the per-pack reference flag (+0x310) of every loaded pack",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a325a",
+   "name": "FS_InitFilesystem",
+   "signature": "void FS_InitFilesystem(void)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "Q3 FS_InitFilesystem shape: resets fs dvars, starts \"main\", loads default_localize_mp.cfg or default_mp.cfg, saves base path and game",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a337a",
+   "name": "FS_Restart",
+   "signature": "void FS_Restart(int32 checksum)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "Q3 FS_Restart shape (takes a checksum, stores it as the feed); \"Invalid game folder\" error path restores the saved base path and recurses once",
+   "status": "translated",
+   "notes": "Recursive once on the invalid-folder path; Com_Error(1) is assumed not to return."
+  },
+  {
+   "addr": "0x080a34fe",
+   "name": "FS_ConditionalRestart",
+   "signature": "int32 FS_ConditionalRestart(int32 checksum)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "descriptive: restart only when fs_game was modified or the checksum changed; returns 1 when a restart ran",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3562",
+   "name": "FSH_FOpenFile",
+   "signature": "int32 FSH_FOpenFile(const char *filename, int32 *fileHandle, int32 mode)",
+   "subsystem": "filesystem",
+   "confidence": "observed",
+   "evidence": "string \"FSH_FOpenFile: bad mode\" names this function; modes 0 read, 1 write, 2 append, 3 append-sync (Q3 fsMode_t order)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a36e2",
+   "name": "FS_Flush",
+   "signature": "void FS_Flush(int32 fileHandle)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "descriptive: flushes the stdio stream behind a file handle",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a36fe",
+   "name": "Gfx_GetBspVariant",
+   "signature": "const char *Gfx_GetBspVariant(void)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "strings \"gfx_driver\", \"d3dbsp\", \"%sbsp\": returns \"d3dbsp\" when gfx_driver is empty, else \"<driver>bsp\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3748",
+   "name": "Int_Identity_080a3748",
+   "signature": "int32 Int_Identity_080a3748(int32 value)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body returns its int argument unchanged, 8-byte body identical to Identity_080527da. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Identity_080527da, LittleLong_0805536c, Passthrough_Int; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3750",
+   "name": "FS_StatPath",
+   "signature": "int FS_StatPath(const char *path, void *statBuf)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "__xstat(3, ...) is the glibc i386 stat() entry (_STAT_VER 3); result is discarded by the caller",
+   "status": "translated",
+   "notes": "returns the __xstat result in eax (requests L07-7, L12-4; objdump 0x080a3750-0x080a3771)"
+  },
+  {
+   "addr": "0x080a3774",
+   "name": "Rand_Fraction",
+   "signature": "long double Rand_Fraction(void)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "rand() divided by the float constant 2^31 (rodata 0x0814cfe4); descriptive name only",
+   "status": "translated",
+   "notes": "Returns long double to keep the unrounded x87 value."
+  },
+  {
+   "addr": "0x080a3792",
+   "name": "Rand_Signed",
+   "signature": "long double Rand_Signed(void)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "2 * Rand_Fraction() - 1 (unrounded x87 chain)",
+   "status": "translated",
+   "notes": "Returns long double, see Rand_Fraction."
+  },
+  {
+   "addr": "0x080a3bca",
+   "name": "Float_StepTowards",
+   "signature": "float Float_StepTowards(float target, float current, float rate, float frameTime)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "steps current toward target by rate*frameTime (sign from target-current); returns target when within one step or when |diff| <= 0.001",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3c66",
+   "name": "Angle_StepTowardsWrapped",
+   "signature": "float Angle_StepTowardsWrapped(float target, float current, float rate, float frameTime)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "wraps target-current into [-180, 180], steps with Float_StepTowards, stores through fn_080a8476",
+   "status": "translated",
+   "notes": "returns the AngleNormalize180 result via st0 (objdump 0x080a3cda-0x080a3ce9)"
+  },
+  {
+   "addr": "0x080a3cea",
+   "name": "Float_ApproachProportional",
+   "signature": "float Float_ApproachProportional(float target, float current, float gain, float frameTime)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "step = gain * (target-current) * frameTime; same clamp rule as Float_StepTowards",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3d66",
+   "name": "Angle_ApproachProportionalWrapped",
+   "signature": "float Angle_ApproachProportionalWrapped(float target, float current, float gain, float frameTime)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "wraps the difference into [-180, 180], then Float_ApproachProportional, stored through fn_080a8476",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3dea",
+   "name": "Curve_EvalPiecewise",
+   "signature": "float Curve_EvalPiecewise(int32 count, const struct cod2_curve_point_s *table, float x)",
+   "subsystem": "math/scalar",
+   "confidence": "inferred",
+   "evidence": "piecewise-linear lookup over (x, y) samples; -1 when x is past the last sample",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3ea6",
+   "name": "Int_Log2Floor",
+   "signature": "int32 Int_Log2Floor(int32 value)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "number of right shifts before the value reaches zero (floor log2 for positive input)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3ecc",
+   "name": "Math_AcosClamped",
+   "signature": "float Math_AcosClamped(float x)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "acos clamped to +-pi; the lower-bound branch stores +pi (rodata 0x0814d040 in both branches), preserved as observed",
+   "status": "translated",
+   "notes": "Lower-bound clamp stores +pi (quirk preserved; verified in disassembly: both branches load rodata float 0x0814d040)."
+  },
+  {
+   "addr": "0x080a3f28",
+   "name": "Clamp_Int8",
+   "signature": "int32 Clamp_Int8(int32 value)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "clamps an int to the signed 8-bit range [-128, 127]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3f58",
+   "name": "Clamp_Int16",
+   "signature": "int32 Clamp_Int16(int32 value)",
+   "subsystem": "math/scalar",
+   "confidence": "unknown",
+   "evidence": "clamps an int to the signed 16-bit range",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3f8e",
+   "name": "Normal_DirToIndex",
+   "signature": "uint8 Normal_DirToIndex(const float *dir)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "best-dot-product index into the 162-entry unit-normal table g_0817dba0; returns 0 for a NULL direction",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a4010",
+   "name": "Normal_IndexToDir",
+   "signature": "void Normal_IndexToDir(int32 index, float *dir)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "copies unit normal `index` from g_0817dba0 (index 0..161), or the zero vector out of range",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a405e",
+   "name": "Vec_AllComponentsWithin",
+   "signature": "qboolean Vec_AllComponentsWithin(const float *a, const float *b, float radius, int32 count)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "returns 1 when every component difference of a and b over `count` components lies within radius",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a40ea",
+   "name": "Vec3_Distance",
+   "signature": "float Vec3_Distance(const float *p1, const float *p2)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "delta = p2 - p1 (3 components), then passed to fn_080ab2fe; semantics of fn_080ab2fe unknown [rename botlib-sound-math: Disassembly: lea tmp; call Vec3_Sub 0x080ab14c; call Vec3_Length 0x080ab2fe; leave; ret - returns length of difference in st(0).]",
+   "status": "translated",
+   "notes": "Callee fn_080ab2fe/fn_080ab05e semantics unknown."
+  },
+  {
+   "addr": "0x080a4116",
+   "name": "Vec3_DistanceSquared",
+   "signature": "float Vec3_DistanceSquared(const float *p1, const float *p2)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "squared length of (p2 - p1) in 3D, summed z*z + y*y + x*x in the original order",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a414e",
+   "name": "Ray_ClampedDistanceSq",
+   "signature": "float Ray_ClampedDistanceSq(const float *point, const float *origin, const float *dir, float maxT)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "squared distance from point to origin + clamp(dot(point-origin, dir), 0, maxT) * dir",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a41e0",
+   "name": "Vec2_Distance",
+   "signature": "void Vec2_Distance(const float *p1, const float *p2)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "2D counterpart of Vec3_DeltaProcess [rename botlib-sound-math: Same shape: sub into 8-byte temp (0x080ab010), then length call; result left in st(0). Signature should return float.]",
+   "status": "translated",
+   "notes": "Callee fn_080ab2fe/fn_080ab05e semantics unknown."
+  },
+  {
+   "addr": "0x080a420c",
+   "name": "Vec2_DistanceSquared",
+   "signature": "float Vec2_DistanceSquared(const float *p1, const float *p2)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "squared length of a 2D difference",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a423c",
+   "name": "Vec3_Cross",
+   "signature": "void Vec3_Cross(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "standard 3D cross product out = a x b (writes in element order, aliasing-faithful)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a42b0",
+   "name": "Vec3_LargestAxis",
+   "signature": "int32 Vec3_LargestAxis(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "index (0..2) of the largest absolute component, ties resolved toward the lower index",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a4306",
+   "name": "Vec3_DominantAxisOrder",
+   "signature": "void Vec3_DominantAxisOrder(const float *v, int32 *first, int32 *second)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "orders the two axes other than the dominant one by sign and magnitude",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a4424",
+   "name": "Vec3_Normalize",
+   "signature": "float Vec3_Normalize(float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "normalizes a 3-vector in place, returns the original length; zero vectors are left unchanged",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a44c2",
+   "name": "Vec2_Normalize",
+   "signature": "float Vec2_Normalize(float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "normalizes a 2-vector in place, returns the original length",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a453a",
+   "name": "Vec4_Normalize",
+   "signature": "float Vec4_Normalize(float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "normalizes a 4-vector in place, returns the original length",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a45fc",
+   "name": "Vec3_NormalizeCopy",
+   "signature": "float Vec3_NormalizeCopy(const float *in, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out = normalized(in); zeroes out for a zero-length input; returns the length",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a46a6",
+   "name": "Vec2_NormalizeCopy",
+   "signature": "float Vec2_NormalizeCopy(const float *in, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "2-vector form of Vec3_NormalizeCopy",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a472c",
+   "name": "Vec3_PackDir10",
+   "signature": "uint32 Vec3_PackDir10(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "packs three floats scaled by 511 into 10-bit fields (x at 0, y at 10, z at 20)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a47a2",
+   "name": "Vec3_UnpackDir10",
+   "signature": "void Vec3_UnpackDir10(uint32 packed, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "inverse of Vec3_PackDir10: sign-extended 10-bit fields times 1/511",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a481a",
+   "name": "Vec3_MaxComponent",
+   "signature": "float Vec3_MaxComponent(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "maximum of three components (ties keep the earlier one)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a4882",
+   "name": "Vec3_MulMat3Rows",
+   "signature": "void Vec3_MulMat3Rows(const float *v, const float *m, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out[j] = sum_k v[k] * m[3j+k] (k summed from 2 down to 0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a492c",
+   "name": "Vec3_MulMat3Cols",
+   "signature": "void Vec3_MulMat3Cols(const float *v, const float *m, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out[j] = sum_k v[k] * m[3k+j] (row vector times 3x3)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a49d6",
+   "name": "Vec3_RotateAroundAxis",
+   "signature": "void Vec3_RotateAroundAxis(float *out, const float *axis, const float *v, float degrees)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "rotates v about the axis vector by `degrees` using the frame M = [perp | cross | axis] and M*Rz*M^T (Rz = [[c,s,0],[-s,c,0],[0,0,1]])",
+   "status": "translated",
+   "notes": "Frame reconstructed from the stack copies in the pseudocode; the transpose overwrites six entries of a memcpy copy."
+  },
+  {
+   "addr": "0x080a4cc2",
+   "name": "Vec3_PerpendicularBasis",
+   "signature": "void Vec3_PerpendicularBasis(const float *normal, float *scratch, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "builds a unit vector perpendicular to normal (scratch = (n[2], -n[0], n[1]) reduced by its normal component), then out = scratch x normal",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a4d5a",
+   "name": "Vec2_AngleDegrees",
+   "signature": "float Vec2_AngleDegrees(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "yaw of a 2D vector in degrees, wrapped into [0, 360)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a4de8",
+   "name": "Vec2_AngleDegreesRaw",
+   "signature": "float Vec2_AngleDegreesRaw(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "yaw of a 2D vector in degrees without wrapping",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a4e5a",
+   "name": "Vec3_ElevationDegrees",
+   "signature": "float Vec3_ElevationDegrees(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "elevation of a 3-vector in degrees (-180 scale), wrapped into [0, 360); zero horizontal gives 270 or 90",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a4f2c",
+   "name": "Vec3_ElevationDegreesRaw",
+   "signature": "float Vec3_ElevationDegreesRaw(const float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "elevation of a 3-vector in degrees (-180 scale), not wrapped; zero horizontal gives -90 or 90",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a4fe2",
+   "name": "Vec3_ToAngles",
+   "signature": "void Vec3_ToAngles(const float *v, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "angles {elevation, yaw, 0} with wrapped values (VectorToAngles shape)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a5122",
+   "name": "Vec3_ToAnglesRaw",
+   "signature": "void Vec3_ToAnglesRaw(const float *v, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "angles {elevation, yaw, 0} without wrapping (VectorToAngles shape)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a5226",
+   "name": "Angles_ToVectors",
+   "signature": "void Angles_ToVectors(const float *angles, float *forward, float *right, float *up)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "AngleVectors shape: forward, right and up from {pitch, yaw, roll} in degrees; each output pointer is optional",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a539e",
+   "name": "Angle_YawToForwardRight",
+   "signature": "void Angle_YawToForwardRight(float yaw, float *forward, float *right)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "yaw in degrees to a forward (cos, sin, 0) and right (sin, -cos, 0) pair; both pointers optional",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a541e",
+   "name": "Vec3_PerpendicularVector",
+   "signature": "void Vec3_PerpendicularVector(const float *src, float *dst)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Q3 PerpendicularVector shape: picks the smallest-magnitude axis, builds src with that axis shifted by one, normalizes",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a54f0",
+   "name": "Triangle_Normal",
+   "signature": "void Triangle_Normal(const float *a, const float *b, const float *c, float *normal)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "unit normal of triangle (a, b, c): normalize(normalize(a-b) x normalize(a-c))",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a556a",
+   "name": "Line_ProjectPoint",
+   "signature": "void Line_ProjectPoint(const float *point, const float *origin, const float *end, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "projects point onto the line through origin with direction (end - origin); out = origin when the direction is degenerate",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a5618",
+   "name": "Line_ResidualLengthSq",
+   "signature": "float Line_ResidualLengthSq(const float *point, const float *origin, const float *end)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "dot of the residual (rel - t*dir) with itself; the function returns the dot in st(0) (verified in disassembly)",
+   "status": "translated",
+   "notes": "Returns the dot in st(0); verified in disassembly (no FP op after the final call)."
+  },
+  {
+   "addr": "0x080a56bc",
+   "name": "Vec3_ExtentDistanceSq",
+   "signature": "float Vec3_ExtentDistanceSq(const float *a, const float *b, const float *c)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "sums squared per-axis excesses of (b-a) and (a-c) over 3 axes; the observable result is only this sum",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a577a",
+   "name": "Mat3_Identity",
+   "signature": "void Mat3_Identity(float *m)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "3x3 identity (9 floats, row-major): memset 0x24 bytes then 1.0 at elements 0, 4, 8",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a57c2",
+   "name": "Mat4_CopyIdentity",
+   "signature": "void Mat4_CopyIdentity(float *m)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "copies the 16-float identity constant at rodata 0x0814d100 (verified bytes) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a57e6",
+   "name": "Mat4_FromAxisOrigin",
+   "signature": "void Mat4_FromAxisOrigin(float *out, const float *origin, const float *axes, float scale)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "4x4 from a 3x3 axis block scaled by `scale` plus origin in the translation row (row-major, w = 1)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a58f2",
+   "name": "Mat3_Multiply",
+   "signature": "void Mat3_Multiply(const float *a, const float *b, float *out)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "row-major 3x3 product out = a * b (summation order k = 2, 1, 0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a5afe",
+   "name": "Mat3_MultiplyInPlace",
+   "signature": "void Mat3_MultiplyInPlace(const float *a, float *b)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "in-place 3x3 product b = a * b; rows 0 and 1 are computed into temporaries, row 2 is written directly first",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a5d1c",
+   "name": "Mat34_Concat",
+   "signature": "void Mat34_Concat(const float *a, const float *b, float *out)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "row-major 3x4 transform concatenation (translation in column 3 of each row)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a5ff2",
+   "name": "Mat34_ConcatRowVector",
+   "signature": "void Mat34_ConcatRowVector(const float *a, const float *b, float *out)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "3x4 product in the row-vector layout (3x3 block in rows 0..2, translation in row 3 at elements 9..11)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a62c8",
+   "name": "Mat4_Multiply",
+   "signature": "void Mat4_Multiply(const float *a, const float *b, float *out)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "row-major 4x4 product out = a * b (summation order k = 3, 2, 1, 0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a6792",
+   "name": "Mat3_Transpose",
+   "signature": "void Mat3_Transpose(const float *in, float *out)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "3x3 transpose (out may not alias in; element order preserved)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a6822",
+   "name": "Mat4_Transpose",
+   "signature": "void Mat4_Transpose(const float *in, float *out)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "4x4 transpose (element order preserved)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a6922",
+   "name": "Mat3_Invert",
+   "signature": "void Mat3_Invert(const float *m, float *inv)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "3x3 inverse via cofactors, scaled by 1/determinant (1.0 is a double division, as in the original)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a6b42",
+   "name": "Rigid_Invert",
+   "signature": "void Rigid_Invert(const float *src, float *dst)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "inverse of a rigid 3x4 transform: transposed 3x3 block, translation = -(origin) times the transposed block",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a6b96",
+   "name": "Mat4_Invert",
+   "signature": "void Mat4_Invert(const float *m, float *out)",
+   "subsystem": "math/matrix",
+   "confidence": "inferred",
+   "evidence": "4x4 inverse by 2x2 sub-determinants and 1/det scaling; t[j][i] holds memory element m[4i+j] (Ghidra stride-16 reads)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a71b6",
+   "name": "Vec3_RotateByTranspose",
+   "signature": "void Vec3_RotateByTranspose(const float *v, const float *m, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "identical to Vec3_MulMat3Cols (row vector times 3x3, transposed indexing)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7260",
+   "name": "Vec4_MulMat4",
+   "signature": "void Vec4_MulMat4(const float *v, const float *m, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "row vector times 4x4: out[j] = sum_k v[k] * m[4k+j] (k summed from 3 down to 0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7436",
+   "name": "Vec3_TransformAffine",
+   "signature": "void Vec3_TransformAffine(const float *v, const float *m, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "affine point transform out = v * M + t, rows 0..2 of M in the row-vector layout with translation at 9..11",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a74f8",
+   "name": "Vec3_WorldToLocal",
+   "signature": "void Vec3_WorldToLocal(const float *point, const float *xform, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "(point - origin) with origin at xform[9..11], then out = xform block times that delta (inverse-rotation style)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a759e",
+   "name": "Vec3_TransformAffineInPlace",
+   "signature": "void Vec3_TransformAffineInPlace(float *v, const float *m)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "in-place affine transform v = v * M + t; the original temporaries are reproduced so reads see pre-write values",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7670",
+   "name": "Vec2_RotateDegrees",
+   "signature": "void Vec2_RotateDegrees(float *v, float degrees)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "rotates the 2D vector by `degrees`; the angle is passed to fn_080aaf80 as a single-precision value (fstps in the binary)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a76d6",
+   "name": "Quat_Multiply",
+   "signature": "void Quat_Multiply(const float *a, const float *b, float *out)",
+   "subsystem": "math/quaternion",
+   "confidence": "inferred",
+   "evidence": "quaternion product out = a * b in the component order of the binary (w last in the x87 expression)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a77f8",
+   "name": "Quat_Conjugate",
+   "signature": "void Quat_Conjugate(const float *in, float *out)",
+   "subsystem": "math/quaternion",
+   "confidence": "inferred",
+   "evidence": "quaternion conjugate: negates x, y, z (sign-bit flip in the binary), keeps w",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7846",
+   "name": "Quat_ToMat3",
+   "signature": "void Quat_ToMat3(const float *q, float *out)",
+   "subsystem": "math/quaternion",
+   "confidence": "inferred",
+   "evidence": "quaternion (w, x, y, z) to 3x3 rotation with s = 2/|q|^2; all inputs are read into temporaries before any write",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a738c",
+   "name": "Vec3_MulMat3RowsAlt",
+   "signature": "void Vec3_MulMat3RowsAlt(const float *v, const float *m, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "same arithmetic as Vec3_MulMat3Rows (separate copy in the binary): out[j] = sum_k v[k] * m[3j+k]",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0849fd40",
+   "name": "fs_debugDvar",
+   "type": "struct cod2_dvar_s *",
+   "confidence": "inferred",
+   "evidence": "assigned the Dvar_RegisterInt result for \"fs_debug\" in FS_RegisterDvars (0x080a2c3c); also the registration guard"
+  },
+  {
+   "addr": "0x0849fd44",
+   "name": "fs_homepathDvar",
+   "type": "struct cod2_dvar_s *",
+   "confidence": "inferred",
+   "evidence": "assigned the \"fs_homepath\" string dvar in FS_RegisterDvars"
+  },
+  {
+   "addr": "0x0849fd48",
+   "name": "fs_basepathDvar",
+   "type": "struct cod2_dvar_s *",
+   "confidence": "inferred",
+   "evidence": "assigned the \"fs_basepath\" string dvar in FS_RegisterDvars"
+  },
+  {
+   "addr": "0x0849fd4c",
+   "name": "fs_basegameDvar",
+   "type": "struct cod2_dvar_s *",
+   "confidence": "inferred",
+   "evidence": "assigned the \"fs_basegame\" string dvar in FS_RegisterDvars"
+  },
+  {
+   "addr": "0x0849fd50",
+   "name": "fs_useOldAssetsDvar",
+   "type": "struct cod2_dvar_s *",
+   "confidence": "inferred",
+   "evidence": "assigned the \"fs_useOldAssets\" bool dvar in FS_RegisterDvars"
+  },
+  {
+   "addr": "0x0849fd54",
+   "name": "fs_cdpathDvar",
+   "type": "struct cod2_dvar_s *",
+   "confidence": "inferred",
+   "evidence": "assigned the \"fs_cdpath\" string dvar in FS_RegisterDvars"
+  },
+  {
+   "addr": "0x0849fd58",
+   "name": "fs_copyfilesDvar",
+   "type": "struct cod2_dvar_s *",
+   "confidence": "inferred",
+   "evidence": "assigned the \"fs_copyfiles\" bool dvar in FS_RegisterDvars"
+  },
+  {
+   "addr": "0x0849fd5c",
+   "name": "fs_gameDvar",
+   "type": "struct cod2_dvar_s *",
+   "confidence": "inferred",
+   "evidence": "assigned the \"fs_game\" string dvar in FS_RegisterDvars; modified byte read at +7"
+  },
+  {
+   "addr": "0x0849fd60",
+   "name": "fs_restrictDvar",
+   "type": "struct cod2_dvar_s *",
+   "confidence": "inferred",
+   "evidence": "assigned the \"fs_restrict\" bool dvar in FS_RegisterDvars"
+  },
+  {
+   "addr": "0x0849fd64",
+   "name": "fs_ignoreLocalizedDvar",
+   "type": "struct cod2_dvar_s *",
+   "confidence": "inferred",
+   "evidence": "assigned the \"fs_ignoreLocalized\" bool dvar in FS_RegisterDvars"
+  },
+  {
+   "addr": "0x0849fd68",
+   "name": "fs_iwdList",
+   "type": "struct cod2_pak_node_s *",
+   "confidence": "inferred",
+   "evidence": "list head freed by FS_Shutdown via FS_FreePakList"
+  },
+  {
+   "addr": "0x0849fd6c",
+   "name": "fs_iwdFileCount",
+   "type": "int",
+   "confidence": "observed",
+   "evidence": "printed by \"%d files in iwd files\" in FS_Startup"
+  },
+  {
+   "addr": "0x0849fd74",
+   "name": "fs_checksumFeed",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "stored from the FS_Restart checksum argument; compared in FS_ConditionalRestart"
+  },
+  {
+   "addr": "0x0849fc28",
+   "name": "fs_defaultConfigName",
+   "type": "const char *",
+   "confidence": "inferred",
+   "evidence": "set to \"default_localize_mp.cfg\" or \"default_mp.cfg\" in FS_InitFilesystem"
+  },
+  {
+   "addr": "0x0849fd88",
+   "name": "fsh_table",
+   "type": "struct cod2_fsh_s[]",
+   "confidence": "observed",
+   "evidence": "indexed by FSH_FOpenFile (\"FSH_FOpenFile: bad mode\"); stride 0x11c fixed by code; bound unverified (see open questions)"
+  },
+  {
+   "addr": "0x084a4480",
+   "name": "fs_listACount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "count of fs_listA, cleared by FS_ClearListA"
+  },
+  {
+   "addr": "0x084a54a0",
+   "name": "fs_listA",
+   "type": "void *[1024]",
+   "confidence": "inferred",
+   "evidence": "table of owned pointers freed by FS_ClearListA; 1024 entries inferred from the adjacent table at 0x084a64a0/0x084a74c0"
+  },
+  {
+   "addr": "0x084a64a0",
+   "name": "fs_listBCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "count of fs_listB, cleared by FS_ClearListB"
+  },
+  {
+   "addr": "0x084a74c0",
+   "name": "fs_listB",
+   "type": "char *[1024]",
+   "confidence": "inferred",
+   "evidence": "table of owned pointers freed by FS_ClearListB"
+  },
+  {
+   "addr": "0x084a84c0",
+   "name": "fs_savedBasePath",
+   "type": "char[256]",
+   "confidence": "inferred",
+   "evidence": "saved fs_basepath, copied with Q_strncpyz size 0x100"
+  },
+  {
+   "addr": "0x084a85c0",
+   "name": "fs_savedGame",
+   "type": "char[256]",
+   "confidence": "inferred",
+   "evidence": "saved fs_game, copied with size 0x100"
+  },
+  {
+   "addr": "0x081a218c",
+   "name": "g_081a218c",
+   "type": "struct cod2_dvar_s *",
+   "confidence": "unknown",
+   "evidence": "dvar pointer whose boolean value at +8 gates FS_ConditionalRestart; name unknown"
+  },
+  {
+   "addr": "0x0814cfc8",
+   "name": "vec3_origin",
+   "type": "float[3]",
+   "confidence": "observed",
+   "evidence": "read-only zero vector (rodata bytes are zero)"
+  },
+  {
+   "addr": "0x0814d100",
+   "name": "identityMatrix4",
+   "type": "float[16]",
+   "confidence": "observed",
+   "evidence": "read-only 4x4 identity (rodata bytes verified)"
+  },
+  {
+   "addr": "0x0817dba0",
+   "name": "bytedirs",
+   "type": "float[162*3]",
+   "confidence": "inferred",
+   "evidence": "162 unit normals in .data (verified unit length); Quake-style anorms table"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "cod2_dvar_s",
+   "size": "unknown (>= 0x0c)",
+   "evidence": "modified byte at +0x07 and value union at +0x08 read by FS_* code; Dvar_Register* results"
+  },
+  {
+   "name": "cod2_iwd_s",
+   "size": "unknown (>= 0x320)",
+   "evidence": "pointer fields at +0x300 (file handle), +0x310 (reference flag), +0x31c (index buffer)"
+  },
+  {
+   "name": "cod2_pak_node_s",
+   "size": "unknown (>= 0x0c)",
+   "evidence": "singly linked list: next at +0x00, iwd at +0x04, owned name at +0x08"
+  },
+  {
+   "name": "cod2_fsh_s",
+   "size": "0x11c",
+   "evidence": "stride 0x11c in FSH_FOpenFile and FS_Shutdown; handleSync +0x00, fileSize +0x04, unknown +0x10"
+  },
+  {
+   "name": "cod2_curve_point_s",
+   "size": "0x08",
+   "evidence": "Curve_EvalPiecewise reads (x,y) pairs at stride 8"
+  }
+ ],
+ "open_questions": [
+  "fsh_table: 64 slots of 0x11c bytes from 0x0849fd88 reach 0x084a4488, overlapping fs_listACount at 0x084a4480. Confirm the real array bound or whether the count is a separate global inside an element.",
+  "Struct sizes for cod2_dvar_s, cod2_iwd_s and cod2_pak_node_s are not recovered; only offsets are asserted.",
+  "Placeholder signatures for fn_080aaf80 (float angle), fn_080aaf4a (double argument) and fn_080ab190 were inferred from call sites; the owning chunks must confirm.",
+  "Semantics of fn_080ab2fe, fn_080ab05e and fn_080ab1c8 are unknown, so Vec3_DeltaProcess, Vec2_DeltaProcess, Vec3_LargestAxis and Vec3_DominantAxisOrder are described only by their observable calls.",
+  "Rand_Fraction and Rand_Signed return long double to keep the unrounded x87 value; callers in other chunks should match that return type.",
+  "Float-versus-double precision was checked in disassembly for Rand_Fraction, Math_AcosClamped, Line_ResidualLengthSq and the Angles/SinCos argument paths; the remaining functions follow the Ghidra pseudocode types and were not individually verified against the disassembly.",
+  "Manifest calls list for FUN_080a2a10 and FUN_080a2a72 contains their own addresses; the disassembly has no self-call, so no recursion was translated.",
+  "The Com_Error(1, \"Invalid game folder\") path in FS_Restart is translated as returning; if it is noreturn the Couldn't load message is unreachable there."
+ ]
+}

@@ -1,0 +1,1016 @@
+{
+ "chunk": 106,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x08114bb6",
+   "name": "GScr_grenadeexplosioneffect",
+   "signature": "void GScr_grenadeexplosioneffect(void);",
+   "subsystem": "script/fx",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"grenadeexplosioneffect\" -> this handler; body consistent: spawns temp event 0xbc at a script point with up normal and ground trace",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114cbe",
+   "name": "GScr_RadiusDamage",
+   "signature": "void GScr_RadiusDamage(void);",
+   "subsystem": "script/fx",
+   "confidence": "inferred",
+   "evidence": "Radius damage builtin: args (origin, radius, damageMax, damageMin); the attacker is the",
+   "status": "translated",
+   "notes": "Attacker is the fixed world entity g_087a1fa0; mod code 0xe."
+  },
+  {
+   "addr": "0x08114d5a",
+   "name": "GScr_setplayerignoreradiusdamage",
+   "signature": "void GScr_setplayerignoreradiusdamage(void);",
+   "subsystem": "script/fx",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setplayerignoreradiusdamage\" -> this handler; body consistent: stores int param in g_0864f978 which GScr_RadiusDamage copies to g_0864f974; G_RadiusDamage skips client victims when set",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114d74",
+   "name": "GScr_getmovedelta",
+   "signature": "void GScr_getmovedelta(void);",
+   "subsystem": "script/anim",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getmovedelta\" -> this handler; body consistent: samples anim node between optional start/end times and pushes vector",
+   "status": "translated",
+   "notes": "With zero args the original still reads param 1; reproduced."
+  },
+  {
+   "addr": "0x08114e8c",
+   "name": "GScr_getangledelta",
+   "signature": "void GScr_getangledelta(void);",
+   "subsystem": "script/anim",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getangledelta\" -> this handler; body consistent: same sampling, pushes planar angle as float",
+   "status": "translated",
+   "notes": "With zero args the original still reads param 1; reproduced."
+  },
+  {
+   "addr": "0x08114fac",
+   "name": "GScr_getnorthyaw",
+   "signature": "void GScr_getnorthyaw(void);",
+   "subsystem": "script/config-dvar",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getnorthyaw\" -> this handler; body consistent: reads configstring 0x0b and pushes atof() as float",
+   "status": "translated",
+   "notes": "Reads configstring 0x0b and converts with atof."
+  },
+  {
+   "addr": "0x08114fe8",
+   "name": "GScr_LoadFx",
+   "signature": "void GScr_LoadFx(void);",
+   "subsystem": "script/fx",
+   "confidence": "inferred",
+   "evidence": "loadFx builtin. Evidence: string \"loadFx must be called before any wait statements in the [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081152d6",
+   "name": "GScr_PlayFxOnTag",
+   "signature": "void GScr_PlayFxOnTag(void);",
+   "subsystem": "script/fx",
+   "confidence": "inferred",
+   "evidence": "playFxOnTag builtin. Evidence: string \"USAGE: playFxOnTag <effect id from loadFx> <entity> <tag name>\". [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Tag-not-found error passes the tag string handle (not its text) to va() as %s; reproduced as found."
+  },
+  {
+   "addr": "0x08115466",
+   "name": "GScr_PlayLoopedFx",
+   "signature": "void GScr_PlayLoopedFx(void);",
+   "subsystem": "script/fx",
+   "confidence": "inferred",
+   "evidence": "playLoopedFx builtin. Evidence: string \"USAGE: playLoopedFx <effect id from loadFx> <repeat delay> ...\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Repeat-delay error passes an int to a %f conversion; reproduced as the same int argument."
+  },
+  {
+   "addr": "0x08115910",
+   "name": "GScr_SetExpFog",
+   "signature": "void GScr_SetExpFog(void);",
+   "subsystem": "script/fog",
+   "confidence": "inferred",
+   "evidence": "setExpFog builtin. Evidence: string \"setExpFog\" and its USAGE text referenced here. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081159e2",
+   "name": "GScr_isplayer",
+   "signature": "void GScr_isplayer(void);",
+   "subsystem": "script/player",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"isplayer\" -> this handler; body consistent: pushes 1 when param is an entity with a client record",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115a42",
+   "name": "GScr_isplayernumber",
+   "signature": "void GScr_isplayernumber(void);",
+   "subsystem": "script/fx",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"isplayernumber\" -> this handler; body consistent: pushes 1 when int param is in 0..63",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115a82",
+   "name": "GScr_setwinningplayer",
+   "signature": "void GScr_setwinningplayer(void);",
+   "subsystem": "script/team",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setwinningplayer\" -> this handler; body consistent: winner from entity",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115b40",
+   "name": "GScr_setwinningteam",
+   "signature": "void GScr_setwinningteam(void);",
+   "subsystem": "script/team",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setwinningteam\" -> this handler; body consistent: winner from team string",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115c62",
+   "name": "GScr_announcement",
+   "signature": "void GScr_announcement(void);",
+   "subsystem": "script/team",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"announcement\" -> this handler; body consistent: announcement to all clients",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115cd6",
+   "name": "GScr_clientannouncement",
+   "signature": "void GScr_clientannouncement(void);",
+   "subsystem": "script/team",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"clientannouncement\" -> this handler; body consistent: announcement to one entity",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115d5a",
+   "name": "GScr_getteamscore",
+   "signature": "void GScr_getteamscore(void);",
+   "subsystem": "script/team",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getteamscore\" -> this handler; body consistent: reads allies/axis score slot by team handle",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115dda",
+   "name": "GScr_setteamscore",
+   "signature": "void GScr_setteamscore(void);",
+   "subsystem": "script/team",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setteamscore\" -> this handler; body consistent: stores allies/axis score, sends 'H'/'G' server command",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115ed2",
+   "name": "GScr_setclientnamemode",
+   "signature": "void GScr_setclientnamemode(void);",
+   "subsystem": "script/team",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setclientnamemode\" -> this handler; body consistent: selects auto_change / manual_change (strings 'Unknown mode')",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115f28",
+   "name": "GScr_updateclientnames",
+   "signature": "void GScr_updateclientnames(void);",
+   "subsystem": "script/team",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"updateclientnames\" -> this handler; body consistent: error 'Only works in [manual_change] mode'; applies pending names",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08115ff6",
+   "name": "GScr_getteamplayersalive",
+   "signature": "void GScr_getteamplayersalive(void);",
+   "subsystem": "script/team",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getteamplayersalive\" -> this handler; body consistent: counts live entities of allies/axis",
+   "status": "translated",
+   "notes": "Reads the client pointer of an in-use entity without a null check; reproduced."
+  },
+  {
+   "addr": "0x081160e0",
+   "name": "GScr_getnumparts",
+   "signature": "void GScr_getnumparts(void);",
+   "subsystem": "script/model",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getnumparts\" -> this handler; body consistent: pushes bone count of model named by param 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116112",
+   "name": "GScr_getpartname",
+   "signature": "void GScr_getpartname(void);",
+   "subsystem": "script/model",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"getpartname\" -> this handler; body consistent: model bone name by index",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081161ba",
+   "name": "GScr_earthquake",
+   "signature": "void GScr_earthquake(void);",
+   "subsystem": "script/fx",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"earthquake\" -> this handler; body consistent: temp event 0xc4: scale, duration seconds->ms, origin, radius params",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081162a2",
+   "name": "GScr_Shellshock",
+   "signature": "void GScr_Shellshock(uint32 self);",
+   "subsystem": "script/player",
+   "confidence": "inferred",
+   "evidence": "shellshock builtin for a player (self ref). Evidence: \"USAGE: <player> shellshock(<shellshockname>, <duration>)\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811642a",
+   "name": "GScr_StopShellshock",
+   "signature": "void GScr_StopShellshock(uint32 self);",
+   "subsystem": "script/player",
+   "confidence": "inferred",
+   "evidence": "stopshellshock builtin for a player (self ref). Evidence: \"USAGE: <player> stopshellshock()\". [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811648e",
+   "name": "GScr_ViewKick",
+   "signature": "void GScr_ViewKick(uint32 self);",
+   "subsystem": "script/player",
+   "confidence": "inferred",
+   "evidence": "viewkick builtin for a player (self ref). Evidence: \"USAGE: <player> viewkick <force 0-127> <source position>\". [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116574",
+   "name": "ScriptEntCmd_localtoworldcoords",
+   "signature": "void ScriptEntCmd_localtoworldcoords(uint32 self);",
+   "subsystem": "script/player",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188720 (entity methods) entry \"localtoworldcoords\" -> this handler; body consistent: local-to-world point transform",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081165f6",
+   "name": "ScriptEntCmd_setrightarc",
+   "signature": "void ScriptEntCmd_setrightarc(uint32 self);",
+   "subsystem": "script/turret",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188720 (entity methods) entry \"setrightarc\" -> this handler; body consistent: turret arc limit setter",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811666a",
+   "name": "ScriptEntCmd_setleftarc",
+   "signature": "void ScriptEntCmd_setleftarc(uint32 self);",
+   "subsystem": "script/turret",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188720 (entity methods) entry \"setleftarc\" -> this handler; body consistent: turret arc limit setter",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081166d2",
+   "name": "ScriptEntCmd_settoparc",
+   "signature": "void ScriptEntCmd_settoparc(uint32 self);",
+   "subsystem": "script/turret",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188720 (entity methods) entry \"settoparc\" -> this handler; body consistent: turret arc limit setter",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116746",
+   "name": "ScriptEntCmd_setbottomarc",
+   "signature": "void ScriptEntCmd_setbottomarc(uint32 self);",
+   "subsystem": "script/turret",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188720 (entity methods) entry \"setbottomarc\" -> this handler; body consistent: turret arc limit setter",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081167ae",
+   "name": "ScriptEntCmd_placespawnpoint",
+   "signature": "void ScriptEntCmd_placespawnpoint(uint32 self);",
+   "subsystem": "game/spawn",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188720 (entity methods) entry \"placespawnpoint\" -> this handler; body consistent: traces up 128/down 262144 with 30x30x70 box, settles origin, warns 'Spawn point entity %i is in solid'",
+   "status": "translated",
+   "notes": "Ghidra ROUND() in the warning print replaced by Float_RoundHalfUp; confirm rounding helper."
+  },
+  {
+   "addr": "0x081169a2",
+   "name": "ScriptEntCmd_updatescores",
+   "signature": "void ScriptEntCmd_updatescores(uint32 self);",
+   "subsystem": "script/team",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188720 (entity methods) entry \"updatescores\" -> this handler; body consistent: sends team scores to the entity's client",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116a3c",
+   "name": "GScr_Map_Restart",
+   "signature": "void GScr_Map_Restart(void);",
+   "subsystem": "script/server-cmd",
+   "confidence": "inferred",
+   "evidence": "map_restart builtin. Evidence: strings \"map_restart already called\" and \"exitlevel already called\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116ab4",
+   "name": "GScr_Map",
+   "signature": "void GScr_Map(void);",
+   "subsystem": "script/server-cmd",
+   "confidence": "inferred",
+   "evidence": "map builtin. Evidence: strings \"map already called\" and \"map %s\\n\" referenced here. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116b6a",
+   "name": "GScr_ExitLevel",
+   "signature": "void GScr_ExitLevel(void);",
+   "subsystem": "script/server-cmd",
+   "confidence": "inferred",
+   "evidence": "exitlevel builtin. Evidence: strings \"map_restart already called\" and \"exitlevel already called\" referenced here. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116bd8",
+   "name": "GScr_addtestclient",
+   "signature": "void GScr_addtestclient(void);",
+   "subsystem": "script/server-cmd",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"addtestclient\" -> this handler; body consistent: calls SV_AddBot and pushes the entity",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116bfa",
+   "name": "GScr_makecvarserverinfo",
+   "signature": "void GScr_makecvarserverinfo(void);",
+   "subsystem": "script/config-dvar",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"makecvarserverinfo\" -> this handler; body consistent: registers/flags dvar with flag 0x100 (serverinfo)",
+   "status": "translated",
+   "notes": "Sanitized copy is built but the original registers the unsanitized value; reproduced."
+  },
+  {
+   "addr": "0x08116d4c",
+   "name": "GScr_allclientsprint",
+   "signature": "void GScr_allclientsprint(void);",
+   "subsystem": "script/config-dvar",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"allclientsprint\" -> this handler; body consistent: notice text to all clients",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116da2",
+   "name": "GScr_mapexists",
+   "signature": "void GScr_mapexists(void);",
+   "subsystem": "script/config-dvar",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"mapexists\" -> this handler; body consistent: pushes 1 when SV_MapFileExists(param0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116dee",
+   "name": "GScr_isvalidgametype",
+   "signature": "void GScr_isvalidgametype(void);",
+   "subsystem": "script/config-dvar",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"isvalidgametype\" -> this handler; body consistent: pushes 1 when name is in the gametype list table (0x0884d72c)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116e3a",
+   "name": "GScr_setvotestring",
+   "signature": "void GScr_setvotestring(void);",
+   "subsystem": "script/config-dvar",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setvotestring\" -> this handler; body consistent: sets configstring 0x10 and refreshes vote time/yes/no strings 0x0f,0x11,0x12",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116ee2",
+   "name": "GScr_setvotetime",
+   "signature": "void GScr_setvotetime(void);",
+   "subsystem": "script/config-dvar",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setvotetime\" -> this handler; body consistent: sets configstring 0x0f from int param",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116f72",
+   "name": "GScr_setvoteyescount",
+   "signature": "void GScr_setvoteyescount(void);",
+   "subsystem": "script/config-dvar",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setvoteyescount\" -> this handler; body consistent: sets configstring 0x11 from int param",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08116fdc",
+   "name": "GScr_setvotenocount",
+   "signature": "void GScr_setvotenocount(void);",
+   "subsystem": "script/config-dvar",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setvotenocount\" -> this handler; body consistent: sets configstring 0x12 from int param",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117022",
+   "name": "GScr_TempBanClient",
+   "signature": "void GScr_TempBanClient(void);",
+   "subsystem": "script/server-cmd",
+   "confidence": "inferred",
+   "evidence": "tempBanClient builtin. Evidence: format string \"tempBanClient %i\\n\" referenced here; the text is [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117068",
+   "name": "GScr_BanClient",
+   "signature": "void GScr_BanClient(void);",
+   "subsystem": "script/server-cmd",
+   "confidence": "inferred",
+   "evidence": "banClient builtin. Evidence: format string \"banClient %i\\n\" referenced here. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081170ae",
+   "name": "GScr_clientprint",
+   "signature": "void GScr_clientprint(void);",
+   "subsystem": "script/server-cmd",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"clientprint\" -> this handler; body consistent: notice text to one entity",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117120",
+   "name": "GScr_OpenFile",
+   "signature": "void GScr_OpenFile(void);",
+   "subsystem": "script/file",
+   "confidence": "inferred",
+   "evidence": "openfile builtin: opens scriptdata/<name> in read/write/append mode into the file slot table. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Only slot 0 is searched (loop bound 1); reproduced."
+  },
+  {
+   "addr": "0x081173b4",
+   "name": "GScr_CloseFile",
+   "signature": "void GScr_CloseFile(void);",
+   "subsystem": "script/file",
+   "confidence": "inferred",
+   "evidence": "closefile builtin. Evidence: \"CloseFile failed, invalid file number %i\" and [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117918",
+   "name": "GScr_issplitscreen",
+   "signature": "void GScr_issplitscreen(void);",
+   "subsystem": "script/misc",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"issplitscreen\" -> this handler; body consistent: pushes constant 0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081178ea",
+   "name": "GScr_setarchive",
+   "signature": "void GScr_setarchive(void);",
+   "subsystem": "script/misc",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x08188040 (cod2_scrfunc_s: name,handler) entry \"setarchive\" -> this handler; body consistent: passes int param to SV_AllocServerPools",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811749c",
+   "name": "GScr_FPrintln",
+   "signature": "void GScr_FPrintln(void);",
+   "subsystem": "script/file",
+   "confidence": "inferred",
+   "evidence": "fprintln builtin. Evidence: \"fprintln requires at least 2 parameters (file, output)\" and [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081175c0",
+   "name": "GScr_FReadln",
+   "signature": "void GScr_FReadln(void);",
+   "subsystem": "script/file",
+   "confidence": "inferred",
+   "evidence": "freadln builtin. Evidence: \"freadln requires a parameter - the file to read from\" and [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117778",
+   "name": "GScr_FReadline",
+   "signature": "void GScr_FReadline(void);",
+   "subsystem": "script/file",
+   "confidence": "inferred",
+   "evidence": "freadline builtin. Evidence: \"freadline requires at least 2 parameters (file, string)\" and [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117944",
+   "name": "GScr_SetTeamForTrigger",
+   "signature": "void GScr_SetTeamForTrigger(uint32 self);",
+   "subsystem": "script/triggers",
+   "confidence": "inferred",
+   "evidence": "setteamfortrigger builtin. Evidence: \"setteamfortrigger: trigger entity must be of type %s or %s\" and [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117a72",
+   "name": "GScr_ClientClaimTrigger",
+   "signature": "void GScr_ClientClaimTrigger(uint32 self);",
+   "subsystem": "script/triggers",
+   "confidence": "inferred",
+   "evidence": "clientclaimtrigger builtin. Evidence: \"clientclaimtrigger: claimer must be a client.\" and [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117b5a",
+   "name": "GScr_ClientReleaseTrigger",
+   "signature": "void GScr_ClientReleaseTrigger(uint32 self);",
+   "subsystem": "script/triggers",
+   "confidence": "inferred",
+   "evidence": "clientreleasetrigger builtin. Evidence: \"clientreleasetrigger: releaser must be a client.\" and [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117c28",
+   "name": "GScr_ReleaseClaimedTrigger",
+   "signature": "void GScr_ReleaseClaimedTrigger(uint32 self);",
+   "subsystem": "script/triggers",
+   "confidence": "inferred",
+   "evidence": "releaseclaimedtrigger builtin. Evidence: \"releaseclaimedtrigger: trigger entity must be of type %s or %s\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08117e62",
+   "name": "GScr_SetEntityOriginFromVector",
+   "signature": "void GScr_SetEntityOriginFromVector(struct gentity_s *ent);",
+   "subsystem": "game/entity",
+   "confidence": "unknown",
+   "evidence": "Sets the entity origin from param 0 along a position trajectory and relinks it when unk_f0 is set.",
+   "status": "translated",
+   "notes": "Takes an entity pointer, not a script self ref (param_1 used as the entity); confirm caller convention."
+  },
+  {
+   "addr": "0x08117ea6",
+   "name": "GScr_SetEntityAnglesFromVector",
+   "signature": "void GScr_SetEntityAnglesFromVector(struct gentity_s *ent);",
+   "subsystem": "game/entity",
+   "confidence": "unknown",
+   "evidence": "Sets the entity angle trajectory from param 0 (vector).",
+   "status": "translated",
+   "notes": "Takes an entity pointer, not a script self ref; confirm caller convention."
+  },
+  {
+   "addr": "0x08117ed4",
+   "name": "GScr_SetEntityHealth",
+   "signature": "void GScr_SetEntityHealth(struct gentity_s *ent);",
+   "subsystem": "game/entity",
+   "confidence": "unknown",
+   "evidence": "Sets the entity health from param 0 (integer). Entities with a client also copy the value to",
+   "status": "translated",
+   "notes": "Takes an entity pointer, not a script self ref; confirm caller convention."
+  },
+  {
+   "addr": "0x08119828",
+   "name": "SP_script_mover_linked",
+   "signature": "void SP_script_mover_linked(struct gentity_s *ent);",
+   "subsystem": "game/mover",
+   "confidence": "unknown",
+   "evidence": "Finishes a script mover spawn: common mover setup, clears contents, links the entity, then sets",
+   "status": "translated",
+   "notes": "Mover setup helper; calls SP_script_mover_common (0x08119604)."
+  },
+  {
+   "addr": "0x0811998a",
+   "name": "ScriptMover_moveto",
+   "signature": "void ScriptMover_moveto(uint32 self);",
+   "subsystem": "game/mover",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x0815e3a0 (script_mover methods) entry \"moveto\" -> this handler",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119a6c",
+   "name": "ScriptMover_movegravity",
+   "signature": "void ScriptMover_movegravity(uint32 self);",
+   "subsystem": "game/mover",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x0815e3a0 (script_mover methods) entry \"movegravity\" -> this handler",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119c58",
+   "name": "ScriptMover_movey",
+   "signature": "void ScriptMover_movey(uint32 self);",
+   "subsystem": "game/mover",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x0815e3a0 (script_mover methods) entry \"movey\" -> this handler",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119c74",
+   "name": "ScriptMover_movez",
+   "signature": "void ScriptMover_movez(uint32 self);",
+   "subsystem": "game/mover",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x0815e3a0 (script_mover methods) entry \"movez\" -> this handler",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119c90",
+   "name": "ScriptMover_rotateto",
+   "signature": "void ScriptMover_rotateto(uint32 self);",
+   "subsystem": "game/mover",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x0815e3a0 (script_mover methods) entry \"rotateto\" -> this handler",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119eea",
+   "name": "ScriptMover_rotateyaw",
+   "signature": "void ScriptMover_rotateyaw(uint32 self);",
+   "subsystem": "game/mover",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x0815e3a0 (script_mover methods) entry \"rotateyaw\" -> this handler",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119f06",
+   "name": "ScriptMover_rotateroll",
+   "signature": "void ScriptMover_rotateroll(uint32 self);",
+   "subsystem": "game/mover",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x0815e3a0 (script_mover methods) entry \"rotateroll\" -> this handler",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08119f22",
+   "name": "ScriptMover_rotatevelocity",
+   "signature": "void ScriptMover_rotatevelocity(uint32 self);",
+   "subsystem": "game/mover",
+   "confidence": "observed",
+   "evidence": "naming pass 2: dispatch table 0x0815e3a0 (script_mover methods) entry \"rotatevelocity\" -> this handler",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0864c380",
+   "name": "level_clients",
+   "type": "gclient_t *",
+   "confidence": "inferred",
+   "evidence": "pointer loaded in GScr_ApplyManualChangeNames as the client array base; stride 0x28a4"
+  },
+  {
+   "addr": "0x0864c564",
+   "name": "g_0864c564",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "loop bound of the client array walk"
+  },
+  {
+   "addr": "0x0864c594",
+   "name": "level_manualChangeMode",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "set by GScr_SetManualChangeMode; tested as manual_change gate"
+  },
+  {
+   "addr": "0x0864c580",
+   "name": "level_teamScoreAxis",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "axis team value stored by GScr_SetTeamScore and read by GScr_GetTeamScoreIndex"
+  },
+  {
+   "addr": "0x0864c584",
+   "name": "level_teamScoreAllies",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "allies team value stored by GScr_SetTeamScore and read by GScr_GetTeamScoreIndex"
+  },
+  {
+   "addr": "0x0864c590",
+   "name": "level_teamScoresDirty",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "set to 1 by GScr_SetTeamScore"
+  },
+  {
+   "addr": "0x0864c39c",
+   "name": "level_initializing",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "gate for the loadFx error (nonzero allows late loadFx)"
+  },
+  {
+   "addr": "0x0864c56c",
+   "name": "g_0864c56c",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "copied into the client shellshock start time"
+  },
+  {
+   "addr": "0x0864e0d4",
+   "name": "g_mapChangeKeepStateArg",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "argument stored by the map/exitlevel builtins"
+  },
+  {
+   "addr": "0x0864f970",
+   "name": "level_mapCommandState",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "map/restart/exitlevel call-state (1 restart, 2 map, 3 exitlevel)"
+  },
+  {
+   "addr": "0x0864f974",
+   "name": "g_radiusDamageActiveSource",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "active radius-damage source; set around G_RadiusDamage"
+  },
+  {
+   "addr": "0x0864f978",
+   "name": "level_ignorePlayerRadiusDamage",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "radius-damage source selected by GScr_SetRadiusDamageTag"
+  },
+  {
+   "addr": "0x0860b420",
+   "name": "g_gameContextPtr",
+   "type": "void *",
+   "confidence": "unknown",
+   "evidence": "pointer set to g_0864f9c0 by GScr_Shellshock before BG_AnimScriptEvent"
+  },
+  {
+   "addr": "0x0864f9c0",
+   "name": "g_levelBlock",
+   "type": "byte[]",
+   "confidence": "unknown",
+   "evidence": "shellshock scratch record (address only)"
+  },
+  {
+   "addr": "0x087a1fa0",
+   "name": "g_087a1fa0",
+   "type": "byte[]",
+   "confidence": "inferred",
+   "evidence": "world attacker entity passed to G_RadiusDamage"
+  },
+  {
+   "addr": "0x087a2408",
+   "name": "g_087a2408",
+   "type": "int *",
+   "confidence": "inferred",
+   "evidence": "level record pointer; g_087a2408[2] is the entity count"
+  },
+  {
+   "addr": "0x08716400",
+   "name": "g_gentities",
+   "type": "gentity_t[]",
+   "confidence": "inferred",
+   "evidence": "game entity array, stride 0x230 (matches chunk 050)"
+  },
+  {
+   "addr": "0x0814cfc8",
+   "name": "vec3_origin",
+   "type": "const float[3]",
+   "confidence": "observed",
+   "evidence": "zero vector in .rodata used as mins/maxs"
+  },
+  {
+   "addr": "0x08187ba0",
+   "name": "g_spawnTraceMins",
+   "type": "const float[3]",
+   "confidence": "observed",
+   "evidence": "trace mins (-15, -15, 0) in .data"
+  },
+  {
+   "addr": "0x08187bac",
+   "name": "g_spawnTraceMaxs",
+   "type": "const float[3]",
+   "confidence": "observed",
+   "evidence": "trace maxs (15, 15, 70) in .data"
+  },
+  {
+   "addr": "0x08853222",
+   "name": "scr_str_allies",
+   "type": "short",
+   "confidence": "unknown",
+   "evidence": "script string handle for the allies team"
+  },
+  {
+   "addr": "0x08853224",
+   "name": "scr_str_axis",
+   "type": "short",
+   "confidence": "unknown",
+   "evidence": "script string handle for the axis team"
+  },
+  {
+   "addr": "0x08853294",
+   "name": "scr_str_none",
+   "type": "short",
+   "confidence": "unknown",
+   "evidence": "script string handle for the none team"
+  },
+  {
+   "addr": "0x08853298",
+   "name": "scr_str_auto_change",
+   "type": "short",
+   "confidence": "unknown",
+   "evidence": "script string handle for manual mode 0"
+  },
+  {
+   "addr": "0x0885329a",
+   "name": "scr_str_manual_change",
+   "type": "short",
+   "confidence": "unknown",
+   "evidence": "script string handle for manual mode 1"
+  },
+  {
+   "addr": "0x08853262",
+   "name": "scrStr_script_brushmodel",
+   "type": "short",
+   "confidence": "unknown",
+   "evidence": "script string handle for script_brushmodel"
+  },
+  {
+   "addr": "0x08853264",
+   "name": "scr_str_script_model",
+   "type": "short",
+   "confidence": "unknown",
+   "evidence": "script string handle for script_model"
+  },
+  {
+   "addr": "0x08853266",
+   "name": "scr_str_script_origin",
+   "type": "short",
+   "confidence": "unknown",
+   "evidence": "script string handle for script_origin"
+  },
+  {
+   "addr": "0x08853276",
+   "name": "scr_str_trigger_use",
+   "type": "short",
+   "confidence": "unknown",
+   "evidence": "script string handle for trigger type 1"
+  },
+  {
+   "addr": "0x08853278",
+   "name": "scr_str_trigger_use_touch",
+   "type": "short",
+   "confidence": "unknown",
+   "evidence": "script string handle for trigger type 2"
+  },
+  {
+   "addr": "0x0864f988",
+   "name": "g_scrFileHandles",
+   "type": "int[]",
+   "confidence": "unknown",
+   "evidence": "script file handles per slot (-1 free); only slot 0 is searched"
+  },
+  {
+   "addr": "0x0864f98c",
+   "name": "g_0864f98c",
+   "type": "char *[]",
+   "confidence": "unknown",
+   "evidence": "script file read buffers per slot"
+  },
+  {
+   "addr": "0x0864f990",
+   "name": "g_scrParseSaveRecords",
+   "type": "int[]",
+   "confidence": "unknown",
+   "evidence": "per-slot parse record, stride 0x14 (ParseSave)"
+  },
+  {
+   "addr": "0x0864ce9c",
+   "name": "g_0864ce9c",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "server config value written to configstring 0x0f"
+  },
+  {
+   "addr": "0x0864cea4",
+   "name": "g_0864cea4",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "server config value written to configstring 0x11"
+  },
+  {
+   "addr": "0x0864cea8",
+   "name": "g_0864cea8",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "server config value written to configstring 0x12"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "cod2_gentity_s",
+   "size": "0x230",
+   "evidence": "Stride 0x230 array at 0x08716400; field offsets used here: inUse 0xfc, client 0x158, turret 0x15c, modelIndex 0x164, health 0x194, unk_198, unk_1b4, triggerTeam 0x167, classname 0x168, unk_f0, unk_80. Same shape as chunk 050 with different names for 0x5c-0x6f, 0x164-0x167 and 0x194. [L26: replaced by canonical type in cod2_canon.h; local definition deleted]"
+  },
+  {
+   "name": "cod2_gclient_s",
+   "size": "0x27f0 (minimum; full size not recovered)",
+   "evidence": "Offsets used: origin 0x14, unk_cc 0xcc, unk_12c 0x12c, shellshock 0x5d8/0x5dc/0x5e0, team 0x274c, viewKickDamage 0x27e0, viewKickDir 0x27e4. [L26: replaced by canonical type in cod2_canon.h; local definition deleted]"
+  },
+  {
+   "name": "cod2_client_slot_s",
+   "size": "0x28a4",
+   "evidence": "Stride of the svs client array walked by GScr_ApplyManualChangeNames; state 0x26c4, pendingName 0x2708, name 0x2784. [L26: replaced by canonical type in cod2_canon.h; local definition deleted]"
+  },
+  {
+   "name": "cod2_turret_s",
+   "size": "0x1c (minimum)",
+   "evidence": "Turret record at entity +0x15c; float limit slots at 0x0c, 0x10, 0x14, 0x18. [L26: replaced by canonical type in cod2_canon.h; local definition deleted]"
+  },
+  {
+   "name": "trace_t",
+   "size": "0x24",
+   "evidence": "Same layout as chunk 050 (fraction, normal, surfaceFlags 0x10, entityNum 0x1c, startsolid 0x22). [L26: replaced by canonical type in cod2_canon.h; local definition deleted]"
+  }
+ ],
+ "open_questions": [
+  "Shared prototype conflicts: cod2_prototypes.h declares 0x08084bb2 as void Scr_ReleaseAnyValue, but its disassembly calls Scr_GetAny and ScrStr_TextFromHandle and returns the text (used here as fn_08084bb2 returning const char *). Also 0x08091e48 is declared void SV_ValidateModelName but callers use its return value as a model pointer (fn_08091e48). The merge lane must reconcile both names and signatures.",
+  "Rounding helper: Ghidra renders the warning-print rounding as ROUND(); this chunk uses Float_RoundHalfUp (0x081185e6). Confirm the rounding mode for 0x081167ae and the duration conversions.",
+  "Three functions (0x08117e62, 0x08117ea6, 0x08117ed4) take an entity pointer where other builtins take a script self ref. Confirm the caller convention in the dispatcher that invokes them.",
+  "Several globals (g_0864c380 clients array, g_087a2408 level record, g_0864f9c0 record) and the shellshock/fog/team semantics are structural only; names are unknown until the owning data lanes merge."
+ ],
+ "migration": {
+  "L26": "canonical headers applied; trace allsolid/startsolid swapped per canonical layout; turret_s partial view kept in chunk header"
+ }
+}

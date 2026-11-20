@@ -1,0 +1,1779 @@
+[
+ {
+  "name": "bspLump_t",
+  "size": "0x8",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint32",
+    "name": "filelen",
+    "evidence": "CMod_ReadLump 0x08055076 reads header[idx*2+2] as the byte length and header[idx*2+3] as the file offset; every CMod_Load* checks l->filelen % stride"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "fileofs",
+    "evidence": "CMod_ReadLump seeks to header[idx*2+3]-0x140; CMod_Load* use cmod_base + l->fileofs"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_002.cpp (BspFile_Load, untyped)"
+  ],
+  "conflicts": "chunk_002.cpp BspFile_Load names the first word 'off' and the second 'len' (swapped relative to every consumer). CoD2 lumps are {length, offset}, not Q3's {fileofs, filelen}. chunk_100.cpp CM_ReplaceBspLump agrees with chunk_003 (hdr[2+2i]=length, hdr[3+2i]=offset).",
+  "confidence": "high"
+ },
+ {
+  "name": "bspHeader_t",
+  "size": "0x140",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int32",
+    "name": "ident",
+    "evidence": "BspFile_Load 0x08051e88 compares with 0x50534249 ('IBSP' little endian)"
+   },
+   {
+    "offset": "0x04",
+    "type": "int32",
+    "name": "version",
+    "evidence": "BspFile_Load requires 4; CM_ReplaceBspLump 0x0805228e accepts 4 or 0x3d (61)"
+   },
+   {
+    "offset": "0x08",
+    "type": "bspLump_t[39]",
+    "name": "lumps",
+    "evidence": "BspFile_Load loop i<0x27 swaps entries; minimum file size check 0x140 = 8+39*8"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_002.cpp"
+  ],
+  "conflicts": "none beyond lump field naming (see bspLump_t). Lump indices observed: 0 materials, 4 planes, 5 brushsides, 6 brushes, 25 nodes, 26 leafs, 27 leafbrushes, 28 leafsurfaces, 29 collisionverts, 30 collisionedges, 31 collisiontriangles, 32 collisionborders, 33 collisionpartitions, 34 collisionaabbtrees, 35 submodels, 36 visibility, 37 entities. Lumps 1-3 and 7-24, 38 are not read by the collision code.",
+  "confidence": "high"
+ },
+ {
+  "name": "dMaterial_t",
+  "size": "0x48",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "char[64]",
+    "name": "name",
+    "evidence": "chunk_003 CMod_LoadMaterials copies 0x48-byte records verbatim; name use not observed in collision code (inferred)"
+   },
+   {
+    "offset": "0x40",
+    "type": "int32",
+    "name": "surfaceFlags",
+    "evidence": "cm_brush_trace_planes reads material+0x40 into trace+0x10; CM_TraceThroughAabbTree copies mat->surfaceFlags"
+   },
+   {
+    "offset": "0x44",
+    "type": "int32",
+    "name": "contents",
+    "evidence": "CMod_LoadBrushes: brush->contents = materials[mat].contents & 0xdffffffb; CMod_LeafTerrainContents ORs it"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (as cm_model_s table g_08188dd0, wrong)",
+   "chunk_005_types.h (as unnamed 0x48 table)"
+  ],
+  "conflicts": "chunk_004 treats the 0x48-stride table at g_08188dd0 (cm+0x10) as 'model table' and cm_brush_trace_planes indexes it with cm_brush_side_s.model_index; the table is cm.materials. The separate cmodel_t table (also 0x48 stride) is cm.cmodels at g_08188e38.",
+  "confidence": "high"
+ },
+ {
+  "name": "cplane_t",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "normal",
+    "evidence": "CMod_LoadPlanes 0x08053d82"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float",
+    "name": "dist",
+    "evidence": "CMod_LoadPlanes"
+   },
+   {
+    "offset": "0x10",
+    "type": "uint8",
+    "name": "type",
+    "evidence": "0..2 only when normal[i]==1.0 exactly (CMod_LoadPlanes), else 3; cm_plane_tree_find_leaf tests type<3"
+   },
+   {
+    "offset": "0x11",
+    "type": "uint8",
+    "name": "signbits",
+    "evidence": "CMod_LoadPlanes: bit j set when normal[j]<0"
+   },
+   {
+    "offset": "0x12",
+    "type": "uint8[2]",
+    "name": "pad",
+    "evidence": "array stride 0x14 in CM_PlaneFromIndex"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h (promoted to cod2_types.h)",
+   "chunk_004_types.h (cm_plane_s, size unrecovered)",
+   "chunk_005_types.h (cod2_plane_s)"
+  ],
+  "conflicts": "none (chunk_004 omits signbits/pad; layout otherwise identical). File record is 0x10 bytes (normal[3], dist) so cm_planes is a rebuilt array.",
+  "confidence": "high"
+ },
+ {
+  "name": "cbrushside_t",
+  "size": "0x8",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "cplane_t*",
+    "name": "plane",
+    "evidence": "CMod_LoadBrushes: lump plane index * 0x14 + cm_planes; cm_brush_trace_planes dereferences"
+   },
+   {
+    "offset": "0x04",
+    "type": "int32",
+    "name": "materialNum",
+    "evidence": "CMod_LoadBrushes validates 0<=mat<numMaterials; cm_brush_trace_planes: &g_08188dd0[model_index] then +0x40 = surfaceFlags"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (cm_brush_side_s)",
+   "chunk_005_types.h (cod2_brush_side_s)"
+  ],
+  "conflicts": "chunk_004 names +4 'model_index' (index into 'the 0x48-byte model table'), chunk_005 names it 'surface_flags'. Code evidence (loader range check against numMaterials; trace indexes cm.materials) supports materialNum; chunk_005's name is unsupported.",
+  "confidence": "high"
+ },
+ {
+  "name": "cbrush_t",
+  "size": "0x30",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "mins",
+    "evidence": "CMod_LoadBrushes (file: 6 axial float/material pairs)"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint32",
+    "name": "contents",
+    "evidence": "material contents & 0xdffffffb"
+   },
+   {
+    "offset": "0x10",
+    "type": "float[3]",
+    "name": "maxs",
+    "evidence": "CMod_LoadBrushes"
+   },
+   {
+    "offset": "0x1c",
+    "type": "int32",
+    "name": "numsides",
+    "evidence": "file numSides - 6; extra non-axial sides only"
+   },
+   {
+    "offset": "0x20",
+    "type": "cbrushside_t*",
+    "name": "sides",
+    "evidence": "pointer into cm.brushSides, NULL when numsides==0"
+   },
+   {
+    "offset": "0x24",
+    "type": "int16[2][3]",
+    "name": "axialMaterialNum",
+    "evidence": "[0]=min faces,[1]=max faces; cm_brush_trace_planes face_tag[group][axis]; box brush uses -1"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (cm_brush_s)",
+   "chunk_005_types.h (cod2_brush_s, +0x24 left unk)"
+  ],
+  "conflicts": "chunk_004 face_tag and chunk_003 axialMaterialNum are the same field. The six axial planes are implicit (mins/maxs) and not part of sides[].",
+  "confidence": "high"
+ },
+ {
+  "name": "cnode_t",
+  "size": "0x8",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "cplane_t*",
+    "name": "plane",
+    "evidence": "CMod_LoadNodes"
+   },
+   {
+    "offset": "0x04",
+    "type": "int16[2]",
+    "name": "children",
+    "evidence": "child>=0 node index, child<0 leaf = -1-child (cm_plane_tree_find_leaf); [0] taken when point-dist >= 0 (front), [1] when <0"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h (cnode_t)",
+   "chunk_004_types.h (cm_plane_node_s front/back)",
+   "chunk_005_types.h (cod2_bsp_node_s child[2])"
+  ],
+  "conflicts": "name-only differences. File node is 0x24 bytes (plane, child0, child1, +6 ints not read); in-memory is 8 bytes.",
+  "confidence": "high"
+ },
+ {
+  "name": "cLeaf_t",
+  "size": "0x2c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint16",
+    "name": "firstCollAabbIndex",
+    "evidence": "CMod_LoadLeafs file+8; used as index into cm.aabbTrees"
+   },
+   {
+    "offset": "0x02",
+    "type": "uint16",
+    "name": "collAabbCount",
+    "evidence": "CMod_LoadLeafs file+0xc"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "brushContents",
+    "evidence": "CMod_LoadLeafBrushNodes ORs brush contents; tested vs trace contents before brush-tree trace"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint32",
+    "name": "terrainContents",
+    "evidence": "CMod_LeafTerrainContents ORs material contents of aabb trees"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "mins",
+    "evidence": "CMod_BuildLeafBrushTree: brush bounds minus 0.125"
+   },
+   {
+    "offset": "0x18",
+    "type": "float[3]",
+    "name": "maxs",
+    "evidence": "brush bounds plus 0.125"
+   },
+   {
+    "offset": "0x24",
+    "type": "int32",
+    "name": "leafBrushNode",
+    "evidence": "index into cm.brushNodes (0 = none)"
+   },
+   {
+    "offset": "0x28",
+    "type": "int16",
+    "name": "cluster",
+    "evidence": "CMod_LoadLeafs (only when loadClusters); CM_GetRecordShort28 returns it; -1 skipped by cm_leaf_list_add / SV_LinkEntity"
+   },
+   {
+    "offset": "0x2a",
+    "type": "uint8[2]",
+    "name": "pad",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (cm_leaf_s)",
+   "chunk_005_types.h (cod2_leaf_s)"
+  ],
+  "conflicts": "chunk_004 names +4 brush_mask, +8 surface_mask, +0x24 node_index, +0x28 aux; chunk_005 names +0/+2 first_item/item_count, +4/+8 mask_items_a/b, +0x24 kd_node. All map 1:1 onto chunk_003; chunk_003 is the only one with load-side evidence for field meaning. Note: cmodels[0] (world) has an unused zero leaf; the world uses plane-BSP leaves.",
+  "confidence": "high"
+ },
+ {
+  "name": "cmodel_t",
+  "size": "0x48",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "mins",
+    "evidence": "CMod_LoadSubmodels file mins - 1"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "maxs",
+    "evidence": "file maxs + 1"
+   },
+   {
+    "offset": "0x18",
+    "type": "float",
+    "name": "radius",
+    "evidence": "length of per-axis max(|mins|,|maxs|); cm_model_radius"
+   },
+   {
+    "offset": "0x1c",
+    "type": "cLeaf_t",
+    "name": "leaf",
+    "evidence": "embedded; Sweep_TraceBoxDispatch passes model+0x1c as leaf"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (cm_model_s, first 0x18 bytes unknown)"
+  ],
+  "conflicts": "chunk_004 leaves +0..0x17 as unknown_00[6]; chunk_003 shows mins/maxs. Also instantiated as the per-thread temp-box model (cm_slot_t.tempModel) and as clipMap_t.box_model at cm+0xa0.",
+  "confidence": "high"
+ },
+ {
+  "name": "cbrushnode_t",
+  "size": "0x14",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint8",
+    "name": "axis",
+    "evidence": "CMod_PartionLeafBrushes_r; split axis 0..2"
+   },
+   {
+    "offset": "0x01",
+    "type": "uint8",
+    "name": "pad",
+    "evidence": ""
+   },
+   {
+    "offset": "0x02",
+    "type": "int16",
+    "name": "leafBrushCount",
+    "evidence": "-1 = interior node with straddlers in node+1; >0 leaf with brush list; 0 = interior without straddlers or empty leaf (contents 0 so masked out)"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "contents",
+    "evidence": "OR of subtree brush contents; tested first in cm_node_trace / cm_trace_node_ray"
+   },
+   {
+    "offset": "0x08",
+    "type": "float|uint16*",
+    "name": "dist_or_leafBrushes",
+    "evidence": "union: split distance (interior) or pointer into cm.leafBrushes (leaf)"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float",
+    "name": "range",
+    "evidence": "min gap between split and nearest brush face; cm_trace_node_ray uses (box_bias[axis]+0.125)-range"
+   },
+   {
+    "offset": "0x10",
+    "type": "uint16[2]",
+    "name": "children",
+    "evidence": "relative offsets in 0x14 units; [0]=high side (point>split), [1]=low side"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (cm_node_s)",
+   "chunk_005_types.h (cod2_kdnode_s)"
+  ],
+  "conflicts": "name-only differences (extent / radius / range at +0x0c; child_offset / child). chunk_005 calls this a 'kd tree'. Array is not in the BSP file: built at load, node 0 is reserved zero node.",
+  "confidence": "high"
+ },
+ {
+  "name": "CollisionAabbTree",
+  "size": "0x20",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "box centre; CM_CullBox(tw, tree->origin, tree->halfSize)"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "halfSize",
+    "evidence": "half extents"
+   },
+   {
+    "offset": "0x18",
+    "type": "uint16",
+    "name": "materialIndex",
+    "evidence": "cm.materials[materialIndex]"
+   },
+   {
+    "offset": "0x1a",
+    "type": "uint16",
+    "name": "childCount",
+    "evidence": "0 = leaf partition"
+   },
+   {
+    "offset": "0x1c",
+    "type": "int32",
+    "name": "firstChildIndex|partitionIndex",
+    "evidence": "union by childCount"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (cm_surface_s, 0x20 unknown)",
+   "chunk_005_types.h (cod2_leaf_item_s raw 0x20)"
+  ],
+  "conflicts": "chunk_004 and chunk_005 treat the 0x20-byte table at g_08188e30 (cm+0x70) as opaque 'surfaces'/'leaf items'; it is cm.aabbTrees. chunk_004 cm_surface_ref_s.value at +0x0c (a hit's 'surface_value') is not this struct (it is read from trace->surface_ref = brush contents).",
+  "confidence": "high"
+ },
+ {
+  "name": "CollisionVertex",
+  "size": "0xc",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "xyz",
+    "evidence": "CMod_LoadCollisionVerts: file record 0x10 bytes, first 4 skipped"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (g_08188e08 vec3_t array)"
+  ],
+  "conflicts": "none",
+  "confidence": "high"
+ },
+ {
+  "name": "CollisionEdge",
+  "size": "0x30",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "cm_wedge_sphere_sweep: VectorSubtract(start_pos, edge, rel) uses edge+0"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "axis0",
+    "evidence": "chunk_004 edge->p0"
+   },
+   {
+    "offset": "0x18",
+    "type": "float[3]",
+    "name": "axis1",
+    "evidence": "chunk_004 edge->p1"
+   },
+   {
+    "offset": "0x24",
+    "type": "float[3]",
+    "name": "axis2",
+    "evidence": "chunk_004 edge->normal; loader scales by 1/length (CMod_LoadCollisionEdges)"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (cm_edge_s)"
+  ],
+  "conflicts": "chunk_004 names +0x0c/+0x18/+0x24 p0/p1/normal and leaves +0 unknown; chunk_003 names origin/axis[3][3]. Use is a local frame (origin + 3 axes), so p0/p1 are tangent/bitangent axes, not endpoints.",
+  "confidence": "medium"
+ },
+ {
+  "name": "CollisionTriangle",
+  "size": "0x48",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[4]",
+    "name": "plane",
+    "evidence": "normal.xyz + dist; chunk_004 wedge->planes[0]"
+   },
+   {
+    "offset": "0x10",
+    "type": "float[4]",
+    "name": "svec",
+    "evidence": "edge plane 1; chunk_004 planes[1]"
+   },
+   {
+    "offset": "0x20",
+    "type": "float[4]",
+    "name": "tvec",
+    "evidence": "edge plane 2; chunk_004 planes[2]"
+   },
+   {
+    "offset": "0x30",
+    "type": "int32[3]",
+    "name": "verts",
+    "evidence": "indices into cm.verts, -1 = none; stamped via vertexStamps"
+   },
+   {
+    "offset": "0x3c",
+    "type": "int32[3]",
+    "name": "edges",
+    "evidence": "indices into cm.edges, -1 = none; stamped via edgeStamps"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (cm_wedge_s / cm_edge_plane_s)"
+  ],
+  "conflicts": "name-only (wedge vs triangle). Barycentric tests: 0<=s,t and s+t<=1 with s=dot(p,svec)-svec[3].",
+  "confidence": "high"
+ },
+ {
+  "name": "CollisionBorder",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "distEq",
+    "evidence": "(nx, ny, dist); chunk_004 wall->normal[2], wall->dist"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float",
+    "name": "zBase",
+    "evidence": "chunk_004 z_base"
+   },
+   {
+    "offset": "0x10",
+    "type": "float",
+    "name": "zSlope",
+    "evidence": "chunk_004 z_slope"
+   },
+   {
+    "offset": "0x14",
+    "type": "float",
+    "name": "start",
+    "evidence": "chunk_004 tangent_min"
+   },
+   {
+    "offset": "0x18",
+    "type": "float",
+    "name": "length",
+    "evidence": "chunk_004 tangent_max; code compares side(relative to start) with it and uses z_base + tangent_max*z_slope for the far end, so it behaves as a length"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (cm_wall_s)"
+  ],
+  "conflicts": "chunk_004 field names tangent_min/tangent_max imply absolute bounds; usage (cm_wall_circle_sweep lines ~382-440) is consistent with start/length (chunk_003). Unresolved by direct disassembly check.",
+  "confidence": "medium"
+ },
+ {
+  "name": "CollisionPartition",
+  "size": "0xc",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint8",
+    "name": "triCount",
+    "evidence": "CMod_LoadCollisionPartitions out->triCount = file[2]"
+   },
+   {
+    "offset": "0x01",
+    "type": "uint8",
+    "name": "borderCount",
+    "evidence": "out->borderCount = file[3]"
+   },
+   {
+    "offset": "0x02",
+    "type": "uint8[2]",
+    "name": "pad",
+    "evidence": "not written by loader (Hunk memory content unverified)"
+   },
+   {
+    "offset": "0x04",
+    "type": "CollisionTriangle*",
+    "name": "triangles",
+    "evidence": "cm.triangles + file int@4 * 0x48"
+   },
+   {
+    "offset": "0x08",
+    "type": "CollisionBorder*",
+    "name": "borders",
+    "evidence": "cm.borders + file int@8 * 0x1c"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h"
+  ],
+  "conflicts": "none. File record is 0xc bytes {u8,u8,triCount,borderCount,int firstTri,int firstBorder}; in-memory record has the same size but pointers.",
+  "confidence": "high"
+ },
+ {
+  "name": "clipMap_t",
+  "size": "0x110",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "char*",
+    "name": "name",
+    "evidence": "CM_LoadMapFromBsp; CM_LoadMap strcasecmp"
+   },
+   {
+    "offset": "0x04",
+    "type": "int32",
+    "name": "numStaticModels",
+    "evidence": "chunk_004 g_08188dc4 = cm+4; cm_load_static_models"
+   },
+   {
+    "offset": "0x08",
+    "type": "cm_static_model_t*",
+    "name": "staticModels",
+    "evidence": "g_08188dc8 = cm+8"
+   },
+   {
+    "offset": "0x0c",
+    "type": "int32",
+    "name": "numMaterials",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "dMaterial_t*",
+    "name": "materials",
+    "evidence": "points 0x48 past allocation start (index -1 valid)"
+   },
+   {
+    "offset": "0x14",
+    "type": "int32",
+    "name": "numBrushSides",
+    "evidence": ""
+   },
+   {
+    "offset": "0x18",
+    "type": "cbrushside_t*",
+    "name": "brushSides",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1c",
+    "type": "int32",
+    "name": "numNodes",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20",
+    "type": "cnode_t*",
+    "name": "nodes",
+    "evidence": "g_08188de0"
+   },
+   {
+    "offset": "0x24",
+    "type": "int32",
+    "name": "numLeafs",
+    "evidence": ""
+   },
+   {
+    "offset": "0x28",
+    "type": "cLeaf_t*",
+    "name": "leafs",
+    "evidence": "g_08188de8"
+   },
+   {
+    "offset": "0x2c",
+    "type": "int32",
+    "name": "numBrushNodes",
+    "evidence": ""
+   },
+   {
+    "offset": "0x30",
+    "type": "cbrushnode_t*",
+    "name": "brushNodes",
+    "evidence": "g_08188df0"
+   },
+   {
+    "offset": "0x34",
+    "type": "int32",
+    "name": "numLeafBrushes",
+    "evidence": ""
+   },
+   {
+    "offset": "0x38",
+    "type": "uint16*",
+    "name": "leafBrushes",
+    "evidence": ""
+   },
+   {
+    "offset": "0x3c",
+    "type": "int32",
+    "name": "numLeafSurfaces",
+    "evidence": ""
+   },
+   {
+    "offset": "0x40",
+    "type": "int32*",
+    "name": "leafSurfaces",
+    "evidence": "loaded, no reader found in this range (unknown)"
+   },
+   {
+    "offset": "0x44",
+    "type": "int32",
+    "name": "numVerts",
+    "evidence": "CM_InitSlotBuffers uses it for vertexStamps size"
+   },
+   {
+    "offset": "0x48",
+    "type": "CollisionVertex*",
+    "name": "verts",
+    "evidence": "g_08188e08"
+   },
+   {
+    "offset": "0x4c",
+    "type": "int32",
+    "name": "numEdges",
+    "evidence": ""
+   },
+   {
+    "offset": "0x50",
+    "type": "CollisionEdge*",
+    "name": "edges",
+    "evidence": "g_08188e10"
+   },
+   {
+    "offset": "0x54",
+    "type": "int32",
+    "name": "numTriangles",
+    "evidence": ""
+   },
+   {
+    "offset": "0x58",
+    "type": "CollisionTriangle*",
+    "name": "triangles",
+    "evidence": ""
+   },
+   {
+    "offset": "0x5c",
+    "type": "int32",
+    "name": "numBorders",
+    "evidence": ""
+   },
+   {
+    "offset": "0x60",
+    "type": "CollisionBorder*",
+    "name": "borders",
+    "evidence": ""
+   },
+   {
+    "offset": "0x64",
+    "type": "int32",
+    "name": "numPartitions",
+    "evidence": "CM_InitSlotBuffers partitionChecks size"
+   },
+   {
+    "offset": "0x68",
+    "type": "CollisionPartition*",
+    "name": "partitions",
+    "evidence": ""
+   },
+   {
+    "offset": "0x6c",
+    "type": "int32",
+    "name": "numAabbTrees",
+    "evidence": ""
+   },
+   {
+    "offset": "0x70",
+    "type": "CollisionAabbTree*",
+    "name": "aabbTrees",
+    "evidence": "g_08188e30"
+   },
+   {
+    "offset": "0x74",
+    "type": "int32",
+    "name": "numSubModels",
+    "evidence": "CM_GetCount_08188e34 returns it; cm_model_get bound; g_08188e34"
+   },
+   {
+    "offset": "0x78",
+    "type": "cmodel_t*",
+    "name": "cmodels",
+    "evidence": "g_08188e38"
+   },
+   {
+    "offset": "0x7c",
+    "type": "uint16",
+    "name": "numBrushes",
+    "evidence": ""
+   },
+   {
+    "offset": "0x7e",
+    "type": "uint16",
+    "name": "pad",
+    "evidence": ""
+   },
+   {
+    "offset": "0x80",
+    "type": "cbrush_t*",
+    "name": "brushes",
+    "evidence": "g_08188e40; one extra element allocated for box brush"
+   },
+   {
+    "offset": "0x84",
+    "type": "int32",
+    "name": "numClusters",
+    "evidence": "g_08188e44 (cm_table_entry_address bound)"
+   },
+   {
+    "offset": "0x88",
+    "type": "int32",
+    "name": "clusterBytes",
+    "evidence": "g_08188e48 (stride)"
+   },
+   {
+    "offset": "0x8c",
+    "type": "byte*",
+    "name": "visibility",
+    "evidence": "g_08188e4c (base)"
+   },
+   {
+    "offset": "0x90",
+    "type": "int32",
+    "name": "vised",
+    "evidence": "g_08188e50"
+   },
+   {
+    "offset": "0x94",
+    "type": "int32",
+    "name": "numEntityChars",
+    "evidence": ""
+   },
+   {
+    "offset": "0x98",
+    "type": "char*",
+    "name": "entityString",
+    "evidence": "g_08188e58; CM_GetCount_08188e58 returns it; Com_Parse cursor source"
+   },
+   {
+    "offset": "0x9c",
+    "type": "cbrush_t*",
+    "name": "box_brush",
+    "evidence": "CM_InitBoxHull; CM_InitSlotBuffers copies 0x30 bytes from it"
+   },
+   {
+    "offset": "0xa0",
+    "type": "cmodel_t",
+    "name": "box_model",
+    "evidence": "0x48 bytes at cm+0xa0 (g_08188e60) copied by CM_InitSlotBuffers (0x48); contains the chunk_003 'box_leaf' at 0xbc"
+   },
+   {
+    "offset": "0xe8",
+    "type": "int32[9]",
+    "name": "unknown_0e8",
+    "evidence": "never referenced in range; unknown"
+   },
+   {
+    "offset": "0x10c",
+    "type": "int32",
+    "name": "checksum",
+    "evidence": "CM_LoadMap returns g_08188ecc = cm+0x10c"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_002.cpp/chunk_002_types.h (cm_map_s, opaque)",
+   "chunk_004_types.h (globals by address)",
+   "chunk_005_types.h (globals by address)"
+  ],
+  "conflicts": "chunk_003 hides cm+4/+8 as unknown_004[2] and cm+0xa0..0xe8 as unknown_0a0[7]+box_leaf+...; chunk_004 names the same words g_08188dc4/dc8 (static models) and chunk_005 reuses them as 'brush box records' (cod2_area_box_s = cm_static_model_s). chunk_002 comment 'stride 0x2c rows through g_08188de8' = cm.leafs. chunk_003's `box_leaf` is the leaf of an embedded cmodel_t at 0xa0 (0xa0+0x1c=0xbc; 0xa0+0x48=0xe8) - inferred from CM_InitSlotBuffers copying 0x48 bytes from cm+0xa0 and Sweep_* reading model+0x1c as leaf.",
+  "confidence": "high"
+ },
+ {
+  "name": "cm_slot_t",
+  "size": "0x18",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int32",
+    "name": "counter",
+    "evidence": "++ on every cm_scratch_acquire; copied to traceWork+0xa0 (checkcount / visit stamp)"
+   },
+   {
+    "offset": "0x04",
+    "type": "int32*",
+    "name": "edgeStamps",
+    "evidence": "Hunk_Alloc(numEdges*4)"
+   },
+   {
+    "offset": "0x08",
+    "type": "int32*",
+    "name": "vertexStamps",
+    "evidence": "Hunk_Alloc(numVerts*4)"
+   },
+   {
+    "offset": "0x0c",
+    "type": "uint16*",
+    "name": "partitionChecks",
+    "evidence": "Hunk_Alloc(numPartitions*2)"
+   },
+   {
+    "offset": "0x10",
+    "type": "cbrush_t*",
+    "name": "tempBrush",
+    "evidence": "copy of cm.box_brush (0x30); CM_TempBoxModel writes mins/maxs/contents"
+   },
+   {
+    "offset": "0x14",
+    "type": "cmodel_t*",
+    "name": "tempModel",
+    "evidence": "copy of cm.box_model (0x48); returned by cm_model_get for index>=numSubModels"
+   }
+  ],
+  "defined_in": [
+   "chunk_002_types.h (cm_slot_s, field_00/buf_04..)",
+   "chunk_004_types.h (trace_s tail, unnamed)"
+  ],
+  "conflicts": "chunk_002 names buf_0c/buf_04/buf_08 by allocation order only; its copy_10/copy_14 are the temp brush/model. One slot per thread index via Com_SetThreadBlocks (chunk_030) -> Sys_SetValue(3, slots+tid*0x18); the table g_085b7660_slots has 2 entries.",
+  "confidence": "high"
+ },
+ {
+  "name": "traceWork_t",
+  "size": "0xb8",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "start",
+    "evidence": "Sweep_BuildSegment: box-centre-shifted start"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "end",
+    "evidence": ""
+   },
+   {
+    "offset": "0x18",
+    "type": "float[3]",
+    "name": "invDelta",
+    "evidence": "Box_ComputeInverseExtents(tr) writes 1/(end-start) per axis"
+   },
+   {
+    "offset": "0x24",
+    "type": "float[3]",
+    "name": "delta",
+    "evidence": "end-start"
+   },
+   {
+    "offset": "0x30",
+    "type": "float",
+    "name": "length",
+    "evidence": "sqrt(lengthSq)"
+   },
+   {
+    "offset": "0x34",
+    "type": "float",
+    "name": "lengthSq",
+    "evidence": "cm_trace_endpoint_sphere uses as qa"
+   },
+   {
+    "offset": "0x38",
+    "type": "float[3]",
+    "name": "midpoint",
+    "evidence": "(start+end)/2; CM_CullBox"
+   },
+   {
+    "offset": "0x44",
+    "type": "float[3]",
+    "name": "halfDelta",
+    "evidence": "delta/2"
+   },
+   {
+    "offset": "0x50",
+    "type": "float[3]",
+    "name": "halfDeltaAbs",
+    "evidence": ""
+   },
+   {
+    "offset": "0x5c",
+    "type": "float[3]",
+    "name": "size",
+    "evidence": "box half extents (maxs-center); chunk_004 box_bias, chunk_005 extents"
+   },
+   {
+    "offset": "0x68",
+    "type": "float[3]",
+    "name": "boundsMin",
+    "evidence": "swept AABB incl. radius+skin; chunk_005 box2_mins"
+   },
+   {
+    "offset": "0x74",
+    "type": "float[3]",
+    "name": "boundsMax",
+    "evidence": "chunk_005 box2_maxs"
+   },
+   {
+    "offset": "0x80",
+    "type": "uint32",
+    "name": "contents",
+    "evidence": "trace content mask"
+   },
+   {
+    "offset": "0x84",
+    "type": "int32",
+    "name": "isPoint",
+    "evidence": "1 when sum of half extents == 0"
+   },
+   {
+    "offset": "0x88",
+    "type": "int32",
+    "name": "axialCullOnly",
+    "evidence": "1 when swept-box volume < extents-volume*16*length (Sweep_UpdateCullFlag); CM_CullBox skips cross-axis tests when set"
+   },
+   {
+    "offset": "0x8c",
+    "type": "float",
+    "name": "radius",
+    "evidence": "min(size.x,size.z) per Sweep_BuildSegment (l120)"
+   },
+   {
+    "offset": "0x90",
+    "type": "float",
+    "name": "offsetZ",
+    "evidence": "size.z - radius ('skin'); chunk_004 tolerance"
+   },
+   {
+    "offset": "0x94",
+    "type": "float[3]",
+    "name": "offset",
+    "evidence": "(radius,radius,radius+skin); chunk_004 half_extent"
+   },
+   {
+    "offset": "0xa0",
+    "type": "int32",
+    "name": "checkcount",
+    "evidence": "slot.counter; partition compare reads WORD (movzx) at 0x8055b81; edge/vertex compare uses full int32"
+   },
+   {
+    "offset": "0xa4",
+    "type": "int32*",
+    "name": "edgeStamps",
+    "evidence": "slot.edgeStamps"
+   },
+   {
+    "offset": "0xa8",
+    "type": "int32*",
+    "name": "vertexStamps",
+    "evidence": "slot.vertexStamps"
+   },
+   {
+    "offset": "0xac",
+    "type": "uint16*",
+    "name": "partitionChecks",
+    "evidence": "slot.partitionChecks"
+   },
+   {
+    "offset": "0xb0",
+    "type": "cbrush_t*",
+    "name": "tempBrush",
+    "evidence": "tested as +0xc contents & mask at 0x805b705 for model 0x3ff"
+   },
+   {
+    "offset": "0xb4",
+    "type": "cmodel_t*",
+    "name": "tempModel",
+    "evidence": "Sweep_ClipBoxHalves reads +0..+0x17 as mins/maxs (chunk_005 world_bounds)"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h (traceWork_t)",
+   "chunk_004_types.h (cm_trace_s)",
+   "chunk_005_types.h (cod2_trace_s)"
+  ],
+  "conflicts": "(1) chunk_003 declares checkcount as signed int16 at 0xa0 and compares (unsigned)partitionChecks[x] != (int)checkcount; disassembly uses movzx (zero-extend, 0x8055b81) so it is uint16 for partitions; chunk_004 declares int32 which is right for the edge/vertex stamps. (2) chunk_004 leaves 0xac unknown and names 0xb0 surface_ref/0xb4 bounds_ref (cm_surface_ref_s.value@0xc = brush contents, i.e. surface_ref is the temp brush and bounds_ref the temp model); chunk_005 types 0xa0..0xb3 as unk_a0[0x14] and 0xb4 as `const float *world_bounds`. (3) chunk_005 Sweep_BuildSegment calls cm_scratch_acquire(work) with a local `unsigned char work[16]`: disassembly (0x805b6bf-0x805b6cd) passes &tr+0xa0, and the callee writes 24 bytes, so work[] is a reconstruction defect. (4) chunk_004 names +0x5c box_bias and +0x94 half_extent, chunk_005 extents/offset: same fields.",
+  "confidence": "high"
+ },
+ {
+  "name": "trace_t",
+  "size": "0x24",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float",
+    "name": "fraction",
+    "evidence": "initialised to 1.0 and rest zeroed by Sweep_TraceBoxInit (memset 0x24)"
+   },
+   {
+    "offset": "0x04",
+    "type": "float[3]",
+    "name": "normal",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "int32",
+    "name": "surfaceFlags",
+    "evidence": "dMaterial+0x40 (cm_brush_trace_planes) / mat->surfaceFlags; set to 0 for entity hits (SV_ClipMoveToEntity_Line)"
+   },
+   {
+    "offset": "0x14",
+    "type": "int32",
+    "name": "contents",
+    "evidence": "brush->contents or material contents; ent->contents for entity hits"
+   },
+   {
+    "offset": "0x18",
+    "type": "dMaterial_t*",
+    "name": "material",
+    "evidence": "pointer into cm.materials; 0 for entity hits"
+   },
+   {
+    "offset": "0x1c",
+    "type": "uint16",
+    "name": "entityNum",
+    "evidence": "0x3fe world / 0x3ff none (SV_Trace, Trace_BoxWorldThenEntities); cm_static_model_trace writes 0x3fe"
+   },
+   {
+    "offset": "0x1e",
+    "type": "uint16",
+    "name": "field_1e",
+    "evidence": "zeroed on entity hit; copied from DObj trace record (cmtrace_s+0x14) - meaning unknown"
+   },
+   {
+    "offset": "0x20",
+    "type": "uint16",
+    "name": "field_20",
+    "evidence": "as field_1e (cmtrace_s+0x16)"
+   },
+   {
+    "offset": "0x22",
+    "type": "uint8",
+    "name": "allsolid",
+    "evidence": "cm_brush_trace_planes asm 0x805a169 sets +0x22 only when 'inside' (getout==0)"
+   },
+   {
+    "offset": "0x23",
+    "type": "uint8",
+    "name": "startsolid",
+    "evidence": "asm 0x805a15c sets +0x23 unconditionally when no entering plane found"
+   }
+  ],
+  "defined_in": [
+   "chunk_003_types.h",
+   "chunk_004_types.h (cm_hit_s)",
+   "chunk_005_types.h (cod2_trace_result_s)",
+   "chunk_023_types.h",
+   "chunk_041_types.h",
+   "chunk_045_types.h"
+  ],
+  "conflicts": "CONTRADICTION: chunk_003, chunk_041 and chunk_045 name +0x22 startsolid / +0x23 allsolid; chunk_004 names +0x22 all_solid / +0x23 start_solid; chunk_005 'flag_22'/'unk_23'. Disassembly of cm_brush_trace_planes (0x805a15c/0x805a169: +0x23 stored first and unconditionally, +0x22 stored only under the 'inside' branch together with fraction=0) supports chunk_004 (+0x22 allsolid, +0x23 startsolid, matching Q3 field order). Consequently PM_Trace (chunk_041 0x080e1360, `cmp BYTE [eax+0x23],0` at 0x80e13b8) and PM_CorrectAllSolid (cmp +0x23 at 0x80e3562) test STARTSOLID although the chunk names them allsolid; chunk_003 CM_PositionTestInLeaf checks +0x22 (allsolid) under the name startsolid. Other: chunk_023 calls +0x10 'dist' and +0x18 'field_18' (they are surfaceFlags/material); chunk_045 puts endpos at +4 and normal at +0x10 (inconsistent with all other chunks); chunk_004 cm_hit_s.unknown_10/surface_value/surface = surfaceFlags/contents/material, flags@0x1c = entityNum.",
+  "confidence": "medium"
+ },
+ {
+  "name": "cm_leaf_list_t",
+  "size": "0x2c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int32",
+    "name": "count",
+    "evidence": ""
+   },
+   {
+    "offset": "0x04",
+    "type": "int32",
+    "name": "capacity",
+    "evidence": ""
+   },
+   {
+    "offset": "0x08",
+    "type": "int32",
+    "name": "overflow",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "int32*",
+    "name": "items",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "float[3]",
+    "name": "mins",
+    "evidence": "box query bounds"
+   },
+   {
+    "offset": "0x1c",
+    "type": "float[3]",
+    "name": "maxs",
+    "evidence": ""
+   },
+   {
+    "offset": "0x28",
+    "type": "int32",
+    "name": "lastLeaf",
+    "evidence": "only updated for leaves with cluster != -1 (cm_leaf_list_add)"
+   }
+  ],
+  "defined_in": [
+   "chunk_004_types.h (cm_leaf_list_s)"
+  ],
+  "conflicts": "size 0x2c is implied by offsets (last field at 0x28, 4 bytes); chunk_004 asserts no size. Q3 leafList_t analogue.",
+  "confidence": "medium"
+ },
+ {
+  "name": "cm_static_model_t",
+  "size": "0x50",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint16",
+    "name": "next",
+    "evidence": "Area_InsertBoxIntoNode box->next (chunk_005); chunk_004 leaves it unknown_00 uint32"
+   },
+   {
+    "offset": "0x02",
+    "type": "uint16",
+    "name": "pad",
+    "evidence": ""
+   },
+   {
+    "offset": "0x04",
+    "type": "XModel*",
+    "name": "model",
+    "evidence": "cm_static_model_trace: XModel_TraceLine(model->handle,...); Area_*: XModel_GetContents(box->contents) with the same word - chunk_005 mis-types it as uint32 contents"
+   },
+   {
+    "offset": "0x08",
+    "type": "float[3]",
+    "name": "origin",
+    "evidence": "cm_static_model_set_transform"
+   },
+   {
+    "offset": "0x14",
+    "type": "float[3][3]",
+    "name": "axes",
+    "evidence": "inverse of scaled AnglesToAxis (Mat3_Invert)"
+   },
+   {
+    "offset": "0x38",
+    "type": "float[3]",
+    "name": "absmin",
+    "evidence": "XModel_ComputeBounds result + origin; chunk_005 box->mins"
+   },
+   {
+    "offset": "0x44",
+    "type": "float[3]",
+    "name": "absmax",
+    "evidence": "chunk_005 box->maxs"
+   }
+  ],
+  "defined_in": [
+   "chunk_004_types.h (cm_static_model_s)",
+   "chunk_005_types.h (cod2_area_box_s)"
+  ],
+  "conflicts": "chunk_005 treats these 0x50-byte records as 'brush boxes' of the area tree and names +4 'contents'; chunk_004 identifies them as static models allocated under tag CM_CreateStaticModel (string at 0xf8202). They are the same array (cm+8, count cm+4). 1-based indices in the area tree (record n at base+(n-1)*0x50).",
+  "confidence": "high"
+ },
+ {
+  "name": "cm_area_node_t",
+  "size": "0x18",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint32",
+    "name": "staticModelContents",
+    "evidence": "OR of XModel_GetContents of linked static models in subtree; tested by Area_SweepBoxRecords / Area_TraceSegmentRecords (chunk_006 maskA)"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32",
+    "name": "entityContents",
+    "evidence": "OR of linked entity contents; tested by CM_AreaEntities_r and SpatialTree_* (chunk_006 maskB)"
+   },
+   {
+    "offset": "0x08",
+    "type": "uint16",
+    "name": "entityHead",
+    "evidence": "1-based svEntity index, 0 = empty"
+   },
+   {
+    "offset": "0x0a",
+    "type": "uint16",
+    "name": "staticModelHead",
+    "evidence": "1-based static model index"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float",
+    "name": "splitDist",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "uint16",
+    "name": "splitAxis",
+    "evidence": "0=x, 1=y; z never split"
+   },
+   {
+    "offset": "0x12",
+    "type": "uint16",
+    "name": "parent",
+    "evidence": "also free-list link when unused"
+   },
+   {
+    "offset": "0x14",
+    "type": "uint16[2]",
+    "name": "child",
+    "evidence": "[0]=coordinate > splitDist, [1]= < splitDist"
+   }
+  ],
+  "defined_in": [
+   "chunk_005_types.h (cod2_area_node_s)",
+   "chunk_006_types.h (SpatialNode)"
+  ],
+  "conflicts": "chunk_006 names +0 maskA/+4 maskB/+8 entryHead/+0xa entryHeadAlt ('other entry array'); chunk_005 names them brush_contents/entity_contents/entity_head/brush_head. Same struct. NOTE chunk_005 brush_contents@0 vs entity_contents@4 and chunk_006 maskA@0 'tested by Area_TraceSegmentRecords' / maskB@4 'tested by the traces' agree on roles. Array at 0x0818901c, 0x400 entries (0 null, 1 root, 2..0x3ff free list); g_0818f016 (chunk_005 'area init word') is node[0x3ff].parent, the free-list terminator.",
+  "confidence": "high"
+ },
+ {
+  "name": "svEntity_s (collision view)",
+  "size": "0x174",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint16",
+    "name": "node",
+    "evidence": "area node index, 0 = unlinked (Area_UnlinkEntity)"
+   },
+   {
+    "offset": "0x02",
+    "type": "uint16",
+    "name": "next",
+    "evidence": "next 1-based index in node list"
+   },
+   {
+    "offset": "0x15c",
+    "type": "int32",
+    "name": "lastCluster",
+    "evidence": "chunk_023"
+   },
+   {
+    "offset": "0x160",
+    "type": "uint32",
+    "name": "contents",
+    "evidence": "stored link contents (cm_model_surface_mask of clip model); chunk_005 uses raw +0x160, chunk_006 SpatialEntry.contentsMask"
+   },
+   {
+    "offset": "0x164",
+    "type": "float[2]",
+    "name": "mins2d",
+    "evidence": "Vec2_Copy in Area_LinkEntity"
+   },
+   {
+    "offset": "0x16c",
+    "type": "float[2]",
+    "name": "maxs2d",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_005_types.h (cod2_area_link_s)",
+   "chunk_006_types.h (SpatialEntry)",
+   "chunk_023_types.h (svEntity_s)"
+  ],
+  "conflicts": "chunk_023 declares +0 as int worldSector and the record base as 0x08442618 (0-based); chunks 005/006 use g_084424a4 1-based (0x084424a4+0x174 == 0x08442618) with u16 node/next at +0/+2. chunk_005's comment 'mins[3] at 0x164, maxs[3] at 0x16c' is impossible (overlaps) and the code uses Vec2_Copy; layout is mins[2]@0x164, maxs[2]@0x16c. chunk_023 has an entityState at +4 that overlaps u16 next@+2 only if the struct is read as int worldSector.",
+  "confidence": "medium"
+ },
+ {
+  "name": "cm_segment_t",
+  "size": "0x24",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "start",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "end",
+    "evidence": ""
+   },
+   {
+    "offset": "0x18",
+    "type": "float[3]",
+    "name": "invDelta",
+    "evidence": "Box_ComputeInverseExtents"
+   }
+  ],
+  "defined_in": [
+   "chunk_005_types.h (cod2_box_s)",
+   "chunk_006_types.h (first 0x24 bytes of SegQueryB)",
+   "chunk_023_types.h (lineclip_a_s prefix)"
+  ],
+  "conflicts": "chunk_005 calls it a box (mins/maxs/inv); callers pass start,end (Area_SweepBoxFromPoints, Collision_IsSegmentClear), so it is a ray segment with precomputed 1/delta, argument 1 of Box_SegmentSlabTest.",
+  "confidence": "high"
+ },
+ {
+  "name": "cm_segment_query_t",
+  "size": "0x28",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "cm_segment_t",
+    "name": "seg",
+    "evidence": ""
+   },
+   {
+    "offset": "0x24",
+    "type": "uint32",
+    "name": "contentsMask",
+    "evidence": "chunk_006 SegQueryB / chunk_005 cod2_query_s"
+   }
+  ],
+  "defined_in": [
+   "chunk_005_types.h (cod2_query_s)",
+   "chunk_006_types.h (SegQueryB)"
+  ],
+  "conflicts": "chunk_005 cod2_area_query_box_s puts the mask first: {mask@0, segment@4} size 0x28 (Area_SweepBoxFromPoints). Two different orders for the same concept; both observed.",
+  "confidence": "high"
+ },
+ {
+  "name": "cm_line_clip_t (lineclip_a_s)",
+  "size": "0x38",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "start",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "end",
+    "evidence": ""
+   },
+   {
+    "offset": "0x18",
+    "type": "float[3]",
+    "name": "invDelta",
+    "evidence": ""
+   },
+   {
+    "offset": "0x24",
+    "type": "int32",
+    "name": "passEntityNum",
+    "evidence": ""
+   },
+   {
+    "offset": "0x28",
+    "type": "int32",
+    "name": "passOwnerNum",
+    "evidence": ""
+   },
+   {
+    "offset": "0x2c",
+    "type": "uint32",
+    "name": "contentmask",
+    "evidence": ""
+   },
+   {
+    "offset": "0x30",
+    "type": "int32",
+    "name": "flagUseDObj",
+    "evidence": "param30"
+   },
+   {
+    "offset": "0x34",
+    "type": "int32",
+    "name": "param34",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_006_types.h (SegHitTrace)",
+   "chunk_023_types.h (lineclip_a_s)"
+  ],
+  "conflicts": "chunk_006 only knows start/end/contentsMask@0x2c.",
+  "confidence": "high"
+ },
+ {
+  "name": "cm_line_query_t (lineclip_b_s)",
+  "size": "0x28",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "start",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "end",
+    "evidence": ""
+   },
+   {
+    "offset": "0x18",
+    "type": "int32",
+    "name": "passEntityNum",
+    "evidence": ""
+   },
+   {
+    "offset": "0x1c",
+    "type": "int32",
+    "name": "passOwnerNum",
+    "evidence": ""
+   },
+   {
+    "offset": "0x20",
+    "type": "uint32",
+    "name": "contentmask",
+    "evidence": ""
+   },
+   {
+    "offset": "0x24",
+    "type": "int32",
+    "name": "flag24",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_006_types.h (SegQueryA)",
+   "chunk_023_types.h (lineclip_b_s)"
+  ],
+  "conflicts": "none.",
+  "confidence": "high"
+ },
+ {
+  "name": "cm_box_clip_t (boxclip_a_s)",
+  "size": "0x54",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "mins",
+    "evidence": "-half extents"
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "maxs",
+    "evidence": "+half extents"
+   },
+   {
+    "offset": "0x18",
+    "type": "float[3]",
+    "name": "extentPlus1",
+    "evidence": "half+1"
+   },
+   {
+    "offset": "0x24",
+    "type": "float[3]",
+    "name": "start",
+    "evidence": "centre-shifted"
+   },
+   {
+    "offset": "0x30",
+    "type": "float[3]",
+    "name": "end",
+    "evidence": ""
+   },
+   {
+    "offset": "0x3c",
+    "type": "float[3]",
+    "name": "invDelta",
+    "evidence": ""
+   },
+   {
+    "offset": "0x48",
+    "type": "int32",
+    "name": "passEntityNum",
+    "evidence": ""
+   },
+   {
+    "offset": "0x4c",
+    "type": "int32",
+    "name": "passOwnerNum",
+    "evidence": ""
+   },
+   {
+    "offset": "0x50",
+    "type": "uint32",
+    "name": "contentmask",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_006_types.h (BoxHitTrace: extents@0x18, start@0x24, end@0x30, mask@0x50)",
+   "chunk_023_types.h (boxclip_a_s)"
+  ],
+  "conflicts": "size 0x54 is implied (mask is the last field).",
+  "confidence": "high"
+ },
+ {
+  "name": "cm_box_query_t (boxclip_b_s)",
+  "size": "0x48",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "float[3]",
+    "name": "mins",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "float[3]",
+    "name": "maxs",
+    "evidence": ""
+   },
+   {
+    "offset": "0x18",
+    "type": "float[3]",
+    "name": "extentPlus1",
+    "evidence": ""
+   },
+   {
+    "offset": "0x24",
+    "type": "float[3]",
+    "name": "start",
+    "evidence": ""
+   },
+   {
+    "offset": "0x30",
+    "type": "float[3]",
+    "name": "end",
+    "evidence": ""
+   },
+   {
+    "offset": "0x3c",
+    "type": "int32",
+    "name": "passEntityNum",
+    "evidence": ""
+   },
+   {
+    "offset": "0x40",
+    "type": "int32",
+    "name": "passOwnerNum",
+    "evidence": ""
+   },
+   {
+    "offset": "0x44",
+    "type": "uint32",
+    "name": "contentmask",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_006_types.h (BoxQueryTrace)",
+   "chunk_023_types.h (boxclip_b_s)"
+  ],
+  "conflicts": "none.",
+  "confidence": "high"
+ },
+ {
+  "name": "cm_area_entities_query_t",
+  "size": "0x1c",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "uint32",
+    "name": "unused",
+    "evidence": "set to 0"
+   },
+   {
+    "offset": "0x04",
+    "type": "const float*",
+    "name": "mins",
+    "evidence": ""
+   },
+   {
+    "offset": "0x08",
+    "type": "const float*",
+    "name": "maxs",
+    "evidence": ""
+   },
+   {
+    "offset": "0x0c",
+    "type": "int32*",
+    "name": "list",
+    "evidence": ""
+   },
+   {
+    "offset": "0x10",
+    "type": "int32",
+    "name": "count",
+    "evidence": ""
+   },
+   {
+    "offset": "0x14",
+    "type": "int32",
+    "name": "maxcount",
+    "evidence": ""
+   },
+   {
+    "offset": "0x18",
+    "type": "uint32",
+    "name": "mask",
+    "evidence": ""
+   }
+  ],
+  "defined_in": [
+   "chunk_005_types.h (cod2_area_query_s)"
+  ],
+  "conflicts": "none.",
+  "confidence": "high"
+ },
+ {
+  "name": "winding_t (block)",
+  "size": "4+12*count",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "int32",
+    "name": "numpoints",
+    "evidence": "cm_block_alloc 0x080576dc (string 'FreeWinding: freed a freed winding' at 0x8140020 names the pair AllocWinding/FreeWinding)"
+   },
+   {
+    "offset": "0x04",
+    "type": "float[count][3]",
+    "name": "points",
+    "evidence": "0xDEADDEAD stored in numpoints on free; max 0x40 points (ClipWinding)"
+   }
+  ],
+  "defined_in": [
+   "chunk_004_types.h (int32* blocks)",
+   "chunk_100.cpp"
+  ],
+  "conflicts": "Dead code: no direct callers or data references to BaseWindingForPlane/ClipWinding/cm_vertex_block_bounds (see doc).",
+  "confidence": "medium"
+ },
+ {
+  "name": "cm_trace_dispatch_row_t",
+  "size": "0xc",
+  "fields": [
+   {
+    "offset": "0x00",
+    "type": "trace fn*",
+    "name": "trace",
+    "evidence": "row0 0x080f3cfe Trace_BoxWorldThenEntities; row1 0x0810a528 G_TraceBox"
+   },
+   {
+    "offset": "0x04",
+    "type": "uint32(*)(const float*,int,uint32)",
+    "name": "pointContents",
+    "evidence": "row0 0x080f3dc0 Trace_ContentsWithEntities; row1 0x0809e368 SV_PointContents (inferred role)"
+   },
+   {
+    "offset": "0x08",
+    "type": "void(*)(int,int)",
+    "name": "notify",
+    "evidence": "row0 0; row1 0x080f7b38 G_HandleClientEvent"
+   }
+  ],
+  "defined_in": [
+   "chunk_041_types.h (cod2_pm_dispatch_s)"
+  ],
+  "conflicts": "chunk_041 leaves +4 as field_04; the stored targets (observed in .data at 0x081869c0) indicate a point-contents callback.",
+  "confidence": "medium"
+ }
+]

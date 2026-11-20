@@ -1,0 +1,113 @@
+{
+ "renames": [
+  {
+   "addr": "0x080a1d4a",
+   "old": "FS_GetModList_080a1d4a",
+   "new": "FS_GetFileList",
+   "confidence": "inferred",
+   "evidence": "Q3 FS_GetFileList shape (path, extension, flag, out buf, size); call at 0x080a1d88 delegates to the real FS_GetModList 0x08064bcc for the $modlist path."
+  },
+  {
+   "addr": "0x080a2a10",
+   "old": "FS_AddGameDirectory_080a2a10",
+   "new": "FS_AddGameDirectoryAllLanguages",
+   "confidence": "inferred",
+   "evidence": "Loop calls FS_AddGameDirectory 0x080a27ae at 0x080a2a41/0x080a2a6a with loop value as language parameter (per-language plus base dir); objdump 0x080a2a10-0x080a2a70."
+  },
+  {
+   "addr": "0x08065f94",
+   "old": "FS_SetIwdChecksums",
+   "new": "FS_SetServerReferencedIwds",
+   "confidence": "inferred",
+   "evidence": "Writes 0x084a64c0 (atoi per token, store at 0x08065fea) and 0x084a74c0 names consumed by FS_BuildMissingIwdList ('Need iwds'); not a general checksum setter."
+  },
+  {
+   "addr": "0x08138b7e",
+   "old": "Gb2312_CharIndex",
+   "new": "EucKr_CharIndex",
+   "confidence": "inferred",
+   "evidence": "Disassembly: sub 0xb0a0, (hi byte*3)<<5 stride 0x60 after validator 0x0813926c shared with the Korean branch of LocText_ReadChar; EUC-KR layout."
+  },
+  {
+   "addr": "0x0809e696",
+   "old": "FS_GetFlag_0849fc24",
+   "new": "FS_GetLoadStackCount",
+   "confidence": "inferred",
+   "evidence": "objdump: 'mov eax,[0x849fc24]; ret', getter of fs_loadStack, called by Com_InitHunkMemory."
+  },
+  {
+   "addr": "0x0849fc20",
+   "old": "g_0849fc20",
+   "new": "fs_openReadCalled",
+   "confidence": "inferred",
+   "evidence": "Set to 1 by FS_OpenFileRead; no reader found (role unknown); name describes the observed write only."
+  },
+  {
+   "addr": "0x0849fd70",
+   "old": "g_0849fd70",
+   "new": "fs_unpureFileToken",
+   "confidence": "inferred",
+   "evidence": "rand()+1 when a non-localized loose file with restricted extension is opened; zeroed on pure list set; appended to referenced-pure checksum string (filesystem.md section 4)."
+  },
+  {
+   "addr": "0x084a64a0",
+   "old": "g_084a64a0",
+   "new": "fs_numReferencedIwds",
+   "confidence": "inferred",
+   "evidence": "Count paired with arrays 0x084a64c0 (checksums) and 0x084a74c0 (names) set by FS_SetServerReferencedIwds."
+  },
+  {
+   "addr": "0x084a64c0",
+   "old": "g_084a64c0",
+   "new": "fs_referencedIwdSums",
+   "confidence": "inferred",
+   "evidence": "int[0x400] written via atoi at 0x08065fea."
+  },
+  {
+   "addr": "0x084a74c0",
+   "old": "g_084a74c0",
+   "new": "fs_referencedIwdNames",
+   "confidence": "inferred",
+   "evidence": "char*[0x400] of CopyString pointers freed by FS_ClearListB, read as C strings in FS_BuildMissingIwdList."
+  },
+  {
+   "addr": "0x08188ae0",
+   "old": "g_08188ae0",
+   "new": "loc_languageTable",
+   "confidence": "inferred",
+   "evidence": "15 x {const char* name; int available} language table read by Loc_InitLanguages/LocLanguage_Name."
+  }
+ ],
+ "rejected": [
+  {
+   "addr": "0x080a0d54",
+   "old": "FS_ReturnZeroStub",
+   "suggested": "FS_OpenFileWriteStub",
+   "reason": "Only caller-side effect known; current name already describes observable behaviour."
+  },
+  {
+   "addr": "0x080d36ac",
+   "old": "Dir_HasNonDotEntries",
+   "suggested": "Sys_DirectoryHasContent",
+   "reason": "Name already used by 0x080d6886; near-duplicates must stay distinct."
+  },
+  {
+   "addr": "0x080d65d4",
+   "old": "Sys_DefaultInstallPath",
+   "suggested": "Sys_DefaultBasePath",
+   "reason": "Name already used by 0x080d661e."
+  },
+  {
+   "addr": "0x0805228e",
+   "old": "CM_ReplaceBspLump",
+   "suggested": "",
+   "reason": "Collision-model subsystem; out of scope."
+  },
+  {
+   "addr": "0x0849fd80",
+   "old": "fsh",
+   "suggested": "fs_handles",
+   "reason": "fsh is the id Tech 3 lineage name; no clear evidence for the change."
+  }
+ ]
+}

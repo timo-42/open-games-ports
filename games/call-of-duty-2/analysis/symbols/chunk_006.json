@@ -1,0 +1,1164 @@
+{
+ "chunk": 6,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0805ef22",
+   "name": "Collision_IsSegmentClear",
+   "signature": "unsigned int Collision_IsSegmentClear(const float *start, const float *end, unsigned int contentsMask)",
+   "subsystem": "collision/spatial-tree",
+   "confidence": "unknown",
+   "evidence": "Builds a 0x28-byte query (start, end, invDelta, contentsMask), computes invDelta (fn_0805d86c), then runs the tree query fn_0805ecd4 from node 1. Name is descriptive: result 1 means nothing blocked (see fn_0805ecd4).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805ef8c",
+   "name": "SpatialTree_TraceBoxHits",
+   "signature": "void SpatialTree_TraceBoxHits(struct BoxHitTrace *tr, unsigned short nodeIndex, const float *start4, const float *end4, float *bestFraction)",
+   "subsystem": "collision/spatial-tree",
+   "confidence": "unknown",
+   "evidence": "Recursive walk of the node tree for an axis-extent (box) sweep; calls fn_0809cd64 for every entry whose mask intersects and clips the segment against each split plane widened by the box half extent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805f2a8",
+   "name": "SpatialTree_TraceBoxHitsFromRoot",
+   "signature": "void SpatialTree_TraceBoxHitsFromRoot(struct BoxHitTrace *tr, float *bestFraction)",
+   "subsystem": "collision/spatial-tree",
+   "confidence": "unknown",
+   "evidence": "Root wrapper: start/end taken from the context (+0x24/+0x30) with fractions 0 and *bestFraction.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805f312",
+   "name": "SpatialTree_TraceBoxFirstHit",
+   "signature": "int SpatialTree_TraceBoxFirstHit(struct BoxQueryTrace *tr, unsigned short nodeIndex, const float *start3, const float *end3)",
+   "subsystem": "collision/spatial-tree",
+   "confidence": "unknown",
+   "evidence": "Same traversal as SpatialTree_TraceBoxHits but returns the first non-zero fn_0809d37c result.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805f5fa",
+   "name": "SpatialTree_TraceBoxFirstHitFromRoot",
+   "signature": "int SpatialTree_TraceBoxFirstHitFromRoot(struct BoxQueryTrace *tr)",
+   "subsystem": "collision/spatial-tree",
+   "confidence": "unknown",
+   "evidence": "Root wrapper using the context's own start (+0x24) and end (+0x30).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805f630",
+   "name": "SpatialTree_TraceSegmentHits",
+   "signature": "void SpatialTree_TraceSegmentHits(struct SegHitTrace *tr, unsigned short nodeIndex, const float *start4, const float *end4, float *bestFraction)",
+   "subsystem": "collision/spatial-tree",
+   "confidence": "unknown",
+   "evidence": "Zero-extent segment traversal (no box widening); fn_0809cf08 is called for every entry of every visited node.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805f822",
+   "name": "SpatialTree_TraceSegmentHitsFromRoot",
+   "signature": "void SpatialTree_TraceSegmentHitsFromRoot(struct SegHitTrace *tr, float *bestFraction)",
+   "subsystem": "collision/spatial-tree",
+   "confidence": "unknown",
+   "evidence": "Root wrapper: start = ctx+0, end = ctx+0xc, fractions 0 and *bestFraction.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805f88a",
+   "name": "SpatialTree_QuerySegment",
+   "signature": "int SpatialTree_QuerySegment(struct SegQueryA *tr, unsigned short nodeIndex, const float *start3, const float *end3)",
+   "subsystem": "collision/spatial-tree",
+   "confidence": "unknown",
+   "evidence": "Segment query that splits at planes, recurses into both halves, then tests this node's own entries (post-order) with fn_0809d4ea; returns the first non-zero result.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805faca",
+   "name": "SpatialTree_QuerySegmentFromRoot",
+   "signature": "int SpatialTree_QuerySegmentFromRoot(struct SegQueryA *tr)",
+   "subsystem": "collision/spatial-tree",
+   "confidence": "unknown",
+   "evidence": "no naming evidence",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fafc",
+   "name": "SpatialTree_FloatSelect",
+   "signature": "float SpatialTree_FloatSelect(float x, float ifNonNegative, float ifNegative)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Selector (x>=0 ? ifNonNegative : ifNegative) used by Float_Max_0805fb58/Float_Min_0805fb7c, spatial-tree TU copy.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fb26",
+   "name": "Float_Abs_0805fb26",
+   "signature": "float Float_Abs_0805fb26(float x)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "no naming evidence",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fb40",
+   "name": "Float_IsNonNegative_0805fb40",
+   "signature": "bool Float_IsNonNegative_0805fb40(float x)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "no naming evidence",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fb58",
+   "name": "SpatialTree_FloatMax",
+   "signature": "float SpatialTree_FloatMax(float a, float b)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): max(a,b) = Float_Select_0805fafc(a-b,a,b); lives in the spatial-tree TU (0x0805ef22-0x0805fc5c) as its own copy.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fb7c",
+   "name": "SpatialTree_FloatMin",
+   "signature": "float SpatialTree_FloatMin(float a, float b)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): min(a,b) = Float_Select_0805fafc(b-a,a,b); same TU copy as Float_Max_0805fb58.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fba0",
+   "name": "Vec2_Copy_0805fba0",
+   "signature": "void Vec2_Copy_0805fba0(const float *in, float *out)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "Copies two 32-bit words (bit copy, not float load/store).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fbc0",
+   "name": "Vec2_Subtract",
+   "signature": "void Vec2_Subtract(const float *a, const float *b, float *out)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "no naming evidence",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fbec",
+   "name": "Vec3_Copy_0805fbec",
+   "signature": "void Vec3_Copy_0805fbec(const float *in, float *out)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "no naming evidence",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fc1c",
+   "name": "Vec4_Copy_0805fc1c",
+   "signature": "void Vec4_Copy_0805fc1c(const float *in, float *out)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "no naming evidence",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fc5c",
+   "name": "SpatialTree_NoOp_End",
+   "signature": "void SpatialTree_NoOp_End(void)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Empty function (prologue+epilogue only) at the end of the collision code region (last address in collision.md scope 0x0805fc5c); no callers establish a purpose.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fc9a",
+   "name": "Cbuf_Init",
+   "signature": "void Cbuf_Init(void)",
+   "subsystem": "common/cbuf",
+   "confidence": "inferred",
+   "evidence": "Q3 Cbuf_Init counterpart: sets each command buffer to 0x10000 bytes of storage, empty. Called from the error path for drop errors, as Q3 Com_Error does.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fd0a",
+   "name": "Cbuf_AddText",
+   "signature": "void Cbuf_AddText(const char *text)",
+   "subsystem": "common/cbuf",
+   "confidence": "observed",
+   "evidence": "String 'Cbuf_AddText: overflow\\n' at 0x081402e0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fd82",
+   "name": "Cbuf_InsertText",
+   "signature": "void Cbuf_InsertText(const char *text)",
+   "subsystem": "common/cbuf",
+   "confidence": "observed",
+   "evidence": "String 'Cbuf_InsertText overflowed\\n' at 0x081402f8. Shifts the pending text up and prepends text + '\\n'.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805fe3c",
+   "name": "Cbuf_ExecuteText",
+   "signature": "void Cbuf_ExecuteText(int exec_when, const char *text)",
+   "subsystem": "common/cbuf",
+   "confidence": "observed",
+   "evidence": "String '\\025Cbuf_ExecuteText: bad exec_when' at 0x08140320. 0 = now, 1 = insert, 2 = append.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0805feb6",
+   "name": "Cbuf_Execute",
+   "signature": "void Cbuf_Execute(void)",
+   "subsystem": "common/cbuf",
+   "confidence": "inferred",
+   "evidence": "Q3 Cbuf_Execute: honours the wait counter, extracts one line (split on ';' outside quotes, '\\n', '\\r', capped at 0xfff bytes), removes it from the buffer and runs Cmd_ExecuteString.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060000",
+   "name": "Cbuf_ExecuteThunk",
+   "signature": "void Cbuf_ExecuteThunk(void)",
+   "subsystem": "common/cbuf",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Single-instruction-body thunk calling Cbuf_Execute; replaces Wrapper-style name.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806000e",
+   "name": "Cmd_ExecFile",
+   "signature": "bool Cmd_ExecFile(const char *filename)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Reads a script file (fn_080a0a9c = file read), prints 'execing %s\\n', inserts it into the buffer and frees it. Returns whether the file was found.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806006a",
+   "name": "Cmd_Exec_f",
+   "signature": "void Cmd_Exec_f(void)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "'exec' command: strings 'exec <filename> : execute a script file\\n' and \"couldn't exec %s\\n\"; registered as 'exec' by Cmd_Init.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080601e0",
+   "name": "Cmd_Argc",
+   "signature": "int Cmd_Argc(void)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Q3 Cmd_Argc.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080601ea",
+   "name": "Cmd_Argc_alt",
+   "signature": "int Cmd_Argc_alt(void)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Duplicate of Cmd_Argc (identical body, separate symbol).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080601f4",
+   "name": "Cmd_Argv",
+   "signature": "const char *Cmd_Argv(unsigned int arg)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Q3 Cmd_Argv: unsigned bounds check, returns the empty string for out-of-range.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060220",
+   "name": "Cmd_Argv_alt",
+   "signature": "const char *Cmd_Argv_alt(unsigned int arg)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Duplicate of Cmd_Argv.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806024c",
+   "name": "Cmd_ArgvBuffer",
+   "signature": "void Cmd_ArgvBuffer(int arg, char *buffer, int bufferLength)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Q3 Cmd_ArgvBuffer: Q_strncpyz(buffer, Cmd_Argv(arg), bufferLength).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060278",
+   "name": "Cmd_ArgvBuffer_alt",
+   "signature": "void Cmd_ArgvBuffer_alt(int arg, char *buffer, int bufferLength)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Duplicate of Cmd_ArgvBuffer using Cmd_Argv_alt.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080602a4",
+   "name": "Cmd_ArgsFrom",
+   "signature": "const char *Cmd_ArgsFrom(int arg)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Q3 Cmd_ArgsFrom: joins arguments arg..argc-1 with single spaces into the 0x400-byte static buffer.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060346",
+   "name": "Cmd_TokenizeStringInternal",
+   "signature": "int Cmd_TokenizeStringInternal(char *text, int limit, char **argv, char *outBuffer)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Q3 Cmd_TokenizeString2 counterpart. Splits text into at most 0x200 tokens written to outBuffer, pointers in argv. Skips whitespace, '//' (ends parsing) and '/* */' comments, supports \"quoted\" tokens with \\\" escape. 'limit' counts down per token: when it reaches 0 the remainder of the text becomes the last token (a start limit of 0 never triggers). Returns 0 when 0x200 tokens were filled. Chars are signed (>= 0x80 counts as space).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080605d0",
+   "name": "Cmd_TokenizeStringN",
+   "signature": "void Cmd_TokenizeStringN(char *text, int limit)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Tokenizes into the global cmd_argv/cmd_tokenized and stores cmd_argc.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060600",
+   "name": "Cmd_TokenizeStringN_alt",
+   "signature": "void Cmd_TokenizeStringN_alt(char *text, int limit)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Duplicate of Cmd_TokenizeStringN.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060630",
+   "name": "Cmd_TokenizeString",
+   "signature": "void Cmd_TokenizeString(char *text)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Q3 Cmd_TokenizeString: limit 0 (unlimited).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806064c",
+   "name": "Cmd_TokenizeString_alt",
+   "signature": "void Cmd_TokenizeString_alt(char *text)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Duplicate of Cmd_TokenizeString.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060668",
+   "name": "Cmd_FindCommand",
+   "signature": "struct cmd_function_s *Cmd_FindCommand(const char *name)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Linear search of the command list by exact (case-sensitive) name.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080606b6",
+   "name": "Cmd_AddCommand",
+   "signature": "void Cmd_AddCommand(const char *name, void (*function)(void))",
+   "subsystem": "common/cmd",
+   "confidence": "observed",
+   "evidence": "String 'Cmd_AddCommand: %s already defined\\n' at 0x08140440. Note: when the command exists and a function is given, only the message is printed (the function is not replaced); a null function on an existing name is silent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806072e",
+   "name": "Cmd_RemoveCommand",
+   "signature": "void Cmd_RemoveCommand(const char *name)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Q3 Cmd_RemoveCommand: unlinks the node by exact name, frees name and node.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806079c",
+   "name": "Cmd_SetAutoComplete",
+   "signature": "void Cmd_SetAutoComplete(const char *name, void *aux8, void *auxC)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Looks up command by name and stores two words (dir, ext) into the command record at +8/+0xc; CoD4 lineage Cmd_SetAutoComplete(cmdName, dir, ext).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080607c4",
+   "name": "Cmd_Shutdown",
+   "signature": "void Cmd_Shutdown(void)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Frees every command node and its name.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080608a6",
+   "name": "Cmd_ExecuteString",
+   "signature": "void Cmd_ExecuteString(char *text)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Q3 Cmd_ExecuteString: tokenize, find command case-insensitively (moved to the list head on a hit), call its function. Otherwise: text starting 'pb_sv_' goes to fn_0813bf4c(0xe,-1,len+1,text); other text goes to fn_08063054 (dvar command) and, if not handled while com_sv_running is set, to fn_080926d6.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080609cc",
+   "name": "Cmd_ExecuteStringThunk",
+   "signature": "void Cmd_ExecuteStringThunk(char *text)",
+   "subsystem": "common/cmd",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body only calls Cmd_ExecuteString(text); sole caller SVC_RemoteCommand (0x0809745a).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060a82",
+   "name": "Cmd_Init",
+   "signature": "void Cmd_Init(void)",
+   "subsystem": "common/cmd",
+   "confidence": "inferred",
+   "evidence": "Q3 Cmd_Init: strings 'cmdlist', 'exec', 'vstr', 'wait' registered with the matching handlers.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060adc",
+   "name": "Com_Fread",
+   "signature": "size_t Com_Fread(void *ptr, size_t size, size_t nmemb, void *stream)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "fread wrapper.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060b0a",
+   "name": "Com_Fwrite",
+   "signature": "size_t Com_Fwrite(const void *ptr, size_t size, size_t nmemb, void *stream)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "fwrite wrapper; the result is discarded.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060b32",
+   "name": "Com_Fopen",
+   "signature": "void *Com_Fopen(const char *path, const char *mode)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "fopen wrapper.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060b52",
+   "name": "Com_Fclose",
+   "signature": "void Com_Fclose(void *stream)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "fclose wrapper.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060b66",
+   "name": "Com_Fseek",
+   "signature": "int Com_Fseek(void *stream, long offset, int whence)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "fseek wrapper.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060b90",
+   "name": "Com_ReturnZero",
+   "signature": "int Com_ReturnZero(void)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "Returns 0 (stub); called from Com_ErrorRecover.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060b9c",
+   "name": "Noop_08060b9c",
+   "signature": "void Noop_08060b9c(void *unusedField)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "Empty function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060ba2",
+   "name": "Com_BeginRedirect",
+   "signature": "void Com_BeginRedirect(char *buffer, int buffersize, void (*flush)(char *))",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Q3 Com_BeginRedirect: all three arguments must be non-null; terminates buffer with 0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060bdc",
+   "name": "Com_EndRedirect",
+   "signature": "void Com_EndRedirect(void)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Q3 Com_EndRedirect: flushes the buffer if a flush function exists, clears the redirect state.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060c1a",
+   "name": "Noop_08060c1a",
+   "signature": "void Noop_08060c1a(int unused)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "Empty function; callers pass one int argument (0), ignored.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060c20",
+   "name": "Com_PrintMessage",
+   "signature": "void Com_PrintMessage(int channel, char *msg)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Q3 Com_Printf core (Com_PrintMessage in later IW engines). Strings 'console_mp_server.log', 'logfile opened on %s\\n'. channel 4 suppresses console/redirect output. With a redirect buffer active the text is appended to it (flushing first if it would overflow); otherwise it goes to the console and, when com_logfile is set, to the log file (opened on demand; flushed when com_logfile > 1).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060dea",
+   "name": "Com_Printf",
+   "signature": "void Com_Printf(const char *fmt, ...)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Q3 Com_Printf: vsnprintf into a 0x1000 buffer (last byte forced to 0), then Com_PrintMessage(0, text).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060e3a",
+   "name": "Com_DPrintf",
+   "signature": "void Com_DPrintf(const char *fmt, ...)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Q3 Com_DPrintf: prints only when the com_developer dvar is non-zero.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060ea0",
+   "name": "Com_ServerShutdown",
+   "signature": "void Com_ServerShutdown(const char *msg)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Called with 'EXE_SERVERQUIT'-style strings: fn_080942f8 is the server shutdown taking a final message (Q3 SV_Shutdown), then fn_080628fa.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060eb8",
+   "name": "Com_ServerShutdownThunk",
+   "signature": "void Com_ServerShutdownThunk(const char *msg)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Body only calls Com_ServerShutdown(msg); duplicate entry of that function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060ecc",
+   "name": "Com_PreShutdownHooks",
+   "signature": "void Com_PreShutdownHooks(void)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "Runs fn_080ac4bc then fn_080ac14c; invoked before server shutdown in Com_Quit_f and Com_ErrorRecover.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060ede",
+   "name": "Com_SetExtraTimeScale",
+   "signature": "void Com_SetExtraTimeScale(int value)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Stores float bits into g_081a2270, which Com_ModifyMsec multiplies with com_timescale (fld/fmul at 0x080625d1/0x080625f1) and Com_Init sets to 1.0f.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060eec",
+   "name": "Com_IsKnownErrorString",
+   "signature": "int Com_IsKnownErrorString(const char *s)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "Case-insensitive lookup of s in the table at 0x0817d780 (EXE_SERVER_DISCONNECTED, EXE_DISCONNECTED, EXE_SERVERISFULL, XBOXLIVE_*), terminated by an empty string. Returns 1 when found.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060f44",
+   "name": "Com_RegisterErrorDvars",
+   "signature": "void Com_RegisterErrorDvars(const char *msg)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Strings 'com_errorMessage' and 'com_errorTitle': registers both string dvars (default \"\", flags 0x1040) and sets com_errorMessage to msg. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08060fa2",
+   "name": "Com_ErrorRecover",
+   "signature": "void Com_ErrorRecover(void)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "Post-longjmp error recovery (called from the Com_Init-side handler at 0x080627f4): resets subsystems, stores the message in the error dvars, rate-limits repeated errors (4 within 100 ms each escalate to code 0), then shuts the server down. Strings 'cl_paused', 'EXE_DISCONNECTEDFROMOWNLISTENSERVER', '********************\\nERROR: %s\\n********************\\n'.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08061124",
+   "name": "Com_Error",
+   "signature": "void Com_Error(int code, const char *fmt, ...)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "String 'recursive error after: %s'. Q3 Com_Error: formats into the 0x1000-byte error buffer, maps error codes 4, 5 and 6 to 1, stores the code and longjmps to the handler registered in slot 2. Never returns. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080611f4",
+   "name": "Com_CheckErrorEntered",
+   "signature": "void Com_CheckErrorEntered(void)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "If an error is already being handled, longjmps again to the slot-2 handler.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806123e",
+   "name": "Com_Quit_f",
+   "signature": "void Com_Quit_f(void)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Q3 Com_Quit_f: strings 'quitting...\\n', 'EXE_SERVERQUIT'. fn_080d3a7a is the final exit call.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806129e",
+   "name": "Com_ParseCommandLine",
+   "signature": "void Com_ParseCommandLine(char *commandLine)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Q3 Com_ParseCommandLine: the line is split at '+' or '\\n' into up to 32 console lines (each separator is overwritten with 0 and the next line starts after it).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080612fe",
+   "name": "Com_SafeMode",
+   "signature": "int Com_SafeMode(void)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Q3 Com_SafeMode: a startup line whose command is 'safe' or 'dvar_restart' is blanked and reports 1; otherwise the stored safemode flag.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08061394",
+   "name": "Com_SetSafeModeFlag",
+   "signature": "void Com_SetSafeModeFlag(void)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Sets the flag returned by Com_SafeMode.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080613a4",
+   "name": "Com_StartupVariable",
+   "signature": "void Com_StartupVariable(const char *match)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Q3 Com_StartupVariable: for each startup line that is 'set' / 'seta' (and, if match is given, whose arg 1 equals match exactly) run the dvar set command handler (fn_080635b0 for set, fn_08063a3c for seta).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08061454",
+   "name": "Com_AddStartupCommands",
+   "signature": "int Com_AddStartupCommands(void)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Q3 Com_AddStartupCommands: appends every non-empty startup line plus '\\n' to the command buffer; returns 1 if any line did not start with 'set'.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080614ea",
+   "name": "Info_Print",
+   "signature": "void Info_Print(const char *s)",
+   "subsystem": "common/info",
+   "confidence": "inferred",
+   "evidence": "Q3 Info_Print: walks \"\\key\\value\\key\\value\", prints keys padded with spaces to 20 columns (keys of 20+ chars are printed whole) then the value; prints 'MISSING VALUE\\n' when the string ends after a key.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08061638",
+   "name": "Com_InitPushEvent",
+   "signature": "void Com_InitPushEvent(void)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Clears the 256-entry pushed event queue (0x1800 bytes) and both counters.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08061670",
+   "name": "Com_PushEvent",
+   "signature": "void Com_PushEvent(const struct sysEvent_s *ev)",
+   "subsystem": "common/com",
+   "confidence": "observed",
+   "evidence": "String 'WARNING: Com_PushEvent overflow\\n'. Appends to the ring; when 256 entries are pending the oldest is dropped (its pointer payload freed) and a warning is printed once until the queue drains.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08061720",
+   "name": "Com_FlushPushedEvents",
+   "signature": "void Com_FlushPushedEvents(void)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "Discards all pending pushed events, freeing each event's pointer payload.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806179c",
+   "name": "Com_GetEvent",
+   "signature": "void Com_GetEvent(struct sysEvent_s *sret)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Q3 Com_GetEvent: pops the oldest pushed event, else asks the system layer (fn_080d484e). Returns the 0x18-byte event through the hidden struct-return pointer.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0806182a",
+   "name": "Com_EventLoop",
+   "signature": "int Com_EventLoop(void)",
+   "subsystem": "common/com",
+   "confidence": "observed",
+   "evidence": "String 'Com_EventLoop: oversize packet\\n'; \"\\025Com_EventLoop: bad event type %i\". Q3 Com_EventLoop: an empty event first drains loopback packets for socket 1 (into a 0x20000-byte temporary message buffer) and returns that event's time. Type 4 = console command text, appended to the command buffer plus \"\\n\"; type 5 = packet whose payload follows a 0x14-byte netadr. Packets are delivered via fn_080960e2 only while com_sv_running is set. Returns the time of the terminating empty event.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08061ab8",
+   "name": "Com_ProcessConsoleEvents",
+   "signature": "int Com_ProcessConsoleEvents(void)",
+   "subsystem": "common/com",
+   "confidence": "unknown",
+   "evidence": "Event drain variant without the network: type 4 console text is appended with \"\\n\", type 5 payloads are freed, anything but 0/4/5 raises the same 'bad event type' error. Returns 0 if the first event was the empty terminator, otherwise 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08061b7c",
+   "name": "Com_PumpSysEvents",
+   "signature": "int Com_PumpSysEvents(void)",
+   "subsystem": "common/com",
+   "confidence": "inferred",
+   "evidence": "Pulls events from the system layer (fn_080d484e) and pushes each non-empty one into the pushed-event queue until an empty event arrives; returns that event's time (Q3 Com_PumpEvents/Sys_GetEvent loop).",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0817d77c",
+   "name": "g_cmd_text",
+   "type": "struct cmd_text_s *",
+   "confidence": "inferred",
+   "evidence": "pointer to command buffer (Cbuf_*); initial value 0x0818f084"
+  },
+  {
+   "addr": "0x0818f080",
+   "name": "g_cmd_wait",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "wait counter decremented by Cbuf_Execute, set by Cmd_Wait_f"
+  },
+  {
+   "addr": "0x0818f084",
+   "name": "g_cmd_text_buffers",
+   "type": "struct cmd_text_s[1]",
+   "confidence": "inferred",
+   "evidence": "initialised by Cbuf_Init, stride 0xc"
+  },
+  {
+   "addr": "0x0818f100",
+   "name": "g_cmd_text_storage",
+   "type": "byte[0x10000]",
+   "confidence": "inferred",
+   "evidence": "Cbuf_Init storage"
+  },
+  {
+   "addr": "0x0818901c",
+   "name": "g_spatialNodes",
+   "type": "struct cod2_area_node_s[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x18, index 1 is root (traces start at 1)"
+  },
+  {
+   "addr": "0x084424a4",
+   "name": "g_spatialEntries",
+   "type": "struct svEntity_s[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x174, indexed by node entry lists"
+  },
+  {
+   "addr": "0x0819f100",
+   "name": "cmd_argc",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Cmd_Argc"
+  },
+  {
+   "addr": "0x0819f180",
+   "name": "cmd_argv",
+   "type": "char *[512]",
+   "confidence": "inferred",
+   "evidence": "Cmd_Argv"
+  },
+  {
+   "addr": "0x0819f980",
+   "name": "cmd_tokenized",
+   "type": "char[0x2200]",
+   "confidence": "inferred",
+   "evidence": "tokenizer output buffer (size from gap to 0x081a1b80)"
+  },
+  {
+   "addr": "0x081a1b80",
+   "name": "cmd_functions",
+   "type": "struct cmd_function_s *",
+   "confidence": "inferred",
+   "evidence": "Cmd_AddCommand list head"
+  },
+  {
+   "addr": "0x081a1c00",
+   "name": "cmd_args",
+   "type": "char[0x400]",
+   "confidence": "inferred",
+   "evidence": "Cmd_ArgsFrom buffer"
+  },
+  {
+   "addr": "0x0817d780",
+   "name": "com_knownErrorStrings",
+   "type": "const char *[8]",
+   "confidence": "observed",
+   "evidence": "table EXE_SERVER_DISCONNECTED.. terminated by empty string"
+  },
+  {
+   "addr": "0x081a2174",
+   "name": "com_developer",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "gates Com_DPrintf"
+  },
+  {
+   "addr": "0x081a218c",
+   "name": "com_sv_running",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "byte value gates packet delivery in Com_EventLoop and server command fallback in Cmd_ExecuteString (Q3 com_sv_running role)"
+  },
+  {
+   "addr": "0x081a2190",
+   "name": "com_logfile",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "gates logging in Com_PrintMessage; >1 flushes"
+  },
+  {
+   "addr": "0x081a21c0",
+   "name": "com_errorEntered",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "set by Com_Error, cleared by Com_ErrorRecover"
+  },
+  {
+   "addr": "0x081a21c4",
+   "name": "g_081a21c4",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "cleared in Com_Error/Com_ErrorRecover"
+  },
+  {
+   "addr": "0x081a21c8",
+   "name": "com_errorMessage_dvar",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "dvar com_errorMessage"
+  },
+  {
+   "addr": "0x081a21cc",
+   "name": "com_errorTitle_dvar",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "dvar com_errorTitle"
+  },
+  {
+   "addr": "0x081a21d4",
+   "name": "com_numConsoleLines",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Com_ParseCommandLine"
+  },
+  {
+   "addr": "0x081a21e0",
+   "name": "com_consoleLines",
+   "type": "char *[32]",
+   "confidence": "inferred",
+   "evidence": "Com_ParseCommandLine"
+  },
+  {
+   "addr": "0x081a2264",
+   "name": "com_errorCode",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Com_Error"
+  },
+  {
+   "addr": "0x081a2268",
+   "name": "com_logfileHandle",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "opened with console_mp_server.log"
+  },
+  {
+   "addr": "0x081a2270",
+   "name": "com_extraTimeScale",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "written by Com_SetGlobal_081a2270 only"
+  },
+  {
+   "addr": "0x081a2280",
+   "name": "com_errorMessage",
+   "type": "char[0x1000]",
+   "confidence": "inferred",
+   "evidence": "Com_Error vsnprintf target"
+  },
+  {
+   "addr": "0x081a3280",
+   "name": "com_pushedEventsHead",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "event ring head"
+  },
+  {
+   "addr": "0x081a3284",
+   "name": "com_pushedEventsTail",
+   "type": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "event ring tail"
+  },
+  {
+   "addr": "0x081a3300",
+   "name": "com_pushedEvents",
+   "type": "struct sysEvent_s[256]",
+   "confidence": "inferred",
+   "evidence": "0x1800 bytes cleared by Com_InitPushEvent"
+  },
+  {
+   "addr": "0x081a4f88",
+   "name": "com_safemode",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Com_SetSafeModeFlag / Com_SafeMode"
+  },
+  {
+   "addr": "0x081a4f90",
+   "name": "rd_buffer",
+   "type": "char *",
+   "confidence": "inferred",
+   "evidence": "Com_BeginRedirect"
+  },
+  {
+   "addr": "0x081a4f94",
+   "name": "rd_buffersize",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Com_BeginRedirect"
+  },
+  {
+   "addr": "0x081a4f98",
+   "name": "rd_flush",
+   "type": "void (*)(char *)",
+   "confidence": "inferred",
+   "evidence": "Com_BeginRedirect"
+  },
+  {
+   "addr": "0x081a4f9c",
+   "name": "com_openingLogfile",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "guards recursive log open"
+  },
+  {
+   "addr": "0x081a4fa4",
+   "name": "com_lastErrorTime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Com_ErrorRecover rate limit"
+  },
+  {
+   "addr": "0x081a4fa8",
+   "name": "com_errorCount",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Com_ErrorRecover rate limit"
+  },
+  {
+   "addr": "0x081a4fac",
+   "name": "com_pushEventOverflowed",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "Com_PushEvent warning latch"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "cmd_text_s",
+   "size": "0xc",
+   "evidence": "Cbuf_Init stride and field uses"
+  },
+  {
+   "name": "cmd_function_s",
+   "size": "0x14",
+   "evidence": "Cmd_AddCommand allocates 0x14"
+  },
+  {
+   "name": "dvar_s",
+   "size": "partial (type@6, value@8)",
+   "evidence": "vstr/type checks, value reads"
+  },
+  {
+   "name": "netadr_s",
+   "size": "0x14",
+   "evidence": "Com_EventLoop copies 5 words"
+  },
+  {
+   "name": "msg_s",
+   "size": "partial (data@4,maxsize@8,cursize@0xc)",
+   "evidence": "Com_EventLoop"
+  },
+  {
+   "name": "sysEvent_s",
+   "size": "0x18",
+   "evidence": "queue stride 0x18"
+  },
+  {
+   "name": "SpatialNode",
+   "size": "0x18",
+   "evidence": "tree stride"
+  },
+  {
+   "name": "SpatialEntry",
+   "size": "0x174",
+   "evidence": "entry stride; next@2, mask@0x160"
+  },
+  {
+   "name": "SegQueryB",
+   "size": "0x28",
+   "evidence": "stack object in Collision_IsSegmentClear"
+  },
+  {
+   "name": "SegQueryA",
+   "size": "partial (mask@0x20)",
+   "evidence": "SpatialTree_QuerySegment"
+  },
+  {
+   "name": "SegHitTrace",
+   "size": "partial (mask@0x2c)",
+   "evidence": "SpatialTree_TraceSegmentHits"
+  },
+  {
+   "name": "BoxQueryTrace",
+   "size": "partial (mask@0x44)",
+   "evidence": "SpatialTree_TraceBoxFirstHit"
+  },
+  {
+   "name": "BoxHitTrace",
+   "size": "partial (mask@0x50)",
+   "evidence": "SpatialTree_TraceBoxHits"
+  }
+ ],
+ "open_questions": [
+  "Trace contexts (SegQueryA/B, SegHitTrace, BoxQueryTrace, BoxHitTrace) share no common base layout in this chunk; the earlier-chunk allocators are needed to identify the real structs (invDelta at +0x18 in SegQueryB vs extents at +0x18 in the box traces).",
+  "Semantics of the two entry lists per SpatialNode (entryHead@8 here, entryHeadAlt@0xa in fn_0805ecd4) and what g_spatialEntries represent.",
+  "Com_ErrorRecover (0x08060fa2) caller 0x080627f4 and roles of fn_080ac5ee/fn_080b1250/fn_08065d9a/fn_0808002c; dvar 0x081a218c is named com_sv_running by usage only.",
+  "Cmd_PrintArgs_f (0x08060196) is not registered by Cmd_Init; the command name registering it is unknown (echo?).",
+  "Duplicate function pairs (Cmd_Argc/_alt, Cmd_Argv/_alt, tokenizers, Com_ServerShutdown/_alt) are probably separate translation units; their owning modules are unknown."
+ ]
+}

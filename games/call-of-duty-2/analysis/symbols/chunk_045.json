@@ -1,0 +1,957 @@
+{
+ "chunk": 45,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x080f14aa",
+   "name": "WeaponView_ApplyYawBob",
+   "signature": "void WeaponView_ApplyYawBob(struct view_motion_s *vm, float *out);",
+   "subsystem": "weapon-view",
+   "confidence": "inferred",
+   "evidence": "phase from the playerstate yaw byte; amplitude from view_motion slot_04 * 0.16; output scaled by adsBobFactor (0x284), and by (1 - blend) when the weapon has an ADS overlay (0x278). Callers are WeaponView_ComputeOffset (0x080f1c60). No string names it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f166c",
+   "name": "WeaponView_ApplyTimedKickB",
+   "signature": "void WeaponView_ApplyTimedKickB(struct view_motion_s *vm, float *out);",
+   "subsystem": "weapon-view",
+   "confidence": "inferred",
+   "evidence": "timed kick channel B: start time in slot_20, current time in slot_1c, two integer amounts in slots 24/28; Ease_Mirror shapes the 100 ms rise and 400 ms fall.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f1862",
+   "name": "Spring1D_StepLimited",
+   "signature": "int32 Spring1D_StepLimited(float *pos, float *vel, float dt, float posLimit, float restoreK, float velLimit, float friction, float decel);",
+   "subsystem": "weapon-view/spring",
+   "confidence": "inferred",
+   "evidence": "one-axis damped spring with position clamp, restore toward zero, friction and a constant decel; resets both values and returns 1 when near rest and far from target.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f1a6a",
+   "name": "WeaponView_IntegrateGunKick",
+   "signature": "void WeaponView_IntegrateGunKick(struct view_motion_s *vm, float *out);",
+   "subsystem": "weapon-view",
+   "confidence": "inferred",
+   "evidence": "two Spring1D_StepLimited channels (gunMaxPitch 0x2e0, gunMaxYaw 0x2e4) integrated in 5 ms steps over slot_08; accel/speed/decay are blended hip (0x4d8..) to ADS (0x490..).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f1c60",
+   "name": "WeaponView_ComputeOffset",
+   "signature": "void WeaponView_ComputeOffset(struct view_motion_s *vm, float *out);",
+   "subsystem": "weapon-view",
+   "confidence": "inferred",
+   "evidence": "zeroes the output, adds lean (Ease_Mirror of 0x4c), gun/bob/kick terms, then AngleSubtract of the two angle targets. Orchestrates the view motion channels.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f1d52",
+   "name": "WeaponView_ApplyTimedKickA",
+   "signature": "void WeaponView_ApplyTimedKickA(struct view_motion_s *vm, float *out);",
+   "subsystem": "weapon-view",
+   "confidence": "inferred",
+   "evidence": "timed kick channel A: start in slot_04, current time in slot_08, amounts in slot_0c (x) and slot_10 (z); same Ease_Mirror rise (100) and fall (400) shape as channel B.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f1ede",
+   "name": "WeaponView_ApplyIdleSway",
+   "signature": "void WeaponView_ApplyIdleSway(struct view_motion_s *vm, float *out);",
+   "subsystem": "weapon-view",
+   "confidence": "inferred",
+   "evidence": "ADS-gated idle sway. Idle amount/speed blend hip (0x2cc/0x2d4) to ADS (0x2c8/0x2d0), stance factor from pm_flags, slew of slot_1c toward the factor, and a sine pair advancing the phase counter behind slot_20 (time-dependent sway).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f21ba",
+   "name": "WeaponView_ApplyBobB",
+   "signature": "void WeaponView_ApplyBobB(struct view_motion_s *vm, float *out);",
+   "subsystem": "weapon-view",
+   "confidence": "inferred",
+   "evidence": "the yaw-bob helper again, using slot_14 as the amplitude and the unconditional Vec3_Scale by the blend (no reticle gate).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f237e",
+   "name": "WeaponView_ApplyCrouchSway",
+   "signature": "void WeaponView_ApplyCrouchSway(struct view_motion_s *vm, float *out);",
+   "subsystem": "weapon-view",
+   "confidence": "inferred",
+   "evidence": "crouch/prone sway term scaled by stance blend and adsViewBobMult (0x288); slot_14 is passed to the sine helper as raw float bits, unlike the int uses elsewhere (open question).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f24c8",
+   "name": "WeaponView_Accumulate",
+   "signature": "void WeaponView_Accumulate(struct view_motion_s *vm, float *out);",
+   "subsystem": "weapon-view",
+   "confidence": "inferred",
+   "evidence": "zeroes the output and accumulates the four view channels in order.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2524",
+   "name": "WeaponView_ApplyAngleSpring",
+   "signature": "void WeaponView_ApplyAngleSpring(struct playerState_s *ps, float *viewAngles, struct view_spring_s *spring, float *angleState, float scale, int32 ms);",
+   "subsystem": "weapon-view",
+   "confidence": "inferred",
+   "evidence": "two-axis spring toward the angle difference between playerstate view angles (0xe8) and viewAngles; limits from weapon sway fields (0x2e8..0x2fc, ADS 0x304..0x318), approach via Float_ApproachProportional and Angle_ApproachProportionalWrapped.",
+   "status": "translated",
+   "notes": "Angle_ApproachProportionalWrapped (0x080a3d66) is called through Angle_ApproachProportionalWrapped_F, a float-returning pointer type, because the shared prototype says void while the binary leaves a float in st(0)."
+  },
+  {
+   "addr": "0x080f2844",
+   "name": "BG_LoadWeaponDef",
+   "signature": "struct weaponDef_s *BG_LoadWeaponDef(const char *folder, const char *name);",
+   "subsystem": "weapons/weapondef",
+   "confidence": "observed",
+   "evidence": "string \"BG_LoadWeaponDef: Could not find default weapon\" (rodata 0x08155960), falls back to \"defaultweapon_mp\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f28cc",
+   "name": "Float_Abs",
+   "signature": "float Float_Abs(float x);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "absolute value of a float.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f28e6",
+   "name": "Float_Max2",
+   "signature": "float Float_Max2(float a, float b);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "max of two floats via Float_SelectNonNegative(a - b, a, b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f290a",
+   "name": "Float_Min2",
+   "signature": "float Float_Min2(float a, float b);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "min of two floats via Float_SelectNonNegative(b - a, a, b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f292e",
+   "name": "Int_Max2",
+   "signature": "int32 Int_Max2(int32 a, int32 b);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "integer max via Int_SelectIfNegative(a - b, a, b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2954",
+   "name": "Float_Clamp",
+   "signature": "float Float_Clamp(float x, float lo, float hi);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "clamp of x into [lo, hi] (sign-test based, same branch order as the binary).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2992",
+   "name": "Float_SquareLD",
+   "signature": "long double Float_SquareLD(float x);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "square of a float in long double precision.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f299e",
+   "name": "Vec2_LengthSquared",
+   "signature": "long double Vec2_LengthSquared(const float *v);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "squared length of the x,y components of a vector, long double precision.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f29c0",
+   "name": "Vec3_Clear_080f29c0",
+   "signature": "void Vec3_Clear_080f29c0(float *v);",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body n/a. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f29ea",
+   "name": "Vec3_Copy",
+   "signature": "void Vec3_Copy(const float *src, float *dst);",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "copy a vec3 (src to dst).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2a1a",
+   "name": "Vec3_Add",
+   "signature": "void Vec3_Add(const float *a, const float *b, float *out);",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "out = a + b for vec3.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2a5e",
+   "name": "Vec3_Scale",
+   "signature": "void Vec3_Scale(const float *v, float s, float *out);",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "out = v s for vec3.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2a96",
+   "name": "Vec3_MultAdd",
+   "signature": "void Vec3_MultAdd(const float *a, float s, const float *b, float *out);",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "out = a + s b for vec3.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2aea",
+   "name": "Float_SelectNonNegative",
+   "signature": "float Float_SelectNonNegative(float x, float a, float b);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "returns a if x >= 0.0 else b (the select used by Float_Min2/Max2/Clamp).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2b14",
+   "name": "Int_SelectIfNegative",
+   "signature": "int32 Int_SelectIfNegative(int32 x, int32 a, int32 b);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "returns b if x < 0 else a (integer select).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2b34",
+   "name": "BitArray_ClearBit",
+   "signature": "void BitArray_ClearBit(uint32 *bits, int32 bit);",
+   "subsystem": "util/bitset",
+   "confidence": "inferred",
+   "evidence": "clear one bit in a 32-bit word array.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2b74",
+   "name": "BG_WeaponTypeName",
+   "signature": "const char *BG_WeaponTypeName(int32 index);",
+   "subsystem": "weapons/names",
+   "confidence": "inferred",
+   "evidence": "index into the 8-entry string table at 0x081869e0 (bullet, grenade, projectile...). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2b84",
+   "name": "BG_WeaponSlotFromName",
+   "signature": "int32 BG_WeaponSlotFromName(const char *name);",
+   "subsystem": "weapons/names",
+   "confidence": "inferred",
+   "evidence": "case-insensitive match against the three slot names none/primary/primaryb (table 0x081869f0). Returns 0 when nothing matches, as the binary does.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2bd2",
+   "name": "BG_WeaponSlotName",
+   "signature": "const char *BG_WeaponSlotName(int32 index);",
+   "subsystem": "weapons/names",
+   "confidence": "inferred",
+   "evidence": "index into the slot name table at 0x081869f0.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2be2",
+   "name": "BG_RegisterAnimTypes",
+   "signature": "void BG_RegisterAnimTypes(void);",
+   "subsystem": "animation",
+   "confidence": "inferred",
+   "evidence": "registers each loaded player anim type name through fn_080d70fc.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2c1e",
+   "name": "BG_AnimLoadPlayerAnimTypes",
+   "signature": "void BG_AnimLoadPlayerAnimTypes(void);",
+   "subsystem": "animation",
+   "confidence": "inferred",
+   "evidence": "loads \"mp/playeranimtypes.txt\" (rodata 0x0815712e/0x08157147 messages) and parses it with the parse session tag \"BG_AnimParseAnimScript\"; names are copied into hunk memory.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f2d92",
+   "name": "StrArray_FindCI",
+   "signature": "int32 StrArray_FindCI(const char *s, const char *const *arr, int32 count);",
+   "subsystem": "util/strings",
+   "confidence": "inferred",
+   "evidence": "case-insensitive index of a name in a string array; -1 when absent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f310a",
+   "name": "WeaponDef_ComputeAdsTransInverse",
+   "signature": "void WeaponDef_ComputeAdsTransInverse(struct weaponDef_s *wd);",
+   "subsystem": "weapons/weapondef",
+   "confidence": "inferred",
+   "evidence": "reciprocal ADS transition times (fields adsTransInTime / adsTransOutTime, observed names from the weapon table) with fixed defaults when the time is below 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3186",
+   "name": "WeaponDef_SetDefaultDamageRange",
+   "signature": "void WeaponDef_SetDefaultDamageRange(struct weaponDef_s *wd);",
+   "subsystem": "weapons/weapondef",
+   "confidence": "inferred",
+   "evidence": "default damage range values when the stored range is not positive.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f31da",
+   "name": "WeaponDef_ValidateDestabilization",
+   "signature": "void WeaponDef_ValidateDestabilization(struct weaponDef_s *wd);",
+   "subsystem": "weapons/weapondef",
+   "confidence": "inferred",
+   "evidence": "warning strings \"Projectile speed for WeapType %s ...\", \"Destabilization ...\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f32c2",
+   "name": "WeaponDef_SetString",
+   "signature": "void WeaponDef_SetString(char **dst, const char *value);",
+   "subsystem": "weapons/weapondef",
+   "confidence": "inferred",
+   "evidence": "stores a copy of a string in hunk memory; an empty string maps to \"\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3316",
+   "name": "WeaponDef_SetStringCallback",
+   "signature": "void WeaponDef_SetStringCallback(char **dst, const char *value);",
+   "subsystem": "weapons/weapondef",
+   "confidence": "inferred",
+   "evidence": "field-parser callback that forwards to WeaponDef_SetString.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3330",
+   "name": "WeaponDef_SetDefaults",
+   "signature": "void WeaponDef_SetDefaults(struct weaponDef_s *wd);",
+   "subsystem": "weapons/weapondef",
+   "confidence": "inferred",
+   "evidence": "name is reset to \"\" and every string-typed field of the 366-entry table (type 0) is reset to \"\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3382",
+   "name": "BG_LoadWeaponFile",
+   "signature": "struct weaponDef_s *BG_LoadWeaponFile(const char *folder, const char *name);",
+   "subsystem": "weapons/weapondef",
+   "confidence": "inferred",
+   "evidence": "\"weapons/%s/%s\", magic \"WEAPONFILE\", warnings \"Could not load weapon file\", \"is not a valid weapon file\", \"Is too long of a weapon file to parse\". Field parse via Com_ParseInfoFields over the 366-entry table; ammo/clip names lowercased.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f36d2",
+   "name": "BG_GetNoWeaponDef",
+   "signature": "struct weaponDef_s *BG_GetNoWeaponDef(void);",
+   "subsystem": "weapons/weapondef",
+   "confidence": "inferred",
+   "evidence": "builds the global \"none\" weapon with accuracy files \"noweapon.accu\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3720",
+   "name": "Trace_ResetGlobals",
+   "signature": "void Trace_ResetGlobals(void);",
+   "subsystem": "physics/trace",
+   "confidence": "inferred",
+   "evidence": "clears the two trace-related globals.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f373a",
+   "name": "Noop_Callback",
+   "signature": "void Noop_Callback(void);",
+   "subsystem": "physics/trace",
+   "confidence": "unknown",
+   "evidence": "the binary body is a bare return; kept as a no-op for address-compatible callers.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3740",
+   "name": "Trace_ComputeSweepBounds",
+   "signature": "void Trace_ComputeSweepBounds(const float *start, const float *mins, const float *maxs, const float *p4, float fraction, float *out6);",
+   "subsystem": "physics/trace",
+   "confidence": "inferred",
+   "evidence": "expands box bounds by the trace offset from fn_080e129e; min/max selects per axis.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3848",
+   "name": "Trace_SweepEntities",
+   "signature": "void Trace_SweepEntities(const float *start, const float *mins, const float *maxs, const float *p4, int32 owner, uint32 mask, uint32 unused, struct trace_s *out);",
+   "subsystem": "physics/trace",
+   "confidence": "inferred",
+   "evidence": "sweeps the linked entity list (g_08628180) against the swept box; entities with box_mode 0xffffff use their collision model, others use packed bounds in box_mode bytes. The unused parameter is passed as 1 by Trace_BoxWorldThenEntities.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3cfe",
+   "name": "Trace_BoxWorldThenEntities",
+   "signature": "void Trace_BoxWorldThenEntities(struct trace_s *trace, const float *start, const float *mins, const float *maxs, const float *p5, int32 owner, uint32 mask);",
+   "subsystem": "physics/trace",
+   "confidence": "inferred",
+   "evidence": "box trace against world (fn_0805b894), then an entity sweep when the fraction is non-zero. The entity word of the result gets 0x3fe or 0x3ff (fraction != 1 or == 1).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3dc0",
+   "name": "Trace_ContentsWithEntities",
+   "signature": "uint32 Trace_ContentsWithEntities(const float *point, int32 owner, uint32 mask);",
+   "subsystem": "physics/trace",
+   "confidence": "inferred",
+   "evidence": "contents query: world contents at a point, OR-ed with box entities (other than the owner), masked by the requested mask.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3e80",
+   "name": "Float_MaxB",
+   "signature": "float Float_MaxB(float a, float b);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "max of two floats via Float_SelectNonNegativeB(a - b, a, b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3ea4",
+   "name": "Float_MinB",
+   "signature": "float Float_MinB(float a, float b);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "min of two floats via Float_SelectNonNegativeB(b - a, a, b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3ec8",
+   "name": "Vec3_ClearB",
+   "signature": "void Vec3_ClearB(float *v);",
+   "subsystem": "math/vec3",
+   "confidence": "inferred",
+   "evidence": "zero a vec3 (second copy used by the trace path).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3ef2",
+   "name": "Vec3_CopyBits_080f3ef2",
+   "signature": "void Vec3_CopyBits_080f3ef2(const float *src, float *dst);",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3f22",
+   "name": "Float_SelectNonNegativeB",
+   "signature": "float Float_SelectNonNegativeB(float x, float a, float b);",
+   "subsystem": "math",
+   "confidence": "inferred",
+   "evidence": "same select as Float_SelectNonNegative (x >= 0 ? a : b).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3f4c",
+   "name": "KeyValue_PoolAppend",
+   "signature": "char *KeyValue_PoolAppend(struct kv_table_s *t, const char *s);",
+   "subsystem": "parse/keyvalue",
+   "confidence": "inferred",
+   "evidence": "string pool append for the key/value table; guard message \"G_AddSpawnVarToken: MAX_SPAWN_VARS\" (rodata 0x081576a0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f3fd2",
+   "name": "KeyValue_ParseBlock",
+   "signature": "int32 KeyValue_ParseBlock(struct kv_table_s *t);",
+   "subsystem": "parse/keyvalue",
+   "confidence": "inferred",
+   "evidence": "\"{ key value ... }\" block parser (messages \"G_ParseSpawnVars: ...\" at rodata 0x081576e0..0x081577a0). Stores up to 64 pairs in the table.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f415e",
+   "name": "KeyValue_Lookup",
+   "signature": "int32 KeyValue_Lookup(const struct kv_table_s *t, const char *key, const char *def, const char **out);",
+   "subsystem": "parse/keyvalue",
+   "confidence": "inferred",
+   "evidence": "linear key lookup in the pair table, falling back to the default value.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f41c8",
+   "name": "Print_UnescapeAndEmit",
+   "signature": "uint32 Print_UnescapeAndEmit(const char *src);",
+   "subsystem": "util/strings",
+   "confidence": "inferred",
+   "evidence": "unescapes backslash sequences (\"\\n\" becomes a newline) and emits the result via ScrStr_InternCString; length guard message \"G_NewString: len = %i > %i\" (rodata 0x081577c2).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f42da",
+   "name": "Vec3_FormatRing",
+   "signature": "const char *Vec3_FormatRing(const float *v);",
+   "subsystem": "util/strings",
+   "confidence": "inferred",
+   "evidence": "formats an integer vec3 \"(%i %i %i)\" into an 8-slot ring of 32-byte strings.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f4378",
+   "name": "WeaponAccuracy_ParseGraph",
+   "signature": "int32 WeaponAccuracy_ParseGraph(const char *data, const char *name, struct accuracy_knot_s *knots, int32 *count_out);",
+   "subsystem": "weapons/accuracy",
+   "confidence": "inferred",
+   "evidence": "parses a knot count followed by (x y) pairs; warnings \"has too many graph knots\" and \"Error in parsing an ai weapon accuracy file\". Maximum 16 knots.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f448e",
+   "name": "WeaponAccuracy_LoadFile",
+   "signature": "int32 WeaponAccuracy_LoadFile(struct weaponDef_s *wd, const char *folder, const char *name, struct accuracy_knot_s *knots, int32 *count_out);",
+   "subsystem": "weapons/accuracy",
+   "confidence": "inferred",
+   "evidence": "\"WEAPONACCUFILE\" magic, \"accuracy/%s/%s\" path, warnings \"Could not load ai weapon accuracy file\" and \"Is too long of an ai weapon accuracy file\". Only weapon types 0 and 2.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f46d2",
+   "name": "WeaponDef_LoadAccuracyGraphs",
+   "signature": "int32 WeaponDef_LoadAccuracyGraphs(struct weaponDef_s *wd);",
+   "subsystem": "weapons/accuracy",
+   "confidence": "inferred",
+   "evidence": "loads the two AI accuracy graphs (\"aivsai\", \"aivsplayer\" folders, names in weapon fields 0x50c/0x510); stores hunk copies of the knots and their counts.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f481c",
+   "name": "Client_ApplyRecoilKick",
+   "signature": "void Client_ApplyRecoilKick(struct gentity_s *ent);",
+   "subsystem": "game/client",
+   "confidence": "inferred",
+   "evidence": "recoil kick from the shot sample (0x27e0 * 100 / 0x2728, capped at 127), converting the recoil angles to axes with AnglesToAxis; sets 256ths-of-turn view deltas (0x120/0x124).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f4aa4",
+   "name": "Entity_ClearField84",
+   "signature": "void Entity_ClearField84(void *ent);",
+   "subsystem": "game/entity",
+   "confidence": "unknown",
+   "evidence": "clears the int at +0x84 of the object (field not otherwise named in this chunk).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f4ab6",
+   "name": "Entity_TouchList",
+   "signature": "void Entity_TouchList(struct gentity_s *self, struct pmove_s *pm);",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "touch dispatch over a list of entity numbers (deduplicated); Scr-gated event pair (0811b150/0811b2de) and the per-class touch callbacks (self, other, 1).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f4c1a",
+   "name": "Entity_TouchLinked",
+   "signature": "void Entity_TouchLinked(struct gentity_s *self);",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "Quake-III-style trigger touch for linked entities: box query around the client, per-entity touch callbacks (other, self, 1) and self touch, gated by client state < 2.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f4eb2",
+   "name": "Client_ProcessButtonsAndDrop",
+   "signature": "void Client_ProcessButtonsAndDrop(struct gentity_s *ent, const struct usercmd_s *cmd);",
+   "subsystem": "game/client",
+   "confidence": "inferred",
+   "evidence": "button edge bookkeeping (0x26cc/0x27bc/0x27c0/0x27c8), a deferred-drop check (fn_080f6dd0), the player move hook with a 0xf8-byte context, and SV_UnlinkEntity.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f511e",
+   "name": "Client_CheckInactivity",
+   "signature": "int32 Client_CheckInactivity(struct gclient_s *cl);",
+   "subsystem": "game/client",
+   "confidence": "inferred",
+   "evidence": "inactivity drop: warning text \"GAME_INACTIVEDROPWARNING\" and drop text \"GAME_DROPPEDFORINACTIVITY\" (rodata); the timeout comes from the cvar block at g_087a2428.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f5276",
+   "name": "Client_UpdateButtonEdges",
+   "signature": "void Client_UpdateButtonEdges(struct gentity_s *ent, struct usercmd_s *cmd);",
+   "subsystem": "game/client",
+   "confidence": "inferred",
+   "evidence": "shifts the button history and updates the edge mask (same as the first lines of Client_ProcessButtonsAndDrop).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f52da",
+   "name": "Client_DispatchEvents",
+   "signature": "void Client_DispatchEvents(struct gentity_s *ent, uint32 start);",
+   "subsystem": "game/client",
+   "confidence": "inferred",
+   "evidence": "dispatches the player event ring (4 entries; ids 0x74..0x8a are timed, others are switch cases) to the server event helpers.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f5614",
+   "name": "Client_SetLastActivityTime",
+   "signature": "void Client_SetLastActivityTime(int32 clientNum, int32 time);",
+   "subsystem": "game/client",
+   "confidence": "inferred",
+   "evidence": "stores a clamped activity time on the client of clientNum (gentity array index).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080f5682",
+   "name": "Entity_SetContentsForClientFlags",
+   "signature": "void Entity_SetContentsForClientFlags(struct gentity_s *ent);",
+   "subsystem": "game/entity",
+   "confidence": "inferred",
+   "evidence": "contents of the entity from client flags (0x27ac, 0x27b0, 0x26a8); 0x2000000 is the contents value used when the client is not flagged.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08716400",
+   "name": "g_gentities",
+   "type": "struct gentity_s[]",
+   "confidence": "inferred",
+   "evidence": "entity array, 0x230 stride (index*0x230 in several functions; entity number = (ptr-base)/0x230 via 0x8c multiplier)"
+  },
+  {
+   "addr": "0x0864c380",
+   "name": "level_clients",
+   "type": "struct gclient_s *",
+   "confidence": "inferred",
+   "evidence": "client array base; client number = ((ptr - base) >> 2) * 0x644b3219 (stride 0x28a4)"
+  },
+  {
+   "addr": "0x0864c56c",
+   "name": "g_0864c56c",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "level time in ms: +60000/-10000/-1000 offsets and inactivity timing"
+  },
+  {
+   "addr": "0x08628178",
+   "name": "g_08628178",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "count of linked entities in g_08628180 (reset by Trace_ResetGlobals)"
+  },
+  {
+   "addr": "0x08628180",
+   "name": "g_08628180",
+   "type": "struct gentity_s *[]",
+   "confidence": "inferred",
+   "evidence": "linked entity pointer list swept by Trace_SweepEntities"
+  },
+  {
+   "addr": "0x08628580",
+   "name": "g_08628580",
+   "type": "int32",
+   "confidence": "unknown",
+   "evidence": "cleared by Trace_ResetGlobals; no reader in this chunk"
+  },
+  {
+   "addr": "0x08627f44",
+   "name": "g_playerAnimTypeCount",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "player anim type count (limit 0x40), set by BG_AnimLoadPlayerAnimTypes"
+  },
+  {
+   "addr": "0x08627f60",
+   "name": "g_playerAnimTypeStrings",
+   "type": "char *[64]",
+   "confidence": "inferred",
+   "evidence": "player anim type name table filled from mp/playeranimtypes.txt"
+  },
+  {
+   "addr": "0x08627940",
+   "name": "bg_noWeaponDef",
+   "type": "struct weaponDef_s",
+   "confidence": "inferred",
+   "evidence": "global \"none\" weapon definition returned by BG_GetNoWeaponDef"
+  },
+  {
+   "addr": "0x08186a60",
+   "name": "bg_weaponFieldTable",
+   "type": "struct weapon_field_desc_s[366]",
+   "confidence": "observed",
+   "evidence": "weapon field table: name strings observed in rodata; offset and parse-type words recovered"
+  },
+  {
+   "addr": "0x081869e0",
+   "name": "bg_weaponTypeNames",
+   "type": "const char *const[]",
+   "confidence": "observed",
+   "evidence": "weapon type name strings (bullet, grenade, projectile, binoculars, none, primary, primaryb)"
+  },
+  {
+   "addr": "0x081869f0",
+   "name": "bg_weaponSlotNames",
+   "type": "const char *const[]",
+   "confidence": "observed",
+   "evidence": "weapon slot names none, primary, primaryb"
+  },
+  {
+   "addr": "0x08187b88",
+   "name": "bg_accuracyFolderNames",
+   "type": "const char *const[]",
+   "confidence": "observed",
+   "evidence": "accuracy folder names aivsai, aivsplayer"
+  },
+  {
+   "addr": "0x08187b94",
+   "name": "g_08187b94",
+   "type": "const char[]",
+   "confidence": "observed",
+   "evidence": "empty string used as a key by the client box helpers"
+  },
+  {
+   "addr": "0x08187d0c",
+   "name": "g_08187d0c",
+   "type": "struct entity_class_s[]",
+   "confidence": "inferred",
+   "evidence": "entity class callback table, 0x28 stride; slot 0 is the touch callback"
+  },
+  {
+   "addr": "0x080f2de8",
+   "name": "g_080f2de8",
+   "type": "const unsigned char[]",
+   "confidence": "unknown",
+   "evidence": "customTypes table passed to Com_ParseInfoFields; label lies in .text, contents not decoded"
+  },
+  {
+   "addr": "0x087a2428",
+   "name": "g_087a2428",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "cvar block whose int at +8 is the inactivity timeout (seconds)"
+  },
+  {
+   "addr": "0x087a24cc",
+   "name": "cv_g_antilag",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "cvar block whose byte at +8 selects the event time source"
+  },
+  {
+   "addr": "0x08853272",
+   "name": "scrStr_touch",
+   "type": "int32",
+   "confidence": "unknown",
+   "evidence": "sound/effect handle passed to fn_0811b2de"
+  },
+  {
+   "addr": "0x08853282",
+   "name": "scrStr_binocular_enter",
+   "type": "int32",
+   "confidence": "unknown",
+   "evidence": "event handle for event id 0xa8"
+  },
+  {
+   "addr": "0x08853284",
+   "name": "scrStr_binocular_exit",
+   "type": "int32",
+   "confidence": "unknown",
+   "evidence": "event handle for event id 0xa9"
+  },
+  {
+   "addr": "0x08853286",
+   "name": "scrStr_binocular_fire",
+   "type": "int32",
+   "confidence": "unknown",
+   "evidence": "event handle for event id 0xaa"
+  },
+  {
+   "addr": "0x08853288",
+   "name": "scrStr_binocular_release",
+   "type": "int32",
+   "confidence": "unknown",
+   "evidence": "event handle for event id 0xab"
+  },
+  {
+   "addr": "0x0885328a",
+   "name": "scrStr_binocular_drop",
+   "type": "int32",
+   "confidence": "unknown",
+   "evidence": "event handle for event id 0xac"
+  },
+  {
+   "addr": "0x086289a4",
+   "name": "g_086289a4",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "ring index of the 8-slot vec3 string ring"
+  },
+  {
+   "addr": "0x086289c0",
+   "name": "g_086289c0",
+   "type": "char[256]",
+   "confidence": "inferred",
+   "evidence": "8 x 32-byte ring for Vec3_FormatRing"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "gentity_s",
+   "size": "0x230",
+   "evidence": "stride from index math (0x230 multiplier, 0x8c word index) in 80f4ab6, 80f5614, 80f5682; fields 0x11c contents, 0x158 client, 0x166 class, 0x18c box mode, 0x1ec box, 0xf0 owner"
+  },
+  {
+   "name": "gclient_s",
+   "size": "0x28a4",
+   "evidence": "client stride from the inverse 0x644b3219 of 0x28a4/4 in 80f511e and 80f5614 (g_0864c380 base); fields 0x26cc buttons, 0x289c activity time"
+  },
+  {
+   "name": "playerstate_s",
+   "size": ">= 0x5b8 (not recovered)",
+   "evidence": "first word of view_motion_s; fields 0x08 yaw, 0x4c lean, 0xa0 pm_flags, 0xdc stance blend, 0xe8 view angles, 0x5b4 speed scale"
+  },
+  {
+   "name": "weaponDef_s",
+   "size": "0x604",
+   "evidence": "weapon field table at 0x08186a60 (366 entries, observed names); allocation 0x604 in BG_LoadWeaponFile"
+  },
+  {
+   "name": "view_motion_s",
+   "size": ">= 0x4c (not recovered)",
+   "evidence": "slot offsets used by the view helpers 80f14aa..80f24c8 (pos 0x2c, vel 0x38, angle targets 0x44)"
+  },
+  {
+   "name": "trace_s",
+   "size": "0x24",
+   "evidence": "9-word trace result from fn_0805bb76 and 80f3848 (fraction, endpos, normal, entity word, flags word)"
+  },
+  {
+   "name": "kv_table_s",
+   "size": "0xa0c",
+   "evidence": "key/value block parsed by KeyValue_ParseBlock; pool at 0x20c with used count at 0x208"
+  },
+  {
+   "name": "entity_class_s",
+   "size": "0x28",
+   "evidence": "g_08187d0c records (0x28 stride); touch callback at slot 0"
+  },
+  {
+   "name": "accuracy_knot_s",
+   "size": "0x08",
+   "evidence": "knots written by WeaponAccuracy_ParseGraph (x,y float pairs)"
+  },
+  {
+   "name": "weapon_field_desc_s",
+   "size": "0x0c",
+   "evidence": "entries of g_08186a60 (name, offset, parse type)"
+  },
+  {
+   "name": "client_think_ctx_s",
+   "size": "0xf8",
+   "evidence": "context zeroed with 0xf8 bytes in Client_ProcessButtonsAndDrop"
+  }
+ ],
+ "open_questions": [
+  "gentity_s conflict: this chunk fixes gentity_s at stride 0x230 (g_08716400). Other chunks using gentity_s (chunk_005, chunk_020, chunk_023 types) describe other layouts (0x274 stride, cod2_gentity_s with contents at 0x11c). The merge lane must reconcile which array this is.",
+  "playerstate_s identity: view_motion_s.ps points to a structure with fields up to 0x5b8 (yaw, lean, pm_flags, stance blend, view angles, speed scale). Its owner (gclient sub-struct, entity sub-struct, or separate playerState) is not established by this chunk.",
+  "view_motion_s slot meanings: slot_14 is an int in 80f14aa/80f21ba but is passed as raw float bits in 80f237e; slot_1c is both the kick-B current time (80f166c) and a slewed sway value (80f1ede); slot_20 is both a start time and a pointer in 80f1ede. Field types and roles need confirmation against the callers (80f1c60 etc.).",
+  "Merged signature mismatch (0x080a3d66): the shared prototype Angle_ApproachProportionalWrapped is void, but 0x080a3d66 tail-calls 0x080a8476 which leaves its float result in st(0), and this chunk uses the value. The chunk calls it through a float-returning function-pointer cast (Angle_ApproachProportionalWrapped_F) so it compiles against the shared header; the merge lane should fix the shared prototype to float and drop the cast. Scr_IsInitialized is called with one int argument in the binary (merged says void(void)); translated as a no-argument call.",
+  "Com_Error is assumed non-returning (as in the merged name). If it returns in the binary, BG_LoadWeaponDef and KeyValue_ParseBlock continue past the error path in this translation.",
+  "Weapon table parse types (0 string, 4/5/7 int-like, 6 float, 8..15 enums) are recovered from the table words and used only as the string/float split; enum spellings are not recovered.",
+  "Bit-exact float behaviour under x87 extended precision is not verified; float/double placement follows Ghidra constant types, and long double is used only where the binary uses long double (Float_SquareLD, Vec2_LengthSquared).",
+  "Out-of-chunk callees: 38 of 64 callees are fn_08xxxxxx placeholders with no merged name in the current symbols set. Prototypes for them are provisional and live in chunk_045_types.h."
+ ]
+}

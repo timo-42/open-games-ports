@@ -1,0 +1,816 @@
+{
+ "chunk": 101,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x08078536",
+   "name": "ScrDbg_FormatCodePos",
+   "signature": "void ScrDbg_FormatCodePos(int codePos, int unused, char *buf, int bufsize)",
+   "subsystem": "script/debug",
+   "confidence": "inferred",
+   "evidence": "with script debug disabled formats \"@ %d\" (offset from code base); otherwise looks the code position up in the debug frame table (ScrDbg_LookupLineForKey with flags 4) and formats the frame line via ScrDbg_FormatFrameLine; descriptive name from those callees.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08078b1c",
+   "name": "TempHigh_NewTriple",
+   "signature": "struct HeapWords_s TempHigh_NewTriple(int a, int b, int c)",
+   "subsystem": "common/memory",
+   "confidence": "unknown",
+   "evidence": "descriptive. Allocates 12 bytes from the high temp hunk, stores three words, returns the box through the hidden struct-return pointer (ret 4). No caller found (FDE-only function).",
+   "status": "translated",
+   "notes": "Returns a one-pointer struct through the hidden struct-return pointer (callee pops 4, ret 4)."
+  },
+  {
+   "addr": "0x08078bac",
+   "name": "TempHigh_NewQuad",
+   "signature": "struct HeapWords_s TempHigh_NewQuad(int a, int b, int c, int d)",
+   "subsystem": "common/memory",
+   "confidence": "unknown",
+   "evidence": "descriptive. Same as TempHigh_NewTriple with a 16-byte, four-word block.",
+   "status": "translated",
+   "notes": "Returns a one-pointer struct through the hidden struct-return pointer (callee pops 4, ret 4)."
+  },
+  {
+   "addr": "0x08079e1a",
+   "name": "ScrStr_AssignCString",
+   "signature": "void ScrStr_AssignCString(unsigned short *slot, const char *text)",
+   "subsystem": "script/string",
+   "confidence": "inferred",
+   "evidence": "releases the old script string handle in the slot (if any) and interns the new C string; pairs ScrStr_Release / ScrStr_InternCString.",
+   "status": "translated",
+   "notes": "ScrStr_InternCString is declared void in the shared prototypes but returns a 16-bit handle; called through a cast."
+  },
+  {
+   "addr": "0x0807a006",
+   "name": "ScrStr_ClearFlagBit0",
+   "signature": "void ScrStr_ClearFlagBit0(void)",
+   "subsystem": "script/string",
+   "confidence": "unknown",
+   "evidence": "descriptive thunk: ScrStr_ClearFlagBits(1).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807fda0",
+   "name": "ScrVar_DeclareLowerNamed",
+   "signature": "bool ScrVar_DeclareLowerNamed(int parentId, const char *name)",
+   "subsystem": "script/variable",
+   "confidence": "unknown",
+   "evidence": "descriptive. Interns the name lower-cased, returns false if the parent already has that variable, else creates it with value {0, type 6} and returns true.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0807fe32",
+   "name": "ScrVar_ReleaseThunk",
+   "signature": "void ScrVar_ReleaseThunk(unsigned int id)",
+   "subsystem": "script/variable",
+   "confidence": "unknown",
+   "evidence": "descriptive thunk to ScrVar_Release.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808261e",
+   "name": "Scr_ComputeNextCodePos",
+   "signature": "char *Scr_ComputeNextCodePos(int *entry, char *pc, int opcode, int mode, uint32 *outLocalId)",
+   "subsystem": "script/vm",
+   "confidence": "unknown",
+   "evidence": "descriptive. Given an opcode and the stack top it computes the next code position (skipping operands, evaluating conditional jumps from the top value, handling switch tables); structurally parallel to Scr_SkipBytecode (0x08085658). Inputs: entry = top-of-stack value pair, pc = byte after the opcode start, mode 2 enables the call-depth shortcuts.",
+   "status": "translated",
+   "notes": "All 0x00..0x86 opcode groups taken from the second switch; operand reader helpers keep the shared Cursor_* names."
+  },
+  {
+   "addr": "0x080841f2",
+   "name": "Scr_ExecNamedCall",
+   "signature": "void Scr_ExecNamedCall(unsigned int nameId, unsigned int selfId)",
+   "subsystem": "script/vm",
+   "confidence": "unknown",
+   "evidence": "descriptive. Samples script timers, marks the error mode, then calls the script function nameId on selfId (or on a fresh level-parented thread when selfId is 0, removing that thread afterwards) and pops one frame / one value-stack entry.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080843ca",
+   "name": "Scr_CountObjectsOfClass",
+   "signature": "int Scr_CountObjectsOfClass(int classNum, int *outFirst, int objectId)",
+   "subsystem": "script/vm",
+   "confidence": "unknown",
+   "evidence": "descriptive. Counts script objects of class classNum: the given object (if its aux/class matches), every child under the time array root, and children of the variable named by 0x1fffe; the first match is stored into *outFirst when non-null.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808529c",
+   "name": "Scr_AddIString",
+   "signature": "void Scr_AddIString(const char *text)",
+   "subsystem": "script/vm",
+   "confidence": "inferred",
+   "evidence": "structural twin of Scr_AddString (0x08085262, value type 2) but tags the pushed entry with type 3; named after the Scr_AddString/Scr_AddIString pair (type 3 = localized string: inferred).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808bd46",
+   "name": "SV_Map_f",
+   "signature": "void SV_Map_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the commands \"map\" and \"devmap\" (Cmd_AddCommand at 0x0808cdf0 / 0x0808ce48); Q3 SV_Map_f counterpart; compares argv[0] with \"devmap\" to set sv_cheats.",
+   "status": "translated",
+   "notes": "Wrapper_080660a2 returns a char * (static buffer 0x081e9500) although the shared prototype says void; called through a cast."
+  },
+  {
+   "addr": "0x0808c55e",
+   "name": "SV_TempBanUser_f",
+   "signature": "void SV_TempBanUser_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the commands \"kick\" and \"tempBanUser\" (0x0808cd14 / 0x0808cd28); resolves a player by name through SV_Kick_f, logs the cheating message and temp-bans the guid.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808c5a8",
+   "name": "SV_BanUser_f",
+   "signature": "void SV_BanUser_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"banUser\" (0x0808ccec); strings \"Usage: banUser <player name>\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808c5fc",
+   "name": "SV_BanClient_f",
+   "signature": "void SV_BanClient_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"banClient\" (0x0808cd00); strings \"Usage: banClient <client number>\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808c650",
+   "name": "SV_UnbanUser_f",
+   "signature": "void SV_UnbanUser_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"unbanUser\" (0x0808cd50); strings \"Usage: unban <client name>\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808c684",
+   "name": "SV_OnlyKick_f",
+   "signature": "void SV_OnlyKick_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"onlykick\" (0x0808ccd8); calls SV_Kick_f(0, 0) (kick without the cheater report).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808c6a0",
+   "name": "SV_ClientKick_f",
+   "signature": "void SV_ClientKick_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"clientkick\" (0x0808cd64); calls SV_KickNum_f(0, 0).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808c6bc",
+   "name": "SV_TempBanClient_f",
+   "signature": "void SV_TempBanClient_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"tempBanClient\" (0x0808cd3c); same shape as SV_TempBanUser_f but resolves the client by number (SV_KickNum_f).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808c706",
+   "name": "SV_Status_f",
+   "signature": "void SV_Status_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"status\" (0x0808cd78); prints the num/score/ping/guid/name/lastmsg/address/qport/rate table, Q3 SV_Status_f counterpart.",
+   "status": "translated",
+   "notes": "Score column comes from fn_08108e1a(clientIndex) (game-module gclient accessor); SV_GameClientNum(i) result is discarded as in the binary."
+  },
+  {
+   "addr": "0x0808c9a6",
+   "name": "SV_ConSay_f",
+   "signature": "void SV_ConSay_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"say\" (0x0808ced2); prefixes \"console: \" and broadcasts via SV_SendServerCommand; Q3 SV_ConSay_f counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808ca6c",
+   "name": "SV_ConTell_f",
+   "signature": "void SV_ConTell_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"tell\" (0x0808cee6); sends \"console: ...\" to one active client; Q3 SV_ConTell_f counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808cba8",
+   "name": "SV_ServerInfo_f",
+   "signature": "void SV_ServerInfo_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"serverinfo\" (0x0808cd8c); Q3 SV_Serverinfo_f counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808cbd0",
+   "name": "SV_SystemInfo_f",
+   "signature": "void SV_SystemInfo_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"systeminfo\" (0x0808cda0); Q3 SV_Systeminfo_f counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808cbf8",
+   "name": "SV_DumpUser_f",
+   "signature": "void SV_DumpUser_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"dumpuser\" (0x0808cdb4); Q3 SV_DumpUser_f counterpart (prints the userinfo, usage \"info <userid>\").",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808cc68",
+   "name": "SV_KillServer_f",
+   "signature": "void SV_KillServer_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"killserver\" (0x0808ce78); Q3 SV_KillServer_f counterpart.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808cc7c",
+   "name": "SV_GameCompleteStatus_f",
+   "signature": "void SV_GameCompleteStatus_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"gameCompleteStatus\" (0x0808ce34); thunk to SV_MasterGameCompleteStatus.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808cc8a",
+   "name": "SV_ScriptUsage_f",
+   "signature": "void SV_ScriptUsage_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"scriptUsage\" (0x0808ce9c); thunk to Scr_DumpScriptThreads.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808cc98",
+   "name": "SV_StringUsage_f",
+   "signature": "void SV_StringUsage_f(void)",
+   "subsystem": "server/commands",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"stringUsage\" (0x0808ceb0); thunk to Mem_PrintBucketStats.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808f780",
+   "name": "SV_StopDownload_f",
+   "signature": "void SV_StopDownload_f(struct client_s *cl)",
+   "subsystem": "server/download",
+   "confidence": "inferred",
+   "evidence": "debug-prints the aborted download then resets the download state; Q3 SV_StopDownload_f counterpart (client command \"stopdl\").",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808f7d0",
+   "name": "SV_DoneDownload_f",
+   "signature": "void SV_DoneDownload_f(struct client_s *cl)",
+   "subsystem": "server/download",
+   "confidence": "inferred",
+   "evidence": "debug-prints \"clientDownload: %s Done\" and re-sends the gamestate; Q3 SV_DoneDownload_f counterpart (client command \"donedl\").",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808f7fc",
+   "name": "SV_RetransmitDownload_f",
+   "signature": "void SV_RetransmitDownload_f(struct client_s *cl)",
+   "subsystem": "server/download",
+   "confidence": "inferred",
+   "evidence": "when the acknowledged block equals downloadClientBlock the transmit block is rewound to it (retransmit); counterpart of ioq3 SV_RetransmitDownload handling; descriptive.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808f83c",
+   "name": "SV_NextDownload_f",
+   "signature": "void SV_NextDownload_f(struct client_s *cl)",
+   "subsystem": "server/download",
+   "confidence": "inferred",
+   "evidence": "Q3 SV_NextDownload_f counterpart (client command \"nextdl\"): acknowledges block downloadClientBlock, finishes the download when the block size slot is 0, otherwise advances; wrong block drops the client with \"broken download\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808f940",
+   "name": "SV_BeginDownload_f",
+   "signature": "void SV_BeginDownload_f(struct client_s *cl)",
+   "subsystem": "server/download",
+   "confidence": "inferred",
+   "evidence": "resets any running download then stores argv[1] as the new download name (64 bytes); Q3 SV_BeginDownload_f counterpart (client command \"download\").",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808f97c",
+   "name": "SV_WWWDownload",
+   "signature": "void SV_WWWDownload(struct client_s *cl)",
+   "subsystem": "server/download",
+   "confidence": "observed",
+   "evidence": "strings \"SV_WWWDownload: unexpected wwwdl '%s' for client '%s'\" and \"SV_WWWDownload: unknown wwwdl subcommand\" name the function and are referenced here.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08090534",
+   "name": "SV_VerifyPaks_f",
+   "signature": "void SV_VerifyPaks_f(struct client_s *cl)",
+   "subsystem": "server/pure",
+   "confidence": "inferred",
+   "evidence": "Q3 SV_VerifyPaks_f counterpart (client command \"cp\"): argv[1] must be \"@\", the following pure checksums must be unique, present in the server's pure checksum list and XOR (with the checksum feed and the count) to the trailing value; result stored in pureAuthentic (1 ok, 2 failed).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08090a5a",
+   "name": "SV_Mute_f",
+   "signature": "void SV_Mute_f(struct client_s *cl)",
+   "subsystem": "server/client-commands",
+   "confidence": "inferred",
+   "evidence": "client command \"mute <client>\": sets muted[n] = 1 (range check n<0 || n>0x40 prints \"Invalid mute client %i\").",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08090aaa",
+   "name": "SV_Unmute_f",
+   "signature": "void SV_Unmute_f(struct client_s *cl)",
+   "subsystem": "server/client-commands",
+   "confidence": "inferred",
+   "evidence": "client command \"unmute <client>\": clears muted[n] (same range check, \"Invalid unmute client %i\").",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091d1c",
+   "name": "G_Hunk_Alloc",
+   "signature": "void *G_Hunk_Alloc(int size)",
+   "subsystem": "server/game-import",
+   "confidence": "inferred",
+   "evidence": "game-module import wrapper around Hunk_Alloc; raises Com_Error(1) with \"Hunk_Alloc can only be called in G_InitGame and the first few frames of G_RunFrame\" unless the server state variable equals 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091d4c",
+   "name": "G_Hunk_AllocAlign",
+   "signature": "void *G_Hunk_AllocAlign(int size, int alignment)",
+   "subsystem": "server/game-import",
+   "confidence": "inferred",
+   "evidence": "game-module import wrapper around Hunk_AllocAlign with the same state gate and Com_Error message \"Hunk_AllocAlign can only be called in G_InitGame and the first few frames of G_RunFrame\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091d84",
+   "name": "G_Hunk_AllocateTempMemory",
+   "signature": "int *G_Hunk_AllocateTempMemory(int size)",
+   "subsystem": "server/game-import",
+   "confidence": "inferred",
+   "evidence": "game-module import thunk to Hunk_AllocateTempMemory (returns its result).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091d98",
+   "name": "G_Hunk_FreeTempMemory",
+   "signature": "void G_Hunk_FreeTempMemory(int *ptr)",
+   "subsystem": "server/game-import",
+   "confidence": "inferred",
+   "evidence": "game-module import thunk to Hunk_FreeTempMemory.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091e20",
+   "name": "SV_HunkAllocCallbackA",
+   "signature": "void *SV_HunkAllocCallbackA(int size)",
+   "subsystem": "server/game-import",
+   "confidence": "unknown",
+   "evidence": "referenced as a callback pointer at 0x08091e80 (next to the string \"bad model name '%s'\"); thunk to Hunk_Alloc returning its result.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091e34",
+   "name": "SV_HunkAllocCallbackB",
+   "signature": "void *SV_HunkAllocCallbackB(int size)",
+   "subsystem": "server/game-import",
+   "confidence": "unknown",
+   "evidence": "referenced as a callback pointer at 0x08091e78 (next to the string \"bad model name '%s'\"); thunk to Hunk_Alloc returning its result.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809223c",
+   "name": "SV_DObjGetRotTransArray",
+   "signature": "struct DObjBone *SV_DObjGetRotTransArray(int *handle)",
+   "subsystem": "server/game-import",
+   "confidence": "inferred",
+   "evidence": "resolves the server DObj for the handle at *handle and returns its rot/trans array (DObj_GetRotTransArray(Com_GetServerDObj(*handle))).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092260",
+   "name": "SV_DObjSetRotTransIndex",
+   "signature": "int SV_DObjSetRotTransIndex(int *handle, const uint32 *partBits, int boneIndex)",
+   "subsystem": "server/game-import",
+   "confidence": "inferred",
+   "evidence": "server DObj handle wrapper for DObj_SetRotTransIndex.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08092292",
+   "name": "SV_DObjSetControlRotTransIndex",
+   "signature": "int SV_DObjSetControlRotTransIndex(int *handle, const uint32 *partBits, int boneIndex)",
+   "subsystem": "server/game-import",
+   "confidence": "inferred",
+   "evidence": "server DObj handle wrapper for DObj_SetControlRotTransIndex.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080976aa",
+   "name": "SV_Netchan_SendOOBPacket",
+   "signature": "void SV_Netchan_SendOOBPacket(int length, const void *data, struct netadr_s to)",
+   "subsystem": "server/netchan",
+   "confidence": "observed",
+   "evidence": "string \"SV_Netchan_SendOOBPacket used to send non-OOB packet.\" names the function and is referenced here. Sends an out-of-band packet (length, data starting with -1, destination address by value) on socket 1 after syncing the OOB net profile.",
+   "status": "translated",
+   "notes": "Third parameter is a 20-byte struct netadr_s passed by value; shared prototype for NET_SendPacket wrongly takes a pointer."
+  },
+  {
+   "addr": "0x0809e2aa",
+   "name": "SV_TraceToEntity",
+   "signature": "void SV_TraceToEntity(struct trace_s *tr, const float *start, const float *end, int entNum, int contentmask, int traceFlags)",
+   "subsystem": "server/world",
+   "confidence": "inferred",
+   "evidence": "clears the trace result (fraction 1.0, entityNum 0x3ff), builds a line clip from start/end, and clips it against the server entity of the given gentity number via SV_ClipMoveToEntity_Line.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a0236",
+   "name": "FS_FOpenFileRead_Quiet",
+   "signature": "int FS_FOpenFileRead_Quiet(const char *filename, int *file, int uniqueFile)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "calls FS_FOpenFileReadInternal with the trailing quiet argument fixed to 1; thin Q3 FS_FOpenFileRead wrapper shape (returns the size).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3692",
+   "name": "FS_FTell",
+   "signature": "long FS_FTell(int handle)",
+   "subsystem": "filesystem",
+   "confidence": "inferred",
+   "evidence": "Q3 FS_FTell counterpart: ftell on the plain FILE, or the zip-handle tell when the handle slot's zipFile flag is set.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a37a6",
+   "name": "Rand_GaussianPair",
+   "signature": "void Rand_GaussianPair(float *outA, float *outB)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "polar (Marsaglia) method: draws two Rand_Signed values until x*x+y*y <= 1, scales both by sqrt(-2*ln(s)/s); returns a normally distributed pair.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a381e",
+   "name": "Vec2_DiskPoint",
+   "signature": "void Vec2_DiskPoint(float u, float v, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Point on a disk: radius = sqrt(u), angle = 2*pi*v; writes (r*cos, r*sin).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a387a",
+   "name": "Vec3_SpherePoint",
+   "signature": "void Vec3_SpherePoint(float u, float v, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Point on the unit sphere: z = 2u - 1, r = sqrt(1 - z*z), angle = 2*pi*v.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a38f0",
+   "name": "Vec3_HemispherePoint",
+   "signature": "void Vec3_HemispherePoint(float u, float v, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Point on the unit hemisphere: z = u, r = sqrt(1 - z*z), angle = 2*pi*v.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a395e",
+   "name": "Vec2_DiskSpiral",
+   "signature": "void Vec2_DiskSpiral(int count, float *out, int stride)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Fibonacci/golden-spiral disk distribution: count points written at out + i*stride bytes; radius = sqrt((i+0.5)/count), angle advanced by a fixed rotation (cos -0.7373689, sin -0.6754903).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3a16",
+   "name": "Vec3_HemisphereSpiral",
+   "signature": "void Vec3_HemisphereSpiral(int count, float *out, int stride)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Spiral distribution on a hemisphere: z = (i+0.5)/count, radius = sqrt(1 - z*z), same fixed per-step rotation as Vec2_DiskSpiral; writes 3 floats per point at stride bytes.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a3aec",
+   "name": "Vec3_SphereSpiral",
+   "signature": "void Vec3_SphereSpiral(int count, float *out, int stride)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Spiral distribution on the full sphere: z = 2*((i+0.5)/count) - 1, radius = sqrt(1 - z*z), same fixed per-step rotation; 3 floats per point at stride bytes.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a4c3c",
+   "name": "Axis_FromForwardAndRoll",
+   "signature": "void Axis_FromForwardAndRoll(float *axis, float rollDegrees)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Builds an orthonormal 3-vector set in place from a forward vector at axis[0..2]: up (axis+3) from Vec3_PerpendicularVector, optionally rotated about forward by rollDegrees, then axis+6 = cross(forward, up).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7b4c",
+   "name": "Quat_FromAngleY",
+   "signature": "void Quat_FromAngleY(float degrees, float *q)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Quaternion (x,y,z,w) for a rotation about +Y by `degrees`: (0, sin(a/2), 0, cos(a/2)).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7b98",
+   "name": "Quat_FromAngleZ",
+   "signature": "void Quat_FromAngleZ(float degrees, float *q)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Quaternion for a rotation about +Z by `degrees`: (0, 0, sin(a/2), cos(a/2)).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7be4",
+   "name": "Quat_FromAngleX",
+   "signature": "void Quat_FromAngleX(float degrees, float *q)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Quaternion for a rotation about +X by `degrees`: (sin(a/2), 0, 0, cos(a/2)).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7c7c",
+   "name": "Mat3_RotationX",
+   "signature": "void Mat3_RotationX(float *m, float degrees)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. 3x3 row-major rotation matrix about X by `degrees`.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7d14",
+   "name": "Mat3_RotationY",
+   "signature": "void Mat3_RotationY(float *m, float degrees)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. 3x3 row-major rotation matrix about Y by `degrees`.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080a7dac",
+   "name": "Mat3_RotationZ",
+   "signature": "void Mat3_RotationZ(float *m, float degrees)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. 3x3 row-major rotation matrix about Z by `degrees`.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aa04a",
+   "name": "Plane_FromPoints",
+   "signature": "bool Plane_FromPoints(float *plane, const float *a, const float *b, const float *c)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "Q3 PlaneFromPoints counterpart: normal = normalize(cross(c - a, b - a)), distance = dot(a, normal); returns false for a degenerate (zero-length) normal.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aa55c",
+   "name": "Point_InArcSector",
+   "signature": "int Point_InArcSector(const float *a, float radius, const float *b, float tolerance, float arcStart, float arcEnd, float zRange)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. True when point a lies in an annular arc sector around point b: horizontal distance within tolerance of `radius`, |dz| within zRange, and the heading of (a - b) inside (arcStart, arcEnd) (wrapping when arcStart >= arcEnd).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aa974",
+   "name": "Vec3_RotateAboutPoint",
+   "signature": "void Vec3_RotateAboutPoint(const float *p, const float *angles, const float *center, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Rotates (p - center) by the angle set and adds center back: out = center + RotateByAngles(p - center, angles).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080aa9c8",
+   "name": "Vec3_FromRadiusAngle",
+   "signature": "void Vec3_FromRadiusAngle(float *out, float radius, float angle)",
+   "subsystem": "math/vector",
+   "confidence": "unknown",
+   "evidence": "descriptive. Spherical-to-Cartesian with a single angle used for both azimuth and elevation (the binary passes the same argument to SinCos_Float twice): out = radius * (cos*cos, sin*cos, sin).",
+   "status": "translated",
+   "notes": "The same angle is passed to both SinCos_Float calls (observed in disassembly)."
+  },
+  {
+   "addr": "0x080aacd6",
+   "name": "SinCos_Degrees",
+   "signature": "void SinCos_Degrees(float degrees, float *outSin, float *outCos)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "exact sin/cos for multiples of 90 degrees (after wrapping negatives by +360), otherwise SinCos_Float(deg * pi/180); outputs *outSin, *outCos. Named after the SinCos_Float helper it wraps.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab7ea",
+   "name": "Com_Meminfo_f",
+   "signature": "void Com_Meminfo_f(void)",
+   "subsystem": "common/memory",
+   "confidence": "inferred",
+   "evidence": "registered for the command \"meminfo\" (Cmd_AddCommand at 0x080aba5f); Q3 Com_Meminfo_f counterpart, prints the hunk totals.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ab8c0",
+   "name": "Com_TouchMemory",
+   "signature": "void Com_TouchMemory(void)",
+   "subsystem": "common/memory",
+   "confidence": "observed",
+   "evidence": "string \"Com_TouchMemory: %i msec. Using sum: %d\" names the function and is referenced here. Touches every 256th byte of the permanent low and high hunk regions and sums the words; the second loop bound uses high.permanent as in the binary.",
+   "status": "translated",
+   "notes": "Second loop bound uses high.permanent exactly as the binary does."
+  },
+  {
+   "addr": "0x080accb2",
+   "name": "SND_GetAliasIndex",
+   "signature": "int SND_GetAliasIndex(struct snd_alias_t *alias)",
+   "subsystem": "sound/alias",
+   "confidence": "unknown",
+   "evidence": "descriptive. Index of an alias inside its alias list (list found by the alias's own name); returns 0 when the pointer is not in the list.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080acd0e",
+   "name": "SND_GetAliasWithOffset",
+   "signature": "struct snd_alias_t *SND_GetAliasWithOffset(const char *name, int offset)",
+   "subsystem": "sound/alias",
+   "confidence": "observed",
+   "evidence": "string \"SND_GetAliasWithOffset: could not find sound alias '%s' with offset %d\" names the function and is referenced here. Returns the alias at the offset, the first alias when the offset is out of range, or 0 (after Com_Error) when the list is empty.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad2e2",
+   "name": "SND_GetAliasListName",
+   "signature": "const char *SND_GetAliasListName(const char *name)",
+   "subsystem": "sound/alias",
+   "confidence": "unknown",
+   "evidence": "descriptive. Returns the first word (alias name pointer) of the alias list found by name, or 0 when no list exists.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080ad47a",
+   "name": "SND_PickAliasByName",
+   "signature": "struct snd_alias_t *SND_PickAliasByName(const char *name)",
+   "subsystem": "sound/alias",
+   "confidence": "unknown",
+   "evidence": "descriptive. Looks up the alias list by name and picks one alias via Com_PickSoundAlias; returns the pick (eax passes through).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080b0fd8",
+   "name": "Com_LocalizeSoundAliasSubtitles",
+   "signature": "void Com_LocalizeSoundAliasSubtitles(void)",
+   "subsystem": "common/localization",
+   "confidence": "inferred",
+   "evidence": "strings \"Localizing sound alias subtitle text...\" / \"Writing to StringEd file %s\" identify it; builds the subtitle.st OS path, makes a local copy, runs Com_LocalizeSoundAliasFile over every soundaliases/*.csv inside a low-permanent hunk mark, then writes the final StringEd file.",
+   "status": "translated",
+   "notes": "FS_FreeFileList is called with 2 args and Com_LocalizeSoundAliasFile with 3 args; both overloaded in the chunk header."
+  }
+ ],
+ "globals": [],
+ "types_proposed": [
+  {
+   "name": "netadr_s",
+   "size": "0x14",
+   "evidence": "5 stack words passed by value to NET_AdrToString/NET_SendPacket; client_s+0x6e6d4 copied as 5 words in SV_Status_f"
+  },
+  {
+   "name": "fileHandleData_s",
+   "size": "0x11c",
+   "evidence": "stride 0x11c in FS_FTell (zipFile flag at +0x14, handle at +0)"
+  },
+  {
+   "name": "lineclip_a_s",
+   "size": "0x38",
+   "evidence": "stack frame built in SV_TraceToEntity: start/end/invDelta then -1,-1,contentmask,1,traceFlags"
+  },
+  {
+   "name": "trace_s",
+   "size": "0x24",
+   "evidence": "memset 0x24, fraction=1.0 at +0, entityNum 0x3ff at +0x1c in SV_TraceToEntity"
+  },
+  {
+   "name": "snd_alias_t",
+   "size": "0x44",
+   "evidence": "stride 0x44 (0x11 words) in SND_GetAliasIndex/SND_GetAliasWithOffset"
+  },
+  {
+   "name": "client_s (partial)",
+   "size": "0xb1064",
+   "evidence": "download fields 0x20c68..0x20e14, pureAuthentic 0x6e6c0, muted[] 0xb0fe0, status fields"
+  }
+ ],
+ "open_questions": [
+  "fn_08108e1a (0x08108e1a): game-module accessor (gclient stride 0x28a4, field +0x26b8) used as the score column of status; real name unknown",
+  "Shared prototypes mis-state NET_AdrToString/NET_SendPacket (struct netadr_s is passed by value), ScrStr_InternCString (returns a handle), Wrapper_080660a2 (returns char *), FS_FreeFileList (2 args) and Com_LocalizeSoundAliasFile (3 args)",
+  "Scr_ComputeNextCodePos (0x0808261e): purpose of the mode==2 shortcut (call-depth < 0x20) and which debugger/step feature calls it is unknown (no direct callers)",
+  "Scr_AddIString type tag 3 versus Scr_AddString type 2: exact meaning (localized string) is inferred only",
+  "The 0x08091e20/0x08091e34 Hunk_Alloc thunks are only referenced as data pointers next to \"bad model name '%s'\"; their consumer table is unidentified"
+ ]
+}

@@ -1,0 +1,1896 @@
+{
+ "functions": [
+  {
+   "addr": "0x08124738",
+   "old": "fn_08124738",
+   "new": "Effect_OnExpire",
+   "confidence": "inferred",
+   "evidence": "Empty body; stored in vtable slot 2 (OnExpire) of Effect (0x0815f548), Light (0x0815f348) and Flash (0x0815f308), read from .rodata. Slot role per fx-anim.md 4.1."
+  },
+  {
+   "addr": "0x0812473e",
+   "old": "fn_0812473e",
+   "new": "Effect_IsCulled",
+   "confidence": "inferred",
+   "evidence": "Returns 0; Effect vtable 0x0815f548 slot 4 (IsCulled per fx-anim.md 4.1). Recon name Effect::vslot4."
+  },
+  {
+   "addr": "0x08124748",
+   "old": "fn_08124748",
+   "new": "Effect_Draw",
+   "confidence": "inferred",
+   "evidence": "Empty body; Effect vtable 0x0815f548 slot 5 (Draw per fx-anim.md 4.1)."
+  },
+  {
+   "addr": "0x08124a8a",
+   "old": "fn_08124a8a",
+   "new": "Effect_CopyFromTemplate",
+   "confidence": "inferred",
+   "evidence": "Empty body; Effect vtable slot 11 (CopyFromTemplate per fx-anim.md 4.1; Particle slot 11 0x08126c46 is Particle::CopyFromTemplate)."
+  },
+  {
+   "addr": "0x08124a90",
+   "old": "fn_08124a90",
+   "new": "Effect_SubmitToRenderer",
+   "confidence": "inferred",
+   "evidence": "Recon chunk 054: fills a zeroed 0x74-byte descriptor and calls the empty renderer stub FX_NoopA; callers pass mode 1/4/6/7/8/9 from Draw overrides (Particle 4, Oriented 7, Cloud 6, Line/Tail 8, Cylinder 9)."
+  },
+  {
+   "addr": "0x08124cda",
+   "old": "fn_08124cda",
+   "new": "Particle_OnExpire",
+   "confidence": "inferred",
+   "evidence": "Vtable slot 2 (OnExpire) shared by Particle/OrientedParticle/Tail/Cylinder/Emitter (read from .rodata tables 0x0815f508/4c8/408/3c8/388); plays the death effect when flags&0x200 and not 0x400 (md 4.1, recon Particle::PlayRandomDirEffect)."
+  },
+  {
+   "addr": "0x0812532a",
+   "old": "fn_0812532a",
+   "new": "Particle_GetRayVisibility",
+   "confidence": "inferred",
+   "evidence": "Vtable slot 6 of Particle-family tables; called from Fx_GetRayAttenuation (0x081339ee); base-class slot 6 (0x08129caa) returns 1.0. Recon Particle::GetRayVisibility."
+  },
+  {
+   "addr": "0x0812540c",
+   "old": "fn_0812540c",
+   "new": "Particle_AddBlocker",
+   "confidence": "inferred",
+   "evidence": "Vtable slot 7; appends {worldOrigin, size^2, 1-alpha/255} to the 20-byte blocker list at 0x08a53d00 (count 0x08a53cb0), reset by FX_UpdateFlagged 0x08133b50 which calls slot 7 (md section 10 corrects the earlier AppendDrawEntry name)."
+  },
+  {
+   "addr": "0x081271c2",
+   "old": "fn_081271c2",
+   "new": "Cloud_OnExpire",
+   "confidence": "inferred",
+   "evidence": "Empty body; slot 2 of Cloud vtable 0x0815f488 (read from .rodata)."
+  },
+  {
+   "addr": "0x08127764",
+   "old": "fn_08127764",
+   "new": "Line_OnExpire",
+   "confidence": "inferred",
+   "evidence": "Empty body; slot 2 of Line vtable 0x0815f448 (read from .rodata)."
+  },
+  {
+   "addr": "0x08128192",
+   "old": "fn_08128192",
+   "new": "Emitter_IsCulled",
+   "confidence": "inferred",
+   "evidence": "Returns 0; slot 4 of Emitter vtable 0x0815f388 (read from .rodata)."
+  },
+  {
+   "addr": "0x0812819c",
+   "old": "fn_0812819c",
+   "new": "Emitter_Draw",
+   "confidence": "inferred",
+   "evidence": "Slot 5 of Emitter vtable 0x0815f388; submits a mode-1 descriptor when flag 0x10 and prevSize are set (recon Emitter::vslot5)."
+  },
+  {
+   "addr": "0x08129caa",
+   "old": "FxReturnOne",
+   "new": "Effect_GetRayVisibility",
+   "confidence": "inferred",
+   "evidence": "Returns 1.0; stored at slot 6 of Effect (0x0815f560), Light (0x0815f360) and Flash (0x0815f320) vtables. Previously FxReturnOne."
+  },
+  {
+   "addr": "0x08129cb2",
+   "old": "FxNoOp_08129cb2",
+   "new": "Effect_AddBlocker",
+   "confidence": "inferred",
+   "evidence": "Empty body; slot 7 of Effect (0x0815f564), Light (0x0815f364), Flash (0x0815f324) vtables. Previously FxNoOp_08129cb2."
+  },
+  {
+   "addr": "0x08128f1c",
+   "old": "FxClass_GetTypeId9",
+   "new": "Light_GetTypeId",
+   "confidence": "inferred",
+   "evidence": "Returns 9; sole .rodata reference is Light vtable 0x0815f348 slot 9 (0x0815f36c)."
+  },
+  {
+   "addr": "0x08129246",
+   "old": "FxClass_GetTypeIdB",
+   "new": "Flash_GetTypeId",
+   "confidence": "inferred",
+   "evidence": "Returns 0xb; sole .rodata reference is Flash vtable 0x0815f308 slot 9 (0x0815f32c)."
+  },
+  {
+   "addr": "0x08128a74",
+   "old": "FxClass_GetTypeId5",
+   "new": "Emitter_GetTypeId",
+   "confidence": "inferred",
+   "evidence": "Returns 5; sole .rodata reference is Emitter vtable 0x0815f388 slot 9 (0x0815f3ac)."
+  },
+  {
+   "addr": "0x08129d72",
+   "old": "FxClass_GetTypeId0",
+   "new": "Flash_IsCulled",
+   "confidence": "inferred",
+   "evidence": "Returns 0; sole .rodata reference is Flash vtable 0x0815f308 slot 4 (0x0815f318)."
+  },
+  {
+   "addr": "0x0812915e",
+   "old": "FxObjFc_InitInFrontOfView",
+   "new": "Flash_Draw",
+   "confidence": "inferred",
+   "evidence": "Stored at Flash vtable 0x0815f308 slot 5 (0x0815f31c, Draw); packs colour, places the flash 8 units in front of the view, sets size 12 and calls SubmitToRenderer(4). Replaces name FxObjFc_InitInFrontOfView."
+  },
+  {
+   "addr": "0x0812b31a",
+   "old": "FxCurvePairTemplate_SampleVec3",
+   "new": "FxPrim_SampleStartRgb",
+   "confidence": "inferred",
+   "evidence": "fx-anim.md section 10: operates on a primitive template, not a curve pair; samples rgb curve channel 0 (+0x100) and optional rgb2 (+0x10c, flag 0x2000) at t=0 with a random blend."
+  },
+  {
+   "addr": "0x0812b52a",
+   "old": "FxCurvePairTemplate_ResolveBoltRef",
+   "new": "FxPrim_ResolveBoltRef",
+   "confidence": "inferred",
+   "evidence": "fx-anim.md section 10: spawn-placement resolver used by FX_DrawPrimitive; returns 1 when flag 2 clear or bolt NULL/negative, else resolves a FxBinding frame via FxBinding_FindOrCreate."
+  },
+  {
+   "addr": "0x0812d1e0",
+   "old": "FX_NoopA",
+   "new": "FX_RendererSubmit_Stub",
+   "confidence": "inferred",
+   "evidence": "Empty function; sole caller is Effect::SubmitToRenderer 0x08124a90 (passes FxSystem, 0x74-byte descriptor, fieldB4); renderer back end absent from the dedicated build."
+  },
+  {
+   "addr": "0x0812d1f4",
+   "old": "FX_ReturnZeroA",
+   "new": "FX_ScriptStringToText_Stub",
+   "confidence": "inferred",
+   "evidence": "Returns 0; caller MsgStream_WriteScrString passes (FxSystem, script string handle) and strlen()s the result, i.e. a handle-to-text lookup that the dedicated build stubs out."
+  },
+  {
+   "addr": "0x0812d272",
+   "old": "FX_ReturnZeroB",
+   "new": "FX_GetSpriteFrameCount_Stub",
+   "confidence": "inferred",
+   "evidence": "Returns 0; callers Particle::UpdateFrame 0x0812672e and the sequence-frame code in chunk 058 pass (FxSystem, template id/seq) and compare the result with 1 to decide frame index 0 (sprite sequence frame count query)."
+  },
+  {
+   "addr": "0x0812d27c",
+   "old": "FX_ReturnZeroC",
+   "new": "FX_IsEffectFlagged_Stub",
+   "confidence": "inferred",
+   "evidence": "Returns 0; sole caller FxEffect_ResetSortKey 0x08135790 uses it to set sortKey = -1 for a flagged sortKey2 id; client query stubbed out."
+  },
+  {
+   "addr": "0x0812d286",
+   "old": "FX_NoopC",
+   "new": "FX_SubmitLight_Stub",
+   "confidence": "inferred",
+   "evidence": "Empty function; Light::Draw 0x08128d2a hands (world origin, size, colour rgb) to it (recon chunk 055 note)."
+  },
+  {
+   "addr": "0x0812b524",
+   "old": "FxNoOp_0812b524",
+   "new": "FX_DecalEvent_Stub",
+   "confidence": "inferred",
+   "evidence": "Empty function; sole caller Fx_QueueEventA 0x08136762, dispatched by FX_DispatchPrimitive for primitive type 6 (\"decal\" in the FX_BuildTemplate name table, observed strings)."
+  },
+  {
+   "addr": "0x0813156a",
+   "old": "Fx_IsKindFive",
+   "new": "FX_IsEmitterType",
+   "confidence": "inferred",
+   "evidence": "Switch returns 1 only for input 5; primitive type 5 is \"emitter\" in the FX_BuildTemplate type-name table (observed strings); also Emitter vtable type id 5."
+  },
+  {
+   "addr": "0x0813163c",
+   "old": "Float_Pick3",
+   "new": "FX_ClampSelect",
+   "confidence": "inferred",
+   "evidence": "Recon expression: result = (a<=b)? b : min(a,c), i.e. clamp(a, lo=b, hi=c) built from Float_SelectGE; sole caller chunk 056 curve builder uses it as Float_Pick3(x,0,1)."
+  },
+  {
+   "addr": "0x08129e6c",
+   "old": "FxObj_GetByte4",
+   "new": "FxArchive_IsReading",
+   "confidence": "observed",
+   "evidence": "Returns byte at +4 of FxArchive; callers Effect::Archive/Particle::Archive branch on it to choose load vs save (chunk 054 lines 165/349, chunk 056 250/1156); struct comment \"non-zero while reading\"."
+  },
+  {
+   "addr": "0x08135d72",
+   "old": "Fx_SpawnA",
+   "new": "FxSpawner_SpawnLine",
+   "confidence": "inferred",
+   "evidence": "FX_DispatchPrimitive case 2 (\"line\" in the observed type-name table); allocates 0x258 bytes from pool 0x08a533a8 and runs Line_ConstructBase."
+  },
+  {
+   "addr": "0x0813604c",
+   "old": "Fx_SpawnB",
+   "new": "FxSpawner_SpawnTail",
+   "confidence": "inferred",
+   "evidence": "FX_DispatchPrimitive case 3 (\"tail\"); allocates 0x278 bytes from pool 0x08a533b8, Tail_ConstructBase."
+  },
+  {
+   "addr": "0x081361e6",
+   "old": "Fx_SpawnC",
+   "new": "FxSpawner_SpawnCylinder",
+   "confidence": "inferred",
+   "evidence": "FX_DispatchPrimitive case 4 (\"cylinder\"); allocates 0x278 bytes from pool 0x08a533c0, Cylinder_ConstructBase."
+  },
+  {
+   "addr": "0x0813638c",
+   "old": "Fx_SpawnD",
+   "new": "FxSpawner_SpawnEmitter",
+   "confidence": "inferred",
+   "evidence": "FX_DispatchPrimitive case 5 (\"emitter\"); allocates 0x29c bytes from pool 0x08a533c8, Emitter_ConstructBase."
+  },
+  {
+   "addr": "0x08136936",
+   "old": "Fx_SpawnE",
+   "new": "FxSpawner_SpawnLight",
+   "confidence": "inferred",
+   "evidence": "FX_DispatchPrimitive case 9 (\"light\"); allocates 0xfc bytes from pool 0x08a53398, Light_ConstructBase."
+  },
+  {
+   "addr": "0x08136a8a",
+   "old": "Fx_SpawnF",
+   "new": "FxSpawner_SpawnOrientedParticle",
+   "confidence": "inferred",
+   "evidence": "FX_DispatchPrimitive case 7 (\"orientedparticle\"); allocates 0x258 bytes from pool 0x08a533b0, OrientedParticle_ConstructBase."
+  },
+  {
+   "addr": "0x08136c44",
+   "old": "Fx_SpawnG",
+   "new": "FxSpawner_SpawnFlash",
+   "confidence": "inferred",
+   "evidence": "FX_DispatchPrimitive case 11 (\"flash\"); allocates 0xfc bytes from pool 0x08a53398 and constructs Flash."
+  },
+  {
+   "addr": "0x08136d84",
+   "old": "Fx_SpawnH",
+   "new": "FxSpawner_SpawnCloud",
+   "confidence": "inferred",
+   "evidence": "FX_DispatchPrimitive case 12 (\"cloud\"); allocates 0x27c bytes from pool 0x08a533d0, Cloud_Construct."
+  },
+  {
+   "addr": "0x08136762",
+   "old": "Fx_QueueEventA",
+   "new": "FxSpawner_QueueDecalEvent",
+   "confidence": "inferred",
+   "evidence": "FX_DispatchPrimitive case 6 (\"decal\" in observed type-name table); computes the transform then calls the empty FX_DecalEvent_Stub; no object class exists for type 6."
+  },
+  {
+   "addr": "0x081367b0",
+   "old": "Fx_QueueEventB",
+   "new": "FxSpawner_QueueFxRunnerEvent",
+   "confidence": "inferred",
+   "evidence": "FX_DispatchPrimitive case 8 (\"fxrunner\"); picks dir or bound target+0x3c and calls FxScheduler_PlayEffect (runs a nested effect); no object class for type 8."
+  },
+  {
+   "addr": "0x0813687a",
+   "old": "Fx_QueueEventC",
+   "new": "FxSpawner_QueueCameraShakeEvent",
+   "confidence": "inferred",
+   "evidence": "FX_DispatchPrimitive case 10 (\"cameraShake\"); only rolls three prim ranges (+0x58,+0xe8,+0x280) and discards them in this build (no object class for type 10). Role per type name only."
+  },
+  {
+   "addr": "0x081373c6",
+   "old": "IntArray_SwapA",
+   "new": "FX_ListA_SwapEntries",
+   "confidence": "inferred",
+   "evidence": "Swaps two dwords of the array at g_08188ab8 (effect list A); caller FX_RemoveFromListA-style swap-remove (chunk 058 line 774)."
+  },
+  {
+   "addr": "0x08137424",
+   "old": "IntArray_SwapB",
+   "new": "FX_ListB_SwapEntries",
+   "confidence": "inferred",
+   "evidence": "Swaps two dwords of the array at g_08188abc (effect list B)."
+  },
+  {
+   "addr": "0x08137670",
+   "old": "Fx_AllocPool98",
+   "new": "FxPool_AllocLightFlashObj",
+   "confidence": "inferred",
+   "evidence": "Wrapper calling Fx_PoolAllocFc (0x08137a38) on pool 0x08a53398 (element 0xfc: Light/Flash per md 4.3)."
+  },
+  {
+   "addr": "0x081377c6",
+   "old": "Fx_AllocPoolA0",
+   "new": "FxPool_AllocParticleObj",
+   "confidence": "inferred",
+   "evidence": "Wrapper calling Fx_PoolAlloc24c on pool 0x08a533a0 (element 0x24c = Particle)."
+  },
+  {
+   "addr": "0x081377e2",
+   "old": "Fx_AllocPoolD0",
+   "new": "FxPool_AllocCloudObj",
+   "confidence": "inferred",
+   "evidence": "Wrapper calling Fx_PoolAlloc27c on pool 0x08a533d0 (element 0x27c = Cloud)."
+  },
+  {
+   "addr": "0x0813781e",
+   "old": "Fx_AllocPoolA8",
+   "new": "FxPool_AllocLineObj",
+   "confidence": "inferred",
+   "evidence": "Wrapper calling Fx_PoolAlloc258a on pool 0x08a533a8 (element 0x258 = Line)."
+  },
+  {
+   "addr": "0x0813785a",
+   "old": "Fx_AllocPoolB0",
+   "new": "FxPool_AllocOrientedParticleObj",
+   "confidence": "inferred",
+   "evidence": "Wrapper calling Fx_PoolAlloc258b on pool 0x08a533b0 (element 0x258 = OrientedParticle)."
+  },
+  {
+   "addr": "0x08137896",
+   "old": "Fx_AllocPoolB8",
+   "new": "FxPool_AllocTailObj",
+   "confidence": "inferred",
+   "evidence": "Wrapper calling Fx_PoolAlloc278a on pool 0x08a533b8 (element 0x278 = Tail)."
+  },
+  {
+   "addr": "0x081378d0",
+   "old": "Fx_AllocPoolC0",
+   "new": "FxPool_AllocCylinderObj",
+   "confidence": "inferred",
+   "evidence": "Wrapper calling Fx_PoolAlloc278b on pool 0x08a533c0 (element 0x278 = Cylinder)."
+  },
+  {
+   "addr": "0x081379e6",
+   "old": "Fx_AllocPoolC8",
+   "new": "FxPool_AllocEmitterObj",
+   "confidence": "inferred",
+   "evidence": "Wrapper calling Fx_PoolAlloc29c on pool 0x08a533c8 (element 0x29c = Emitter)."
+  },
+  {
+   "addr": "0x08137a38",
+   "old": "Fx_PoolAllocFc",
+   "new": "FxPool_PopFree_LightFlash",
+   "confidence": "inferred",
+   "evidence": "Free-list block allocator, memsets 0xfc bytes; called only by FxPool_AllocLightFlashObj (disassembly: call at 0x08137684)."
+  },
+  {
+   "addr": "0x08137b16",
+   "old": "Fx_PoolAlloc24c",
+   "new": "FxPool_PopFree_Particle",
+   "confidence": "inferred",
+   "evidence": "Free-list allocator memsetting 0x24c bytes; called only from the Particle pool wrapper (call at 0x081377da)."
+  },
+  {
+   "addr": "0x08137bf4",
+   "old": "Fx_PoolAlloc27c",
+   "new": "FxPool_PopFree_Cloud",
+   "confidence": "inferred",
+   "evidence": "Free-list allocator memsetting 0x27c bytes; called only from the Cloud pool wrapper (call at 0x081377f6)."
+  },
+  {
+   "addr": "0x08137cd2",
+   "old": "Fx_PoolAlloc258a",
+   "new": "FxPool_PopFree_Line",
+   "confidence": "inferred",
+   "evidence": "Free-list allocator memsetting 0x258 bytes; called only from the Line pool wrapper (call at 0x08137832)."
+  },
+  {
+   "addr": "0x08137db0",
+   "old": "Fx_PoolAlloc258b",
+   "new": "FxPool_PopFree_OrientedParticle",
+   "confidence": "inferred",
+   "evidence": "Free-list allocator memsetting 0x258 bytes; called only from the OrientedParticle pool wrapper (call at 0x0813786e)."
+  },
+  {
+   "addr": "0x08137e8e",
+   "old": "Fx_PoolAlloc278a",
+   "new": "FxPool_PopFree_Tail",
+   "confidence": "inferred",
+   "evidence": "Free-list allocator memsetting 0x278 bytes; called only from the Tail pool wrapper (call at 0x081378aa)."
+  },
+  {
+   "addr": "0x08137f6c",
+   "old": "Fx_PoolAlloc278b",
+   "new": "FxPool_PopFree_Cylinder",
+   "confidence": "inferred",
+   "evidence": "Free-list allocator memsetting 0x278 bytes; called only from the Cylinder pool wrapper (call at 0x081378e4)."
+  },
+  {
+   "addr": "0x0813804a",
+   "old": "Fx_PoolAlloc29c",
+   "new": "FxPool_PopFree_Emitter",
+   "confidence": "inferred",
+   "evidence": "Free-list allocator memsetting 0x29c bytes; called only from the Emitter pool wrapper (call at 0x081379fa)."
+  },
+  {
+   "addr": "0x080c79fe",
+   "old": "XModel_GetByte8c",
+   "new": "XModel_GetFlags",
+   "confidence": "inferred",
+   "evidence": "Reads byte +0x8c; XModel_LoadFile stores model->flags = hdr.flags there (chunk 034 line 1411; header u8 flags per XModel_ReadHeader)."
+  },
+  {
+   "addr": "0x0812474e",
+   "old": "fn_0812474e",
+   "new": "Effect_ResolveBinding",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (bool Effect::ResolveBinding(const float **outFrame)): Effect::ResolveBinding: if the binding ref is set, asks FxBinding_ResolveFrame for a frame; fails when it returns 0; used by Cloud::Update"
+  },
+  {
+   "addr": "0x081247a4",
+   "old": "fn_081247a4",
+   "new": "Effect_GetTraceMask",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (int Effect::GetTraceMask()): Effect::GetTraceMask: returns FxSystem+0x80, clamped to <=5 when flag 0x2000000 is set; used as the trace mask by Tail::TraceSegment"
+  },
+  {
+   "addr": "0x081247f0",
+   "old": "fn_081247f0",
+   "new": "Effect_UpdateFraction",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (bool Effect::UpdateFraction()): Effect::UpdateFraction: frac = (time-startTime)/(endTime-startTime) clamped to [0,1]; false while time < startTime"
+  },
+  {
+   "addr": "0x08124894",
+   "old": "fn_08124894",
+   "new": "Effect_SetTimes",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Effect::SetTimes(int start, int end)): Effect::SetTimes: stores startTime (+0xb8) and endTime (+0xbc); duration accessor FxObj_GetSpan returns their difference"
+  },
+  {
+   "addr": "0x081248b2",
+   "old": "fn_081248b2",
+   "new": "Effect_GetAge",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (int Effect::GetAge()): Effect::GetAge: FxSystem time minus startTime"
+  },
+  {
+   "addr": "0x081248d4",
+   "old": "fn_081248d4",
+   "new": "Effect_SetBinding",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Effect::SetBinding(FxRef *ref)): Effect::SetBinding: assigns the binding smart pointer at +0xc0 (FxRef_Assign = FxRef assignment)"
+  },
+  {
+   "addr": "0x081248f4",
+   "old": "fn_081248f4",
+   "new": "Effect_GetTypeId",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (int Effect::GetTypeId()): Effect::GetTypeId: vtable slot 9 returns a small class id: Effect 0, Particle 1, Line 2, Tail 3, Cylinder 4, OrientedParticle 7, Cloud 12"
+  },
+  {
+   "addr": "0x081248fe",
+   "old": "fn_081248fe",
+   "new": "Effect_Archive",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Effect::Archive(FxArchive *ar)): Effect::Archive: save/load of the base fields through the FxArchive helpers; on load recomputes cachedHandle from worldOrigin"
+  },
+  {
+   "addr": "0x08124e12",
+   "old": "fn_08124e12",
+   "new": "Particle_IsCulled",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (byte Particle::IsCulled()): Particle::IsCulled: vtable slot 4; tests the sphere (worldOrigin, size) against the view planes with the effect's trace mask."
+  },
+  {
+   "addr": "0x08124e50",
+   "old": "fn_08124e50",
+   "new": "Particle_Draw",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (void Particle::Draw()): Particle::Draw: vtable slot 5; submits in mode 4 only when both size and size2 are non-zero."
+  },
+  {
+   "addr": "0x08124e98",
+   "old": "fn_08124e98",
+   "new": "Particle_Update",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (bool Particle::Update()): Particle::Update: vtable slot 3; fraction, binding, motion; world position from the binding frame; then size, size2 (each early-returns success when zero), colour, alpha, rotation, frame."
+  },
+  {
+   "addr": "0x08124fd4",
+   "old": "fn_08124fd4",
+   "new": "Particle_SetBasis",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::SetBasis(const float *axes3)): Particle::SetBasis: copies three vec3 from the argument (or zeroes them if the address is null) into the basis at +0xd0/+0xdc/+0xe8"
+  },
+  {
+   "addr": "0x0812505e",
+   "old": "fn_0812505e",
+   "new": "Particle_InitCurves",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::InitCurves(const FxParticleTemplate *tmpl)): Particle::InitCurves: vtable slot 8 of Particle: initialises the 22 curve slots at +0x144.. from template slots 0-7 and 10-23 (slots 8,9 are class specific)"
+  },
+  {
+   "addr": "0x081252ce",
+   "old": "fn_081252ce",
+   "new": "Particle_SetVelocityRand",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::SetVelocityRand(float x, float y, float z)): Particle::SetVelocityRand: stores a vec3 at +0x12c, the random weights used by the velocity range curves in EvalVelocityTerm"
+  },
+  {
+   "addr": "0x081252fc",
+   "old": "fn_081252fc",
+   "new": "Particle_SetAccelRand",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::SetAccelRand(float x, float y, float z)): Particle::SetAccelRand: stores a vec3 at +0x138, the random weights used by the acceleration range curves in EvalAccelTerm"
+  },
+  {
+   "addr": "0x0812548a",
+   "old": "fn_0812548a",
+   "new": "Particle_ClampedRatio",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (float Particle::ClampedRatio(float num, float den)): Particle::ClampedRatio: num/den capped at 1.0 (no lower clamp); this is unused"
+  },
+  {
+   "addr": "0x08125522",
+   "old": "fn_08125522",
+   "new": "Particle_StopMoving",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::StopMoving()): Particle::StopMoving: clears collide/impact-effect bits (0x20,0x800) and sets the stopped bit 0x1000000"
+  },
+  {
+   "addr": "0x08125556",
+   "old": "fn_08125556",
+   "new": "Particle_HandleImpact",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::HandleImpact(const float *frame, float t, const float *vel, float traceFraction,): Particle::HandleImpact: reflects the accumulated offset about the hit normal scaled by +0x100 (bounce), or stops the particle via Particle_ShouldStop"
+  },
+  {
+   "addr": "0x081256d4",
+   "old": "fn_081256d4",
+   "new": "Particle_UpdateMotion",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (bool Particle::UpdateMotion(const float *frame)): Particle::UpdateMotion: integrates origin with EvalVelocityTotal, optionally traces the step (flag 0x20), spawns impact effect (0x800), kills (0x400) or bounces via HandleImpact"
+  },
+  {
+   "addr": "0x08125a82",
+   "old": "fn_08125a82",
+   "new": "Particle_EvalVelocityTerm",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::EvalVelocityTerm(float t, float *out, const float *frame)): Particle::EvalVelocityTerm: evaluates the three velocity curves (+0x1bc..; range variant with +0x1e0.. and rand +0x12c when flag 0x80000), rotates by basis unless world-space flag 0x200000"
+  },
+  {
+   "addr": "0x08125c16",
+   "old": "fn_08125c16",
+   "new": "Particle_EvalAccelTerm",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::EvalAccelTerm(float t, float *out, const float *frame)): Particle::EvalAccelTerm: same shape as EvalVelocityTerm over the acceleration curves (+0x204.., alt +0x228.., rand +0x138, flags 0x100000/0x400000)"
+  },
+  {
+   "addr": "0x08125daa",
+   "old": "fn_08125daa",
+   "new": "Particle_EvalGravityTerm",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::EvalGravityTerm(float t, float *out, const float *frame)): Particle::EvalGravityTerm: gravity vector for t*duration ms from GetGravityVec, rotated into the frame when one is bound"
+  },
+  {
+   "addr": "0x08125e2c",
+   "old": "fn_08125e2c",
+   "new": "Particle_EvalVelocityIntegral",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::EvalVelocityIntegral(float t, float *out)): Particle::EvalVelocityIntegral: integral variant (FxCurveRef_EvalScaled/FxCurveRef_EvalBlendScaled) of the velocity curves scaled by duration/1000"
+  },
+  {
+   "addr": "0x08125fb6",
+   "old": "fn_08125fb6",
+   "new": "Particle_EvalAccelIntegral",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::EvalAccelIntegral(float t, float *out)): Particle::EvalAccelIntegral: integral variant of the acceleration curves; the range selector tests 0x80000 (the velocity-range bit), not 0x100000, as in the binary"
+  },
+  {
+   "addr": "0x08126140",
+   "old": "fn_08126140",
+   "new": "Particle_GetGravityVec",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::GetGravityVec(int ms, float *out)): Particle::GetGravityVec: (0, 0, ms * gravity(+0xf4) * 0.001)"
+  },
+  {
+   "addr": "0x08126178",
+   "old": "fn_08126178",
+   "new": "Particle_EvalDisplacement",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::EvalDisplacement(int ms, float *out)): Particle::EvalDisplacement: sum of velocity integral, acceleration integral and gravity*ms/1000 at ms into the lifetime (t capped at 1)"
+  },
+  {
+   "addr": "0x08126252",
+   "old": "fn_08126252",
+   "new": "Particle_GetStartVelocity",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::GetStartVelocity(float *out)): Particle::GetStartVelocity: EvalVelocityTotal at t=0 in the bound frame; zero vector if the binding cannot be resolved"
+  },
+  {
+   "addr": "0x081262c6",
+   "old": "fn_081262c6",
+   "new": "Particle_EvalVelocityTotal",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::EvalVelocityTotal(float t, float *out, const float *frame)): Particle::EvalVelocityTotal: velocity + acceleration + gravity terms plus the accumulated offset at +0xc4; the per-frame motion rate used by UpdateMotion and Emitter"
+  },
+  {
+   "addr": "0x0812637e",
+   "old": "fn_0812637e",
+   "new": "Particle_UpdateSize",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::UpdateSize()): Particle::UpdateSize: size (+0x88) from the size curve (+0x174) or its range variant (flag 0x8000, rand +0x120) at frac"
+  },
+  {
+   "addr": "0x08126402",
+   "old": "fn_08126402",
+   "new": "Particle_UpdateSize2",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::UpdateSize2()): Particle::UpdateSize2: size2 (+0x8c): copy of size when +0x104 is 0, else the +0x18c curve (range flag 0x10000, rand +0x124)"
+  },
+  {
+   "addr": "0x081264a2",
+   "old": "fn_081264a2",
+   "new": "Particle_UpdateColor",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::UpdateColor()): Particle::UpdateColor: rgb vec3 curve at +0x144 (range flag 0x2000, rand +0x118) converted to bytes at +0x90"
+  },
+  {
+   "addr": "0x08126530",
+   "old": "fn_08126530",
+   "new": "Particle_UpdateAlpha",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::UpdateAlpha()): Particle::UpdateAlpha: alpha curve at +0x15c (range flag 0x4000, rand +0x11c) clamped to 0..1; scales rgb bytes (alpha=255) or writes alpha only when flag 0x80"
+  },
+  {
+   "addr": "0x0812669e",
+   "old": "fn_0812669e",
+   "new": "Particle_UpdateRotation",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::UpdateRotation()): Particle::UpdateRotation: angle (+0x44) += frameTime * 0.01 * rate, rate from the curve at +0x1a4 (range flag 0x40000, rand +0x128)"
+  },
+  {
+   "addr": "0x0812672e",
+   "old": "fn_0812672e",
+   "new": "Particle_UpdateFrame",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (int Particle::UpdateFrame()): Particle::UpdateFrame: sprite frame index (+0x94) from age * frameRate + frameOffset with wrap (mode 0) or clamp/repeat-count (mode 1) over the frame count of the template; return value follows the decompiled register usage (returns this wh"
+  },
+  {
+   "addr": "0x081268a0",
+   "old": "fn_081268a0",
+   "new": "Particle_GetTypeId",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (int Particle::GetTypeId()): Particle::GetTypeId: vtable slot 9 of Particle returns 1"
+  },
+  {
+   "addr": "0x081268aa",
+   "old": "fn_081268aa",
+   "new": "Particle_Archive",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::Archive(FxArchive *ar)): Particle::Archive: Effect::Archive followed by the particle fields in order: vec3 +0xc4/+0xd0/+0xdc/+0xe8, +0x100, +0x104, 22 curves, +0x108.. +0x140"
+  },
+  {
+   "addr": "0x08126c46",
+   "old": "fn_08126c46",
+   "new": "Particle_CopyFromTemplate",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Particle::CopyFromTemplate(const FxParticleTemplate *tmpl)): Particle::CopyFromTemplate: vtable slot 11: copies only the key table pointers of template curve slots 0-7 and 10-23 into the 22 curves at +0x144"
+  },
+  {
+   "addr": "0x08126ec0",
+   "old": "fn_08126ec0",
+   "new": "OrientedParticle_IsCulled",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (byte OrientedParticle::IsCulled()): OrientedParticle::IsCulled: slot 4; identical body to Particle::IsCulled."
+  },
+  {
+   "addr": "0x08126efe",
+   "old": "fn_08126efe",
+   "new": "OrientedParticle_Draw",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (void OrientedParticle::Draw()): OrientedParticle::Draw: slot 5; submits in mode 7."
+  },
+  {
+   "addr": "0x08126f1a",
+   "old": "fn_08126f1a",
+   "new": "OrientedParticle_Update",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (bool OrientedParticle::Update()): OrientedParticle::Update: slot 3; like Particle::Update but runs every curve update unconditionally and finally maps the local axis at +0x24c into axes[0..2] (+0x48) through the binding frame."
+  },
+  {
+   "addr": "0x0812704e",
+   "old": "fn_0812704e",
+   "new": "OrientedParticle_GetTypeId",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (int OrientedParticle::GetTypeId()): OrientedParticle::GetTypeId: vtable slot 9 of OrientedParticle returns 7"
+  },
+  {
+   "addr": "0x08127058",
+   "old": "fn_08127058",
+   "new": "OrientedParticle_Archive",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void OrientedParticle::Archive(FxArchive *ar)): OrientedParticle::Archive: Particle::Archive plus vec3 at +0x24c"
+  },
+  {
+   "addr": "0x081271c8",
+   "old": "fn_081271c8",
+   "new": "Cloud_IsCulled",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (byte Cloud::IsCulled()): Cloud::IsCulled: slot 4; culling sphere radius is max(size, size2) + prevSize (+0x98)."
+  },
+  {
+   "addr": "0x0812722e",
+   "old": "fn_0812722e",
+   "new": "Cloud_InitRandomAxis",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Cloud::InitRandomAxis()): Cloud::InitRandomAxis: up to 4 tries of a random vec3 in [-1,1]^3 with 0.01<=|v|^2<=1, then normalised; falls back to (1,0,0)"
+  },
+  {
+   "addr": "0x08127306",
+   "old": "fn_08127306",
+   "new": "Cloud_Draw",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (void Cloud::Draw()): Cloud::Draw: slot 5; submits in mode 6."
+  },
+  {
+   "addr": "0x08127322",
+   "old": "fn_08127322",
+   "new": "Cloud_InitCurves",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (void Cloud::InitCurves(const FxParticleTemplate *tmpl)): Cloud::InitCurves: slot 8; Particle::InitCurves then the two speed curves from template curves[8],[9] (+0x160,+0x16c) into +0x264/+0x270."
+  },
+  {
+   "addr": "0x08127374",
+   "old": "fn_08127374",
+   "new": "Cloud_UpdateSpeed",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Cloud::UpdateSpeed()): Cloud::UpdateSpeed: when useSpeedCurve is set, speed (+0x258) from the +0x264 curve (range flag 0x20000, rand +0x260)"
+  },
+  {
+   "addr": "0x08127402",
+   "old": "fn_08127402",
+   "new": "Cloud_Update",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (bool Cloud::Update()): Cloud::Update: vtable slot 3 of Cloud: per-frame update (fraction, binding, motion, size/size2/speed/colour/alpha/rotation, orientation from axis+angle, world position)"
+  },
+  {
+   "addr": "0x081275ba",
+   "old": "fn_081275ba",
+   "new": "Cloud_GetTypeId",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (int Cloud::GetTypeId()): Cloud::GetTypeId: vtable slot 9 of Cloud returns 12"
+  },
+  {
+   "addr": "0x081275c4",
+   "old": "fn_081275c4",
+   "new": "Cloud_Archive",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Cloud::Archive(FxArchive *ar)): Cloud::Archive: Particle::Archive plus vec3 +0x24c, curves +0x264/+0x270, float +0x260, byte +0x25c"
+  },
+  {
+   "addr": "0x08127652",
+   "old": "fn_08127652",
+   "new": "Cloud_CopyFromTemplate",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Cloud::CopyFromTemplate(const FxParticleTemplate *tmpl)): Cloud::CopyFromTemplate: Particle::CopyFromTemplate plus key pointers of template curve slots 8 and 9"
+  },
+  {
+   "addr": "0x0812776a",
+   "old": "fn_0812776a",
+   "new": "Line_IsCulled",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (byte Line::IsCulled()): Line::IsCulled: slot 4; segment (worldOrigin, prevWorldOrigin) with margin `size` on both ends."
+  },
+  {
+   "addr": "0x081277c2",
+   "old": "fn_081277c2",
+   "new": "Line_Draw",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (void Line::Draw()): Line::Draw: slot 5; submits in mode 8."
+  },
+  {
+   "addr": "0x081277de",
+   "old": "fn_081277de",
+   "new": "Line_Update",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (bool Line::Update()): Line::Update: slot 3; no motion step. World start point from the origin and world end point (+0x9c) from the local end point at +0x24c, through the binding frame; then size, colour, alpha."
+  },
+  {
+   "addr": "0x081278d4",
+   "old": "fn_081278d4",
+   "new": "Line_GetTypeId",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (int Line::GetTypeId()): Line::GetTypeId: vtable slot 9 of Line returns 2"
+  },
+  {
+   "addr": "0x081278de",
+   "old": "fn_081278de",
+   "new": "Line_Archive",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Line::Archive(FxArchive *ar)): Line::Archive: Particle::Archive plus vec3 at +0x24c"
+  },
+  {
+   "addr": "0x081279e4",
+   "old": "fn_081279e4",
+   "new": "Tail_UpdateLengthAndPoint",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Tail::UpdateLengthAndPoint()): Tail::UpdateLengthAndPoint: calls UpdateLength then UpdateTailPoint with no frame"
+  },
+  {
+   "addr": "0x08127a0a",
+   "old": "fn_08127a0a",
+   "new": "Tail_TraceSegment",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (bool Tail::TraceSegment()): Tail::TraceSegment: vtable slot 4 of Tail: world trace between worldOrigin and prevWorldOrigin with size as radius and GetTraceMask()"
+  },
+  {
+   "addr": "0x08127a62",
+   "old": "fn_08127a62",
+   "new": "Tail_InitCurves",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (void Tail::InitCurves(const FxParticleTemplate *tmpl)): Tail::InitCurves: slot 8 (shared with Cylinder); Particle::InitCurves then the length curves from template curves[8],[9] into +0x260/+0x26c."
+  },
+  {
+   "addr": "0x08127ab4",
+   "old": "fn_08127ab4",
+   "new": "Tail_Draw",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (void Tail::Draw()): Tail::Draw: slot 5; submits in mode 8."
+  },
+  {
+   "addr": "0x08127ad0",
+   "old": "fn_08127ad0",
+   "new": "Tail_Update",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (bool Tail::Update()): Tail::Update: slot 3; remembers the previous origin at +0x24c, runs motion, size, tail length, colour, alpha, frame and finally the tail end point."
+  },
+  {
+   "addr": "0x08127bea",
+   "old": "fn_08127bea",
+   "new": "Tail_UpdateLength",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Tail::UpdateLength()): Tail::UpdateLength: length (+0x258) from the +0x260 curve (range flag 0x20000, rand +0x25c) at frac"
+  },
+  {
+   "addr": "0x08127c6a",
+   "old": "fn_08127c6a",
+   "new": "Tail_UpdateTailPoint",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Tail::UpdateTailPoint(const float *frame)): Tail::UpdateTailPoint: places prevWorldOrigin at origin + length * unit(endPoint - origin), through the frame when bound"
+  },
+  {
+   "addr": "0x08127d4c",
+   "old": "fn_08127d4c",
+   "new": "Tail_GetTypeId",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (int Tail::GetTypeId()): Tail::GetTypeId: vtable slot 9 of Tail returns 3"
+  },
+  {
+   "addr": "0x08127d56",
+   "old": "fn_08127d56",
+   "new": "Tail_Archive",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Tail::Archive(FxArchive *ar)): Tail::Archive: Particle::Archive plus vec3 +0x24c, curves +0x260/+0x26c, float +0x25c"
+  },
+  {
+   "addr": "0x08127dcc",
+   "old": "fn_08127dcc",
+   "new": "Tail_CopyFromTemplate",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Tail::CopyFromTemplate(const FxParticleTemplate *tmpl)): Tail::CopyFromTemplate: Particle::CopyFromTemplate plus key pointers of template curve slots 8 and 9"
+  },
+  {
+   "addr": "0x08127ede",
+   "old": "fn_08127ede",
+   "new": "Cylinder_IsCulled",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (byte Cylinder::IsCulled()): Cylinder::IsCulled: slot 4; segment (worldOrigin, prevWorldOrigin) with margins size2 and size."
+  },
+  {
+   "addr": "0x08127f36",
+   "old": "fn_08127f36",
+   "new": "Cylinder_Draw",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (void Cylinder::Draw()): Cylinder::Draw: slot 5; submits in mode 9."
+  },
+  {
+   "addr": "0x08127f52",
+   "old": "fn_08127f52",
+   "new": "Cylinder_Update",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (bool Cylinder::Update()): Cylinder::Update: slot 3; no motion step. The segment runs from the origin to origin + length * axes[0]; both ends go through the binding frame when present."
+  },
+  {
+   "addr": "0x0812809a",
+   "old": "fn_0812809a",
+   "new": "Cylinder_GetTypeId",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (int Cylinder::GetTypeId()): Cylinder::GetTypeId: vtable slot 9 of Cylinder returns 4"
+  },
+  {
+   "addr": "0x081280a4",
+   "old": "fn_081280a4",
+   "new": "Cylinder_Archive",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Cylinder::Archive(FxArchive *ar)): Cylinder::Archive: forwards to Tail::Archive"
+  },
+  {
+   "addr": "0x081281e0",
+   "old": "fn_081281e0",
+   "new": "Emitter_Update",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (bool Emitter::Update()): Emitter::Update: slot 3; motion step, damps the velocity at +0x284 by 0.7 when the origin did not move, integrates velocity, then (flag 0x10) moves the world position/axes through the binding frame and derives a frame velocity from the fram"
+  },
+  {
+   "addr": "0x08128456",
+   "old": "fn_08128456",
+   "new": "Emitter_EmitElements",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 054 (void Emitter::EmitElements(const float *frameVel, const float *frame)): Emitter::EmitElements: steps a point along EvalVelocityTotal in 12 ms increments until it moves minStep, then spawns effect emitTemplateId at it via FxScheduler_PlayEffect; re-rolls minStep with FxObj29c_RandomizeValue"
+  },
+  {
+   "addr": "0x08128c74",
+   "old": "fn_08128c74",
+   "new": "Light_InitCurves",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (void Light::InitCurves(const FxParticleTemplate *tmpl)): Light::InitCurves: slot 8 (shared with Flash); four curves from template curves[0],[1],[4],[5] (+0x100,+0x10c,+0x130,+0x13c) into +0xcc,+0xd8,+0xe4,+0xf0."
+  },
+  {
+   "addr": "0x08128cec",
+   "old": "fn_08128cec",
+   "new": "Light_IsCulled",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (byte Light::IsCulled()): Light::IsCulled: slot 4; sphere (worldOrigin, size) against the view planes."
+  },
+  {
+   "addr": "0x08128d2a",
+   "old": "fn_08128d2a",
+   "new": "Light_Draw",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (void Light::Draw()): Light::Draw: slot 5; hands (world origin, size, colour rgb) to the effects-system no-op FX_NoopC (0x0812d286)."
+  },
+  {
+   "addr": "0x08128d74",
+   "old": "fn_08128d74",
+   "new": "Light_Update",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 107 (bool Light::Update()): Light::Update: slot 3; evaluates the size and colour curves, then the world position through the binding frame."
+  },
+  {
+   "addr": "0x0812e89e",
+   "old": "fn_0812e89e",
+   "new": "FxPrimitive_ParseAngles",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseAngles(const char *str)): Evidence: dispatched from the effect key parser (0x08130248) for keys \"angle\"/\"angles\"; fills the three angle ranges at +0x228."
+  },
+  {
+   "addr": "0x0812e93c",
+   "old": "fn_0812e93c",
+   "new": "FxPrimitive_ParseAngleDelta",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseAngleDelta(const char *str)): Evidence: dispatched for key \"angleDelta\" in 0x08130248; fills the ranges at +0x240."
+  },
+  {
+   "addr": "0x0812e9da",
+   "old": "fn_0812e9da",
+   "new": "FxPrimitive_ParseVelocity",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseVelocity(const char *str)): Evidence: dispatched for keys \"velocity\"/\"vel\" in 0x08130248; sets flag 0x80000 (useRandomVelocity in table 0x0815fae0) when lo != hi."
+  },
+  {
+   "addr": "0x0812ec4e",
+   "old": "fn_0812ec4e",
+   "new": "FxPrimitive_LookupFlag",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::LookupFlag(const char *flagName, const FxFlagName *table, int tableCount)): Evidence: case-insensitive lookup in an array of {name, flags, spawnFlags} (12-byte entries) that ORs the matched entry into +0x90/+0x94."
+  },
+  {
+   "addr": "0x0812ecdc",
+   "old": "fn_0812ecdc",
+   "new": "FxPrimitive_ParseFlagList",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseFlagList(const char *str, const FxFlagName *table, int tableCount)): Evidence: splits a whitespace separated word list with sscanf(\"%s\") and looks each word up with LookupFlag; fails on empty input or unknown word."
+  },
+  {
+   "addr": "0x0812edb4",
+   "old": "fn_0812edb4",
+   "new": "FxPrimitive_ParseFlags",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseFlags(const char *str)): Evidence: dispatched for keys \"flags\"/\"flag\"; uses the 0x18-entry name table at 0x0815fae0 (depthHack, setShaderTime, ...)."
+  },
+  {
+   "addr": "0x0812ede2",
+   "old": "fn_0812ede2",
+   "new": "FxPrimitive_ParseSpawnFlags",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseSpawnFlags(const char *str)): Evidence: dispatched for keys \"spawnFlags\"/\"spawnFlag\"; uses the 13-entry name table at 0x0815fcc0 (org2fromTrace, ...)."
+  },
+  {
+   "addr": "0x0812ee10",
+   "old": "fn_0812ee10",
+   "new": "FxPrimitive_ParseAcceleration",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseAcceleration(const char *str)): Evidence: dispatched for keys \"acceleration\"/\"accel\"; sets flag 0x100000 (useRandomVelocity2) when lo != hi, scales by life (+0x5c) * 0.001f."
+  },
+  {
+   "addr": "0x0812f0ca",
+   "old": "fn_0812f0ca",
+   "new": "FxPrimitive_ParseGravity",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseGravity(const char *str)): Evidence: dispatched for key \"gravity\"; stores a float range at +0x258."
+  },
+  {
+   "addr": "0x0812f128",
+   "old": "fn_0812f128",
+   "new": "FxPrimitive_ParseDensity",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseDensity(const char *str)): Evidence: dispatched for key \"density\"; stores a float range at +0x260."
+  },
+  {
+   "addr": "0x0812f186",
+   "old": "fn_0812f186",
+   "new": "FxPrimitive_ParseVariance",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseVariance(const char *str)): Evidence: dispatched for key \"variance\"; stores a float range at +0x268."
+  },
+  {
+   "addr": "0x0812f1e4",
+   "old": "fn_0812f1e4",
+   "new": "FxPrimitive_ParseSequenceStartFrameMode",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseSequenceStartFrameMode(const char *str)): Evidence: key string \"sequenceStartFrameMode\" selects this handler in 0x08130248; accepts 0..2."
+  },
+  {
+   "addr": "0x0812f228",
+   "old": "fn_0812f228",
+   "new": "FxPrimitive_ParseSequenceFixedFrameValue",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseSequenceFixedFrameValue(const char *str)): Evidence: key string \"sequenceFixedFrameValue\"; stores unconditionally, succeeds if > 0."
+  },
+  {
+   "addr": "0x0812f268",
+   "old": "fn_0812f268",
+   "new": "FxPrimitive_ParseSequencePlayRateMode",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseSequencePlayRateMode(const char *str)): Evidence: key string \"sequencePlayRateMode\"; accepts 0..1."
+  },
+  {
+   "addr": "0x0812f2ac",
+   "old": "fn_0812f2ac",
+   "new": "FxPrimitive_ParseSequenceFixedFpsValue",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseSequenceFixedFpsValue(const char *str)): Evidence: key string \"sequenceFixedFpsValue\"; stores unconditionally, succeeds if >= 0."
+  },
+  {
+   "addr": "0x0812f2f4",
+   "old": "fn_0812f2f4",
+   "new": "FxPrimitive_ParseSequenceLoopMode",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseSequenceLoopMode(const char *str)): Evidence: key string \"sequenceLoopMode\"; accepts 0..1."
+  },
+  {
+   "addr": "0x0812f338",
+   "old": "fn_0812f338",
+   "new": "FxPrimitive_ParseSequenceLoopTimes",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseSequenceLoopTimes(const char *str)): Evidence: key string \"sequenceLoopTimes\"; stores unconditionally, succeeds if >= 0."
+  },
+  {
+   "addr": "0x0812f378",
+   "old": "fn_0812f378",
+   "new": "FxPrimitive_ParseSpawnFrustumCullRadius",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseSpawnFrustumCullRadius(const char *str)): Evidence: key string \"spawnFrustumCullRadius\"; stores only if >= 0."
+  },
+  {
+   "addr": "0x0812f3bc",
+   "old": "fn_0812f3bc",
+   "new": "FxPrimitive_ParseChannelStartVec3",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseChannelStartVec3(FxChannelInit *init, const char *str, int channel)): Evidence: called for key \"start\" of rgb channels 0/1 in ParseChannel (0x0812ffa2); fills 3 start ranges of the channel and marks it used."
+  },
+  {
+   "addr": "0x0812f450",
+   "old": "fn_0812f450",
+   "new": "FxPrimitive_ParseChannelEndVec3",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseChannelEndVec3(FxChannelInit *init, const char *str, int channel)): Evidence: called for key \"end\" of channels 0/1; same as ParseChannelStartVec3 into the end[] ranges (+0x18)."
+  },
+  {
+   "addr": "0x0812f4e8",
+   "old": "fn_0812f4e8",
+   "new": "FxPrimitive_ParseChannelStart",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseChannelStart(FxChannelInit *init, const char *str, int channel)): Evidence: called for key \"start\" of scalar channels (>= 2); sorts lo/hi and stores start[0]."
+  },
+  {
+   "addr": "0x0812f57c",
+   "old": "fn_0812f57c",
+   "new": "FxPrimitive_ParseChannelEnd",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseChannelEnd(FxChannelInit *init, const char *str, int channel)): Evidence: called for key \"end\" of scalar channels; sorts lo/hi and stores end[0] (+0x18)."
+  },
+  {
+   "addr": "0x0812f612",
+   "old": "fn_0812f612",
+   "new": "FxPrimitive_ParseChannelParm",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseChannelParm(FxChannelInit *init, const char *str, int channel)): Evidence: called for keys \"parm\"/\"parms\" in ParseChannel; stores the range at channel offset +0x30."
+  },
+  {
+   "addr": "0x0812f686",
+   "old": "fn_0812f686",
+   "new": "FxPrimitive_ParseChannelFlags",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseChannelFlags(FxChannelInit *init, const char *str, int channel)): Evidence: called for keys \"flags\"/\"flag\" in ParseChannel; ORs parsed flag bits (FX_ParseWaveFlags) into channel offset +0x38."
+  },
+  {
+   "addr": "0x0812f6f4",
+   "old": "fn_0812f6f4",
+   "new": "FxPrimitive_ParseMaterials",
+   "confidence": "observed",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseMaterials(ParseNode *node)): Evidence: string \"fx_primitive_s::ParseMaterials called with an empty list!\\n\"; keys \"shaders\"/\"shader\"."
+  },
+  {
+   "addr": "0x0812f7d2",
+   "old": "fn_0812f7d2",
+   "new": "FxPrimitive_ParseModels",
+   "confidence": "observed",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseModels(ParseNode *node)): Evidence: strings \"fx_primitive_s::ParseModels called with an empty list!\\n\" and \"...could not register model '%s'\\n\"; keys \"models\"/\"model\"."
+  },
+  {
+   "addr": "0x0812f8e0",
+   "old": "fn_0812f8e0",
+   "new": "FxPrimitive_ParseImpactFxStrings",
+   "confidence": "observed",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseImpactFxStrings(ParseNode *node)): Evidence: strings \"fx_primitive_s::ParseImpactFxStrings called with an empty list!\\n\", \"FxTemplate: Impact effect file not found.\\n\"; key \"impactfx\"; sets flags 0x820."
+  },
+  {
+   "addr": "0x0812f9fc",
+   "old": "fn_0812f9fc",
+   "new": "FxPrimitive_ParseDeathFxStrings",
+   "confidence": "observed",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseDeathFxStrings(ParseNode *node)): Evidence: strings \"fx_primitive_s::ParseDeathFxStrings called with an empty list!\\n\", \"FxTemplate: Death effect file not found.\\n\"; key \"deathfx\"; sets flag 0x200."
+  },
+  {
+   "addr": "0x0812fb18",
+   "old": "fn_0812fb18",
+   "new": "FxPrimitive_ParseEmitterFxStrings",
+   "confidence": "observed",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseEmitterFxStrings(ParseNode *node)): Evidence: strings \"fx_primitive_s::ParseEmitterFxStrings called with an empty list!\\n\", \"FxTemplate: Emitter effect file not found.\\n\"; key \"emitfx\"; sets flag 0x100."
+  },
+  {
+   "addr": "0x0812fc34",
+   "old": "fn_0812fc34",
+   "new": "FxPrimitive_ParsePlayFxStrings",
+   "confidence": "observed",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParsePlayFxStrings(ParseNode *node)): Evidence: strings \"fx_primitive_s::ParsePlayFxStrings called with an empty list!\\n\", \"FxTemplate: Effect file not found.\\n\"; key \"playfx\" (no flag change)."
+  },
+  {
+   "addr": "0x0812fd3c",
+   "old": "fn_0812fd3c",
+   "new": "FxPrimitive_ParseCurveVec3",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (void fx_primitive_s::ParseCurveVec3(ParseNode *node, int channel)): Evidence: format \"%f %f %f %f\" (time + rgb) per child; called for key \"curve\" on channels 0/1; stores the curve at +0x100+channel*12."
+  },
+  {
+   "addr": "0x0812fe54",
+   "old": "fn_0812fe54",
+   "new": "FxPrimitive_ParseCurveFloat",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (void fx_primitive_s::ParseCurveFloat(ParseNode *node, int channel)): Evidence: format \"%f %f\" (time + value) per child; called for key \"curve\" on scalar channels."
+  },
+  {
+   "addr": "0x0812ff4c",
+   "old": "fn_0812ff4c",
+   "new": "FxPrimitive_ParseChannelScale",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (void fx_primitive_s::ParseChannelScale(const char *str, int channel)): Evidence: key \"scale\" in ParseChannel; stores a range at channel slot +4 (+0x104+channel*12)."
+  },
+  {
+   "addr": "0x0812ffa2",
+   "old": "fn_0812ffa2",
+   "new": "FxPrimitive_ParseChannel",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseChannel(FxChannelInit *init, ParseNode *node, int channel)): Evidence: strings \"curve\",\"scale\",\"start\",\"end\",\"parm\",\"parms\",\"flags\",\"flag\" and \"Unknown key parsing a channel: %s\\n\"."
+  },
+  {
+   "addr": "0x0813021e",
+   "old": "fn_0813021e",
+   "new": "FxPrimitive_ParseShaderImpact",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseShaderImpact(const char *str)): Evidence: key \"shaderImpact\" copies up to 0x20 bytes into +0x20."
+  },
+  {
+   "addr": "0x08130248",
+   "old": "fn_08130248",
+   "new": "FxPrimitive_ParseKeys",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::ParseKeys(FxChannelInit *init, ParseNode *node)): Evidence: parses all effect primitive keys (strings \"count\", \"shaders\", ..., \"Unknown key parsing an effect primitive: %s\\n\", \"^1FX Error while parsing key '%s'\\n\") and then the channel groups (\"rgb\", \"alpha\", \"velocityX\", ...)."
+  },
+  {
+   "addr": "0x081314a0",
+   "old": "fn_081314a0",
+   "new": "FxPrimitive_Parse",
+   "confidence": "inferred",
+   "evidence": "Recon body chunk 057 (bool fx_primitive_s::Parse(ParseNode *node)): Evidence: allocates the 0x600-byte (24 * 0x40) channel scratch block from temp memory, runs ParseKeys, frees it."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08140120",
+   "old": "g_08140120",
+   "new": "g_msgInvalidStaticModelName",
+   "type_hint": "const char[]",
+   "confidence": "observed",
+   "evidence": "String \"Invalid static model name\\n\" (rodata 0x08140120, leading 0x15 colour byte); used by cm_load_static_models."
+  },
+  {
+   "addr": "0x08140140",
+   "old": "g_08140140",
+   "new": "g_msgStaticModelZeroScaleX",
+   "type_hint": "const char[]",
+   "confidence": "observed",
+   "evidence": "String \"Static model [%s] has x scale of 0.0\\n\" at 0x08140140."
+  },
+  {
+   "addr": "0x08140180",
+   "old": "g_08140180",
+   "new": "g_msgStaticModelZeroScaleY",
+   "type_hint": "const char[]",
+   "confidence": "observed",
+   "evidence": "String \"Static model [%s] has y scale of 0.0\\n\" at 0x08140180."
+  },
+  {
+   "addr": "0x081401c0",
+   "old": "g_081401c0",
+   "new": "g_msgStaticModelZeroScaleZ",
+   "type_hint": "const char[]",
+   "confidence": "observed",
+   "evidence": "String \"Static model [%s] has z scale of 0.0\\n\" at 0x081401c0."
+  },
+  {
+   "addr": "0x0814cfc8",
+   "old": "g_0814cfc8",
+   "new": "g_zeroVec3",
+   "type_hint": "const float[3]",
+   "confidence": "inferred",
+   "evidence": "Read-only 3-float block of zero bytes (existing evidence: rodata bytes zero); used as a zero origin by DObj_SetControlBoneByName (md section 6) and 2 other functions."
+  },
+  {
+   "addr": "0x08184860",
+   "old": "g_08184860",
+   "new": "g_playerAnimScriptPath",
+   "type_hint": "const char *",
+   "confidence": "observed",
+   "evidence": "Existing evidence: initialised to \"mp/playeranim.script\"; cleared at end of BG_AnimParseAnimScript."
+  },
+  {
+   "addr": "0x08184880",
+   "old": "g_08184880",
+   "new": "g_animStateNames",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "Table of RELAXED/QUERY/ALERT/COMBAT (existing evidence)."
+  },
+  {
+   "addr": "0x081848c0",
+   "old": "g_081848c0",
+   "new": "g_animMoveTypeNames",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "Table starting \"** UNUSED **\", IDLE, IDLECR (existing evidence); move type names."
+  },
+  {
+   "addr": "0x08184a20",
+   "old": "g_08184a20",
+   "new": "g_animEventNames",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "Event names PAIN DEATH FIREWEAPON JUMP ... (existing evidence)."
+  },
+  {
+   "addr": "0x08184ac0",
+   "old": "g_08184ac0",
+   "new": "g_animBodyPartNames",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "Body part names ** UNUSED **, LEGS, TORSO, BOTH (existing evidence)."
+  },
+  {
+   "addr": "0x08184c00",
+   "old": "g_08184c00",
+   "new": "g_animConditionNames",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "Condition names PLAYERANIMTYPE WEAPONCLASS MOUNTED MOVETYPE ... (existing evidence)."
+  },
+  {
+   "addr": "0x08184c60",
+   "old": "g_08184c60",
+   "new": "g_animConditionDefs",
+   "type_hint": "struct animConditionDef_t[]",
+   "confidence": "inferred",
+   "evidence": "Per-condition {type bitflags/value, string table} array parallel to the condition-name table (existing evidence)."
+  },
+  {
+   "addr": "0x08184cc0",
+   "old": "g_08184cc0",
+   "new": "g_animScriptSectionNames",
+   "type_hint": "struct animStringItem_t[]",
+   "confidence": "observed",
+   "evidence": "Section keywords defines/animations/canned_animations/statechanges/events (existing evidence)."
+  },
+  {
+   "addr": "0x08188ab4",
+   "old": "g_08188ab4",
+   "new": "g_fxOriginRefs",
+   "type_hint": "struct FxOriginRef *",
+   "confidence": "inferred",
+   "evidence": "Pointer to the 16-byte {origin[3],refCount} table at 0x08a5cb00 used by FX_AddOriginRef/FX_ReleaseOriginRef (md 4.3)."
+  },
+  {
+   "addr": "0x08188ab8",
+   "old": "g_08188ab8",
+   "new": "g_fxEffectListA",
+   "type_hint": "struct Effect **",
+   "confidence": "inferred",
+   "evidence": "Effect list A array (initial data 0x08a63c00), count at 0x08a5c9a0; swapped by IntArray_SwapA."
+  },
+  {
+   "addr": "0x08188abc",
+   "old": "g_08188abc",
+   "new": "g_fxEffectListB",
+   "type_hint": "struct Effect **",
+   "confidence": "inferred",
+   "evidence": "Effect list B array (initial data 0x08a65880), count at 0x08a5c9a4."
+  },
+  {
+   "addr": "0x08188ac0",
+   "old": "g_08188ac0",
+   "new": "g_fxSystem",
+   "type_hint": "struct FxSystem *",
+   "confidence": "inferred",
+   "evidence": "Pointer to the frame/clock/scene object (static 0x08a5c9e0, 0xfc bytes) read as time(+4), frameTime(+0xc), traceMask(+0x80); 43 using functions (md 4.2)."
+  },
+  {
+   "addr": "0x081a5080",
+   "old": "g_081a5080",
+   "new": "g_dobjPool",
+   "type_hint": "unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "DObj pool base, 0x7ff slots of 0x64 bytes (md section 6)."
+  },
+  {
+   "addr": "0x081d7900",
+   "old": "g_081d7900",
+   "new": "g_dobjClientHandleToSlot",
+   "type_hint": "short[]",
+   "confidence": "inferred",
+   "evidence": "Client handle+localClient*0x480 to DObj slot map, cleared by Com_InitDObj (md section 6)."
+  },
+  {
+   "addr": "0x081d8200",
+   "old": "g_081d8200",
+   "new": "g_dobjServerHandleToSlot",
+   "type_hint": "short[]",
+   "confidence": "inferred",
+   "evidence": "Server entity handle to DObj slot map, cleared by Com_InitDObj (md section 6)."
+  },
+  {
+   "addr": "0x08205a60",
+   "old": "g_08205a60",
+   "new": "g_animParseTextStart",
+   "type_hint": "char *",
+   "confidence": "inferred",
+   "evidence": "Anim-tree script text start, used for the column in Anim_ParseError (existing evidence)."
+  },
+  {
+   "addr": "0x08205a64",
+   "old": "g_08205a64",
+   "new": "g_animParseCursor",
+   "type_hint": "char *",
+   "confidence": "inferred",
+   "evidence": "Anim-tree script text cursor passed by address to token readers (existing evidence)."
+  },
+  {
+   "addr": "0x08205c68",
+   "old": "g_08205c68",
+   "new": "g_animParseSkipPrimitives",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Set by Anim_SetParseFlag; non-zero suppresses primitive registration in Anim_ParseBlock (existing evidence)."
+  },
+  {
+   "addr": "0x0839753c",
+   "old": "g_0839753c",
+   "new": "g_animTreeHash",
+   "type_hint": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "Hash accumulator updated with multiplier 0x1f in Anim_HashAndEmitTree (existing evidence)."
+  },
+  {
+   "addr": "0x083e3000",
+   "old": "g_083e3000",
+   "new": "g_svSkelMemoryPool",
+   "type_hint": "unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "0x40000-byte server skeleton pool (SV_SkelMemoryAlloc, md section 6)."
+  },
+  {
+   "addr": "0x08423000",
+   "old": "g_08423000",
+   "new": "g_svSkelMemoryPtr",
+   "type_hint": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "Pointer to the skeleton pool base assigned from 0x083e3000 (existing evidence)."
+  },
+  {
+   "addr": "0x08423004",
+   "old": "g_08423004",
+   "new": "g_svSkelOverflowWarnGeneration",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Generation of the last \"SV_SKEL_MEMORY_SIZE exceeded\" warning, so it prints once per generation (md section 6)."
+  },
+  {
+   "addr": "0x0849f630",
+   "old": "g_0849f630",
+   "new": "g_svSkelGeneration",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Skeleton memory generation counter, skips 0, advanced by SV_SkelMemoryNewFrame (md section 6)."
+  },
+  {
+   "addr": "0x0849f634",
+   "old": "g_0849f634",
+   "new": "g_svSkelPoolOffset",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Current allocation offset into the skeleton pool (limit test < 0x3fff1) (md section 6)."
+  },
+  {
+   "addr": "0x085bc828",
+   "old": "g_085bc828",
+   "new": "g_dobjEmptyDupPartTable",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Script-string id of the shared empty duplicate-part table interned by DObj_InitGlobals (md section 6)."
+  },
+  {
+   "addr": "0x085bc900",
+   "old": "g_085bc900",
+   "new": "g_xanimSlotRing",
+   "type_hint": "struct XAnimSlot[0x1000]",
+   "confidence": "inferred",
+   "evidence": "4096 x 0x28-byte blend-slot ring, slot 0 sentinel/free-list head, built by XAnim_InitSlotPool (md 7.2)."
+  },
+  {
+   "addr": "0x085e4900",
+   "old": "g_085e4900",
+   "new": "g_xanimEndNotifyHandle",
+   "type_hint": "unsigned int",
+   "confidence": "inferred",
+   "evidence": "Interned script string \"end\" (notify name), created in XAnim_InitSlotPool, released in XAnim_ShutdownSlotPool; md section 10 corrects \"pending handle\"."
+  },
+  {
+   "addr": "0x085e4920",
+   "old": "g_085e4920",
+   "new": "g_xanimPendingEntries",
+   "type_hint": "struct xanim_pending_s[]",
+   "confidence": "inferred",
+   "evidence": "12-byte pending-notify entries sorted by key time, inserted by XAnim_InsertPendingEntry, no capacity check (md 7.2)."
+  },
+  {
+   "addr": "0x085e4f20",
+   "old": "g_085e4f20",
+   "new": "g_xanimPendingCount",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "Entry count incremented by XAnim_InsertPendingEntry (existing evidence)."
+  },
+  {
+   "addr": "0x085e4f24",
+   "old": "g_085e4f24",
+   "new": "g_xanimDebugNames",
+   "type_hint": "unsigned char",
+   "confidence": "inferred",
+   "evidence": "Set from com_developer->value != 0 in XAnim_InitSlotPool; gates debug names in XAnim_AllocNodeTable (md 7.2)."
+  },
+  {
+   "addr": "0x085e5020",
+   "old": "g_085e5020",
+   "new": "g_xmodelLodDistanceOverrides",
+   "type_hint": "struct LodDistanceOverride[]",
+   "confidence": "inferred",
+   "evidence": "8-byte {valid, dist} per LOD, valid = dist >= 0 (md section 5), written by SetLodDistanceOverride."
+  },
+  {
+   "addr": "0x085e4f4c",
+   "old": "g_085e4f4c",
+   "new": "g_xmodelDefaultParts",
+   "type_hint": "struct XModelParts",
+   "confidence": "inferred",
+   "evidence": "Default xmodelparts (numBones=numRootBones=1) returned by the default-model builder 0x080c5450 (existing evidence)."
+  },
+  {
+   "addr": "0x085e4fb0",
+   "old": "g_085e4fb0",
+   "new": "g_xmodelDefaultSurfs",
+   "type_hint": "struct XModelSurfs",
+   "confidence": "inferred",
+   "evidence": "Zeroed default XModelSurfs assigned to default lod0.surfs (existing evidence; md section 5)."
+  },
+  {
+   "addr": "0x085e4fc4",
+   "old": "g_085e4fc4",
+   "new": "g_xmodelDefaultBoneInfo",
+   "type_hint": "struct XBoneInfo",
+   "confidence": "inferred",
+   "evidence": "Default model bone info with bounds -16..+16 (existing evidence)."
+  },
+  {
+   "addr": "0x0860b424",
+   "old": "g_0860b424",
+   "new": "g_animScriptData",
+   "type_hint": "struct animScriptData_t *",
+   "confidence": "inferred",
+   "evidence": "Parse/lookup target set by BG_AnimParseAnimScript(param), 13 using functions."
+  },
+  {
+   "addr": "0x0860b440",
+   "old": "g_0860b440",
+   "new": "g_animDefineCounts",
+   "type_hint": "int[9]",
+   "confidence": "inferred",
+   "evidence": "Number of defines per condition type, memset 0x24 (existing evidence)."
+  },
+  {
+   "addr": "0x0860b480",
+   "old": "g_0860b480",
+   "new": "g_animDefineStringBuf",
+   "type_hint": "char[10000]",
+   "confidence": "inferred",
+   "evidence": "Define string buffer (existing evidence)."
+  },
+  {
+   "addr": "0x0860db90",
+   "old": "g_0860db90",
+   "new": "g_animDefineStringBufUsed",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Bytes used in g_0860b480 (existing evidence)."
+  },
+  {
+   "addr": "0x0860dba0",
+   "old": "g_0860dba0",
+   "new": "g_animDefineStrings",
+   "type_hint": "struct animStringItem_t[9][16]",
+   "confidence": "inferred",
+   "evidence": "Script-defined condition define strings, memset 0x480 (existing evidence)."
+  },
+  {
+   "addr": "0x0860e020",
+   "old": "g_0860e020",
+   "new": "g_animDefineValues",
+   "type_hint": "unsigned int[9][16][2]",
+   "confidence": "inferred",
+   "evidence": "Script-defined condition define 64-bit values (existing evidence)."
+  },
+  {
+   "addr": "0x0860e4a0",
+   "old": "g_0860e4a0",
+   "new": "g_animParseMoveType",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Move type of the animations section being parsed (existing evidence)."
+  },
+  {
+   "addr": "0x0860e4a4",
+   "old": "g_0860e4a4",
+   "new": "g_animParseEventIndex",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Event index while parsing the events section, -1 otherwise (existing evidence)."
+  },
+  {
+   "addr": "0x0860e4a8",
+   "old": "g_0860e4a8",
+   "new": "g_animNameTable",
+   "type_hint": "struct animNameEntry_t *",
+   "confidence": "inferred",
+   "evidence": "Optional animation name table, stride 0x48, set from parser args (existing evidence)."
+  },
+  {
+   "addr": "0x0860e4ac",
+   "old": "g_0860e4ac",
+   "new": "g_animNameTableCount",
+   "type_hint": "int *",
+   "confidence": "inferred",
+   "evidence": "Entry count for the animation name table (existing evidence)."
+  },
+  {
+   "addr": "0x0860e4c0",
+   "old": "g_0860e4c0",
+   "new": "g_animScriptText",
+   "type_hint": "char[100000]",
+   "confidence": "inferred",
+   "evidence": "mp/playeranim.script text buffer, max length 0x1869e (existing evidence)."
+  },
+  {
+   "addr": "0x08626b60",
+   "old": "g_08626b60",
+   "new": "g_animScriptTextLoaded",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Script text loaded flag (existing evidence)."
+  },
+  {
+   "addr": "0x08626b80",
+   "old": "g_08626b80",
+   "new": "g_playerAnimTypeNames",
+   "type_hint": "struct animStringItem_t[128]",
+   "confidence": "inferred",
+   "evidence": "PLAYERANIMTYPE name table, memset 0x400 (existing evidence)."
+  },
+  {
+   "addr": "0x08627f44",
+   "old": "g_08627f44",
+   "new": "g_playerAnimTypeCount",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Player anim type count (limit 0x40) set by BG_AnimLoadPlayerAnimTypes (existing evidence)."
+  },
+  {
+   "addr": "0x08627f60",
+   "old": "g_08627f60",
+   "new": "g_playerAnimTypeStrings",
+   "type_hint": "char *[64]",
+   "confidence": "inferred",
+   "evidence": "Names filled from mp/playeranimtypes.txt (existing evidence)."
+  },
+  {
+   "addr": "0x08852e20",
+   "old": "g_08852e20",
+   "new": "g_modelHandleTable",
+   "type_hint": "int[0x100]",
+   "confidence": "observed",
+   "evidence": "Indexed by model index; written by G_ModelIndex and G_SetModelHandle (existing observed evidence; md section 5)."
+  },
+  {
+   "addr": "0x08853380",
+   "old": "g_08853380",
+   "new": "g_fxPoolBlocks",
+   "type_hint": "struct FxPoolBlock[64]",
+   "confidence": "inferred",
+   "evidence": "2 MiB pool, 64 x 0x8000 blocks with 0x7ff0 trailer (md 4.3, proved by disassembly of 0x0812411a/0x0812422a)."
+  },
+  {
+   "addr": "0x08a53380",
+   "old": "g_08a53380",
+   "new": "g_fxPoolHighWater",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Pool high-water mark in bytes, written by FxPool_AllocBlock (existing evidence)."
+  },
+  {
+   "addr": "0x08a53384",
+   "old": "g_08a53384",
+   "new": "g_fxBindingList",
+   "type_hint": "struct FxBinding *",
+   "confidence": "inferred",
+   "evidence": "Head of intrusive FxBinding list, next at +0x38 (existing evidence)."
+  },
+  {
+   "addr": "0x08a53388",
+   "old": "g_08a53388",
+   "new": "g_fxPoolBinding",
+   "type_hint": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "Pool descriptor element 0x44, 481 per block (md 4.3)."
+  },
+  {
+   "addr": "0x08a53390",
+   "old": "g_08a53390",
+   "new": "g_fxPoolEffect",
+   "type_hint": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "Pool descriptor element 0xc4 (Effect base) (md 4.3)."
+  },
+  {
+   "addr": "0x08a53398",
+   "old": "g_08a53398",
+   "new": "g_fxPoolLightFlash",
+   "type_hint": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "Pool descriptor element 0xfc, used for Light and Flash (md 4.3, ctor/alloc callers)."
+  },
+  {
+   "addr": "0x08a533a0",
+   "old": "g_08a533a0",
+   "new": "g_fxPoolParticle",
+   "type_hint": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "Pool descriptor element 0x24c (Particle)."
+  },
+  {
+   "addr": "0x08a533a8",
+   "old": "g_08a533a8",
+   "new": "g_fxPoolLine",
+   "type_hint": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "Pool descriptor element 0x258; used by the Line allocator wrapper 0x0813781e."
+  },
+  {
+   "addr": "0x08a533b0",
+   "old": "g_08a533b0",
+   "new": "g_fxPoolOrientedParticle",
+   "type_hint": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "Pool descriptor element 0x258; used by the OrientedParticle allocator wrapper 0x0813785a."
+  },
+  {
+   "addr": "0x08a533b8",
+   "old": "g_08a533b8",
+   "new": "g_fxPoolTail",
+   "type_hint": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "Pool descriptor element 0x278; used by the Tail allocator wrapper 0x08137896."
+  },
+  {
+   "addr": "0x08a533c0",
+   "old": "g_08a533c0",
+   "new": "g_fxPoolCylinder",
+   "type_hint": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "Pool descriptor element 0x278; used by the Cylinder allocator wrapper 0x081378d0."
+  },
+  {
+   "addr": "0x08a533c8",
+   "old": "g_08a533c8",
+   "new": "g_fxPoolEmitter",
+   "type_hint": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "Pool descriptor element 0x29c; used by the Emitter allocator wrapper 0x081379e6."
+  },
+  {
+   "addr": "0x08a533d0",
+   "old": "g_08a533d0",
+   "new": "g_fxPoolCloud",
+   "type_hint": "struct FxPool",
+   "confidence": "inferred",
+   "evidence": "Pool descriptor element 0x27c; used by the Cloud allocator wrapper 0x081377e2."
+  },
+  {
+   "addr": "0x08a53804",
+   "old": "g_08a53804",
+   "new": "g_fxScheduler",
+   "type_hint": "struct FxScheduler *",
+   "confidence": "inferred",
+   "evidence": "Global scheduler allocated by FX_Init (0xc bytes) and first argument of the PlayEffect core (19 users)."
+  },
+  {
+   "addr": "0x08a53840",
+   "old": "g_08a53840",
+   "new": "g_fxParseTokenBuf",
+   "type_hint": "char[0x401]",
+   "confidence": "inferred",
+   "evidence": "Token buffer written by Fx_ParseToken (0x400 limit) (existing evidence)."
+  },
+  {
+   "addr": "0x08a53ca8",
+   "old": "g_08a53ca8",
+   "new": "g_fxOriginRefCount",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Origin-ref table count (md 4.3), used by FX_AddOriginRef."
+  },
+  {
+   "addr": "0x08a53cb0",
+   "old": "g_08a53cb0",
+   "new": "g_fxBlockerCount",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Blocker count reset by FX_ResetBlockers/FX_UpdateFlagged, appended by Particle slot 7 (md section 10)."
+  },
+  {
+   "addr": "0x08a53d00",
+   "old": "g_08a53d00",
+   "new": "g_fxBlockers",
+   "type_hint": "struct FxBlocker[]",
+   "confidence": "inferred",
+   "evidence": "20-byte {origin, radius=size^2, attenuation} blockers read by FX_GetAttenuation (md section 10)."
+  },
+  {
+   "addr": "0x08a5c9ac",
+   "old": "g_08a5c9ac",
+   "new": "g_fxListAUpdateBound",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "List A update bound, reset to the list A count in Fx_ClockAdvanceWrap/Fx_RewindToTime/Fx_RunFrame (existing evidence)."
+  },
+  {
+   "addr": "0x08a5c9b0",
+   "old": "g_08a5c9b0",
+   "new": "g_fxListBUpdateBound",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "List B update bound, reset to the list B count in the same three functions (existing evidence)."
+  }
+ ],
+ "left_unknown": [
+  {
+   "addr": "0x080d6c32",
+   "name": "Noop_080d6c32",
+   "why": "19 Noop_/ReturnZero_ stubs at 0x080d6c32-0x080d6cd4 have no data xrefs in .rodata/.data and no direct callers; role unknown. Existing descriptive names are accurate; no better name supported."
+  },
+  {
+   "addr": "0x0812ca34",
+   "name": "FX_ClearFour",
+   "why": "Zeroes four ints at +4; no caller. FX_ClearFourB (0x0812ca62) is a byte-identical duplicate used by Fx_ResetSlots but the field meaning is unproven."
+  },
+  {
+   "addr": "0x0812d16e",
+   "name": "FX_InitSampleRecord",
+   "why": "Calls out-of-chunk initialiser 0x0805b894 and stores tag 0x3ff/0x3fe; looks like a trace-record init but unproven."
+  },
+  {
+   "addr": "0x0812d28c",
+   "name": "FX_NoopD",
+   "why": "Empty; no callers (FX_NoopE 0x0812d292 likewise); no evidence of role."
+  },
+  {
+   "addr": "0x0812d1e6",
+   "name": "FX_NoopB",
+   "why": "Empty; only caller toggles it (1/0) around the \"fx/error.efx\" lookup in the scheduler; purpose (error-suppression guard?) unproven."
+  },
+  {
+   "addr": "0x0812ab58",
+   "name": "FxNoOp_0812ab58",
+   "why": "Empty; no caller or vtable reference found."
+  },
+  {
+   "addr": "0x081335c2",
+   "name": "FX_Noop",
+   "why": "Empty; no callers."
+  },
+  {
+   "addr": "0x08137a02",
+   "name": "Handle_GetTargetField8",
+   "why": "Reads word +8 through a double indirection after stream operations in FX save/serialise; type of the handle unproven."
+  },
+  {
+   "addr": "0x080c59be",
+   "name": "XModel_GetUnknown80",
+   "why": "Field +0x80 never written by the loaders (md section 11)."
+  },
+  {
+   "addr": "0x08a533f0",
+   "name": "g_08a533f0",
+   "why": "Per-client slot table; only slot 0 ever tested; contents unproven."
+  },
+  {
+   "addr": "0x08a53818",
+   "name": "g_08a53818",
+   "why": "Set to 1 by Fx_SetView and cleared by Fx_ClockAdvanceWrap; meaning only inferred from those writes."
+  },
+  {
+   "addr": "0x08a5c9c4",
+   "name": "g_08a5c9c4",
+   "why": "Non-zero enables Fx_GetRayAttenuation; never written in .text; role unproven."
+  },
+  {
+   "addr": "0x08a53c80",
+   "name": "g_08a53c80",
+   "why": "FX cvar pointers 0x08a53c80..0x08a53ca0 are read but never assigned in .text (md section 9); real dvar names unknown."
+  },
+  {
+   "addr": "0x085e4f25",
+   "name": "g_085e4f25",
+   "why": "Byte set by XAnim_SetUnnamedFlag25; no reader in the subsystem."
+  }
+ ]
+}

@@ -1,0 +1,110 @@
+{
+ "renames": [
+  {
+   "addr": "0x080b1250",
+   "old": "Snd_SetFlagByte",
+   "new": "Dvar_SetLoadingConfig",
+   "confidence": "inferred",
+   "evidence": "Objdump: stores byte to ds:0x85b7655, the config-load gate tested by Dvar_SetFromUserInput (0x080b501c) and written by Cbuf_ExecuteWithLoadFlag/Com_ErrorRecover; no sound relation."
+  },
+  {
+   "addr": "0x080b1268",
+   "old": "Snd_GetFlagByte",
+   "new": "Dvar_IsInitialised",
+   "confidence": "inferred",
+   "evidence": "Objdump: loads byte ds:0x85b7654 (different byte than the setter); set to 1 by Dvar_InitSvCheats, 0 by Dvar_Shutdown, used as gate in Com_UpdateQuitOnErrorFlag."
+  },
+  {
+   "addr": "0x080926d6",
+   "old": "SV_QueryGameActive",
+   "new": "SV_GameConsoleCommand",
+   "confidence": "inferred",
+   "evidence": "Objdump: cmp ds:0x8440200 (sv.state),2 ; if equal tail-calls game console handler (G_ConsoleCommand) else returns 0; caller Cmd_ExecuteString uses it as unknown-command fallback, not a query."
+  },
+  {
+   "addr": "0x080ac5d8",
+   "old": "Com_PoolTouchAt",
+   "new": "Com_PoolPtrFromOffset",
+   "confidence": "inferred",
+   "evidence": "Objdump: loads *offset, calls Com_PoolAt (0x080ac562) and returns eax; result is the pool pointer, not discarded (symbol says void)."
+  },
+  {
+   "addr": "0x080b34da",
+   "old": "Dvar_ClearFlagsIfOwned",
+   "new": "Dvar_ClearFlagsIfNotOwned",
+   "confidence": "inferred",
+   "evidence": "Objdump: tests flags&0x4000 (OWNS_NAME) and returns immediately if SET; only clears flags when not owned, then demotes if 0x7000 clear. Name was inverted."
+  },
+  {
+   "addr": "0x08062fa8",
+   "old": "Cmd_ArgsFrom_08062fa8",
+   "new": "Cmd_ArgsFromBuffer",
+   "confidence": "inferred",
+   "evidence": "Differs from Cmd_ArgsFrom (0x080602a4, static 0x400 buffer): joins argv[start..] into caller buffer of 0x1000; removes address-suffix and the collision-prone name."
+  },
+  {
+   "addr": "0x080628b6",
+   "old": "Com_InitStringBuffer",
+   "new": "Field_Clear",
+   "confidence": "inferred",
+   "evidence": "Objdump: memset(buf+0x18,0,0x100), +0 cursor=0, +4 scroll=0, +8 widthInChars=0x100; matches id Tech 3 Field_Clear/field_t initialisation (note: buffer offset 0x18 differs from Q3 layout)."
+  },
+  {
+   "addr": "0x080ad4dc",
+   "old": "Q_stricmpn",
+   "new": "Str_NCaseCmp",
+   "confidence": "inferred",
+   "evidence": "Same tolower-based routine as 0x0809163e; the true Q_stricmpn is 0x080b7ae2 (chunk_030). Renaming frees Q_stricmpn from ambiguity."
+  }
+ ],
+ "rejected": [
+  {
+   "addr": "0x0809163e",
+   "old": "StrNCaseCmp",
+   "suggested": "Str_NCaseCmp",
+   "reason": "Duplicate of 0x080ad4dc; names must be unique per address, and no stronger distinguishing evidence; left as is."
+  },
+  {
+   "addr": "0x080ac570",
+   "old": "Com_PoolAllocInto",
+   "suggested": "ScopedPoolBuf_Ctor",
+   "reason": "Proposed ctor/dtor alias pairs would require duplicate names for two addresses each; ctor/dtor role is only inferred and no direct callers exist."
+  },
+  {
+   "addr": "0x080ac5ac",
+   "old": "Com_PoolRestoreFrom",
+   "suggested": "ScopedPoolBuf_Dtor",
+   "reason": "Same as above: alias pair cannot share a unique name; role unverified."
+  },
+  {
+   "addr": "0x080ac3a2",
+   "old": "Hunk_ReallocateTempMemory",
+   "suggested": "Hunk_AllocLowTempRaw",
+   "reason": "Name comes from the binary's own error string (observed); the body mismatch is documented but renaming away from an observed string is not clearly better."
+  },
+  {
+   "addr": "0x080d4f7c",
+   "old": "Sys_Main",
+   "suggested": "main",
+   "reason": "main is the reserved C++ entry identifier and cannot be a normal reconstructed function name; Sys_Main is acceptable."
+  },
+  {
+   "addr": "0x080b8a36",
+   "old": "Com_ParseInfoFields",
+   "suggested": "Com_ParseInfoFields",
+   "reason": "Only the signature text is corrupted ('Com_Parsestruct InfoFields'); the symbol name is already correct."
+  },
+  {
+   "addr": "0x08060b9c",
+   "old": "Noop_08060b9c",
+   "suggested": "Com_AutocompleteHook",
+   "reason": "Empty function; no evidence beyond call-site context to name it."
+  },
+  {
+   "addr": "0x08060c1a",
+   "old": "Noop_08060c1a",
+   "suggested": "Com_FrameHook",
+   "reason": "Empty function; role purely speculative."
+  }
+ ]
+}

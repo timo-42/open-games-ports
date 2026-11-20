@@ -1,0 +1,500 @@
+{
+ "chunk": 1,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0804a784",
+   "name": "GetMemory",
+   "signature": "void *GetMemory(int size)",
+   "subsystem": "runtime/memory",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804a7c8",
+   "name": "GetClearedMemory",
+   "signature": "void *GetClearedMemory(size_t size)",
+   "subsystem": "runtime/memory",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804a7fc",
+   "name": "FreeMemory",
+   "signature": "void FreeMemory(void *ptr)",
+   "subsystem": "runtime/memory",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804a824",
+   "name": "PC_SourceError",
+   "signature": "void PC_SourceError(struct source_s *source, const char *fmt, ...)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: ^1Error: file %s, line %d: %s\\n",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804a892",
+   "name": "PC_SourceWarning",
+   "signature": "void PC_SourceWarning(struct source_s *source, const char *fmt, ...)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: ^3Warning: file %s, line %d: %s\\n",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804a900",
+   "name": "PC_PushIndent",
+   "signature": "void PC_PushIndent(struct source_s *source, int type, int skip)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804a972",
+   "name": "PC_PopIndent",
+   "signature": "void PC_PopIndent(struct source_s *source, int *type, int *skip)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804aa0e",
+   "name": "PC_PushScript",
+   "signature": "void PC_PushScript(struct source_s *source, struct script_s *script)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: %s recursively included",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804aa88",
+   "name": "PC_CopyToken",
+   "signature": "struct token_s *PC_CopyToken(struct token_s *t)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: EXE_ERR_OUT_OF_MEMORY",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804aaf8",
+   "name": "PC_FreeToken",
+   "signature": "void PC_FreeToken(struct token_s *token)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ab12",
+   "name": "PC_ReadSourceToken",
+   "signature": "int PC_ReadSourceToken(struct source_s *source, struct token_s *token)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: missing #endif",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ac68",
+   "name": "PC_UnreadSourceToken",
+   "signature": "int PC_UnreadSourceToken(struct source_s *source, struct token_s *token)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804aca2",
+   "name": "PC_ReadDefineParms",
+   "signature": "int PC_ReadDefineParms(struct source_s *source, struct define_s *define, struct token_s **parms, int maxparms)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: (; ); ,",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804b04a",
+   "name": "PC_StringizeTokens",
+   "signature": "int PC_StringizeTokens(struct token_s *tokens, struct token_s *token)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: \\\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804b108",
+   "name": "PC_MergeTokens",
+   "signature": "int PC_MergeTokens(struct token_s *t1, struct token_s *t2)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804b1a8",
+   "name": "PC_NameHash",
+   "signature": "unsigned int PC_NameHash(const char *name)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804b208",
+   "name": "PC_AddDefineToHash",
+   "signature": "void PC_AddDefineToHash(struct define_s *define, struct define_s **definehash)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804b24a",
+   "name": "PC_FindHashedDefine",
+   "signature": "struct define_s *PC_FindHashedDefine(struct define_s **definehash, const char *name)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804b2b0",
+   "name": "PC_FindDefine",
+   "signature": "struct define_s *PC_FindDefine(struct define_s *defines, const char *name)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804b2fc",
+   "name": "PC_FindDefineParm",
+   "signature": "int PC_FindDefineParm(struct define_s *define, const char *name)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804b358",
+   "name": "PC_FreeDefine",
+   "signature": "void PC_FreeDefine(struct define_s *define)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804b4ca",
+   "name": "PC_ExpandBuiltinDefine",
+   "signature": "int PC_ExpandBuiltinDefine(struct source_s *source, struct token_s *deftoken, struct define_s *define, struct token_s **firsttoken, struct token_s **lasttoken)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: %d; \\\"",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804b740",
+   "name": "PC_ExpandDefine",
+   "signature": "int PC_ExpandDefine(struct source_s *source, struct token_s *deftoken, struct define_s *define, struct token_s **firsttoken, struct token_s **lasttoken)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: can\\'t merge %s with %s; can\\'t stringize tokens; stringizing operator without define parameter",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804bbfa",
+   "name": "PC_ExpandDefineIntoSource",
+   "signature": "int PC_ExpandDefineIntoSource(struct source_s *source, struct token_s *deftoken, struct define_s *define)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804bc74",
+   "name": "PC_ConvertPath",
+   "signature": "void PC_ConvertPath(char *path)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804bf7c",
+   "name": "PC_ReadLine",
+   "signature": "int PC_ReadLine(struct source_s *source, struct token_s *token)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: \\\\",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804c078",
+   "name": "PC_WhiteSpaceBeforeToken",
+   "signature": "int PC_WhiteSpaceBeforeToken(struct token_s *token)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804c0a8",
+   "name": "PC_ClearTokenWhiteSpace",
+   "signature": "void PC_ClearTokenWhiteSpace(struct token_s *token)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804c0d4",
+   "name": "PC_Directive_undef",
+   "signature": "int PC_Directive_undef(struct source_s *source)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: can\\'t undef %s; expected name, found %s; undef without name",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804c294",
+   "name": "PC_Directive_define",
+   "signature": "int PC_Directive_define(struct source_s *source)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: ##; #define without name; (",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804c830",
+   "name": "PC_DefineFromString",
+   "signature": "struct define_s *PC_DefineFromString(const char *string)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: *extern",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804c9ca",
+   "name": "PC_AddDefine",
+   "signature": "int PC_AddDefine(struct source_s *source, const char *string)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804cad4",
+   "name": "PC_CopyDefine",
+   "signature": "struct define_s *PC_CopyDefine(struct source_s *source, struct define_s *define)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804cc30",
+   "name": "PC_AddGlobalDefinesToSource",
+   "signature": "void PC_AddGlobalDefinesToSource(struct source_s *source)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804cc80",
+   "name": "PC_DirectiveIfdefCommon",
+   "signature": "int PC_DirectiveIfdefCommon(struct source_s *source, int type)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: #ifdef without name; expected name after #ifdef, found %s",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804cd76",
+   "name": "PC_Directive_ifdef",
+   "signature": "int PC_Directive_ifdef(struct source_s *source)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804ce8c",
+   "name": "PC_OperatorPriority",
+   "signature": "int PC_OperatorPriority(int op)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804cf9c",
+   "name": "PC_EvaluateTokens",
+   "signature": "int PC_EvaluateTokens(struct source_s *source, struct token_s *tokens, int *intvalue, double *floatvalue, int integer)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: ! or ~ after value in #if/#elif; (; )",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804df22",
+   "name": "PC_Evaluate",
+   "signature": "int PC_Evaluate(struct source_s *source, int *intvalue, double *floatvalue, int integer)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: can\\'t evaluate %s; can\\'t evaluate %s, not defined; defined",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804e26c",
+   "name": "PC_DollarEvaluate",
+   "signature": "int PC_DollarEvaluate(struct source_s *source, int *intvalue, double *floatvalue, int integer)",
+   "subsystem": "botlib/precomp",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart; strings: can\\'t evaluate %s; can\\'t evaluate %s, not defined; defined",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188c68",
+   "name": "g_08188c68",
+   "type": "char",
+   "confidence": "inferred",
+   "evidence": "completed flag in __do_global_dtors_aux"
+  },
+  {
+   "addr": "0x0817d3a8",
+   "name": "g_0817d3a8",
+   "type": "void (**)(void)",
+   "confidence": "inferred",
+   "evidence": "cursor into .dtors list walked by __do_global_dtors_aux"
+  },
+  {
+   "addr": "0x08188c80",
+   "name": "pc_numtokens",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "incremented in PC_CopyToken, decremented in PC_FreeToken (numtokens)"
+  },
+  {
+   "addr": "0x08188c84",
+   "name": "pc_globaldefines",
+   "type": "struct define_s *",
+   "confidence": "inferred",
+   "evidence": "list head iterated by PC_AddGlobalDefinesToSource via next@0x18"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "token_s",
+   "size": "0x42c",
+   "evidence": "offsets 0x400..0x428 used throughout chunk"
+  },
+  {
+   "name": "define_s",
+   "size": "0x20",
+   "evidence": "GetMemory(strlen+0x21), memset 0x20"
+  },
+  {
+   "name": "indent_s",
+   "size": "0x10",
+   "evidence": "GetMemory(0x10) in PC_PushIndent"
+  },
+  {
+   "name": "source_s",
+   "size": "0x4c8",
+   "evidence": "stack memset 0x4c8 in PC_DefineFromString"
+  },
+  {
+   "name": "script_s",
+   "size": "0x4a4",
+   "evidence": "next@0x4a0, line@0x5c, filename@0"
+  },
+  {
+   "name": "pc_value_s",
+   "size": "0x18",
+   "evidence": "stride 6 words in PC_EvaluateTokens"
+  },
+  {
+   "name": "pc_operator_s",
+   "size": "0x14",
+   "evidence": "stride 5 words in PC_EvaluateTokens"
+  }
+ ],
+ "open_questions": [
+  "Out-of-chunk callees remain placeholders: fn_080ab65e/fn_080ab5b8 (alloc/free), fn_08060dea (print), fn_08061124 (error), fn_080b7bf8 (compare), fn_0805101c/fn_08051b32/fn_08051dee/fn_08051d20 (script reader/loader), fn_0804f464 (check token string).",
+  "Names are inferred from the id Tech 3 botlib precompiler; no string names any function. script_t fields other than filename/line/next and source_t fields past 0x84 are inferred.",
+  "PC_ExpandBuiltinDefine calls free() on the ctime() result and PC_EvaluateTokens dereferences NULL after 'defined' at end of tokens; both preserved as observed."
+ ],
+ "documentation_only_functions": [
+  {
+   "addr": "0x0804a710",
+   "name": "__do_global_dtors_aux",
+   "signature": "void __do_global_dtors_aux(void)",
+   "subsystem": "runtime/crt",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0804a750",
+   "name": "frame_dummy",
+   "signature": "void frame_dummy(void)",
+   "subsystem": "runtime/crt",
+   "confidence": "inferred",
+   "evidence": "structure/strings match the id Tech 3 botlib precompiler counterpart",
+   "status": "translated",
+   "notes": ""
+  }
+ ]
+}

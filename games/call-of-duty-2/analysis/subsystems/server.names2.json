@@ -1,0 +1,612 @@
+{
+ "functions": [
+  {
+   "addr": "0x0808bd32",
+   "old": "Wrapper_080660a2",
+   "new": "SV_MapNameFromPath",
+   "confidence": "descriptive",
+   "evidence": "Body is a single tail call to MapNameFromPath (0x080660a2); callers SV_Map_f (0x0808bd46) and SV_MapFileExists (0x08092302) use it to normalise the map argument. Old name embedded a different address (0x080660a2) than the function itself."
+  },
+  {
+   "addr": "0x0808cefc",
+   "old": "SV_RegisterChatCommandNames",
+   "new": "SV_RemoveSayTellCommands",
+   "confidence": "observed",
+   "evidence": "Disassembly: two calls to 0x0806072e (Cmd_RemoveCommand) with the string literals at 0x8149a0f (\"say\") and 0x8149a13 (\"tell\"). It removes, not registers, those console commands. No direct callers (address-taken or dead)."
+  },
+  {
+   "addr": "0x0808efce",
+   "old": "SV_RefreshClientRandomIds",
+   "new": "SV_ReallocClientScriptIds",
+   "confidence": "descriptive",
+   "evidence": "Loops sv_maxclients slots; for cl->state>1 calls SV_ReleaseClientSlotHandle then stores ScrVar_AllocArray() into cl->scriptId. Sole caller is G_ShutdownGame (0x081094e8). Structs note: client+0xae708 is the script object handle, not a random id."
+  },
+  {
+   "addr": "0x08096558",
+   "old": "SV_ReleaseClientSlotHandle",
+   "new": "SV_ReleaseClientScriptId",
+   "confidence": "descriptive",
+   "evidence": "Body: Scr_ReleaseVarThunk(cl->scriptId); cl->scriptId = 0. Field is the script object handle (server.md section on client +0xae708)."
+  },
+  {
+   "addr": "0x0808f2b8",
+   "old": "SV_DeferClientDrop",
+   "new": "SV_SetPendingDropReason",
+   "confidence": "descriptive",
+   "evidence": "Stores reason pointer into cl->delayDropMsg when state != CS_ZOMBIE and the slot is empty; sole caller SV_QueueReliableCommand (0x08094750). It records a deferred drop, it does not drop immediately."
+  },
+  {
+   "addr": "0x08091858",
+   "old": "SV_InitEntityBoundsAndLink",
+   "new": "SV_SetBrushModel",
+   "confidence": "inferred",
+   "evidence": "Q3 SV_SetBrushModel: CM_ModelBounds(ent->s.index) into r.mins/r.maxs, r.bmodel=1, r.contents=-1, SV_LinkEntity. Callers are SP_trigger_use, SP_script_brushmodel, G_InitBodyEntity, G_InitStaticEntity (brush-model entity setup)."
+  },
+  {
+   "addr": "0x08092412",
+   "old": "SV_GetClientUnkAE704",
+   "new": "SV_GetClientGuid",
+   "confidence": "inferred",
+   "evidence": "Reads svs.clients[clientNum].guid (client+0xae704) with bounds check against sv_maxclients, returns 0 when out of range. Callers include PlayerCmd_getguid (0x080fdd20, script method getguid), G_Say and Item_TouchPickup."
+  },
+  {
+   "addr": "0x08092472",
+   "old": "SV_CheckClientNetAddress",
+   "new": "SV_IsClientAddressLocal",
+   "confidence": "inferred",
+   "evidence": "Returns NET_IsLocalAddress(svs.clients[clientNum].netchan.remoteAddress); chunk 46 assigns the result to client->localClient (0x08092472 tail-calls 0x0806c57a). Old name SV_CheckClientNetAddress and the (void) discard in the recon are wrong about the result being unused."
+  },
+  {
+   "addr": "0x0809267e",
+   "old": "SV_RestartMapFlagA",
+   "new": "SV_RestartGameProgs",
+   "confidence": "inferred",
+   "evidence": "Q3 SV_RestartGameProgs: shut the game down (G_ShutdownGame(0)), then re-init it via SV_InitMapState(1,param) (G_InitGame with restart flag). Sole caller is the fast-restart path of SV_MapRestart_f (0x0808be3e)."
+  },
+  {
+   "addr": "0x080926b0",
+   "old": "SV_RestartMapFlagB",
+   "new": "SV_InitGameProgs",
+   "confidence": "inferred",
+   "evidence": "Q3 SV_InitGameProgs: sets g_083e2f80 then SV_InitMapState(0,param) (G_InitGame, non-restart). Sole caller is SV_SpawnServer (0x08093520)."
+  },
+  {
+   "addr": "0x08093478",
+   "old": "SV_ClearMapTempState",
+   "new": "SV_ClearAllDvarFlag0400",
+   "confidence": "descriptive",
+   "evidence": "Body only calls Dvar_ClearUnknownFlag0400 (clears flag 0x400 on every dvar pool entry). Called by SV_MapRestart_f and SV_SpawnServer. Meaning of the 0x400 flag is not established, so the name states the operation only."
+  },
+  {
+   "addr": "0x0809235c",
+   "old": "SV_ResetTokenCursor",
+   "new": "SV_BeginEntityParse",
+   "confidence": "inferred",
+   "evidence": "Stores CM_EntityString() into g_0849f618 (the entity-string parse cursor). Q3 does sv.entityParsePoint = CM_EntityString() in server spawn."
+  },
+  {
+   "addr": "0x080923be",
+   "old": "SV_NextTokenInto",
+   "new": "SV_GetEntityToken",
+   "confidence": "inferred",
+   "evidence": "Matches Q3 SV_GetEntityToken exactly: Com_Parse on the cursor, Q_strncpyz(dst, token, size), return 1 if cursor non-null or token non-empty. Companion of SV_BeginEntityParse."
+  },
+  {
+   "addr": "0x08092396",
+   "old": "SV_SetModeFlagA",
+   "new": "SV_SetPendingHandleOne",
+   "confidence": "descriptive",
+   "evidence": "Body: Com_SetPendingHandle(1). Caller is G_SetupWeaponDef (0x08120d74). Semantics of the handle value not established."
+  },
+  {
+   "addr": "0x080923aa",
+   "old": "SV_SetModeFlagB",
+   "new": "SV_ClearPendingHandleOne",
+   "confidence": "descriptive",
+   "evidence": "Body: Com_ClearPendingHandle(1) (clears g_081a4f8c if it equals 1 and calls BG_ResetWeaponCount). Called from SV_ClearServerState (0x080924b6)."
+  },
+  {
+   "addr": "0x080921ec",
+   "old": "ScrEntity_CallVoidB",
+   "new": "ScrEntity_GetRotTransArray",
+   "confidence": "descriptive",
+   "evidence": "Body: obj = Com_GetServerDObj(*ref); DObj_GetRotTransArray(obj); result unused. Name from the single callee."
+  },
+  {
+   "addr": "0x08092002",
+   "old": "ScrEntity_CachedSkelOp",
+   "new": "ScrEntity_LockBonesOrCreateSkel",
+   "confidence": "descriptive",
+   "evidence": "If DObj_SkelExists(obj, skel generation g_0849f630) returns DObj_AreBonesLocked(obj, arg); else allocates SV_SkelMemoryAlloc(DObj_GetAllocSkelSize) and DObj_CreateSkel, returns 0."
+  },
+  {
+   "addr": "0x0809c1dc",
+   "old": "SV_GetClientVoiceFlag",
+   "new": "SV_GetClientSendVoice",
+   "confidence": "descriptive",
+   "evidence": "Returns svs.clients[clientNum].sendVoice (byte at client+0xb1020); field name is from the structs file, purpose as a send gate only inferred."
+  },
+  {
+   "addr": "0x0809c1fa",
+   "old": "SV_GetClientMuteFlag",
+   "new": "SV_GetClientMuteListEntry",
+   "confidence": "descriptive",
+   "evidence": "Returns svs.clients[clientNum].muteList[talker] (byte at client+0xb0fe0+talker). Old name Flag was less precise about the indexing."
+  },
+  {
+   "addr": "0x08108e72",
+   "old": "Client_GetUnk2748Addr",
+   "new": "G_GetClientStateAddr",
+   "confidence": "descriptive",
+   "evidence": "Body returns (int)&level[clientIndex].cs, i.e. the address of the clientState record; used by SV_GetCurrentPlayerAndClientState to copy it. Replaces the offset-based Unk2748 name."
+  },
+  {
+   "addr": "0x080974d2",
+   "old": "SV_EmptyStub_080974d2",
+   "new": "SV_ExitLevelStub",
+   "confidence": "descriptive",
+   "evidence": "Single ret instruction; sole caller is GScr_ExitLevel (0x08116b6a). Name records only the call site."
+  },
+  {
+   "addr": "0x0808cec6",
+   "old": "Nop_0808cec6",
+   "new": "SV_ShutdownStub",
+   "confidence": "descriptive",
+   "evidence": "Single ret instruction; sole caller is SV_Shutdown (0x080942f8)."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08423088",
+   "old": "g_08423088",
+   "new": "g_svs_snapFlags",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200): +0x08 snapFlags; xor 4 on spawn/fast restart; read by SV_MapRestart_f and SV_WriteSnapshotToClient."
+  },
+  {
+   "addr": "0x08423098",
+   "old": "g_08423098",
+   "new": "g_svs_nextSnapshotEntities",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "Error string svs.nextSnapshotEntities wrapped; svs+0x18. Read/written by SV_Frame, SV_BuildClientSnapshot, SV_WriteSnapshotToClient."
+  },
+  {
+   "addr": "0x0842309c",
+   "old": "g_0842309c",
+   "new": "g_svs_nextSnapshotClients",
+   "type_hint": "int",
+   "confidence": "observed",
+   "evidence": "Error string for svs.nextSnapshotClients; svs+0x1c."
+  },
+  {
+   "addr": "0x084230ac",
+   "old": "g_084230ac",
+   "new": "g_svs_nextArchivedSnapshotFrames",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) +0x2c; frame index used by SV_FindCachedSnapshotByAge (window 0x4b0 frames) and SV_ArchiveSnapshot."
+  },
+  {
+   "addr": "0x084230b8",
+   "old": "g_084230b8",
+   "new": "g_svs_nextArchivedSnapshotBuffer",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) +0x38."
+  },
+  {
+   "addr": "0x084230bc",
+   "old": "g_084230bc",
+   "new": "g_svs_nextCachedSnapshotEntities",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) +0x3c; ring modulo 0x4000 in SV_BuildCachedEntityListForPoint."
+  },
+  {
+   "addr": "0x084230c0",
+   "old": "g_084230c0",
+   "new": "g_svs_nextCachedSnapshotClients",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) +0x40."
+  },
+  {
+   "addr": "0x084230c4",
+   "old": "g_084230c4",
+   "new": "g_svs_nextCachedSnapshotFrames",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) +0x44."
+  },
+  {
+   "addr": "0x084230dc",
+   "old": "g_084230dc",
+   "new": "g_svs_challenges",
+   "type_hint": "struct challenge_s[1024]",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) +0x5c; 0x74-byte slots (netadr, challenge, guid) used by SV_DirectConnect and SV_RequestIpAuthorize."
+  },
+  {
+   "addr": "0x084400f0",
+   "old": "g_084400f0",
+   "new": "g_svs_authorizeAddress",
+   "type_hint": "struct netadr_s",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) +0x1d070; read by SV_SendGetIpAuthorize/SV_AuthorizeIpPacket."
+  },
+  {
+   "addr": "0x08440104",
+   "old": "g_08440104",
+   "new": "g_svs_lastAuthorizeTime",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) +0x1d084; set when an authorize reply arrives."
+  },
+  {
+   "addr": "0x08440108",
+   "old": "g_08440108",
+   "new": "g_svs_oobNetProfile",
+   "type_hint": "struct netProfile_s *",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) +0x1d088; the reconstruction accesses it as svs.OOBProf in SV_NetProfile_RecordOOB/Update."
+  },
+  {
+   "addr": "0x0844010c",
+   "old": "g_0844010c",
+   "new": "g_svs_tempBans",
+   "type_hint": "struct tempban_s[16]",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) +0x1d08c; scanned by SV_IsTempBannedGuid, SV_TempBanFindSlot, SV_TempBanAdd."
+  },
+  {
+   "addr": "0x08440200",
+   "old": "g_08440200",
+   "new": "g_sv_state",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) server_t +0x00 state (0 dead, 1 loading, 2 game)."
+  },
+  {
+   "addr": "0x08440204",
+   "old": "g_08440204",
+   "new": "g_sv_restarting",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) server_t +0x04 restarting (1 during fast restart); used in SV_MapRestart_f."
+  },
+  {
+   "addr": "0x08440208",
+   "old": "g_08440208",
+   "new": "g_sv_restartTime",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server.structs.json serverStatic_t/server_t layout (svs base 0x08423080, sv base 0x08440200) server_t +0x08 restartTime (com_frameTime at spawn/restart)."
+  },
+  {
+   "addr": "0x0844020c",
+   "old": "g_0844020c",
+   "new": "g_sv_checksumFeed",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server_t +0x0c checksumFeed; XORed with messageSeq in SV_UserMove, sent in SV_SendClientGameState and used by SV_VerifyPaks_f."
+  },
+  {
+   "addr": "0x08440210",
+   "old": "g_08440210",
+   "new": "g_sv_timeResidual",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "server_t +0x10 timeResidual; only SV_Frame touches it (Q3 sv.timeResidual counterpart)."
+  },
+  {
+   "addr": "0x08440618",
+   "old": "g_08440618",
+   "new": "g_sv_configstrings",
+   "type_hint": "char *[0x800]",
+   "confidence": "inferred",
+   "evidence": "server_t +0x418 configstrings table walked by SV_SendClientGameState (Q3 sv.configstrings)."
+  },
+  {
+   "addr": "0x08442618",
+   "old": "g_08442618",
+   "new": "g_sv_svEntities",
+   "type_hint": "struct svEntity_s[1024]",
+   "confidence": "inferred",
+   "evidence": "server_t +0x2418 svEntities, stride 0x174; SV_SvEntityForGentity and SV_GentityNumFromSvEntity index it (Q3 sv.svEntities)."
+  },
+  {
+   "addr": "0x08423008",
+   "old": "g_08423008",
+   "new": "g_sv_serverIdCounter",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Structs conflicts note: 0x08423008 is the serverid counter lying before svs; read by SV_SpawnServer, SV_MapRestart_f and SV_ExecuteClientMessage (lastCmdSeq comparison). Evidence is indirect."
+  },
+  {
+   "addr": "0x0849f618",
+   "old": "g_0849f618",
+   "new": "g_sv_entityParsePoint",
+   "type_hint": "char *",
+   "confidence": "inferred",
+   "evidence": "Cursor set from CM_EntityString() in SV_BeginEntityParse and SV_InitMapState and advanced with Com_Parse in SV_GetEntityToken (Q3 sv.entityParsePoint)."
+  },
+  {
+   "addr": "0x0849f61c",
+   "old": "g_0849f61c",
+   "new": "g_gentities",
+   "type_hint": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "Existing evidence: game entity base set by SV_InitGameEntityLayout; read by SV_GentityNum (Q3 sv.gentities)."
+  },
+  {
+   "addr": "0x0849f620",
+   "old": "g_0849f620",
+   "new": "g_gentitySize",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Game entity stride set by SV_InitGameEntityLayout, used by SV_GentityNum (Q3 sv.gentitySize)."
+  },
+  {
+   "addr": "0x0849f624",
+   "old": "g_0849f624",
+   "new": "g_numGEntities",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Entity count set by SV_InitGameEntityLayout; loop bound in SV_BuildClientListForPoint and SV_ArchiveSnapshot (Q3 sv.num_entities)."
+  },
+  {
+   "addr": "0x0849f628",
+   "old": "g_0849f628",
+   "new": "g_gameClients",
+   "type_hint": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "Game client (playerstate) base set by SV_InitGameEntityLayout, read by SV_GameClientNum (Q3 sv.gameClients)."
+  },
+  {
+   "addr": "0x0849f62c",
+   "old": "g_0849f62c",
+   "new": "g_gameClientSize",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Game client stride set by SV_InitGameEntityLayout, read by SV_GameClientNum (Q3 sv.gameClientSize)."
+  },
+  {
+   "addr": "0x083e3000",
+   "old": "g_083e3000",
+   "new": "g_skelPoolBase",
+   "type_hint": "unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "Skeleton memory pool storage; SV_SkelMemoryNewFrame points g_08423000 at it."
+  },
+  {
+   "addr": "0x08423000",
+   "old": "g_08423000",
+   "new": "g_skelPoolPtr",
+   "type_hint": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "Assigned from g_083e3000 in SV_SkelMemoryNewFrame, bump-allocated in SV_SkelMemoryAlloc."
+  },
+  {
+   "addr": "0x08423004",
+   "old": "g_08423004",
+   "new": "g_skelOverflowWarnGeneration",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Generation of the last skeleton overflow warning, written in SV_SkelMemoryAlloc."
+  },
+  {
+   "addr": "0x0849f630",
+   "old": "g_0849f630",
+   "new": "g_skelMemGeneration",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Skeleton memory generation: bumped by SV_SkelMemoryNewFrame (called every SV_RunGameFrame), compared via DObj_SkelExists in ScrEntity_LockBonesOrCreateSkel."
+  },
+  {
+   "addr": "0x0849f634",
+   "old": "g_0849f634",
+   "new": "g_skelPoolOffset",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Skeleton pool bump offset reset in SV_SkelMemoryNewFrame, advanced in SV_SkelMemoryAlloc."
+  },
+  {
+   "addr": "0x0849f638",
+   "old": "g_0849f638",
+   "new": "g_sendBytesHistory",
+   "type_hint": "int[20]",
+   "confidence": "inferred",
+   "evidence": "Existing evidence: bytes-per-frame sliding window of SV_SendClientMessages."
+  },
+  {
+   "addr": "0x0849f694",
+   "old": "g_0849f694",
+   "new": "g_unsentBytesHistory",
+   "type_hint": "int[20]",
+   "confidence": "inferred",
+   "evidence": "Existing evidence: unsent-bytes sliding window of SV_SendClientMessages."
+  },
+  {
+   "addr": "0x0849f7e0",
+   "old": "g_0849f7e0",
+   "new": "g_escapedServerTextBuf",
+   "type_hint": "char[0x400]",
+   "confidence": "inferred",
+   "evidence": "Output buffer of SV_EscapeServerText."
+  },
+  {
+   "addr": "0x0849fbe0",
+   "old": "g_0849fbe0",
+   "new": "g_masterAddress",
+   "type_hint": "struct netadr_s",
+   "confidence": "inferred",
+   "evidence": "Cached master address filled by SV_ResolveMasterAddress."
+  },
+  {
+   "addr": "0x0849fbf4",
+   "old": "g_0849fbf4",
+   "new": "g_lastRconTime",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "SVC_RemoteCommand rate-limit timestamp (500 ms)."
+  },
+  {
+   "addr": "0x083e2f0c",
+   "old": "g_083e2f0c",
+   "new": "g_botConnectCounter",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Counter used as the port of NA_BOT connects in SV_AddBot."
+  },
+  {
+   "addr": "0x0814cfc8",
+   "old": "g_0814cfc8",
+   "new": "vec3_origin",
+   "type_hint": "float[3]",
+   "confidence": "inferred",
+   "evidence": "Read-only zero vector (rodata bytes zero), passed as mins/maxs/angles to Sweep_TraceBoxWithOffsetInit and SV_BoxEntityHit when the entity is not a bmodel; Q3 vec3_origin counterpart."
+  },
+  {
+   "addr": "0x0817d9e0",
+   "old": "g_0817d9e0",
+   "new": "g_clientCommandTable",
+   "type_hint": "struct ucmd_entry_s[]",
+   "confidence": "observed",
+   "evidence": "NULL-name terminated table of client command names (userinfo, disconnect, ...) walked by SV_ExecuteClientCommand (Q3 ucmds[])."
+  },
+  {
+   "addr": "0x0817db80",
+   "old": "g_0817db80",
+   "new": "g_originHistoryStartFrames",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Window start read by SV_GetInterpolatedPlayerOrigin (+-10 frame clamp)."
+  },
+  {
+   "addr": "0x0817db84",
+   "old": "g_0817db84",
+   "new": "g_originHistoryEndFrames",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Window end read by SV_GetInterpolatedPlayerOrigin."
+  },
+  {
+   "addr": "0x081417a0",
+   "old": "g_081417a0",
+   "new": "g_netFieldsEntityState",
+   "type_hint": "struct netField_s[59]",
+   "confidence": "inferred",
+   "evidence": "Entity field table used by MSG_ReadDeltaEntity; first field name pointer is s_pos_trTime."
+  },
+  {
+   "addr": "0x08141ae0",
+   "old": "g_08141ae0",
+   "new": "g_netFieldsSharedEntity",
+   "type_hint": "struct netField_s[68]",
+   "confidence": "inferred",
+   "evidence": "Table used by MSG_ReadDeltaSharedEntity; first field name is s_absmin."
+  },
+  {
+   "addr": "0x08141f60",
+   "old": "g_08141f60",
+   "new": "g_netFieldsClientState",
+   "type_hint": "struct netField_s[22]",
+   "confidence": "inferred",
+   "evidence": "22-field table with 6 index bits used by MSG_ReadDeltaClientState."
+  },
+  {
+   "addr": "0x081e9544",
+   "old": "g_081e9544",
+   "new": "g_huffBitCursor",
+   "type_hint": "int32",
+   "confidence": "inferred",
+   "evidence": "Global Huffman bit cursor of the non-offset bit helpers, used by Huff_Compress/Huff_Decompress."
+  },
+  {
+   "addr": "0x081e9c60",
+   "old": "g_081e9c60",
+   "new": "g_msgHuff",
+   "type_hint": "struct huff_s",
+   "confidence": "inferred",
+   "evidence": "Compressor at +0, decompressor at +0x701c; initialised by MSG_InitHuffmanTables (Q3 msgHuff)."
+  },
+  {
+   "addr": "0x081f0c7c",
+   "old": "g_081f0c7c",
+   "new": "g_huffSecondTree",
+   "type_hint": "byte[]",
+   "confidence": "inferred",
+   "evidence": "Second Huffman tree receiving the same symbol references as g_msgHuff in MSG_InitHuffmanTables."
+  },
+  {
+   "addr": "0x081f7c98",
+   "old": "g_081f7c98",
+   "new": "g_huffInitialized",
+   "type_hint": "int",
+   "confidence": "inferred",
+   "evidence": "Tables-initialised flag set by MSG_InitHuffmanOnce (Q3 msgInit)."
+  },
+  {
+   "addr": "0x082055a0",
+   "old": "g_082055a0",
+   "new": "g_netAdrToStringBuf",
+   "type_hint": "char[64]",
+   "confidence": "inferred",
+   "evidence": "Static buffer returned by NET_AdrToString (Q3 static s[64])."
+  }
+ ],
+ "left_unknown": [
+  {
+   "addr": "0x0817d838",
+   "name": "g_0817d838",
+   "why": "Pointer to a block with an int at +4 gating profiling mode 2 and bytes 0xdd/0xde; owner not identified (listed as open question in server.md)."
+  },
+  {
+   "addr": "0x081a21c4",
+   "name": "g_081a21c4",
+   "why": "Only evidence is that Com_Error clears it and SV_RestartGameProgs zeroes it; semantics unobserved."
+  },
+  {
+   "addr": "0x083e2f80",
+   "name": "g_083e2f80",
+   "why": "Set by SV_InitGameProgs, cleared by SV_ClearServerState, read in SV_StatusResponse and SV_PB_GetClientScoreText; no string or consistent role found."
+  },
+  {
+   "addr": "0x08205600",
+   "name": "g_08205600",
+   "why": "Static 0x38-byte record returned/cleared by Net_GetStaticRecord; caller purpose not identified."
+  },
+  {
+   "addr": "0x08205638",
+   "name": "g_08205638",
+   "why": "Count paired with g_08205600; no further evidence."
+  },
+  {
+   "addr": "0x0860b420",
+   "name": "g_0860b420",
+   "why": "Pointer set to &g_0864f9c0 in init/frame and cleared at end; target not identified."
+  },
+  {
+   "addr": "0x08099c04",
+   "name": "SV_FindCachedSnapshotByAge",
+   "why": "Already descriptive; no change proposed."
+  },
+  {
+   "addr": "0x08068b20",
+   "name": "UserCmd_MoveClass",
+   "why": "Existing descriptive name retained; no stronger evidence."
+  },
+  {
+   "addr": "0x0808cf1c",
+   "name": "SV_PrintTagged",
+   "why": "No callers found; existing descriptive name kept (Com_Printf \"%s: %s\\n\")."
+  },
+  {
+   "addr": "0x08094b56",
+   "name": "SV_VoiceConnectionlessPacket",
+   "why": "Already renamed in server.renames.json."
+  }
+ ]
+}

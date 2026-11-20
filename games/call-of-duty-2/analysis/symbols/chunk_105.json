@@ -1,0 +1,1028 @@
+{
+ "chunk": 105,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x081116d8",
+   "name": "ScriptEntCmd_getattachmodelname",
+   "signature": "void ScriptEntCmd_getattachmodelname(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"getattachmodelname\" at 0x08188754 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111746",
+   "name": "ScriptEntCmd_getattachtagname",
+   "signature": "void ScriptEntCmd_getattachtagname(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"getattachtagname\" at 0x08188760 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081117ac",
+   "name": "ScriptEntCmd_getattachignorecollision",
+   "signature": "void ScriptEntCmd_getattachignorecollision(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"getattachignorecollision\" at 0x0818876c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811181a",
+   "name": "ScriptEntCmd_linkto",
+   "signature": "void ScriptEntCmd_linkto(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"linkto\" at 0x081887c0 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111a30",
+   "name": "ScriptEntCmd_unlink",
+   "signature": "void ScriptEntCmd_unlink(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"unlink\" at 0x081887cc points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111a52",
+   "name": "ScriptEntCmd_enablelinkto",
+   "signature": "void ScriptEntCmd_enablelinkto(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"enablelinkto\" at 0x081887d8 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111ae0",
+   "name": "ScriptEntCmd_getorigin",
+   "signature": "void ScriptEntCmd_getorigin(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"getorigin\" at 0x081887e4 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111b18",
+   "name": "ScriptEntCmd_geteye",
+   "signature": "void ScriptEntCmd_geteye(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"geteye\" at 0x081887f0 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111b5e",
+   "name": "ScriptEntCmd_useby",
+   "signature": "void ScriptEntCmd_useby(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"useby\" at 0x081887fc points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111be8",
+   "name": "ScriptEntCmd_istouching",
+   "signature": "void ScriptEntCmd_istouching(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"istouching\" at 0x08188814 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "Ghidra shows the SV_EntityRelevantToView result stored as a full dword; the unsigned char return is widened here."
+  },
+  {
+   "addr": "0x08111cfa",
+   "name": "GScr_soundexists",
+   "signature": "void GScr_soundexists(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"soundexists\" at 0x081886f8 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111d2c",
+   "name": "ScriptEntCmd_playsound",
+   "signature": "void ScriptEntCmd_playsound(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"playsound\" at 0x08188820 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "Callee merged under the name G_AnimIndex (configstring base 0x24e); used here as a sound alias index."
+  },
+  {
+   "addr": "0x08111d9c",
+   "name": "ScriptEntCmd_playsoundasmaster",
+   "signature": "void ScriptEntCmd_playsoundasmaster(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"playsoundasmaster\" at 0x0818882c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "Same as playsound with event type 0xb4."
+  },
+  {
+   "addr": "0x08111e0c",
+   "name": "ScriptEntCmd_playloopsound",
+   "signature": "void ScriptEntCmd_playloopsound(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"playloopsound\" at 0x08188838 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111e5a",
+   "name": "ScriptEntCmd_stoploopsound",
+   "signature": "void ScriptEntCmd_stoploopsound(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"stoploopsound\" at 0x08188844 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111ea2",
+   "name": "ScriptEntCmd_delete",
+   "signature": "void ScriptEntCmd_delete(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"delete\" at 0x08188874 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111f12",
+   "name": "ScriptEntCmd_setmodel",
+   "signature": "void ScriptEntCmd_setmodel(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"setmodel\" at 0x08188880 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111f60",
+   "name": "ScriptEntCmd_getnormalhealth",
+   "signature": "void ScriptEntCmd_getnormalhealth(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"getnormalhealth\" at 0x0818888c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08111fd2",
+   "name": "ScriptEntCmd_setnormalhealth",
+   "signature": "void ScriptEntCmd_setnormalhealth(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"setnormalhealth\" at 0x08188898 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "x87 float*int products are computed in extended precision; double is used here."
+  },
+  {
+   "addr": "0x081120e8",
+   "name": "ScriptEntCmd_show",
+   "signature": "void ScriptEntCmd_show(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"show\" at 0x081888a4 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112130",
+   "name": "ScriptEntCmd_hide",
+   "signature": "void ScriptEntCmd_hide(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"hide\" at 0x081888b0 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112178",
+   "name": "ScriptEntCmd_showtoplayer",
+   "signature": "void ScriptEntCmd_showtoplayer(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"showtoplayer\" at 0x081888bc points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811220c",
+   "name": "ScriptEntCmd_setcontents",
+   "signature": "void ScriptEntCmd_setcontents(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"setcontents\" at 0x081888c8 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811225a",
+   "name": "ScriptEntCmd_setstablemissile",
+   "signature": "void ScriptEntCmd_setstablemissile(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"setstablemissile\" at 0x08188808 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081122cc",
+   "name": "ScriptEntCmd_setcursorhint",
+   "signature": "void ScriptEntCmd_setcursorhint(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"setcursorhint\" at 0x081888d4 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081124f6",
+   "name": "ScriptEntCmd_sethintstring",
+   "signature": "void ScriptEntCmd_sethintstring(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"sethintstring\" at 0x081888e0 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "G_FindOrAddHintString writes into a 12-byte local; only its first byte is read back."
+  },
+  {
+   "addr": "0x081125fa",
+   "name": "ScriptEntCmd_getentitynumber",
+   "signature": "void ScriptEntCmd_getentitynumber(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"getentitynumber\" at 0x0818894c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811261e",
+   "name": "ScriptEntCmd_enablegrenadetouchdamage",
+   "signature": "void ScriptEntCmd_enablegrenadetouchdamage(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"enablegrenadetouchdamage\" at 0x08188958 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811266c",
+   "name": "ScriptEntCmd_disablegrenadetouchdamage",
+   "signature": "void ScriptEntCmd_disablegrenadetouchdamage(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"disablegrenadetouchdamage\" at 0x08188964 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081126ba",
+   "name": "ScriptEntCmd_enablegrenadebounce",
+   "signature": "void ScriptEntCmd_enablegrenadebounce(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"enablegrenadebounce\" at 0x08188970 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081126e8",
+   "name": "ScriptEntCmd_disablegrenadebounce",
+   "signature": "void ScriptEntCmd_disablegrenadebounce(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"disablegrenadebounce\" at 0x0818897c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112716",
+   "name": "ScriptEntCmd_enableaimassist",
+   "signature": "void ScriptEntCmd_enableaimassist(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"enableaimassist\" at 0x08188988 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112756",
+   "name": "ScriptEntCmd_disableaimassist",
+   "signature": "void ScriptEntCmd_disableaimassist(uint32 entref)",
+   "subsystem": "game/script-entity-methods",
+   "confidence": "inferred",
+   "evidence": "script method table entry \"disableaimassist\" at 0x08188994 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811299c",
+   "name": "GScr_objective_add",
+   "signature": "void GScr_objective_add(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"objective_add\" at 0x08188194 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "Index range check is shared via CheckObjectiveIndex105; the binary inlines it with the same Scr_ErrorAtParam call."
+  },
+  {
+   "addr": "0x08112b3e",
+   "name": "GScr_objective_delete",
+   "signature": "void GScr_objective_delete(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"objective_delete\" at 0x081881a0 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112bc2",
+   "name": "GScr_objective_state",
+   "signature": "void GScr_objective_state(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"objective_state\" at 0x081881ac points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112c9c",
+   "name": "GScr_objective_icon",
+   "signature": "void GScr_objective_icon(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"objective_icon\" at 0x081881b8 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112d0e",
+   "name": "GScr_objective_position",
+   "signature": "void GScr_objective_position(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"objective_position\" at 0x081881c4 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112e04",
+   "name": "GScr_objective_onentity",
+   "signature": "void GScr_objective_onentity(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"objective_onentity\" at 0x081881d0 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08112ea4",
+   "name": "GScr_objective_current",
+   "signature": "void GScr_objective_current(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"objective_current\" at 0x081881dc points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "The original stack buffer is 17 ints with only the first 16 cleared and used."
+  },
+  {
+   "addr": "0x08112f8a",
+   "name": "GScr_objective_team",
+   "signature": "void GScr_objective_team(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"objective_team\" at 0x0818853c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113076",
+   "name": "GScr_logprint",
+   "signature": "void GScr_logprint(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"logprint\" at 0x08188548 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113114",
+   "name": "GScr_worldentnumber",
+   "signature": "void GScr_worldentnumber(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"worldentnumber\" at 0x08188554 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113128",
+   "name": "GScr_obituary",
+   "signature": "void GScr_obituary(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"obituary\" at 0x08188560 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "fn_08120dd0 (weapon name to index) is also used by chunk 103's switchtooffhand; fn_08120dd0 has no merged name."
+  },
+  {
+   "addr": "0x0811322c",
+   "name": "GScr_positionwouldtelefrag",
+   "signature": "void GScr_positionwouldtelefrag(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"positionwouldtelefrag\" at 0x0818856c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113334",
+   "name": "GScr_getstarttime",
+   "signature": "void GScr_getstarttime(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"getstarttime\" at 0x08188578 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811334a",
+   "name": "GScr_precachemenu",
+   "signature": "void GScr_precachemenu(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"precachemenu\" at 0x08188584 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113a4a",
+   "name": "GScr_bullettracepassed",
+   "signature": "void GScr_bullettracepassed(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"bullettracepassed\" at 0x081881f4 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113b0c",
+   "name": "GScr_sighttracepassed",
+   "signature": "void GScr_sighttracepassed(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"sighttracepassed\" at 0x08188200 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "SV_ForwardCallToGame is the merged name of 0x08090afa, but the binary uses it as a float-returning (start,end) distance helper; called through a cast."
+  },
+  {
+   "addr": "0x08113c0e",
+   "name": "GScr_physicstrace",
+   "signature": "void GScr_physicstrace(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"physicstrace\" at 0x0818820c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113ca4",
+   "name": "GScr_randomint",
+   "signature": "void GScr_randomint(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"randomint\" at 0x0818823c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113cfe",
+   "name": "GScr_randomfloat",
+   "signature": "void GScr_randomfloat(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"randomfloat\" at 0x08188248 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113d32",
+   "name": "GScr_randomintrange",
+   "signature": "void GScr_randomintrange(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"randomintrange\" at 0x08188254 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113da0",
+   "name": "GScr_randomfloatrange",
+   "signature": "void GScr_randomfloatrange(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"randomfloatrange\" at 0x08188260 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "The first message's format string uses %d with double arguments, as in the binary."
+  },
+  {
+   "addr": "0x08113e16",
+   "name": "GScr_sin",
+   "signature": "void GScr_sin(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"sin\" at 0x0818826c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113e48",
+   "name": "GScr_cos",
+   "signature": "void GScr_cos(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"cos\" at 0x08188278 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113e7a",
+   "name": "GScr_tan",
+   "signature": "void GScr_tan(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"tan\" at 0x08188284 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113ede",
+   "name": "GScr_asin",
+   "signature": "void GScr_asin(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"asin\" at 0x08188290 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113f58",
+   "name": "GScr_acos",
+   "signature": "void GScr_acos(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"acos\" at 0x0818829c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08113fd2",
+   "name": "GScr_atan",
+   "signature": "void GScr_atan(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"atan\" at 0x081882a8 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811400a",
+   "name": "GScr_int",
+   "signature": "void GScr_int(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"int\" at 0x081882b4 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081140ce",
+   "name": "GScr_distance",
+   "signature": "void GScr_distance(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"distance\" at 0x081882c0 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "Vec3_DeltaProcess is the merged name of 0x080a40ea; it returns a float distance here, called through a cast."
+  },
+  {
+   "addr": "0x08114116",
+   "name": "GScr_distancesquared",
+   "signature": "void GScr_distancesquared(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"distancesquared\" at 0x081882cc points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811415e",
+   "name": "GScr_length",
+   "signature": "void GScr_length(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"length\" at 0x081882d8 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811418c",
+   "name": "GScr_lengthsquared",
+   "signature": "void GScr_lengthsquared(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"lengthsquared\" at 0x081882e4 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081141ba",
+   "name": "GScr_closer",
+   "signature": "void GScr_closer(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"closer\" at 0x081882f0 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114240",
+   "name": "GScr_vectordot",
+   "signature": "void GScr_vectordot(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"vectordot\" at 0x081882fc points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114288",
+   "name": "GScr_vectornormalize",
+   "signature": "void GScr_vectornormalize(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"vectornormalize\" at 0x08188308 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081142ce",
+   "name": "GScr_vectortoangles",
+   "signature": "void GScr_vectortoangles(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"vectortoangles\" at 0x08188314 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114306",
+   "name": "GScr_anglestoup",
+   "signature": "void GScr_anglestoup(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"anglestoup\" at 0x08188320 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811434e",
+   "name": "GScr_anglestoright",
+   "signature": "void GScr_anglestoright(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"anglestoright\" at 0x0818832c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114396",
+   "name": "GScr_anglestoforward",
+   "signature": "void GScr_anglestoforward(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"anglestoforward\" at 0x08188338 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081143de",
+   "name": "GScr_issubstr",
+   "signature": "void GScr_issubstr(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"issubstr\" at 0x08188344 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114422",
+   "name": "GScr_getsubstr",
+   "signature": "void GScr_getsubstr(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"getsubstr\" at 0x08188350 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811452a",
+   "name": "GScr_tolower",
+   "signature": "void GScr_tolower(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"tolower\" at 0x0818835c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081145c4",
+   "name": "GScr_strtok",
+   "signature": "void GScr_strtok(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"strtok\" at 0x08188368 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "Scr_AddEntity/Scr_PopAndLink are the merged names of 0x08085338/0x08085364; here they behave as array-begin and array-append."
+  },
+  {
+   "addr": "0x08114734",
+   "name": "GScr_musicplay",
+   "signature": "void GScr_musicplay(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"musicplay\" at 0x08188374 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114778",
+   "name": "GScr_musicstop",
+   "signature": "void GScr_musicstop(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"musicstop\" at 0x08188380 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114824",
+   "name": "GScr_soundfade",
+   "signature": "void GScr_soundfade(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"soundfade\" at 0x0818838c points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081148b4",
+   "name": "GScr_precachemodel",
+   "signature": "void GScr_precachemodel(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"precachemodel\" at 0x081883b0 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081148e6",
+   "name": "GScr_precacheshellshock",
+   "signature": "void GScr_precacheshellshock(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"precacheshellshock\" at 0x081883bc points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": "Callee is merged as G_SoundIndex (configstring base 0x48e, 0x10 slots); shell-shock precache semantic is not confirmed."
+  },
+  {
+   "addr": "0x08114918",
+   "name": "GScr_precacheitem",
+   "signature": "void GScr_precacheitem(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"precacheitem\" at 0x081883c8 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081149a2",
+   "name": "GScr_precacheshader",
+   "signature": "void GScr_precacheshader(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"precacheshader\" at 0x081883d4 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081149f6",
+   "name": "GScr_precachestring",
+   "signature": "void GScr_precachestring(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"precachestring\" at 0x081883e0 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114a3c",
+   "name": "GScr_ambientplay",
+   "signature": "void GScr_ambientplay(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"ambientplay\" at 0x08188398 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08114b14",
+   "name": "GScr_ambientstop",
+   "signature": "void GScr_ambientstop(void)",
+   "subsystem": "game/script-functions",
+   "confidence": "inferred",
+   "evidence": "script function table entry \"ambientstop\" at 0x081883a4 points to this function; the function does not reference the string.; function recovered from .eh_frame FDE start; name prefix per Quake III/IW GSC lineage",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08716400",
+   "name": "g_gentities",
+   "type": "struct ent105_s[1024]",
+   "confidence": "observed",
+   "evidence": "g_entities: stride 0x230, index computed as (ent-base)/0x230 for server command; memset by G_InitGame (chunk 49)"
+  },
+  {
+   "addr": "0x08187d10",
+   "name": "g_08187d10",
+   "type": "struct entHandler105_s[]",
+   "confidence": "inferred",
+   "evidence": "indexed by entity byte +0x166, stride 0x28, first slot called by useby"
+  },
+  {
+   "addr": "0x0864c3a4",
+   "name": "level_objectives",
+   "type": "struct objective105_s[16]",
+   "confidence": "inferred",
+   "evidence": "objective_add/delete/state/icon/position/onentity/current/team index it with stride 0x1c; chunk 49 labelled it a turret request table"
+  },
+  {
+   "addr": "0x08188020",
+   "name": "g_cursorHintNames",
+   "type": "const char *[]",
+   "confidence": "observed",
+   "evidence": "cursor hint names compared by setcursorhint, indices 1..0x84 until NULL"
+  },
+  {
+   "addr": "0x08187ba0",
+   "name": "g_spawnTraceMins",
+   "type": "float[3]",
+   "confidence": "inferred",
+   "evidence": "offset added to position to form telefrag box mins"
+  },
+  {
+   "addr": "0x08187bac",
+   "name": "g_spawnTraceMaxs",
+   "type": "float[3]",
+   "confidence": "inferred",
+   "evidence": "offset added to position to form telefrag box maxs"
+  },
+  {
+   "addr": "0x081850c0",
+   "name": "g_081850c0",
+   "type": "uint8[]",
+   "confidence": "inferred",
+   "evidence": "item table base; precacheitem divides (item-base)/0x2c"
+  },
+  {
+   "addr": "0x0864c56c",
+   "name": "g_0864c56c",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "level time ms: stoploopsound adds 300, ambientplay/stop add fade"
+  },
+  {
+   "addr": "0x0864c39c",
+   "name": "level_initializing",
+   "type": "int32",
+   "confidence": "observed",
+   "evidence": "nonzero only before first wait; gates the precache* functions"
+  },
+  {
+   "addr": "0x0864c578",
+   "name": "level_startTime",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "returned by getstarttime"
+  },
+  {
+   "addr": "0x0864f984",
+   "name": "g_currentThinkEntNum",
+   "type": "int32",
+   "confidence": "inferred",
+   "evidence": "entity number currently inside its think; delete refuses to free it"
+  },
+  {
+   "addr": "0x08853274",
+   "name": "scr_str_trigger",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "script string passed to Scr_NotifyEntity by useby"
+  },
+  {
+   "addr": "0x0885322a",
+   "name": "g_scrCallbackDeath",
+   "type": "uint16",
+   "confidence": "unknown",
+   "evidence": "script string passed to Scr_NotifyEntity by delete"
+  },
+  {
+   "addr": "0x08853276",
+   "name": "scr_str_trigger_use",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "entity classname handle compared for trigger_use-type hint commands"
+  },
+  {
+   "addr": "0x08853278",
+   "name": "scr_str_trigger_use_touch",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "entity classname handle compared for trigger_use-type hint commands"
+  },
+  {
+   "addr": "0x0885327a",
+   "name": "scrStr_trigger_damage",
+   "type": "uint16",
+   "confidence": "observed",
+   "evidence": "classname handle required by enable/disablegrenadetouchdamage"
+  },
+  {
+   "addr": "0x08853222",
+   "name": "scr_str_allies",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "script string 'allies' (objective_team maps to team 2)"
+  },
+  {
+   "addr": "0x08853224",
+   "name": "scr_str_axis",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "script string 'axis' (objective_team maps to team 1)"
+  },
+  {
+   "addr": "0x08853294",
+   "name": "scr_str_none",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "script string 'none' (objective_team maps to team 0)"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "ent105_s",
+   "size": "0x230",
+   "evidence": "stride of g_08716400 (index = (ent-0x8716400)/0x230); partial layout from 86 script handlers"
+  },
+  {
+   "name": "client105_s",
+   "size": "0x28a4",
+   "evidence": "size per chunk 049 gclient; only +4 and +0x2728 used here"
+  },
+  {
+   "name": "objective105_s",
+   "size": "0x1c",
+   "evidence": "stride of the 16-entry objective table at 0x864c3a4"
+  },
+  {
+   "name": "entHandler105_s",
+   "size": "0x28",
+   "evidence": "stride of table at 0x8187d10 indexed by entity byte +0x166"
+  }
+ ],
+ "open_questions": [
+  "Merged names G_AnimIndex (0x811d668, configstring base 0x24e) and G_SoundIndex (0x811d634, base 0x48e) are used by playsound/playloopsound and precacheShellShock respectively; their semantic labels look swapped or shifted relative to these script callers.",
+  "0x08090afa (merged SV_ForwardCallToGame) and 0x080a40ea (merged Vec3_DeltaProcess) are used as float-returning distance helpers (sighttracepassed, distance); symbol records should be revisited.",
+  "Fields at ent+0x74/+0x78 (obituary payload) and the meaning of means-of-death values 7,8,9,0xb,0xc are not named; fn_08120dd0 (weapon name to index), fn_08109992 (log print), fn_0810a528/622/672 (traces) still have no merged names."
+ ]
+}

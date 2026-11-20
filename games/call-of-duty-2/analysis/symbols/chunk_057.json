@@ -1,0 +1,846 @@
+{
+ "chunk": 57,
+ "model": "sonnet",
+ "functions": [
+  {
+   "addr": "0x0812e89e",
+   "name": "fx_primitive_s::ParseAngles",
+   "signature": "bool fx_primitive_s::ParseAngles(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: dispatched from the effect key parser (0x08130248) for keys \"angle\"/\"angles\"; fills the three angle ranges at +0x228.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e93c",
+   "name": "fx_primitive_s::ParseAngleDelta",
+   "signature": "bool fx_primitive_s::ParseAngleDelta(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: dispatched for key \"angleDelta\" in 0x08130248; fills the ranges at +0x240.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812e9da",
+   "name": "fx_primitive_s::ParseVelocity",
+   "signature": "bool fx_primitive_s::ParseVelocity(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: dispatched for keys \"velocity\"/\"vel\" in 0x08130248; sets flag 0x80000 (useRandomVelocity in table 0x0815fae0) when lo != hi.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ec4e",
+   "name": "fx_primitive_s::LookupFlag",
+   "signature": "bool fx_primitive_s::LookupFlag(const char *flagName, const struct FxFlagName *table, int tableCount)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: case-insensitive lookup in an array of {name, flags, spawnFlags} (12-byte entries) that ORs the matched entry into +0x90/+0x94.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ecdc",
+   "name": "fx_primitive_s::ParseFlagList",
+   "signature": "bool fx_primitive_s::ParseFlagList(const char *str, const struct FxFlagName *table, int tableCount)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: splits a whitespace separated word list with sscanf(\"%s\") and looks each word up with LookupFlag; fails on empty input or unknown word.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812edb4",
+   "name": "fx_primitive_s::ParseFlags",
+   "signature": "bool fx_primitive_s::ParseFlags(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: dispatched for keys \"flags\"/\"flag\"; uses the 0x18-entry name table at 0x0815fae0 (depthHack, setShaderTime, ...).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ede2",
+   "name": "fx_primitive_s::ParseSpawnFlags",
+   "signature": "bool fx_primitive_s::ParseSpawnFlags(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: dispatched for keys \"spawnFlags\"/\"spawnFlag\"; uses the 13-entry name table at 0x0815fcc0 (org2fromTrace, ...).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ee10",
+   "name": "fx_primitive_s::ParseAcceleration",
+   "signature": "bool fx_primitive_s::ParseAcceleration(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: dispatched for keys \"acceleration\"/\"accel\"; sets flag 0x100000 (useRandomVelocity2) when lo != hi, scales by life (+0x5c) * 0.001f.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f0ca",
+   "name": "fx_primitive_s::ParseGravity",
+   "signature": "bool fx_primitive_s::ParseGravity(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: dispatched for key \"gravity\"; stores a float range at +0x258.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f128",
+   "name": "fx_primitive_s::ParseDensity",
+   "signature": "bool fx_primitive_s::ParseDensity(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: dispatched for key \"density\"; stores a float range at +0x260.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f186",
+   "name": "fx_primitive_s::ParseVariance",
+   "signature": "bool fx_primitive_s::ParseVariance(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: dispatched for key \"variance\"; stores a float range at +0x268.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f1e4",
+   "name": "fx_primitive_s::ParseSequenceStartFrameMode",
+   "signature": "bool fx_primitive_s::ParseSequenceStartFrameMode(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: key string \"sequenceStartFrameMode\" selects this handler in 0x08130248; accepts 0..2. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f228",
+   "name": "fx_primitive_s::ParseSequenceFixedFrameValue",
+   "signature": "bool fx_primitive_s::ParseSequenceFixedFrameValue(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: key string \"sequenceFixedFrameValue\"; stores unconditionally, succeeds if > 0. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f268",
+   "name": "fx_primitive_s::ParseSequencePlayRateMode",
+   "signature": "bool fx_primitive_s::ParseSequencePlayRateMode(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: key string \"sequencePlayRateMode\"; accepts 0..1. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f2ac",
+   "name": "fx_primitive_s::ParseSequenceFixedFpsValue",
+   "signature": "bool fx_primitive_s::ParseSequenceFixedFpsValue(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: key string \"sequenceFixedFpsValue\"; stores unconditionally, succeeds if >= 0. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f2f4",
+   "name": "fx_primitive_s::ParseSequenceLoopMode",
+   "signature": "bool fx_primitive_s::ParseSequenceLoopMode(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: key string \"sequenceLoopMode\"; accepts 0..1. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f338",
+   "name": "fx_primitive_s::ParseSequenceLoopTimes",
+   "signature": "bool fx_primitive_s::ParseSequenceLoopTimes(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: key string \"sequenceLoopTimes\"; stores unconditionally, succeeds if >= 0. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f378",
+   "name": "fx_primitive_s::ParseSpawnFrustumCullRadius",
+   "signature": "bool fx_primitive_s::ParseSpawnFrustumCullRadius(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: key string \"spawnFrustumCullRadius\"; stores only if >= 0. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f3bc",
+   "name": "fx_primitive_s::ParseChannelStartVec3",
+   "signature": "bool fx_primitive_s::ParseChannelStartVec3(struct FxChannelInit *init, const char *str, int channel)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: called for key \"start\" of rgb channels 0/1 in ParseChannel (0x0812ffa2); fills 3 start ranges of the channel and marks it used.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f450",
+   "name": "fx_primitive_s::ParseChannelEndVec3",
+   "signature": "bool fx_primitive_s::ParseChannelEndVec3(struct FxChannelInit *init, const char *str, int channel)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: called for key \"end\" of channels 0/1; same as ParseChannelStartVec3 into the end[] ranges (+0x18).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f4e8",
+   "name": "fx_primitive_s::ParseChannelStart",
+   "signature": "bool fx_primitive_s::ParseChannelStart(struct FxChannelInit *init, const char *str, int channel)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: called for key \"start\" of scalar channels (>= 2); sorts lo/hi and stores start[0].",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f57c",
+   "name": "fx_primitive_s::ParseChannelEnd",
+   "signature": "bool fx_primitive_s::ParseChannelEnd(struct FxChannelInit *init, const char *str, int channel)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: called for key \"end\" of scalar channels; sorts lo/hi and stores end[0] (+0x18).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f612",
+   "name": "fx_primitive_s::ParseChannelParm",
+   "signature": "bool fx_primitive_s::ParseChannelParm(struct FxChannelInit *init, const char *str, int channel)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: called for keys \"parm\"/\"parms\" in ParseChannel; stores the range at channel offset +0x30.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f686",
+   "name": "fx_primitive_s::ParseChannelFlags",
+   "signature": "bool fx_primitive_s::ParseChannelFlags(struct FxChannelInit *init, const char *str, int channel)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: called for keys \"flags\"/\"flag\" in ParseChannel; ORs parsed flag bits (fn_0812dc70) into channel offset +0x38.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f6f4",
+   "name": "fx_primitive_s::ParseMaterials",
+   "signature": "bool fx_primitive_s::ParseMaterials(struct ParseNode *node)",
+   "subsystem": "fx/effect-template",
+   "confidence": "observed",
+   "evidence": "Evidence: string \"fx_primitive_s::ParseMaterials called with an empty list!\\n\"; keys \"shaders\"/\"shader\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f7d2",
+   "name": "fx_primitive_s::ParseModels",
+   "signature": "bool fx_primitive_s::ParseModels(struct ParseNode *node)",
+   "subsystem": "fx/effect-template",
+   "confidence": "observed",
+   "evidence": "Evidence: strings \"fx_primitive_s::ParseModels called with an empty list!\\n\" and \"...could not register model '%s'\\n\"; keys \"models\"/\"model\".",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f8e0",
+   "name": "fx_primitive_s::ParseImpactFxStrings",
+   "signature": "bool fx_primitive_s::ParseImpactFxStrings(struct ParseNode *node)",
+   "subsystem": "fx/effect-template",
+   "confidence": "observed",
+   "evidence": "Evidence: strings \"fx_primitive_s::ParseImpactFxStrings called with an empty list!\\n\", \"FxTemplate: Impact effect file not found.\\n\"; key \"impactfx\"; sets flags 0x820.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812f9fc",
+   "name": "fx_primitive_s::ParseDeathFxStrings",
+   "signature": "bool fx_primitive_s::ParseDeathFxStrings(struct ParseNode *node)",
+   "subsystem": "fx/effect-template",
+   "confidence": "observed",
+   "evidence": "Evidence: strings \"fx_primitive_s::ParseDeathFxStrings called with an empty list!\\n\", \"FxTemplate: Death effect file not found.\\n\"; key \"deathfx\"; sets flag 0x200.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812fb18",
+   "name": "fx_primitive_s::ParseEmitterFxStrings",
+   "signature": "bool fx_primitive_s::ParseEmitterFxStrings(struct ParseNode *node)",
+   "subsystem": "fx/effect-template",
+   "confidence": "observed",
+   "evidence": "Evidence: strings \"fx_primitive_s::ParseEmitterFxStrings called with an empty list!\\n\", \"FxTemplate: Emitter effect file not found.\\n\"; key \"emitfx\"; sets flag 0x100.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812fc34",
+   "name": "fx_primitive_s::ParsePlayFxStrings",
+   "signature": "bool fx_primitive_s::ParsePlayFxStrings(struct ParseNode *node)",
+   "subsystem": "fx/effect-template",
+   "confidence": "observed",
+   "evidence": "Evidence: strings \"fx_primitive_s::ParsePlayFxStrings called with an empty list!\\n\", \"FxTemplate: Effect file not found.\\n\"; key \"playfx\" (no flag change).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812fd3c",
+   "name": "fx_primitive_s::ParseCurveVec3",
+   "signature": "void fx_primitive_s::ParseCurveVec3(struct ParseNode *node, int channel)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: format \"%f %f %f %f\" (time + rgb) per child; called for key \"curve\" on channels 0/1; stores the curve at +0x100+channel*12. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812fe54",
+   "name": "fx_primitive_s::ParseCurveFloat",
+   "signature": "void fx_primitive_s::ParseCurveFloat(struct ParseNode *node, int channel)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: format \"%f %f\" (time + value) per child; called for key \"curve\" on scalar channels. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ff4c",
+   "name": "fx_primitive_s::ParseChannelScale",
+   "signature": "void fx_primitive_s::ParseChannelScale(const char *str, int channel)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: key \"scale\" in ParseChannel; stores a range at channel slot +4 (+0x104+channel*12). [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812ffa2",
+   "name": "fx_primitive_s::ParseChannel",
+   "signature": "bool fx_primitive_s::ParseChannel(struct FxChannelInit *init, struct ParseNode *node, int channel)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: strings \"curve\",\"scale\",\"start\",\"end\",\"parm\",\"parms\",\"flags\",\"flag\" and \"Unknown key parsing a channel: %s\\n\". [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813021e",
+   "name": "fx_primitive_s::ParseShaderImpact",
+   "signature": "bool fx_primitive_s::ParseShaderImpact(const char *str)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: key \"shaderImpact\" copies up to 0x20 bytes into +0x20. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08130248",
+   "name": "fx_primitive_s::ParseKeys",
+   "signature": "bool fx_primitive_s::ParseKeys(struct FxChannelInit *init, struct ParseNode *node)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: parses all effect primitive keys (strings \"count\", \"shaders\", ..., \"Unknown key parsing an effect primitive: %s\\n\", \"^1FX Error while parsing key '%s'\\n\") and then the channel groups (\"rgb\", \"alpha\", \"velocityX\", ...).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081314a0",
+   "name": "fx_primitive_s::Parse",
+   "signature": "bool fx_primitive_s::Parse(struct ParseNode *node)",
+   "subsystem": "fx/effect-template",
+   "confidence": "inferred",
+   "evidence": "Evidence: allocates the 0x600-byte (24 * 0x40) channel scratch block from temp memory, runs ParseKeys, frees it.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081314e2",
+   "name": "FxPrintf",
+   "signature": "void FxPrintf(const char *fmt, ...)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: vsnprintf into a 0x400 buffer then forwards the text as the format string of Com_Printf (0x08060dea).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131526",
+   "name": "Material_RegisterStub",
+   "signature": "int Material_RegisterStub(const char *name)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: returns 0 unconditionally; used by ParseMaterials as the material registration of this (dedicated) build.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131530",
+   "name": "Model_RegisterByName",
+   "signature": "void *Model_RegisterByName(const char *name)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: String_IsXModelPath(name) gate, then registers name+7 via fn_08124628; used by ParseModels.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813156a",
+   "name": "FX_IsEmitterType",
+   "signature": "int FX_IsEmitterType(int kind)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Switch returns 1 only for input 5; primitive type 5 is \"emitter\" in the FX_BuildTemplate type-name table (observed strings); also Emitter vtable type id 5.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081315a2",
+   "name": "FxRange_Set",
+   "signature": "void FxRange_Set(struct FxRange *range, float lo, float hi)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: stores two 32-bit values at +0/+4; used for every {lo, hi} range write.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081315b8",
+   "name": "FxRange_Random",
+   "signature": "float FxRange_Random(const struct FxRange *range)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: returns lo if lo == hi, else Rand_Float(lo, hi) (0x080aaa84).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131600",
+   "name": "FxRange_Lerp",
+   "signature": "float FxRange_Lerp(const struct FxRange *range, float t)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: (hi - lo) * t + lo (x87, single operand precision as stored).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131618",
+   "name": "Float_Max_08131618",
+   "signature": "float Float_Max_08131618(float a, float b)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: Float_SelectGE(a - b, a, b), i.e. max(a, b) for non-NaN input.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813163c",
+   "name": "FX_ClampSelect",
+   "signature": "float FX_ClampSelect(float a, float b, float c)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Recon expression: result = (a<=b)? b : min(a,c), i.e. clamp(a, lo=b, hi=c) built from Float_SelectGE; sole caller chunk 056 curve builder uses it as Float_Pick3(x,0,1).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813167a",
+   "name": "Vec3_Copy3",
+   "signature": "void Vec3_Copy3(const float *src, float *dst)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: copies three 32-bit values from param 1 to param 2.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081316aa",
+   "name": "Vec3_Equal3",
+   "signature": "int Vec3_Equal3(const float *a, const float *b)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: returns 1 when all three float components compare equal.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131714",
+   "name": "Float_SelectGE",
+   "signature": "float Float_SelectGE(float cond, float a, float b)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: fcmp against 0.0; returns a when cond >= 0 else b.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813173e",
+   "name": "Float_Swap",
+   "signature": "void Float_Swap(float *a, float *b)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: exchanges two 32-bit values.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131760",
+   "name": "ConfigNode_GetNextAlias",
+   "signature": "struct ParseNode *ConfigNode_GetNextAlias(struct ParseNode *node)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: returns the field at +4 (next sibling) of a parse node; used to iterate children. [rename fx-anim: objdump: returns [node+4]; identical copy of 0x0812ca14.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813176c",
+   "name": "ConfigNode_GetNextAlias2",
+   "signature": "struct ParseNode *ConfigNode_GetNextAlias2(struct ParseNode *node)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: identical to ParseNode_NextSibling (duplicate instance); used by ParseChannel and ParseKeys. [rename fx-anim: objdump: returns [node+4]; third identical copy.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131778",
+   "name": "ConfigBlock_GetFirstAttr",
+   "signature": "struct ParseNode *ConfigBlock_GetFirstAttr(struct ParseNode *node)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: returns the field at +0x10 (first child) of a parse node. [rename fx-anim: objdump: returns [node+0x10] = ConfigBlock.firstAttr; not a parse-node child field.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131784",
+   "name": "ConfigAttr_GetFirstValueAlias",
+   "signature": "struct ParseNode *ConfigAttr_GetFirstValueAlias(struct ParseNode *node)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: identical to ParseNode_FirstChild (duplicate instance). [rename fx-anim: objdump: returns [node+0x10]; identical body to 0x08131778; duplicate of ConfigAttr_GetFirstValue.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131790",
+   "name": "Fx_NoOp",
+   "signature": "void Fx_NoOp(int arg)",
+   "subsystem": "fx/util",
+   "confidence": "unknown",
+   "evidence": "Evidence: empty function taking one int argument (ignored).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131796",
+   "name": "Fx_CheckClientSlot0",
+   "signature": "void Fx_CheckClientSlot0(void)",
+   "subsystem": "fx/util",
+   "confidence": "unknown",
+   "evidence": "Evidence: scans g_08a533f0[] but the loop bound (index must be <= 0) examines only slot 0; calls Fx_NoOp(0) if it is nonzero.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081317ce",
+   "name": "Fx_GetBoneIndex",
+   "signature": "int Fx_GetBoneIndex(int handle, int boneNameId)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: gets the client's DObj via Com_GetClientDObj(handle, Net_CurrentClientNum()) and returns DObj_GetBoneIndexByName, or -1 when no DObj.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131814",
+   "name": "FX_PlayEffect",
+   "signature": "void FX_PlayEffect(struct FxEffectTemplate *effect, float *origin)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: forwards (g_08a53804, a, b) to fn_0812ac78 (builds three vectors and calls fn_0812aeec). [rename fx-anim: objdump: forwards (a,b) with global 0x8a53804 (scheduler) to 0x0812ac78 FxScheduler_PlayEffect_DefaultAxis.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081318c6",
+   "name": "FX_InitThunk",
+   "signature": "void FX_InitThunk(char flag)",
+   "subsystem": "fx/util",
+   "confidence": "observed",
+   "evidence": "Evidence: forwards its char argument to fn_08133780 (per-client init, uses Net_CurrentClientNum slots). [rename fx-anim: objdump: movzx byte arg then call 0x08133780 (FX_Init); pure forwarder.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081318e0",
+   "name": "FX_ShutdownSystem_Full",
+   "signature": "void FX_ShutdownSystem_Full(void)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: calls fn_081336c2(1) (clears g_08a53804 and the per-client slot when flag is set). [rename fx-anim: objdump: calls 0x081336c2 (FX_ShutdownSystem) with constant 1.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081318f4",
+   "name": "FX_ShutdownSystem_Partial",
+   "signature": "void FX_ShutdownSystem_Partial(void)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: calls fn_081336c2(0). [rename fx-anim: objdump: calls FX_ShutdownSystem with constant 0; sibling of 0x081318e0. Arg semantics unverified; name only encodes the 0/1 variant.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131908",
+   "name": "Fx_SetView",
+   "signature": "void Fx_SetView(const struct fx_view_s *view, float farDelta)",
+   "subsystem": "fx/util",
+   "confidence": "unknown",
+   "evidence": "Evidence: calls fn_0812cef2(g_08188ac0, a, b) (sets up fov scale) then sets g_08a53818 = 1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0813198c",
+   "name": "FX_GetEffectDuration",
+   "signature": "float FX_GetEffectDuration(struct FxEffectTemplate *effect)",
+   "subsystem": "fx/util",
+   "confidence": "inferred",
+   "evidence": "Evidence: tail-forwards to fn_0812b2aa(g_08a53804, a); the callee's float result is left in st0 (decompiler showed void). [rename fx-anim: objdump: forwards (scheduler 0x8a53804, a) to 0x0812b2aa, which computes max(life.hi+delay.hi).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081319a8",
+   "name": "Fx_ParseToken",
+   "signature": "char *Fx_ParseToken(char **data_p, char allowLineBreaks, char readToEol)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: id Tech style token reader (skips whitespace, '//' and '/* */' comments, quoted strings, read-to-EOL mode) into the 0x400 byte buffer g_08a53840.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131c44",
+   "name": "Fx_StringPage_Init",
+   "signature": "void Fx_StringPage_Init(struct Fx_StringPage *page, int size)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: initialises a string page {buffer = Com_MallocZeroed(size), next = 0, size, used = 0}.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131c82",
+   "name": "Fx_StringPage_Init2",
+   "signature": "void Fx_StringPage_Init2(struct Fx_StringPage *page, int size)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: identical to Fx_StringPage_Init (duplicate instance used by Fx_StringPage_Append).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131cd6",
+   "name": "Fx_StringPage_FreeBuffer",
+   "signature": "void Fx_StringPage_FreeBuffer(struct Fx_StringPage *page)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: releases the page buffer with Com_Free_A.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131cec",
+   "name": "Fx_StringPage_Append",
+   "signature": "char *Fx_StringPage_Append(struct Fx_StringPage *page, const char *str, char addNul, struct Fx_StringPage **head)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: appends a string (plus NUL slot if addNul) to the page; when full and a head pointer is given, allocates a new page of the same size, links it and retries there. C++ EH cleanup for the page allocation is not reproduced.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131e40",
+   "name": "Fx_StringPage_FreeChain",
+   "signature": "void Fx_StringPage_FreeChain(struct Fx_StringPage *page)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: walks the page chain (next via fn_08133308), freeing each buffer and node.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131e8a",
+   "name": "ParseNode_Init",
+   "signature": "void ParseNode_Init(struct ParseNode *node, const char *name)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: sets +0 to the name pointer and zeroes +4/+8/+0xc of a parse node.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131eb6",
+   "name": "ParseNode_Init2",
+   "signature": "void ParseNode_Init2(struct ParseNode *node, const char *name)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: identical to ParseNode_Init (duplicate instance used by fn_0813222a).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131ee2",
+   "name": "Fx_StringPage_AppendQuoted",
+   "signature": "bool Fx_StringPage_AppendQuoted(void *unused, struct Fx_StringPage **head, const char *text)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: appends the text to the string page, wrapping it in '\"' (rodata 0x08160620) when it contains a space or is empty.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131f9e",
+   "name": "ParseNode_ConstructWithText",
+   "signature": "void ParseNode_ConstructWithText(struct ParseNode *node, const char *name, const char *text)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: ParseNode_Init, clears the child list at +0x10, and if text is given calls fn_0813222a(node, text, 0) to add it as a child.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08131fe2",
+   "name": "ParseNode_ConstructWithText2",
+   "signature": "void ParseNode_ConstructWithText2(struct ParseNode *node, const char *name, const char *text)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: identical to ParseNode_ConstructWithText (duplicate instance).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08132026",
+   "name": "ParseNode_FreeChildren",
+   "signature": "void ParseNode_FreeChildren(struct ParseNode *node)",
+   "subsystem": "fx/parser",
+   "confidence": "inferred",
+   "evidence": "Evidence: frees every node of the child list at +0x10 via fn_08133394, advancing with ParseNode_NextSibling.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08188ab0",
+   "name": "g_08188ab0",
+   "type": "char",
+   "confidence": "unknown",
+   "evidence": "read by fx_primitive_s::ParseMaterials to gate material registration"
+  },
+  {
+   "addr": "0x08188ac0",
+   "name": "g_fxSystem",
+   "type": "void *",
+   "confidence": "unknown",
+   "evidence": "pointer passed as first arg to fn_0812cef2 in 0x08131908"
+  },
+  {
+   "addr": "0x08a53804",
+   "name": "g_fxScheduler",
+   "type": "void *",
+   "confidence": "unknown",
+   "evidence": "active object forwarded to fn_0812ac78/fn_0812b2aa; cleared in fn_081336c2"
+  },
+  {
+   "addr": "0x08a53818",
+   "name": "g_08a53818",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "set to 1 by 0x08131908"
+  },
+  {
+   "addr": "0x08a53840",
+   "name": "g_fxParseTokenBuf",
+   "type": "char[0x401]",
+   "confidence": "inferred",
+   "evidence": "token buffer written by Fx_ParseToken (0x400 byte limit)"
+  },
+  {
+   "addr": "0x08a533f0",
+   "name": "g_08a533f0",
+   "type": "int[]",
+   "confidence": "unknown",
+   "evidence": "per-client slots indexed by Net_CurrentClientNum in fn_081336c2; slot 0 tested in 0x08131796"
+  },
+  {
+   "addr": "0x0815fae0",
+   "name": "g_0815fae0",
+   "type": "const struct FxFlagName[0x18]",
+   "confidence": "observed",
+   "evidence": "flag name table (depthHack .. disableFarPlaneCulling) used by fx_primitive_s::ParseFlags"
+  },
+  {
+   "addr": "0x0815fcc0",
+   "name": "g_0815fcc0",
+   "type": "const struct FxFlagName[13]",
+   "confidence": "observed",
+   "evidence": "spawn flag name table (org2fromTrace .. absoluteAccel) used by ParseSpawnFlags"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "fx_primitive_s",
+   "size": "0x2a4+",
+   "evidence": "offsets 0x00..0x2a0 observed in key parsers; total size unknown"
+  },
+  {
+   "name": "FxChannelInit",
+   "size": "0x40",
+   "evidence": "24 entries in 0x600 scratch block (memset 0x600 in fn_0812d9d6)"
+  },
+  {
+   "name": "FxRange",
+   "size": "0x8",
+   "evidence": "FUN_081315a2 stores {lo,hi}"
+  },
+  {
+   "name": "ParseNode",
+   "size": "0x14+",
+   "evidence": "+0 name, +4 next, +0x10 first child; +0x1c second list read by fn_0812ca20"
+  },
+  {
+   "name": "Fx_StringPage",
+   "size": "0x10",
+   "evidence": "0x08131c44/0x08131cec"
+  }
+ ],
+ "open_questions": [
+  "Exact class names: strings say fx_primitive_s; confirm owning class of 0x08130248 (FxTemplate?) and whether the 0x600 block is a named struct",
+  "Callee signatures in neighbouring chunk (fn_0812dbc4/0812db5a/0812e616/0812e6c4) are inferred from call sites only",
+  "g_08188ab0 meaning (materials only registered when nonzero) and purpose of fn_08131796/g_08a533f0"
+ ]
+}

@@ -1,0 +1,1262 @@
+{
+ "chunk": 52,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x0811c0d0",
+   "name": "OnSameTeam",
+   "signature": "int OnSameTeam(struct gentity_s *a, struct gentity_s *b)",
+   "subsystem": "entity/team",
+   "confidence": "inferred",
+   "evidence": "Quake III / IW OnSameTeam counterpart; both entities need a client with a non-zero team (+0x274c) that compares equal; called from the bullet and damage paths (80ff630, 811fe90).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c148",
+   "name": "Client_UpdateCrosshairTarget",
+   "signature": "void Client_UpdateCrosshairTarget(struct gentity_s *ent)",
+   "subsystem": "combat/crosshair",
+   "confidence": "unknown",
+   "evidence": "no string; computes an 8000-unit forward trace from the muzzle, stores the hit entity number and its cooldown field into the client.",
+   "status": "translated",
+   "notes": "Reads the trace entity number (ushort at trace+0x1c). Entity+0x194 value is copied into client+0x13c."
+  },
+  {
+   "addr": "0x0811c382",
+   "name": "Client_UpdateAllCrosshairTargets",
+   "signature": "void Client_UpdateAllCrosshairTargets(void)",
+   "subsystem": "combat/crosshair",
+   "confidence": "unknown",
+   "evidence": "no string; throttles refresh to once per server time step over all in-use entities whose client flag 0x400000 is clear.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c406",
+   "name": "Vec3_MulAdd",
+   "signature": "void Vec3_MulAdd(const float *a, float scale, const float *b, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "out = a + scale * b per axis (VectorMA shape); no string.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c45c",
+   "name": "G_QueueEntityPairEvent",
+   "signature": "void G_QueueEntityPairEvent(struct gentity_s *a, struct gentity_s *b)",
+   "subsystem": "entity/events",
+   "confidence": "unknown",
+   "evidence": "no string; appends an (entity, entity) pair with generations to a 256-entry queue, or sends the overflow event when the queue is full.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c504",
+   "name": "G_InitBodyEntity",
+   "signature": "void G_InitBodyEntity(struct gentity_s *ent)",
+   "subsystem": "entity/init",
+   "confidence": "unknown",
+   "evidence": "no string; body-entity init (contents 0x405c0008, link flag, flags |= 1).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c53e",
+   "name": "Ent_AddFlagIfCondition",
+   "signature": "void Ent_AddFlagIfCondition(struct gentity_s *ent, uint32 flag)",
+   "subsystem": "entity/trigger",
+   "confidence": "unknown",
+   "evidence": "no string; ORs a flag into effectFlags when a cvar-like gate is set and helper 0811a406 reports a non-positive value.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c596",
+   "name": "Ent_UpdateContentsFromFlags",
+   "signature": "void Ent_UpdateContentsFromFlags(struct gentity_s *ent)",
+   "subsystem": "entity/trigger",
+   "confidence": "unknown",
+   "evidence": "no string; derives contents bits from effectFlags.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811c648",
+   "name": "Ent_RefreshIfFlag10",
+   "signature": "void Ent_RefreshIfFlag10(struct gentity_s *ent)",
+   "subsystem": "entity/trigger",
+   "confidence": "unknown",
+   "evidence": "no string; calls the link refresh when effectFlags bit 0x10 is set.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ca92",
+   "name": "Ent_ToggleKind",
+   "signature": "void Ent_ToggleKind(struct gentity_s *ent)",
+   "subsystem": "entity/trigger",
+   "confidence": "unknown",
+   "evidence": "no string; toggles the entity kind between 2 and 3.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811cb7e",
+   "name": "Ent_CanTriggerKind",
+   "signature": "int Ent_CanTriggerKind(struct gentity_s *ent, int kind)",
+   "subsystem": "entity/trigger",
+   "confidence": "unknown",
+   "evidence": "no string; returns 0 when a blocking effectFlags bit matches the kind.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ccb6",
+   "name": "Ent_TryConsumeCharge",
+   "signature": "void Ent_TryConsumeCharge(struct gentity_s *ent, struct gentity_s *other, int index, int kind)",
+   "subsystem": "entity/trigger",
+   "confidence": "unknown",
+   "evidence": "no string; consumes a charge when the kind check, count and cooldown allow.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811cd62",
+   "name": "Ent_TryConsumeChargeNext",
+   "signature": "void Ent_TryConsumeChargeNext(struct gentity_s *ent, struct gentity_s *other)",
+   "subsystem": "entity/trigger",
+   "confidence": "unknown",
+   "evidence": "no string; Ent_TryConsumeCharge with index count+1 and kind -1.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811cd92",
+   "name": "Ent_TryConsumeChargeAndReset",
+   "signature": "void Ent_TryConsumeChargeAndReset(struct gentity_s *ent, struct gentity_s *other, int index, int p4, int kind)",
+   "subsystem": "entity/trigger",
+   "confidence": "unknown",
+   "evidence": "no string; Ent_TryConsumeCharge, then resets the cooldown when count is zero.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811cea8",
+   "name": "Ent_AreaEffectApply",
+   "signature": "void Ent_AreaEffectApply(struct gentity_s *self, const float *start, const float *end, int p4, int p5)",
+   "subsystem": "entity/area-effect",
+   "confidence": "unknown",
+   "evidence": "no string; area query over [start,end], applies the trace filter on scrName == g_0885327a and bounds the entity with its mins/maxs.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d096",
+   "name": "Ent_AreaEffectApplyFlagged",
+   "signature": "void Ent_AreaEffectApplyFlagged(struct gentity_s *self, const float *start, const float *end, int p4, int p5)",
+   "subsystem": "entity/area-effect",
+   "confidence": "unknown",
+   "evidence": "no string; like Ent_AreaEffectApply but filters on effect flag 0x4000.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d246",
+   "name": "G_InitStaticEntity",
+   "signature": "void G_InitStaticEntity(struct gentity_s *ent)",
+   "subsystem": "entity/init",
+   "confidence": "unknown",
+   "evidence": "no string; static-entity init (contents 0x20000000, link flag, flags |= 1, relink).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d28a",
+   "name": "Vec3_CopyBits_0811d28a",
+   "signature": "void Vec3_CopyBits_0811d28a(const void *src, void *dst)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d2ba",
+   "name": "Vec3_Add",
+   "signature": "void Vec3_Add(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "no string; out = a + b per axis.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d300",
+   "name": "G_FindConfigstringIndex",
+   "signature": "int G_FindConfigstringIndex(const char *name, int csBase, int maxCount, int create, const char *errPrefix)",
+   "subsystem": "configstring/index",
+   "confidence": "inferred",
+   "evidence": "format \"%s \\\"%s\\\" not precached\" in the function; Quake III/IW G_FindConfigstringIndex counterpart (case-insensitive scan of a configstring range, optional create); callers pass CS base 0x51e/0x61e/0x6e/0x34e/0x48e/0x24e.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d3fe",
+   "name": "G_LocalizedStringIndex",
+   "signature": "int G_LocalizedStringIndex(const char *name)",
+   "subsystem": "configstring/index",
+   "confidence": "inferred",
+   "evidence": "error label string \"localized string\" in the function; wrapper of the configstring lookup for CS base 0x51e, max 0x100.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d44a",
+   "name": "G_ShaderIndex",
+   "signature": "int G_ShaderIndex(const char *name)",
+   "subsystem": "configstring/index",
+   "confidence": "inferred",
+   "evidence": "label string \"shader\" passed to the configstring lookup in this function. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d49c",
+   "name": "G_ModelIndex",
+   "signature": "int G_ModelIndex(const char *name)",
+   "subsystem": "configstring/index",
+   "confidence": "observed",
+   "evidence": "format \"model '%s' not precached\" in the function.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d588",
+   "name": "G_GetModelHandle",
+   "signature": "int G_GetModelHandle(int index)",
+   "subsystem": "configstring/model",
+   "confidence": "unknown",
+   "evidence": "no string; returns the model handle table entry.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d598",
+   "name": "G_ModelIsDefault",
+   "signature": "int G_ModelIsDefault(int index)",
+   "subsystem": "configstring/model",
+   "confidence": "observed",
+   "evidence": "no string; releases the model handle of an index. [rename fx-anim: objdump: returns XModel_IsDefault(0x080c5320) of G_GetModelHandle(index) (0x0811d588); frees nothing.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d5b4",
+   "name": "G_GetModelName",
+   "signature": "const char *G_GetModelName(int index)",
+   "subsystem": "configstring/model",
+   "confidence": "unknown",
+   "evidence": "no string; returns the configstring of model index (0x14e base). Ghidra prints void, but the binary tail-returns the callee's eax (checked in disassembly), and callers use the returned pointer.",
+   "status": "translated",
+   "notes": "Ghidra prints void; disassembly shows a tail call whose eax is the return value (verified). Callers use the returned pointer."
+  },
+  {
+   "addr": "0x0811d5cc",
+   "name": "G_ItemIndex",
+   "signature": "int G_ItemIndex(const char *name)",
+   "subsystem": "configstring/index",
+   "confidence": "unknown",
+   "evidence": "no string; configstring lookup at base 0x6e, max 0x20, no error text. Ghidra prints void; the binary returns the callee's eax.",
+   "status": "translated",
+   "notes": "Ghidra prints void; translated as returning the callee eax (int). Not independently verified in disassembly."
+  },
+  {
+   "addr": "0x0811d600",
+   "name": "G_EffectIndex",
+   "signature": "int G_EffectIndex(const char *name)",
+   "subsystem": "configstring/index",
+   "confidence": "inferred",
+   "evidence": "label string \"effect\" passed to the configstring lookup here. Ghidra prints void; the binary returns the callee's eax. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "Ghidra prints void; translated as returning the callee eax (int). Not independently verified in disassembly."
+  },
+  {
+   "addr": "0x0811d634",
+   "name": "G_ShellShockIndex",
+   "signature": "int G_ShellShockIndex(const char *name)",
+   "subsystem": "configstring/index",
+   "confidence": "inferred",
+   "evidence": "no string; configstring lookup at base 0x48e, max 0x10, create without error. Ghidra prints void; the binary returns the callee's eax. [rename botlib-sound-math: Wrapper passes CS base 0x48e, max 0x10 to generic configstring-index routine 0x0811d300; callers precacheshellshock 0x081148e6 and setchannelvolumes (shock name). Disassembly verified.]",
+   "status": "translated",
+   "notes": "Ghidra prints void; translated as returning the callee eax (int). Not independently verified in disassembly."
+  },
+  {
+   "addr": "0x0811d668",
+   "name": "G_SoundIndex",
+   "signature": "uint8 G_SoundIndex(const char *name)",
+   "subsystem": "configstring/index",
+   "confidence": "inferred",
+   "evidence": "no string; configstring lookup at base 0x24e, max 0x100, truncated to a byte. [rename botlib-sound-math: Same wrapper with base 0x24e, max 0x100, returns movzx byte; callers are playsound/playloopsound/playlocalsound/item pickup, none pass animation names. Must be applied together with the 0x0811d634 rename (name swap).]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d69e",
+   "name": "Ent_RefreshAttachments",
+   "signature": "void Ent_RefreshAttachments(struct gentity_s *ent)",
+   "subsystem": "entity/attachment",
+   "confidence": "unknown",
+   "evidence": "no string; rebuilds the model/tag list of an unparented entity and hands it to the render-side callee fn_08062d8e.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d87a",
+   "name": "Ent_SetModelByName",
+   "signature": "void Ent_SetModelByName(struct gentity_s *ent, const char *name)",
+   "subsystem": "entity/attachment",
+   "confidence": "unknown",
+   "evidence": "no string; sets the model index from a name (0 for an empty name).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d8b2",
+   "name": "G_SetModelHandle",
+   "signature": "void G_SetModelHandle(int index, const char *name)",
+   "subsystem": "configstring/model",
+   "confidence": "unknown",
+   "evidence": "no string; replaces the model handle at an index and notifies fn_080abc74.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d900",
+   "name": "Ent_AddAttachment",
+   "signature": "int Ent_AddAttachment(struct gentity_s *ent, const char *name, int32 tagName, int linkFlag)",
+   "subsystem": "entity/attachment",
+   "confidence": "unknown",
+   "evidence": "no string; adds a model/tag attachment into the first free slot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811d9b8",
+   "name": "Ent_RemoveAttachment",
+   "signature": "uint32 Ent_RemoveAttachment(struct gentity_s *ent, const char *name, uint32 tagName)",
+   "subsystem": "entity/attachment",
+   "confidence": "unknown",
+   "evidence": "no string; removes the attachment whose tag matches and whose model name matches.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811db52",
+   "name": "Ent_ClearAttachments",
+   "signature": "void Ent_ClearAttachments(struct gentity_s *ent)",
+   "subsystem": "entity/attachment",
+   "confidence": "unknown",
+   "evidence": "no string; clears all seven attachment slots and their flags, then refreshes.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811dbb0",
+   "name": "Ent_LinkChild",
+   "signature": "int Ent_LinkChild(struct gentity_s *child, struct gentity_s *parent, int32 tagName)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; links child under parent's child list after a cycle check, creating a 0x70-byte link node.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811dcfe",
+   "name": "Ent_LinkChildAndReset",
+   "signature": "bool Ent_LinkChildAndReset(struct gentity_s *child, struct gentity_s *parent, int32 tagName)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; Ent_LinkChild and a transform sync on success.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811dd4a",
+   "name": "Ent_LinkChildWithOffsets",
+   "signature": "bool Ent_LinkChildWithOffsets(struct gentity_s *child, struct gentity_s *parent, int32 tagName, const float *angles, const float *origin)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; Ent_LinkChild, then stores the angles and origin offsets in the link node.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ddb8",
+   "name": "Ent_UnlinkFromParent",
+   "signature": "void Ent_UnlinkFromParent(struct gentity_s *child)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; detaches a child from its parent's list and frees the link node.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811dee4",
+   "name": "Ent_HasParent",
+   "signature": "bool Ent_HasParent(struct gentity_s *child, struct gentity_s *parent)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; true when the entity's link node owner is parent.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811df1a",
+   "name": "Ent_UpdateTagIndex",
+   "signature": "void Ent_UpdateTagIndex(struct gentity_s *child, int force)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; resolves the child's tag index by name, unlinking when unresolved.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811df84",
+   "name": "Ent_UpdateChildrenTags",
+   "signature": "void Ent_UpdateChildrenTags(struct gentity_s *parent, int force)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; walks the child list and updates each tag index.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811dfca",
+   "name": "Ent_GetAttachTransform",
+   "signature": "void Ent_GetAttachTransform(struct gentity_s *child, struct game_orient_s *out)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; writes the child's attachment orientation (48 bytes) into out.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e118",
+   "name": "Ent_SyncAttachTransform",
+   "signature": "void Ent_SyncAttachTransform(struct gentity_s *ent, int mode)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; sets the link node transform from the entity's attachment orientation.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e1e2",
+   "name": "Ent_SetAttachCurrent",
+   "signature": "void Ent_SetAttachCurrent(struct gentity_s *ent, int mode)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; mode 0/1/2 copy the attachment origin, angles or length into the entity.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e316",
+   "name": "Ent_ResetAttachState",
+   "signature": "void Ent_ResetAttachState(struct gentity_s *ent)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; resets the attachment state and both trajectory types to linear.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e37e",
+   "name": "Ent_UnlinkEntity",
+   "signature": "void Ent_UnlinkEntity(struct gentity_s *ent)",
+   "subsystem": "entity/pool",
+   "confidence": "unknown",
+   "evidence": "no string; unlinks the entity by number.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e394",
+   "name": "Ent_UpdateTimeScaled",
+   "signature": "int Ent_UpdateTimeScaled(struct gentity_s *ent, int arg)",
+   "subsystem": "entity/pool",
+   "confidence": "unknown",
+   "evidence": "no string; calls fn_0809208a with the frame interval in seconds.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e3c0",
+   "name": "Ent_RunKindCallback",
+   "signature": "void Ent_RunKindCallback(struct gentity_s *ent)",
+   "subsystem": "entity/state",
+   "confidence": "unknown",
+   "evidence": "no string; runs the kind callback at g_08187d1c after a state query.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e454",
+   "name": "Ent_UpdateTagTransform",
+   "signature": "void Ent_UpdateTagTransform(struct gentity_s *ent, int tag)",
+   "subsystem": "entity/state",
+   "confidence": "unknown",
+   "evidence": "no string; tag transform refresh with the same kind callback as Ent_RunKindCallback.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e4e6",
+   "name": "Ent_GetSlotBase",
+   "signature": "int32 Ent_GetSlotBase(struct gentity_s *ent, int32 name)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; returns the tag's slot base address, 0 when unresolved.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e542",
+   "name": "Ent_SetNodeFromSlot",
+   "signature": "bool Ent_SetNodeFromSlot(struct gentity_s *ent, int32 name, int32 out)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; writes the slot orientation into out (48 + 24 bytes).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e5fa",
+   "name": "Ent_SetNodeOrigin",
+   "signature": "bool Ent_SetNodeOrigin(struct gentity_s *ent, int32 name, float *out)",
+   "subsystem": "entity/link",
+   "confidence": "unknown",
+   "evidence": "no string; writes the slot origin into out.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e67e",
+   "name": "G_FindEntityByShortField",
+   "signature": "struct gentity_s *G_FindEntityByShortField(struct gentity_s *start, int32 offset, int16 value)",
+   "subsystem": "entity/pool",
+   "confidence": "unknown",
+   "evidence": "no string; scans in-use entities for an int16 field at the given offset.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e702",
+   "name": "G_FindEntityByStringField",
+   "signature": "struct gentity_s *G_FindEntityByStringField(struct gentity_s *start, int32 offset, int32 value)",
+   "subsystem": "entity/pool",
+   "confidence": "unknown",
+   "evidence": "no string; scans in-use entities for a scr-string field equal to value.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e85c",
+   "name": "G_InitEntityRecord",
+   "signature": "void G_InitEntityRecord(struct gentity_s *e)",
+   "subsystem": "entity/pool",
+   "confidence": "unknown",
+   "evidence": "no string; resets an entity record and derives its number from its pool address.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e8d4",
+   "name": "G_PrintEntities",
+   "signature": "void G_PrintEntities(void)",
+   "subsystem": "entity/pool",
+   "confidence": "inferred",
+   "evidence": "format \"%4i: '%s', origin: %f %f %f\\n\" in the function. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e988",
+   "name": "G_FreeHeadIsReusable",
+   "signature": "int G_FreeHeadIsReusable(const struct gentity_s *head)",
+   "subsystem": "entity/pool",
+   "confidence": "unknown",
+   "evidence": "no string; returns 1 when the free-list head may be reused (old enough, or pool full).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811e9d6",
+   "name": "G_Spawn",
+   "signature": "struct gentity_s *G_Spawn(void)",
+   "subsystem": "entity/pool",
+   "confidence": "unknown",
+   "evidence": "no string; spawns from the free list or grows the pool (reports at 0x3fe).",
+   "status": "translated",
+   "notes": "Pool grows from entity 0 onward; pool full (0x3fe) prints the entity list before reporting."
+  },
+  {
+   "addr": "0x0811eaa4",
+   "name": "G_AllocTempEntity",
+   "signature": "struct gentity_s *G_AllocTempEntity(void)",
+   "subsystem": "entity/pool",
+   "confidence": "unknown",
+   "evidence": "no string; temp-entity ring of 8 at pool index 64 (offset 0x8c00).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811eb3e",
+   "name": "G_ClearEntityReferences",
+   "signature": "void G_ClearEntityReferences(struct gentity_s *target)",
+   "subsystem": "entity/pool",
+   "confidence": "unknown",
+   "evidence": "no string; clears references to a freed entity from entities, clients and the pair table.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ecc0",
+   "name": "G_FindTrackedSlot",
+   "signature": "int G_FindTrackedSlot(const struct gentity_s *e)",
+   "subsystem": "entity/tracked-slots",
+   "confidence": "unknown",
+   "evidence": "no string; index of the tracked slot whose number matches; 0 when none.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ed0c",
+   "name": "G_PickTrackedSlot",
+   "signature": "int G_PickTrackedSlot(void)",
+   "subsystem": "entity/tracked-slots",
+   "confidence": "unknown",
+   "evidence": "no string; picks the tracked slot farthest from a reference point, or the first empty slot, then frees the chosen entity.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ee26",
+   "name": "G_ClearTrackedSlotFor",
+   "signature": "void G_ClearTrackedSlotFor(struct gentity_s *e)",
+   "subsystem": "entity/tracked-slots",
+   "confidence": "unknown",
+   "evidence": "no string; clears the tracked slot holding the entity.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811ee50",
+   "name": "G_FreeEntity",
+   "signature": "void G_FreeEntity(struct gentity_s *e)",
+   "subsystem": "entity/pool",
+   "confidence": "inferred",
+   "evidence": "Quake III G_FreeEntity counterpart (unlink children, clear refs, requeue on the free list with generation+1); no string.",
+   "status": "translated",
+   "notes": "Free-list requeue is taken only when the entity number exceeds 0x47; generation is incremented after the memset."
+  },
+  {
+   "addr": "0x0811ef90",
+   "name": "G_CallDeleteScript",
+   "signature": "void G_CallDeleteScript(struct gentity_s *e)",
+   "subsystem": "entity/events",
+   "confidence": "observed",
+   "evidence": "no string; sends the entity event value through fn_0811b284 and fn_080841d6. [rename script-vm: Disassembly: loads DWORD [0x884e7ac] (codescripts/delete::main offset registered in GScr_LoadScripts), passes entity to 0x0811b284 spawn-thread call; no event is sent.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811efc4",
+   "name": "G_TempEntity",
+   "signature": "struct gentity_s *G_TempEntity(const float *origin, int32 eventType)",
+   "subsystem": "entity/events",
+   "confidence": "unknown",
+   "evidence": "no string; spawns an entity with type = event + 10 at a truncated origin.",
+   "status": "translated",
+   "notes": "Ghidra ROUND() sites: disassembly sets x87 rounding control to truncate (0xc00), so (int)x is the correct reading."
+  },
+  {
+   "addr": "0x0811f1fc",
+   "name": "Ent_ForwardToClient",
+   "signature": "void Ent_ForwardToClient(struct gentity_s *e, int32 a, int32 b)",
+   "subsystem": "entity/events",
+   "confidence": "unknown",
+   "evidence": "no string; forwards two values to the client when present.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f232",
+   "name": "G_AddEvent",
+   "signature": "void G_AddEvent(struct gentity_s *e, int32 event, int32 parm)",
+   "subsystem": "entity/events",
+   "confidence": "inferred",
+   "evidence": "Quake III G_AddEvent counterpart (ring of four events with a sequence counter, stored on the client when present, else on the entity); no string.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f32e",
+   "name": "Ent_AddEventB3IfNonzero",
+   "signature": "void Ent_AddEventB3IfNonzero(struct gentity_s *e, uint8 value)",
+   "subsystem": "entity/events",
+   "confidence": "unknown",
+   "evidence": "no string; event 0xb3 with the value when non-zero.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f35e",
+   "name": "Ent_AddEventB4IfNonzero",
+   "signature": "void Ent_AddEventB4IfNonzero(struct gentity_s *e, uint8 value)",
+   "subsystem": "entity/events",
+   "confidence": "unknown",
+   "evidence": "no string; event 0xb4 with the value when non-zero.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f3c6",
+   "name": "G_SetPositionTrajectory",
+   "signature": "void G_SetPositionTrajectory(struct gentity_s *e, const float *origin)",
+   "subsystem": "entity/trajectory",
+   "confidence": "unknown",
+   "evidence": "no string; sets the position trajectory to a stationary origin.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f426",
+   "name": "G_SetAnglesTrajectory",
+   "signature": "void G_SetAnglesTrajectory(struct gentity_s *e, const float *angles)",
+   "subsystem": "entity/trajectory",
+   "confidence": "unknown",
+   "evidence": "no string; sets the angular trajectory to stationary angles.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f486",
+   "name": "G_IsFacingTarget",
+   "signature": "bool G_IsFacingTarget(struct gentity_s *a, struct gentity_s *b)",
+   "subsystem": "entity/trajectory",
+   "confidence": "unknown",
+   "evidence": "no string; true when b lies in front of a's facing direction.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f51e",
+   "name": "G_ReturnZero",
+   "signature": "int G_ReturnZero(void)",
+   "subsystem": "util",
+   "confidence": "unknown",
+   "evidence": "no string; constant zero result.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f528",
+   "name": "G_SetScrNameRef",
+   "signature": "void G_SetScrNameRef(uint16 *ref, int32 value)",
+   "subsystem": "configstring/index",
+   "confidence": "unknown",
+   "evidence": "no string; resets a scr-string reference and stores the looked-up value.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f562",
+   "name": "Vec3_Zero",
+   "signature": "void Vec3_Zero(void *v)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "no string; zeroes a vector.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f58c",
+   "name": "Vec3_CopyBits_0811f58c",
+   "signature": "void Vec3_CopyBits_0811f58c(const void *src, void *dst)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body copies three 32-bit words with integer moves (bit-exact), byte-identical to the 93f1623b leaf family of 36 Vec3 copies. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: VectorCopy_080527aa, VectorCopy_080552b2, VectorCopy_080561a6; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f5bc",
+   "name": "Vec3_Add_0811f5bc",
+   "signature": "void Vec3_Add_0811f5bc(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = a+b per component; same byte family as Vec3_Add_080ab108. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: cm_vec3_add, cm_vec3_add_b, Vec3_Add_0809e502; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f600",
+   "name": "Vec3_Sub",
+   "signature": "void Vec3_Sub(const float *a, const float *b, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "no string; out = a - b per axis.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f644",
+   "name": "Vec3_Dot",
+   "signature": "long double Vec3_Dot(const float *a, const float *b)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "no string; dot product in x87 extended precision.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f678",
+   "name": "Vec3_Scale",
+   "signature": "void Vec3_Scale(const float *v, float s, float *out)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "no string; out = s * v per axis.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f6b0",
+   "name": "Bullet_TraceSpread",
+   "signature": "int Bullet_TraceSpread(struct gentity_s *shooter, struct game_orient_s *muzzle, int32 p3, float p4, float spreadX, float spreadY, struct trace_s *trace, float *point)",
+   "subsystem": "combat/bullet",
+   "confidence": "unknown",
+   "evidence": "no string; traces up to five spread rays from the muzzle; on the first ray applies the area effect; stops at the first non-passing hit.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811f844",
+   "name": "Bullet_FireFromEntity",
+   "signature": "void Bullet_FireFromEntity(struct gentity_s *shooter, struct game_orient_s *muzzle, float p3, float spreadX, float spreadY)",
+   "subsystem": "combat/bullet",
+   "confidence": "unknown",
+   "evidence": "no string; fires one spread trace for the shooter, spawns the impact temp entity, and applies damage with a rand()-based value to the hit entity.",
+   "status": "translated",
+   "notes": "Passes an uninitialised 16-bit hit-location local into fn_08101c58 (decompile leaves it unset); translated as 0."
+  },
+  {
+   "addr": "0x0811f9ca",
+   "name": "Vec3_FloorOrCeilTowards",
+   "signature": "void Vec3_FloorOrCeilTowards(float *v, const float *bound)",
+   "subsystem": "math/vec3",
+   "confidence": "unknown",
+   "evidence": "no string; per axis floor if bound <= v, else ceil.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811fa70",
+   "name": "Vec2_RandomDirection",
+   "signature": "void Vec2_RandomDirection(float *x, float *y)",
+   "subsystem": "math/random",
+   "confidence": "unknown",
+   "evidence": "no string; random 2D direction from two random values.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811fac8",
+   "name": "Bullet_ApplySpread",
+   "signature": "void Bullet_ApplySpread(float angleDeg, float *out, const struct game_orient_s *o, float scale)",
+   "subsystem": "combat/bullet",
+   "confidence": "unknown",
+   "evidence": "no string; spread direction from tan(angle) and a random 2D offset.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811fb7c",
+   "name": "Weapon_DamageForDistance",
+   "signature": "int Weapon_DamageForDistance(struct game_bullet_ctx_s *ctx, float dist)",
+   "subsystem": "combat/weapon",
+   "confidence": "unknown",
+   "evidence": "no string; distance falloff between the weapon's near and far ranges.",
+   "status": "translated",
+   "notes": "Same truncating ROUND() as 0811efc4. fn_08120e7e return type assumed float (open question)."
+  },
+  {
+   "addr": "0x0811fc76",
+   "name": "G_AntilagRewindClients",
+   "signature": "void G_AntilagRewindClients(int32 time, uint8 *buf)",
+   "subsystem": "server/client-snapshot",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Gated by the dvar registered as \"g_antilag\" (chunk_048:1555 Dvar_RegisterBool, stored in g_087a24cc); for each client calls SV_GetInterpolatedPlayerOrigin(client, time) (snapshot-cache history interpolation), saves the live currentOrigin into a 0x340 buffer (+0x300 per-client flag byte), unlinks, writes the interpolated origin and relinks. Descriptive; no Q3 counterpart. Note: recon condition 'sessionState==2 && sessionState==0' is contradictory and should be re-checked against disassembly.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811fdec",
+   "name": "G_AntilagRestoreClients",
+   "signature": "void G_AntilagRestoreClients(uint8 *buf)",
+   "subsystem": "server/client-snapshot",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Same g_antilag gate; walks clients and for each flagged byte buf[0x300+c] unlinks, copies the saved 12-byte origin from buf+c*0xc back and relinks. Exact inverse of 0x0811fc76.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0811fe90",
+   "name": "Bullet_Fire_Extended",
+   "signature": "void Bullet_Fire_Extended(struct gentity_s *shooter, struct gentity_s *skip, float *start, float *end, float power, int32 depth, struct game_bullet_ctx_s *ctx, int32 *ownerNum, int32 timeBase)",
+   "subsystem": "combat/bullet",
+   "confidence": "observed",
+   "evidence": "format string \"Bullet_Fire_Extended: Too many resursions, bullet aborted\\n\" in the function (the misspelling is in the binary); scr_friendlyfire check.",
+   "status": "translated",
+   "notes": "Passes an uninitialised 16-bit hit-location local into fn_08101c58; translated as 0. Recursive. Local tempType is selected but unused, kept for fidelity."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08716400",
+   "name": "g_gentities",
+   "type": "uint8[] (entity pool, stride 0x230)",
+   "confidence": "observed",
+   "evidence": "Static pool base used as &DAT_08716400 + i*0x230 throughout; entity fields at offsets match Ghidra labels."
+  },
+  {
+   "addr": "0x0864c384",
+   "name": "level_gentities",
+   "type": "int32 (pool base address value)",
+   "confidence": "inferred",
+   "evidence": "Passed as the pool pointer to fn_08091dac (SV_LocateGameData-shaped call) in G_Spawn."
+  },
+  {
+   "addr": "0x0864c380",
+   "name": "level_clients",
+   "type": "int32 (game client array base address value)",
+   "confidence": "inferred",
+   "evidence": "Client array stride 0x28a4 with sessionState at +0x26c4; passed to fn_08091dac."
+  },
+  {
+   "addr": "0x0864c38c",
+   "name": "level_numEntities",
+   "type": "int32 (entities in use)",
+   "confidence": "inferred",
+   "evidence": "Incremented by G_Spawn; loop bound in entity scans; 0x3fe capacity check."
+  },
+  {
+   "addr": "0x0864c390",
+   "name": "level_freeEntityHead",
+   "type": "int32 (free-list head)",
+   "confidence": "inferred",
+   "evidence": "Free-list head in G_Spawn/G_FreeEntity; next pointer at entity+0x22c."
+  },
+  {
+   "addr": "0x0864c394",
+   "name": "level_freeEntityTail",
+   "type": "int32 (free-list tail)",
+   "confidence": "inferred",
+   "evidence": "Tail updated in G_FreeEntity."
+  },
+  {
+   "addr": "0x0864c39c",
+   "name": "level_initializing",
+   "type": "int32 (create-on-miss flag)",
+   "confidence": "inferred",
+   "evidence": "Create flag for localized/shader/model/effect configstring lookups."
+  },
+  {
+   "addr": "0x0864c564",
+   "name": "g_0864c564",
+   "type": "int32 (number of clients)",
+   "confidence": "inferred",
+   "evidence": "Loop bound for client snapshot/restore."
+  },
+  {
+   "addr": "0x0864c56c",
+   "name": "g_0864c56c",
+   "type": "int32 (level time)",
+   "confidence": "inferred",
+   "evidence": "Written into entity time fields on spawn/free; compared against throttle time."
+  },
+  {
+   "addr": "0x0864c574",
+   "name": "level_frameTime",
+   "type": "int32 (frame interval, ms)",
+   "confidence": "unknown",
+   "evidence": "Scaled by 0.001 and passed to fn_0809208a."
+  },
+  {
+   "addr": "0x0864c58c",
+   "name": "level_lastAimRefreshTime",
+   "type": "int32 (last aim refresh time)",
+   "confidence": "inferred",
+   "evidence": "Throttle for Client_UpdateAllCrosshairTargets."
+  },
+  {
+   "addr": "0x0864e164",
+   "name": "g_tempEntityRingIndex",
+   "type": "int32 (temp-entity ring index)",
+   "confidence": "observed",
+   "evidence": "Ring index 0..7 wrapped by the expression in G_AllocTempEntity."
+  },
+  {
+   "addr": "0x0864f968",
+   "name": "g_entityPairQueueCount",
+   "type": "int32 (pair queue count)",
+   "confidence": "observed",
+   "evidence": "Compared to 0x100 in G_QueueEntityPairEvent."
+  },
+  {
+   "addr": "0x087a2408",
+   "name": "g_087a2408",
+   "type": "int32 (server state pointer)",
+   "confidence": "unknown",
+   "evidence": "Field +8 read as a count in the crosshair update loop."
+  },
+  {
+   "addr": "0x087a24cc",
+   "name": "cv_g_antilag",
+   "type": "int32 (server state pointer)",
+   "confidence": "unknown",
+   "evidence": "Field +8 byte gates client snapshot/restore."
+  },
+  {
+   "addr": "0x0849f734",
+   "name": "g_0849f734",
+   "type": "int32 (frame config pointer)",
+   "confidence": "unknown",
+   "evidence": "Field +8 used as fps divisor (1000 / value) in snapshot."
+  },
+  {
+   "addr": "0x08853228",
+   "name": "scrStr_damage",
+   "type": "int32 (event code)",
+   "confidence": "unknown",
+   "evidence": "Event code passed to fn_0811b2de for area effects."
+  },
+  {
+   "addr": "0x08853274",
+   "name": "scr_str_trigger",
+   "type": "int32 (event code)",
+   "confidence": "unknown",
+   "evidence": "Event code for pair-queue overflow."
+  },
+  {
+   "addr": "0x0885324a",
+   "name": "scrStr_noclass",
+   "type": "int32 (scr string value)",
+   "confidence": "unknown",
+   "evidence": "Used to reset the entity scr-string name in G_InitEntityRecord."
+  },
+  {
+   "addr": "0x08853252",
+   "name": "scrStr_player",
+   "type": "int32 (scr string value)",
+   "confidence": "unknown",
+   "evidence": "Lookup key for G_PickTrackedSlot (truncated to int16)."
+  },
+  {
+   "addr": "0x08853270",
+   "name": "scrStr_tempEntity",
+   "type": "int32 (scr string value)",
+   "confidence": "unknown",
+   "evidence": "Name assigned to temp entities in G_TempEntity."
+  },
+  {
+   "addr": "0x0884e7ac",
+   "name": "g_deleteScriptMainOffset",
+   "type": "int32 (event value)",
+   "confidence": "unknown",
+   "evidence": "Passed to fn_0811b284 in G_SendEntityEvent."
+  },
+  {
+   "addr": "0x0885327a",
+   "name": "scrStr_trigger_damage",
+   "type": "int16 (scr string value)",
+   "confidence": "observed",
+   "evidence": "Compared with entity+0x168 in the area-effect loops."
+  },
+  {
+   "addr": "0x0864d6c8",
+   "name": "g_spawnVars",
+   "type": "uint8 (enable flag)",
+   "confidence": "unknown",
+   "evidence": "Gate in Ent_AddFlagIfCondition."
+  },
+  {
+   "addr": "0x0864e0d8",
+   "name": "g_droppedWeapons",
+   "type": "int32[0x20] (entity pointer slots)",
+   "confidence": "unknown",
+   "evidence": "Cleared in G_ClearEntityReferences."
+  },
+  {
+   "addr": "0x08852e20",
+   "name": "g_modelHandleTable",
+   "type": "int32[0x100] (model handle table)",
+   "confidence": "observed",
+   "evidence": "Indexed by model index; written by G_ModelIndex and G_SetModelHandle."
+  },
+  {
+   "addr": "0x0864e168",
+   "name": "g_entityPairQueue",
+   "type": "game_pair_queue_s[0x100] (12-byte entries)",
+   "confidence": "observed",
+   "evidence": "Pair queue written by G_QueueEntityPairEvent."
+  },
+  {
+   "addr": "0x0884e7bc",
+   "name": "g_0884e7bc",
+   "type": "uint8[] (tracked-slot table, 8 entries, stride 0x4c8)",
+   "confidence": "inferred",
+   "evidence": "First int32 of each entry is an entity number; -1 when empty."
+  },
+  {
+   "addr": "0x0814cfc8",
+   "name": "vec3_origin",
+   "type": "uint8[] (zero vector)",
+   "confidence": "unknown",
+   "evidence": "Passed as mins/maxs in trace calls."
+  },
+  {
+   "addr": "0x0815eae0",
+   "name": "g_0815eae0",
+   "type": "uint8[]",
+   "confidence": "unknown",
+   "evidence": "Argument to fn_0811a406."
+  },
+  {
+   "addr": "0x0815eae1",
+   "name": "g_0815eae1",
+   "type": "uint8[]",
+   "confidence": "unknown",
+   "evidence": "Argument to fn_0811a406."
+  },
+  {
+   "addr": "0x0815ec20",
+   "name": "g_0815ec20",
+   "type": "uint8[] (format string)",
+   "confidence": "unknown",
+   "evidence": "Format for the configstring overflow message."
+  },
+  {
+   "addr": "0x0815ec7f",
+   "name": "g_0815ec7f",
+   "type": "uint8[] (message)",
+   "confidence": "unknown",
+   "evidence": "Overflow message for model index."
+  },
+  {
+   "addr": "0x0815ece3",
+   "name": "g_0815ece3",
+   "type": "uint8[] (empty string)",
+   "confidence": "unknown",
+   "evidence": "Used for entities with no scr name in G_PrintEntities."
+  },
+  {
+   "addr": "0x0815ed01",
+   "name": "g_0815ed01",
+   "type": "uint8[] (message)",
+   "confidence": "unknown",
+   "evidence": "Pool-full message in G_Spawn."
+  },
+  {
+   "addr": "0x0815ed20",
+   "name": "g_0815ed20",
+   "type": "uint8[] (float table, stride 8)",
+   "confidence": "observed",
+   "evidence": "Read as float at +i*8 in Bullet_TraceSpread."
+  },
+  {
+   "addr": "0x0815ed24",
+   "name": "g_0815ed24",
+   "type": "uint8[] (float table, stride 8)",
+   "confidence": "observed",
+   "evidence": "Read as float at +i*8 in Bullet_TraceSpread."
+  },
+  {
+   "addr": "0x08187c0c",
+   "name": "g_08187c0c",
+   "type": "uint8[] (surface name)",
+   "confidence": "unknown",
+   "evidence": "Surface argument of the trace calls."
+  },
+  {
+   "addr": "0x08187c1f",
+   "name": "g_08187c1f",
+   "type": "uint8[] (surface name)",
+   "confidence": "unknown",
+   "evidence": "Alternate surface argument in Bullet_Fire_Extended."
+  },
+  {
+   "addr": "0x08187d1c",
+   "name": "g_08187d1c",
+   "type": "uint8[] (kind callback table, stride 0x28)",
+   "confidence": "observed",
+   "evidence": "Callback pointer at offset 0 of each entry, indexed by entity kind."
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "game_entity_s",
+   "size": "0x230",
+   "evidence": "Entity pool stride 0x230 (pool base g_0864c384 / g_08716400); fields recovered from offsets used in functions 0811c0d0..0811fe90. Conflicts with the 0x274 gentity_s stride in chunk_020/023 views; see open_questions."
+  },
+  {
+   "name": "game_client_s",
+   "size": "0x28a4",
+   "evidence": "Client record reached through entity+0x158 and the stride 0x28a4 array at g_0864c380; sessionState at 0x26c4, team at 0x274c."
+  },
+  {
+   "name": "game_attach_node_s",
+   "size": "0x70",
+   "evidence": "Link node allocated at entity+0x208; owner/next/scrName/tagIndex/origin/angles."
+  },
+  {
+   "name": "game_orient_s",
+   "size": "0x30",
+   "evidence": "Orientation: axis[3][3] then origin at 0x24; matches the (+0x0,+0xc,+0x18,+0x24) access pattern."
+  },
+  {
+   "name": "game_traj_s",
+   "size": "0x24",
+   "evidence": "Trajectory block: trType/trTime/trDuration/trBase/trDelta, used at entity+0x0c (pos) and +0x30 (apos)."
+  },
+  {
+   "name": "game_weapon_s",
+   "size": "0x5a0 (minimum extent)",
+   "evidence": "Weapon definition fragment reached via bullet context +0x3c; fields 0x7c,0x1ec,0x31c,0x320,0x590,0x598,0x59c."
+  },
+  {
+   "name": "game_bullet_ctx_s",
+   "size": "partial",
+   "evidence": "Bullet context with weapon pointer at +0x3c."
+  },
+  {
+   "name": "game_trace_result_s",
+   "size": "0x24",
+   "evidence": "Trace result: fraction, normal, flags at 0x10/0x14, entityNum at 0x1c, hitType at 0x20."
+  },
+  {
+   "name": "game_pair_queue_s",
+   "size": "0x0c",
+   "evidence": "Pair-queue entry: two entity numbers and two generations."
+  }
+ ],
+ "open_questions": [
+  "Game entity pool: chunk_052 uses a 0x230-byte entity at g_08716400 (pool base g_0864c384, client stride 0x28a4), while chunk_020/023 model gentity_s at a runtime stride (0x274 in chunk_023) and chunk_021/022 model sharedEntity_s with linked at 0xf0. The merge lane must decide whether these are the same object and which stride the server uses.",
+  "Bullet_FireFromEntity (0811f844) and Bullet_Fire_Extended (0811fe90) pass a 16-bit hit-location local that the decompile never writes before the call. Translated as 0; the binary passes indeterminate stack data. Needs a disassembly check of the stack slot (ebp-0x1c) at the call site.",
+  "Out-of-chunk signatures are guesses: fn_08120e7e (returns float in this chunk; could be long double), fn_0810a5cc/fn_0810a528 (trace argument order), fn_0809e05e, fn_08101c58 (10 args, hit-location passed as int), fn_080e129e. Confirm when the shared prototypes land.",
+  "Ghidra prints void for 0811d5cc, 0811d600, 0811d634 and 0811d5b4; the callers use their return values. Only 0811d5b4 was checked in disassembly (eax passes through). The other three return the callee eax by assumption.",
+  "The 0x0c..0x30 trajectory block at entity+0x0c is inferred from zeroing/copy patterns (type/time/duration then base and delta). Name and layout are unconfirmed against the game's own entity state definition."
+ ]
+}

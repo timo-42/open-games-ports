@@ -1,0 +1,912 @@
+{
+ "chunk": 20,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x0808cefc",
+   "name": "SV_RemoveSayTellCommands",
+   "signature": "void SV_RemoveSayTellCommands(void)",
+   "subsystem": "server/chat",
+   "confidence": "observed",
+   "evidence": "naming pass 2: Disassembly: two calls to 0x0806072e (Cmd_RemoveCommand) with the string literals at 0x8149a0f (\"say\") and 0x8149a13 (\"tell\"). It removes, not registers, those console commands. No direct callers (address-taken or dead).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808cf1c",
+   "name": "SV_PrintTagged",
+   "signature": "void SV_PrintTagged(const char *tag, const char *text)",
+   "subsystem": "server/log",
+   "confidence": "unknown",
+   "evidence": "FUN_0808cf1c (34 bytes): descriptive only. Prints \"%s: %s\\n\" through the console print callee.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808cf40",
+   "name": "SV_NoteAuthorizeServerPacket",
+   "signature": "void SV_NoteAuthorizeServerPacket(struct netadr_s from)",
+   "subsystem": "server/authorize",
+   "confidence": "inferred",
+   "evidence": "FUN_0808cf40 (134 bytes): compares the sender against the authorize server address (fn_08096e0c) and,",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808cfc6",
+   "name": "SV_SendGetIpAuthorize",
+   "signature": "void SV_SendGetIpAuthorize(struct netadr_s from, int challenge, const char *pbName)",
+   "subsystem": "server/authorize",
+   "confidence": "inferred",
+   "evidence": "FUN_0808cfc6 (456 bytes): format strings \"sending getIpAuthorize for %s\" and",
+   "status": "translated",
+   "notes": "fs_game and sv_allowAnonymous are read through cvars; pbName NULL selects the non-PB format"
+  },
+  {
+   "addr": "0x0808d18e",
+   "name": "SV_RequestIpAuthorize",
+   "signature": "void SV_RequestIpAuthorize(struct netadr_s from)",
+   "subsystem": "server/authorize",
+   "confidence": "inferred",
+   "evidence": "FUN_0808d18e (1053 bytes): string \"challengeResponse %i\", \"Resolving %s\", \"cod2master.activision.com\",",
+   "status": "translated",
+   "notes": "challenge slot allocation with rand() and svs.time; cod2master resolution"
+  },
+  {
+   "addr": "0x0808d5ac",
+   "name": "SV_IsTempBannedGuid",
+   "signature": "int SV_IsTempBannedGuid(int guid)",
+   "subsystem": "server/ban",
+   "confidence": "inferred",
+   "evidence": "FUN_0808d5ac (131 bytes): caller prints \"rejected connection from temporarily banned GUID %i\";",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808d630",
+   "name": "SV_IsGuidPermBanned",
+   "signature": "int SV_IsGuidPermBanned(int guid)",
+   "subsystem": "server/ban",
+   "confidence": "inferred",
+   "evidence": "FUN_0808d630 (158 bytes): reads \"ban.txt\" and compares each line's atoi() against the GUID.",
+   "status": "translated",
+   "notes": "reads ban.txt via FS"
+  },
+  {
+   "addr": "0x0808d6ce",
+   "name": "SV_TempBanFindSlot",
+   "signature": "unsigned int SV_TempBanFindSlot(void)",
+   "subsystem": "server/ban",
+   "confidence": "inferred",
+   "evidence": "FUN_0808d6ce (95 bytes): scans the 16-slot temp-ban table for a free (guid 0) slot, else the",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808d72e",
+   "name": "SV_TempBanAdd",
+   "signature": "void SV_TempBanAdd(int guid)",
+   "subsystem": "server/ban",
+   "confidence": "inferred",
+   "evidence": "FUN_0808d72e (44 bytes): stores guid and current svs.time into the slot chosen by SV_TempBanFindSlot.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808d75a",
+   "name": "SV_BanClient",
+   "signature": "void SV_BanClient(struct client_s *cl)",
+   "subsystem": "server/ban",
+   "confidence": "inferred",
+   "evidence": "FUN_0808d75a (299 bytes): strings \"Can't ban user, GUID is 0\", \"This GUID (%i) is already banned\", [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808d886",
+   "name": "SV_UnbanUserByName",
+   "signature": "void SV_UnbanUserByName(const char *name)",
+   "subsystem": "server/ban",
+   "confidence": "inferred",
+   "evidence": "FUN_0808d886 (420 bytes): strings \"unbanned %i user(s) named %s\", \"no banned user has name %s\", [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "rewrites ban.txt in place"
+  },
+  {
+   "addr": "0x0808da2a",
+   "name": "SV_AuthorizeIpPacket",
+   "signature": "void SV_AuthorizeIpPacket(struct netadr_s from)",
+   "subsystem": "server/authorize",
+   "confidence": "observed",
+   "evidence": "FUN_0808da2a (1983 bytes): string \"SV_AuthorizeIpPacket: not from authorize server\" (and \"challenge not found\").",
+   "status": "translated",
+   "notes": "handles accept/deny/demo replies from the authorize server"
+  },
+  {
+   "addr": "0x0808e1ea",
+   "name": "SV_ClientDisconnectCleanup",
+   "signature": "void SV_ClientDisconnectCleanup(struct client_s *cl)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "FUN_0808e1ea (103 bytes): shared cleanup of the drop and drop-all paths; calls the download-state reset",
+   "status": "translated",
+   "notes": "shared by drop and drop-all"
+  },
+  {
+   "addr": "0x0808e252",
+   "name": "SV_DropAllConnectedClients",
+   "signature": "void SV_DropAllConnectedClients(void)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "FUN_0808e252 (87 bytes): walks all client slots, runs the cleanup for every slot with state >= CS_CONNECTED,",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808e2aa",
+   "name": "SV_DirectConnect",
+   "signature": "void SV_DirectConnect(struct netadr_s from)",
+   "subsystem": "server/connect",
+   "confidence": "observed",
+   "evidence": "FUN_0808e2aa (3363 bytes): string \"SV_DirectConnect()\\n\" plus connect-path messages (\"Going from CS_FREE to",
+   "status": "translated",
+   "notes": "protocol 0x76; netadr passed by value as five dwords"
+  },
+  {
+   "addr": "0x0808efce",
+   "name": "SV_ReallocClientScriptIds",
+   "signature": "void SV_ReallocClientScriptIds(void)",
+   "subsystem": "server/client",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Loops sv_maxclients slots; for cl->state>1 calls SV_ReleaseClientSlotHandle then stores ScrVar_AllocArray() into cl->scriptId. Sole caller is G_ShutdownGame (0x081094e8). Structs note: client+0xae708 is the script object handle, not a random id.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808f02e",
+   "name": "SV_DropClient",
+   "signature": "void SV_DropClient(struct client_s *cl, const char *reason)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "FUN_0808f02e (650 bytes): strings \"Going to CS_ZOMBIE for %s\\n\", \"EXE_DISCONNECTED\", \"%i:%s %s\\n\". [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808f2b8",
+   "name": "SV_SetPendingDropReason",
+   "signature": "void SV_SetPendingDropReason(struct client_s *cl, const char *reason)",
+   "subsystem": "server/client",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Stores reason pointer into cl->delayDropMsg when state != CS_ZOMBIE and the slot is empty; sole caller SV_QueueReliableCommand (0x08094750). It records a deferred drop, it does not drop immediately.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808f2dc",
+   "name": "SV_DropClientByNum",
+   "signature": "void SV_DropClientByNum(int clientNum, const char *reason)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "FUN_0808f2dc (38 bytes): index wrapper over SV_DropClient (client array base + num * stride).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808f302",
+   "name": "SV_SendClientGameState",
+   "signature": "void SV_SendClientGameState(struct client_s *cl)",
+   "subsystem": "server/gamestate",
+   "confidence": "observed",
+   "evidence": "FUN_0808f302 (737 bytes): strings \"SV_SendClientGameState() for %s\", \"Going from CS_CONNECTED to CS_PRIMED\",",
+   "status": "translated",
+   "notes": "msg.cursize (msg+0x0c) is the printed byte count"
+  },
+  {
+   "addr": "0x0808f628",
+   "name": "SV_ClientEnterWorld",
+   "signature": "void SV_ClientEnterWorld(struct client_s *cl, const int *ucmd)",
+   "subsystem": "server/gamestate",
+   "confidence": "inferred",
+   "evidence": "FUN_0808f628 (205 bytes): string \"Going from CS_PRIMED to CS_ACTIVE for %s\"; copies the 7-dword usercmd",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808f6f6",
+   "name": "SV_ClientResetDownload",
+   "signature": "void SV_ClientResetDownload(struct client_s *cl)",
+   "subsystem": "server/download",
+   "confidence": "inferred",
+   "evidence": "FUN_0808f6f6 (137 bytes): releases the download file handle, clears the download name and frees the eight",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808fc0c",
+   "name": "SV_RedirectClientDownload",
+   "signature": "bool SV_RedirectClientDownload(struct client_s *cl, struct msg_s *msg)",
+   "subsystem": "server/download",
+   "confidence": "inferred",
+   "evidence": "FUN_0808fc0c (343 bytes): \"Redirecting client '%s' to %s\" and \"%s/%s\" built from the www base cvar. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "the \"couldn't extract file size\" format has two %s but one argument in the binary; reproduced"
+  },
+  {
+   "addr": "0x0808fd64",
+   "name": "SV_SendDownloadDenied",
+   "signature": "void SV_SendDownloadDenied(struct client_s *cl, struct msg_s *msg, const char *text)",
+   "subsystem": "server/download",
+   "confidence": "inferred",
+   "evidence": "FUN_0808fd64 (94 bytes): writes a download-command record (svc 5, handle -1 with error text) and clears",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0808fdc2",
+   "name": "SV_WriteDownloadToClient",
+   "signature": "void SV_WriteDownloadToClient(struct client_s *cl, struct msg_s *msg)",
+   "subsystem": "server/download",
+   "confidence": "inferred",
+   "evidence": "FUN_0808fdc2 (1878 bytes): strings \"clientDownload: %d : writing block %d\", \"download disabled\", [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "block window of 8 slots of 0x800 bytes"
+  },
+  {
+   "addr": "0x08090518",
+   "name": "SV_ClientCmd_Disconnect",
+   "signature": "void SV_ClientCmd_Disconnect(struct client_s *cl)",
+   "subsystem": "server/clientcmd",
+   "confidence": "inferred",
+   "evidence": "FUN_08090518 (27 bytes): ucmd table entry \"disconnect\" (0x0817d9e8) points here. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "ucmd table entry \"disconnect\""
+  },
+  {
+   "addr": "0x080907ba",
+   "name": "SV_ClientCmd_Vdr",
+   "signature": "void SV_ClientCmd_Vdr(struct client_s *cl)",
+   "subsystem": "server/clientcmd",
+   "confidence": "inferred",
+   "evidence": "FUN_080907ba (18 bytes): ucmd table entry \"vdr\" (0x0817d9f8) points here. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "ucmd table entry \"vdr\""
+  },
+  {
+   "addr": "0x080907cc",
+   "name": "SV_UserinfoChanged",
+   "signature": "void SV_UserinfoChanged(struct client_s *cl)",
+   "subsystem": "server/userinfo",
+   "confidence": "inferred",
+   "evidence": "FUN_080907cc (567 bytes): reads userinfo keys \"name\", \"rate\", \"snaps\", \"cl_voice\", \"cl_wwwDownload\";",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08090a04",
+   "name": "SV_ClientCmd_UserInfo",
+   "signature": "void SV_ClientCmd_UserInfo(struct client_s *cl)",
+   "subsystem": "server/clientcmd",
+   "confidence": "inferred",
+   "evidence": "FUN_08090a04 (85 bytes): ucmd table entry \"userinfo\" (0x0817d9e0) points here. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "ucmd table entry \"userinfo\""
+  },
+  {
+   "addr": "0x08090afa",
+   "name": "FX_GetAttenuationThunk",
+   "signature": "float FX_GetAttenuationThunk(const float *a, const float *b)",
+   "subsystem": "server/game",
+   "confidence": "observed",
+   "evidence": "FUN_08090afa (26 bytes): descriptive only. Forwards two words to fn_08133c18. [rename fx-anim: objdump: pure forwarder of (a,b) to 0x08133c18 FX_GetAttenuation.]",
+   "status": "translated",
+   "notes": "tail forward to the game callee"
+  },
+  {
+   "addr": "0x08090b14",
+   "name": "SV_ExecuteClientCommand",
+   "signature": "void SV_ExecuteClientCommand(struct client_s *cl, const char *s, int clientOK)",
+   "subsystem": "server/clientcmd",
+   "confidence": "inferred",
+   "evidence": "FUN_08090b14 (151 bytes): walks the NULL-terminated client-command table at 0x0817d9e0 matching Cmd_Argv(0);",
+   "status": "translated",
+   "notes": "ucmd table at 0x0817d9e0"
+  },
+  {
+   "addr": "0x08090bac",
+   "name": "SV_ClientCommand",
+   "signature": "int SV_ClientCommand(struct client_s *cl, struct msg_s *msg)",
+   "subsystem": "server/clientcmd",
+   "confidence": "inferred",
+   "evidence": "FUN_08090bac (512 bytes): strings \"clientCommand: %i : %s\", \"Client %s lost %i clientCommands\", [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "chat flood gate uses g_0817d838[1]"
+  },
+  {
+   "addr": "0x08090dac",
+   "name": "SV_UpdateClientUsercmd",
+   "signature": "void SV_UpdateClientUsercmd(struct client_s *cl, const struct usercmd_s *cmd)",
+   "subsystem": "server/usercmd",
+   "confidence": "inferred",
+   "evidence": "FUN_08090dac (135 bytes): stores a 7-dword usercmd and, for active clients, notifies the game hooks.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08090e34",
+   "name": "SV_UserMove",
+   "signature": "void SV_UserMove(struct client_s *cl, struct msg_s *msg, int deltaFlag)",
+   "subsystem": "server/usercmd",
+   "confidence": "inferred",
+   "evidence": "FUN_08090e34 (794 bytes): q3-style SV_UserMove structure (cmdCount bound 32, reliable-window check, ack",
+   "status": "partial",
+   "notes": "partial: fn_080689a6 baseline layout (ps, base+1), fn_080ebf24(ps, byte) semantics and ps+0xd0/0xd4 meaning are not resolved"
+  },
+  {
+   "addr": "0x0809114e",
+   "name": "SV_ExecuteClientMessage",
+   "signature": "void SV_ExecuteClientMessage(struct client_s *cl, struct msg_s *netmsg)",
+   "subsystem": "server/netchan",
+   "confidence": "inferred",
+   "evidence": "FUN_0809114e (603 bytes): q3-style SV_ExecuteClientMessage. Decodes the netchan payload into a 0x20000 buffer,",
+   "status": "translated",
+   "notes": "netmsg is read at data (+4), cursize (+0x0c), readcount (+0x10)"
+  },
+  {
+   "addr": "0x080913da",
+   "name": "SV_AddBot",
+   "signature": "struct gentity_s *SV_AddBot(void)",
+   "subsystem": "server/bot",
+   "confidence": "inferred",
+   "evidence": "FUN_080913da (611 bytes): builds a \"connect ... name\\bot%d ... protocol\\%d\" command, runs SV_DirectConnect",
+   "status": "translated",
+   "notes": "bot connect via NA_BOT address with port = bot counter"
+  },
+  {
+   "addr": "0x0809163e",
+   "name": "Str_NCaseCmp_0809163e",
+   "signature": "int Str_NCaseCmp_0809163e(const char *a, const char *b, int n)",
+   "subsystem": "util/string",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Body identical to Str_NCaseCmp (0x080ad4dc): tolower compare, -1/0/1, same n==0 / *a==0 handling; ICF-style duplicate; caller SV_UnbanUserByName.",
+   "status": "translated",
+   "notes": "descriptive only"
+  },
+  {
+   "addr": "0x080916d8",
+   "name": "SV_GentityIndex",
+   "signature": "int SV_GentityIndex(const struct gentity_s *ent)",
+   "subsystem": "server/entity",
+   "confidence": "inferred",
+   "evidence": "FUN_080916d8 (32 bytes): inverse of SV_GentityNum; entity index from pointer (base and stride are game globals).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080916f8",
+   "name": "SV_GentityNum",
+   "signature": "struct gentity_s *SV_GentityNum(int num)",
+   "subsystem": "server/entity",
+   "confidence": "inferred",
+   "evidence": "FUN_080916f8 (29 bytes): q3 SV_GentityNum counterpart; base + num * stride from the game entity layout.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091716",
+   "name": "SV_GameClientNum",
+   "signature": "unsigned char *SV_GameClientNum(int num)",
+   "subsystem": "server/entity",
+   "confidence": "inferred",
+   "evidence": "FUN_08091716 (29 bytes): q3 SV_GameClientNum counterpart; returns the playerstate for a client number.",
+   "status": "translated",
+   "notes": "returns a playerstate pointer"
+  },
+  {
+   "addr": "0x08091734",
+   "name": "SV_SvEntityForGentity",
+   "signature": "struct svEntity_s *SV_SvEntityForGentity(const struct gentity_s *ent)",
+   "subsystem": "server/entity",
+   "confidence": "observed",
+   "evidence": "FUN_08091734 (71 bytes): string \"\\x15SV_SvEntityForGentity: bad gEnt\" at 0x0814abc0.",
+   "status": "translated",
+   "notes": "error string at 0x0814abc0"
+  },
+  {
+   "addr": "0x0809177c",
+   "name": "SV_GentityNumFromSvEntity",
+   "signature": "struct gentity_s *SV_GentityNumFromSvEntity(struct svEntity_s *sv)",
+   "subsystem": "server/entity",
+   "confidence": "inferred",
+   "evidence": "FUN_0809177c (46 bytes): converts an svEntity pointer back to a game entity index and resolves it; the",
+   "status": "translated",
+   "notes": "result discarded in the binary"
+  },
+  {
+   "addr": "0x080917aa",
+   "name": "SV_SendServerCommandNum",
+   "signature": "void SV_SendServerCommandNum(int clientNum, int reliable, const char *text)",
+   "subsystem": "server/command",
+   "confidence": "inferred",
+   "evidence": "FUN_080917aa (115 bytes): server command with format \"%s\" to one client (-1 broadcasts).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0809181e",
+   "name": "SV_DropClientNumChecked",
+   "signature": "void SV_DropClientNumChecked(int clientNum, const char *reason)",
+   "subsystem": "server/client",
+   "confidence": "inferred",
+   "evidence": "FUN_0809181e (58 bytes): range-checked wrapper over SV_DropClient.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091858",
+   "name": "SV_SetBrushModel",
+   "signature": "void SV_SetBrushModel(struct gentity_s *ent)",
+   "subsystem": "server/entity",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Q3 SV_SetBrushModel: CM_ModelBounds(ent->s.index) into r.mins/r.maxs, r.bmodel=1, r.contents=-1, SV_LinkEntity. Callers are SP_trigger_use, SP_script_brushmodel, G_InitBodyEntity, G_InitStaticEntity (brush-model entity setup).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x080918d0",
+   "name": "SV_EntityVisibleToClient",
+   "signature": "bool SV_EntityVisibleToClient(float *origin, int entNum)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "FUN_080918d0 (518 bytes): decides whether an entity is sent to a client using its visibility flags and the",
+   "status": "translated",
+   "notes": "x87 long-double comparisons from the decompile are checked against FLT_MAX"
+  },
+  {
+   "addr": "0x08091ad6",
+   "name": "SV_EntityContact",
+   "signature": "unsigned char SV_EntityContact(const float *view, const float *origin, const struct gentity_s *ent)",
+   "subsystem": "server/snapshot",
+   "confidence": "inferred",
+   "evidence": "naming pass 2: Callers: the 'istouching' script method (chunk_105, method table string at 0x08188814), chunk_045:1530 and chunk_053:554 pass (mins,maxs,gentity) box tests. Body does a box trace against the entity's clip handle (SV_ClipHandleForEntity) when svFlags&0x60==0 and distance tests otherwise. Matches Q3/CoD4 SV_EntityContact(mins,maxs,gEnt). The current name 'relevant to view' is not supported by any caller.",
+   "status": "partial",
+   "notes": "partial: float comparisons instead of x87 long double; trace callee arguments partly inferred"
+  },
+  {
+   "addr": "0x08091cd0",
+   "name": "SV_GetServerinfo",
+   "signature": "void SV_GetServerinfo(char *buffer, int bufferSize)",
+   "subsystem": "server/info",
+   "confidence": "observed",
+   "evidence": "FUN_08091cd0 (75 bytes): string \"\\x15SV_GetServerinfo: bufferSize == %i\" at 0x0814ac00.",
+   "status": "translated",
+   "notes": "error string at 0x0814ac00"
+  },
+  {
+   "addr": "0x08091dac",
+   "name": "SV_InitGameEntityLayout",
+   "signature": "void SV_InitGameEntityLayout(unsigned char *gentities, int numEntities, int gentitySize, unsigned char *gameClients, int gameClientSize)",
+   "subsystem": "server/entity",
+   "confidence": "inferred",
+   "evidence": "FUN_08091dac (45 bytes): stores the game entity and game client array layout (base, count, stride).",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091dda",
+   "name": "SV_GetClientUsercmd",
+   "signature": "void SV_GetClientUsercmd(int clientNum, struct usercmd_s *cmdOut)",
+   "subsystem": "server/usercmd",
+   "confidence": "inferred",
+   "evidence": "FUN_08091dda (69 bytes): copies the 7-dword usercmd of a client slot out to the caller.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091e48",
+   "name": "SV_RegisterModel",
+   "signature": "struct XModel *SV_RegisterModel(const char *name)",
+   "subsystem": "server/model",
+   "confidence": "inferred",
+   "evidence": "FUN_08091e48 (80 bytes): string \"\\x15\" \"bad model name '%s'\" at 0x0814acfa. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred] [rename fx-anim: objdump: validates name via 0x080c5dfc, warns (rodata 0x814acfa '%s'.no model.) on failure, then returns XModel_FindOrLoad(name+7,...) result; not void/validate-only.]",
+   "status": "translated",
+   "notes": "error string at 0x0814acfa"
+  },
+  {
+   "addr": "0x08091e98",
+   "name": "SV_PrintModelInfo",
+   "signature": "void SV_PrintModelInfo(const int *entity)",
+   "subsystem": "server/model",
+   "confidence": "inferred",
+   "evidence": "FUN_08091e98 (68 bytes): prints \"no model.\\n\" when the model lookup fails; otherwise hands the model to the",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091edc",
+   "name": "SV_SkelMemoryNewFrame",
+   "signature": "void SV_SkelMemoryNewFrame(void)",
+   "subsystem": "server/skel",
+   "confidence": "inferred",
+   "evidence": "FUN_08091edc (49 bytes): advances the skeleton-memory generation (skips 0 on wrap) and resets the pool.",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08091f0e",
+   "name": "SV_SkelMemoryAlloc",
+   "signature": "unsigned char *SV_SkelMemoryAlloc(int size)",
+   "subsystem": "server/skel",
+   "confidence": "inferred",
+   "evidence": "FUN_08091f0e (108 bytes): string \"^3WARNING: SV_SKEL_MEMORY_SIZE exceeded\" from the pool allocator. [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "warning string \"SV_SKEL_MEMORY_SIZE exceeded\""
+  },
+  {
+   "addr": "0x08091f7a",
+   "name": "SV_GetSkelForModel",
+   "signature": "int SV_GetSkelForModel(const struct gentity_s *ent, int param2)",
+   "subsystem": "server/skel",
+   "confidence": "inferred",
+   "evidence": "FUN_08091f7a (136 bytes): per-generation skeleton cache keyed by the model handle; allocates from the pool",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x084230dc",
+   "name": "g_svs_challenges",
+   "type": "struct challenge_s[1024]",
+   "confidence": "inferred",
+   "evidence": "0x74-byte slots with netadr at +0, challenge at +0x14, guid at +0x2c; used by SV_DirectConnect and SV_AuthorizeIpPacket"
+  },
+  {
+   "addr": "0x0844010c",
+   "name": "g_svs_tempBans",
+   "type": "struct tempban_s[16]",
+   "confidence": "inferred",
+   "evidence": "guid/time pairs, scanned by SV_IsTempBannedGuid"
+  },
+  {
+   "addr": "0x0842308c",
+   "name": "g_0842308c",
+   "type": "struct client_s *",
+   "confidence": "inferred",
+   "evidence": "client array base (svs.clients); stride 0xb1064 proven by the index multiplier 0x2165829"
+  },
+  {
+   "addr": "0x08423084",
+   "name": "g_08423084",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "server time in ms; compared against the 1200000/7000 thresholds"
+  },
+  {
+   "addr": "0x08423008",
+   "name": "g_sv_serverIdCounter",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "server message sequence compared with client lastCmdSeq"
+  },
+  {
+   "addr": "0x0844020c",
+   "name": "sv_checksumFeed",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "checksum feed XORed with messageSeq in SV_UserMove; sent in the gamestate"
+  },
+  {
+   "addr": "0x08440104",
+   "name": "sv_lastAuthorizeServerTime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "last authorize-server reply time"
+  },
+  {
+   "addr": "0x084400f0",
+   "name": "sv_authorizeAddress",
+   "type": "struct netadr_s",
+   "confidence": "inferred",
+   "evidence": "authorize server address (type, ip, port)"
+  },
+  {
+   "addr": "0x083e2f0c",
+   "name": "g_botConnectCounter",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "bot counter; used as the port of NA_BOT connects"
+  },
+  {
+   "addr": "0x083e3000",
+   "name": "g_skelPoolBase",
+   "type": "unsigned char[]",
+   "confidence": "inferred",
+   "evidence": "skeleton memory pool base"
+  },
+  {
+   "addr": "0x08423000",
+   "name": "g_skelPoolPtr",
+   "type": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "skeleton pool pointer assigned from g_083e3000"
+  },
+  {
+   "addr": "0x08423004",
+   "name": "g_svSkelOverflowWarnGeneration",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "generation of the last skeleton overflow warning"
+  },
+  {
+   "addr": "0x08440618",
+   "name": "sv_configstrings",
+   "type": "char *[0x800]",
+   "confidence": "inferred",
+   "evidence": "config string table, walked in SV_SendClientGameState"
+  },
+  {
+   "addr": "0x08442618",
+   "name": "sv_svEntities",
+   "type": "struct svEntity_s[1024]",
+   "confidence": "inferred",
+   "evidence": "server entity records, stride 0x174"
+  },
+  {
+   "addr": "0x0817d9e0",
+   "name": "clientCommandTable",
+   "type": "const struct ucmd_entry_s[]",
+   "confidence": "observed",
+   "evidence": "client command table; NULL-name terminated; entries userinfo, disconnect, cp, vdr, download, ..."
+  },
+  {
+   "addr": "0x0817d838",
+   "name": "g_0817d838",
+   "type": "int *",
+   "confidence": "unknown",
+   "evidence": "pointer to a record whose word 1 gates the chat-flood check"
+  },
+  {
+   "addr": "0x0849f74c",
+   "name": "g_0849f74c",
+   "type": "cvar_s *",
+   "confidence": "inferred",
+   "evidence": "maxclients cvar (integer at +8)"
+  },
+  {
+   "addr": "0x0849f75c",
+   "name": "g_0849f75c",
+   "type": "cvar_s *",
+   "confidence": "inferred",
+   "evidence": "reconnect delay in seconds (x1000 ms)"
+  },
+  {
+   "addr": "0x0849f76c",
+   "name": "g_0849f76c",
+   "type": "cvar_s *",
+   "confidence": "inferred",
+   "evidence": "max rate cvar used by the download pacing"
+  },
+  {
+   "addr": "0x0849f770",
+   "name": "g_0849f770",
+   "type": "cvar_s *",
+   "confidence": "inferred",
+   "evidence": "min ping cvar"
+  },
+  {
+   "addr": "0x0849f774",
+   "name": "g_0849f774",
+   "type": "cvar_s *",
+   "confidence": "inferred",
+   "evidence": "max ping cvar"
+  },
+  {
+   "addr": "0x0849f744",
+   "name": "g_0849f744",
+   "type": "cvar_s *",
+   "confidence": "inferred",
+   "evidence": "password cvar (string at +8)"
+  },
+  {
+   "addr": "0x0849f754",
+   "name": "g_0849f754",
+   "type": "cvar_s *",
+   "confidence": "unknown",
+   "evidence": "reserved private slot count cvar"
+  },
+  {
+   "addr": "0x0849f748",
+   "name": "g_0849f748",
+   "type": "cvar_s *",
+   "confidence": "unknown",
+   "evidence": "download-allowed cvar (byte at +8)"
+  },
+  {
+   "addr": "0x0849f784",
+   "name": "g_0849f784",
+   "type": "cvar_s *",
+   "confidence": "unknown",
+   "evidence": "pure-server cvar (byte at +8)"
+  },
+  {
+   "addr": "0x0849f7a8",
+   "name": "g_0849f7a8",
+   "type": "cvar_s *",
+   "confidence": "inferred",
+   "evidence": "float timeout in seconds (x1000)"
+  },
+  {
+   "addr": "0x0849f7d0",
+   "name": "g_0849f7d0",
+   "type": "cvar_s *",
+   "confidence": "unknown",
+   "evidence": "www download enable (byte at +8)"
+  },
+  {
+   "addr": "0x0849f7d4",
+   "name": "g_0849f7d4",
+   "type": "cvar_s *",
+   "confidence": "inferred",
+   "evidence": "www base URL (string at +8)"
+  },
+  {
+   "addr": "0x0849f7d8",
+   "name": "g_0849f7d8",
+   "type": "cvar_s *",
+   "confidence": "unknown",
+   "evidence": "www disconnect flag (byte at +8)"
+  },
+  {
+   "addr": "0x0849f794",
+   "name": "g_0849f794",
+   "type": "cvar_s *",
+   "confidence": "unknown",
+   "evidence": "client command debug cvar"
+  },
+  {
+   "addr": "0x0849f788",
+   "name": "g_0849f788",
+   "type": "cvar_s *",
+   "confidence": "unknown",
+   "evidence": "chat text filter cvar (byte at +8)"
+  },
+  {
+   "addr": "0x084a8780",
+   "name": "g_084a8780",
+   "type": "cvar_s *",
+   "confidence": "unknown",
+   "evidence": "mode cvar compared with 2 for LAN rate"
+  },
+  {
+   "addr": "0x081fa514",
+   "name": "g_081fa514",
+   "type": "cvar_s *",
+   "confidence": "unknown",
+   "evidence": "byte flag cvar gating the authorize challenge response"
+  },
+  {
+   "addr": "0x081a2174",
+   "name": "g_081a2174",
+   "type": "cvar_s *",
+   "confidence": "unknown",
+   "evidence": "model debug enable cvar"
+  },
+  {
+   "addr": "0x0849f61c",
+   "name": "g_0849f61c",
+   "type": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "game entity base (set by SV_InitGameEntityLayout)"
+  },
+  {
+   "addr": "0x0849f620",
+   "name": "g_gentitySize",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "game entity stride"
+  },
+  {
+   "addr": "0x0849f624",
+   "name": "g_numGEntities",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "game entity count"
+  },
+  {
+   "addr": "0x0849f628",
+   "name": "g_gameClients",
+   "type": "unsigned char *",
+   "confidence": "inferred",
+   "evidence": "game client (playerstate) base"
+  },
+  {
+   "addr": "0x0849f62c",
+   "name": "g_gameClientSize",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "game client stride"
+  },
+  {
+   "addr": "0x0849f630",
+   "name": "g_skelMemGeneration",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "skeleton memory generation"
+  },
+  {
+   "addr": "0x0849f634",
+   "name": "g_skelPoolOffset",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "skeleton pool offset"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "netadr_t (netadr_s)",
+   "size": "0x14",
+   "evidence": "five dwords passed by value; type@0, ip@4, port@8 (low half), w3@0xc, w4@0x10"
+  },
+  {
+   "name": "challenge_s",
+   "size": "0x74",
+   "evidence": "slot array at 0x084230dc; netadr@0, challenge@0x14, firstTime@0x18, lastTime@0x1c, createdTime@0x20, pingCache@0x24, connecting@0x28, guid@0x2c, keyA@0x30, keyB@0x51"
+  },
+  {
+   "name": "usercmd_t",
+   "size": "0x1c",
+   "evidence": "7 dwords; serverTime@0, byte fields at 8 and 9 patched from playerstate in SV_UserMove"
+  },
+  {
+   "name": "client_s",
+   "size": "0xb1064",
+   "evidence": "stride from the index multiplier 0x2165829 and memset size 0xb1064; state@0, userinfo@0xc, reliable ring@0x40c (128 x 0x408), gentity@0x20c44, name@0x20c48, download fields 0x20c68..0x20e28, netadr@0x6e6d4, qport@0x6e6e8, guid@0xae704, authKeyA/B@0xb1021/0xb1042. Partial: gaps 0x20e2c..0x6e6b7 and 0x6e6ec..0xae703 unnamed"
+  },
+  {
+   "name": "msg_t (msg_s)",
+   "size": "0x20 (assumed)",
+   "evidence": "cursize@0x0c (printed byte count in gamestate), data@0x04, readcount@0x10; tail size unverified"
+  },
+  {
+   "name": "gentity_s (partial)",
+   "size": "runtime stride g_0849f620",
+   "evidence": "number@0, inUse@0xf0, linkedFlag@0xf1, flags@0xf2, field100@0x100, origin104@0x104, origin110@0x110, linkCount11c@0x11c, vec138@0x138, vec144@0x144"
+  },
+  {
+   "name": "sv_entity_s",
+   "size": "0x174",
+   "evidence": "linked@4, numClusters@0x118, clusters[16]@0x11c, lastCluster@0x15c"
+  },
+  {
+   "name": "tempban_s",
+   "size": "0x8",
+   "evidence": "guid@0, time@4"
+  },
+  {
+   "name": "cvar_s",
+   "size": "partial",
+   "evidence": "value union at +0x08 (string / integer / float)"
+  },
+  {
+   "name": "ucmd_entry_s",
+   "size": "0x8",
+   "evidence": "name pointer and a client handler pointer, table at 0x0817d9e0"
+  },
+  {
+   "name": "reliable_cmd_s",
+   "size": "0x408",
+   "evidence": "command text at +0 (0x400), ring of 128 at client+0x40c"
+  }
+ ],
+ "open_questions": [
+  "SV_UserMove (0x8090e34) is partial: fn_080689a6 receives (ps, &baseline[1]); the meaning of fn_080ebf24(ps, byte) and of ps+0xd0 / ps+0xd4 needs the game playerstate layout.",
+  "client_s is partial: the snapshot ring (first dword of 32 frames, stride 0x26C4, base 0x236F0) overlaps the rate/netchan region and is accessed through COD2_CL_FRAME_TIME_PTR; the gaps 0x20e2c..0x6e6b7 and 0x6e6ec..0xae703 are not named.",
+  "The netadr_t by-value parameters (five dwords) are not expressible in the signature rule; the merge lane should confirm the ABI when it writes cod2_prototypes.h.",
+  "msg_t size is assumed 0x20 from the stack-frame offsets; MSG_Init must be checked for the real size.",
+  "SV_EntityRelevantToView (0x8091ad6) uses float instead of x87 long double; the constant 0x0814cfc8 is passed as a trace argument whose meaning is unresolved.",
+  "The download-error message in SV_RedirectClientDownload has two %s but one argument in the binary; the literal format is kept.",
+  "Placeholder callees are variadic (fn_08xxxxxx); the merge lane should replace them with their real signatures when they are known.",
+  "Several in-chunk names are descriptive only (SV_PrintTagged, SV_RegisterChatCommandNames, SV_DeferClientDrop, SV_RefreshClientRandomIds, StrNCaseCmp, SV_InitEntityBoundsAndLink, SV_EntityRelevantToView)."
+ ]
+}

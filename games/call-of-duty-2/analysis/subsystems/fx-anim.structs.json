@@ -1,0 +1,2322 @@
+[
+  {
+    "name": "FxPoolBlock",
+    "size": "0x8000",
+    "fields": [
+      {
+        "offset": "0x0000",
+        "type": "byte[0x7ff0]",
+        "name": "elements",
+        "evidence": "FxPool_AllocBlock 0x0812411a links element i to element i+1 at stride elemSize starting at block offset 0"
+      },
+      {
+        "offset": "0x7ff0",
+        "type": "int32",
+        "name": "freeCount",
+        "evidence": "-1 marks an unused block (FxPool_Init 0x081240d8); set to perBlock on alloc; ++ in FxPool_FreeElement 0x081242b2"
+      },
+      {
+        "offset": "0x7ff4",
+        "type": "void*",
+        "name": "freeList",
+        "evidence": "head of singly linked free list through the first word of each free element (FxPool_AllocBlock stores blk base)"
+      },
+      {
+        "offset": "0x7ff8",
+        "type": "FxPoolBlock*",
+        "name": "prev",
+        "evidence": "asm 0x081241dc..0x081241df: blk->+0x7ff8 = prev argument; FxPool_UnlinkBlock 0x0812422a: next->+0x7ff8 = blk->+0x7ff8"
+      },
+      {
+        "offset": "0x7ffc",
+        "type": "FxPoolBlock*",
+        "name": "next",
+        "evidence": "asm 0x081241cd..0x081241d3: prev->+0x7ffc = blk; blk->+0x7ffc = 0 at 0x081241e8"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (FxPoolBlock)",
+      "chunk_055_types.h (FxPoolBlock)",
+      "chunk_056_types.h (fx_pool_block_s)",
+      "chunk_059_types.h (fx_pool_block_s)"
+    ],
+    "conflicts": "chunks 055 and 056 declare next at 0x7ff8 and prev at 0x7ffc (swapped). The disassembly of FxPool_AllocBlock and FxPool_UnlinkBlock shows prev at 0x7ff8 and next at 0x7ffc, matching chunk 054. Chunk 056 code (FX_PoolAlloc, FX_PoolBlockMoveToFront) is internally consistent with its swapped names, so its behaviour is unaffected. Chunk 059 uses free_head at 0x7ff4 and free_count; not re-verified for next/prev.",
+    "confidence": "high"
+  },
+  {
+    "name": "FxPool",
+    "size": "0x8",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "int32",
+        "name": "perBlock",
+        "evidence": "element count per block (0x7ff0/elemSize: 0x1e1 for 0x44-byte elements; 0x199 for 0x50-byte; 0x30 small pool)"
+      },
+      {
+        "offset": "0x04",
+        "type": "FxPoolBlock*",
+        "name": "head",
+        "evidence": "front block, searched first by FxPool44_AllocFrom/FX_PoolAlloc/Fx_PoolAlloc*"
+      }
+    ],
+    "defined_in": [
+      "chunk_055_types.h (FxPool)",
+      "chunk_056_types.h (fx_pool_s)",
+      "chunk_059_types.h (fx_pool_s)"
+    ],
+    "conflicts": "056 names the first field blockCapacity, 059 block_arg, 055 perBlock; same meaning (third argument of FxPool_AllocBlock). Ten instances at 0x08a53388..0x08a533d0 plus 0x08a533e0/0x08a533e8.",
+    "confidence": "high"
+  },
+  {
+    "name": "FxBinding",
+    "size": "0x44",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "int32",
+        "name": "refCount",
+        "evidence": "FxBinding_Release 0x08124442 / FxRef_AddRef 0x0812a0cc (chunk 054/055: first dword of the object is the refcount)"
+      },
+      {
+        "offset": "0x04",
+        "type": "int32",
+        "name": "field04",
+        "evidence": "written by FxBinding_Construct; meaning unknown"
+      },
+      {
+        "offset": "0x08",
+        "type": "byte[0x30]",
+        "name": "unknown08",
+        "evidence": "not touched by chunk 054"
+      },
+      {
+        "offset": "0x38",
+        "type": "FxBinding*",
+        "name": "next",
+        "evidence": "list link, head at g_08a53384 (chunk 054)"
+      },
+      {
+        "offset": "0x3c",
+        "type": "int32",
+        "name": "key0",
+        "evidence": "lookup key (FxBinding_FindOrCreate 0x08124386)"
+      },
+      {
+        "offset": "0x40",
+        "type": "int32",
+        "name": "key1",
+        "evidence": "lookup key pair second word"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (FxBinding)",
+      "chunk_055_types.h (FxRef/FxRefHolder: refcount view only)"
+    ],
+    "conflicts": "none: chunk 055 only sees the first dword as a refcount (FxRef.obj). Role of the binding (entity/bolt frame reference resolved by FxBinding_ResolveFrame 0x08124498) is inferred; the 0x30 bytes at +0x08 are unknown.",
+    "confidence": "medium"
+  },
+  {
+    "name": "FxCurve",
+    "size": "0xc",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "void*",
+        "name": "keys",
+        "evidence": "key table handle copied from the template slot (FxCurve_InitFromTemplate 0x08125028, Particle::CopyFromTemplate)"
+      },
+      {
+        "offset": "0x04",
+        "type": "int32",
+        "name": "cursor",
+        "evidence": "cached segment index advanced by FxCurve_Seek 0x0812a848"
+      },
+      {
+        "offset": "0x08",
+        "type": "float",
+        "name": "scale",
+        "evidence": "per-instance scale rolled with FxRange_Random(template.scaleMin..scaleMax)"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (FxCurve)",
+      "chunk_055_types.h (FxCurve)"
+    ],
+    "conflicts": "chunk 055 also uses FxCurve for the template side (FxCurvePairTemplate.curveA..D), where the third field is a [min,max] pair (see FxCurveSlot). Only the runtime instance has cursor/scale.",
+    "confidence": "high"
+  },
+  {
+    "name": "FxCurveSlot",
+    "size": "0xc",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "void*",
+        "name": "keys",
+        "evidence": "handle returned by fn_08123f3c (FX_PrimBuildCurves 0x0812daac)"
+      },
+      {
+        "offset": "0x04",
+        "type": "float",
+        "name": "scaleMin",
+        "evidence": "FxRange {lo,hi} read by FxRange_Random in FxCurve_InitFromTemplate"
+      },
+      {
+        "offset": "0x08",
+        "type": "float",
+        "name": "scaleMax",
+        "evidence": "same"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (FxCurveSrc)",
+      "chunk_056_types.h (fx_curve_s {table, vec2 range})",
+      "chunk_057_types.h (FxChannelSlot {curve, FxRange scale})"
+    ],
+    "conflicts": "three names for one layout; chunk 055 reuses FxCurve for it. 24 slots at prim+0x100, stride 0xc.",
+    "confidence": "high"
+  },
+  {
+    "name": "FxViewState",
+    "size": "0xfc",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "int32",
+        "name": "time",
+        "evidence": "FX_ClockReset 0x0812ca90 zeroes +0..+0x10; FX_ClockAdvance stores now at +0 (chunk 056 fx_clock_s.time)"
+      },
+      {
+        "offset": "0x04",
+        "type": "int32",
+        "name": "accumTime",
+        "evidence": "the 'current time in ms' used by all effect code (Effect::UpdateFraction reads +4; chunk 054/055/058 name it time)"
+      },
+      {
+        "offset": "0x08",
+        "type": "int32",
+        "name": "prevAccumTime",
+        "evidence": "FX_ClockAdvance 0x0812cb48: +8 = old +4"
+      },
+      {
+        "offset": "0x0c",
+        "type": "int32",
+        "name": "deltaTime",
+        "evidence": "clamped 0..200; chunk 054/055 frameTime"
+      },
+      {
+        "offset": "0x10",
+        "type": "int32",
+        "name": "unk10",
+        "evidence": "zeroed by FX_ClockReset"
+      },
+      {
+        "offset": "0x14",
+        "type": "float[3]",
+        "name": "viewOrigin",
+        "evidence": "chunk 055 FxHelper.viewOrigin, 058 viewOrigin, 056 fx_scene_s.origin; start of the 28-int block copied by FX_ClockAdvance"
+      },
+      {
+        "offset": "0x20",
+        "type": "float[24]",
+        "name": "planes[6]",
+        "evidence": "frustum planes {normal[3], dist}: near,left,right,top,bottom,far (chunk 056 FX_BuildFrustumPlanes)"
+      },
+      {
+        "offset": "0x80",
+        "type": "int32",
+        "name": "planeCountOrTraceMask",
+        "evidence": "056: planeCount (5 or 6); 054: traceMask read by Effect::GetTraceMask 0x081247a4. Unresolved dual attribution"
+      },
+      {
+        "offset": "0x84",
+        "type": "float[3]",
+        "name": "savedViewOrigin",
+        "evidence": "first dword of the 28-int copy target (FX_ClockAdvance copies 0x14..0x84 to 0x84..0xf4)"
+      },
+      {
+        "offset": "0x90",
+        "type": "float[24]",
+        "name": "savedPlanes[6]",
+        "evidence": "056 planes2; copy of planes"
+      },
+      {
+        "offset": "0xf0",
+        "type": "int32",
+        "name": "savedPlaneCount",
+        "evidence": "056 planes2Count"
+      },
+      {
+        "offset": "0xf4",
+        "type": "uint32",
+        "name": "rngSeedOrSavedTime",
+        "evidence": "FX_RandomStep 0x0812d298 reads and multiplies by 0x0369d035; FX_ClockAdvance 0x0812cb6d and FX_ClockReset write the time/0 here: same field, dual use"
+      },
+      {
+        "offset": "0xf8",
+        "type": "float",
+        "name": "fovScale",
+        "evidence": "chunk 055 distanceScale; chunk 056 fovScale = tan(40deg)/tan(fovX/2)"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (FxSystem)",
+      "chunk_055_types.h (FxHelper)",
+      "chunk_056_types.h (fx_scene_s, fx_clock_s)",
+      "chunk_058_types.h (FxSystem)",
+      "chunk_057_types.h (void*)"
+    ],
+    "conflicts": "Four incompatible partial views of the single static object *g_08188ac0 (= 0x08a5c9e0 in .bss, pointer at 0x08188ac0 initialised in .data). 056 fx_clock_s names +4 accumTime while 054/055/058 call +4 'time'; 056 fx_clock_s.curState/savedState are the same bytes as fx_scene_s origin/planes/planeCount (current) and unk84/planes2/planes2Count (saved). The +0x80 field is traceMask in 054 and planeCount in 056 (unresolved). +0xf4 is both the saved time and the LCG state. Size 0xfc is from chunk 056 (static object ends before g_08a5cadc at 0x08a5cadc).",
+    "confidence": "medium"
+  },
+  {
+    "name": "Effect",
+    "size": "0xc4",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "void**",
+        "name": "vtbl",
+        "evidence": "12-slot vtable, see fx-anim.md 4.1"
+      },
+      {
+        "offset": "0x04",
+        "type": "float[3]",
+        "name": "origin",
+        "evidence": "FxObj_SetOrigin 0x0813759a (chunk 059); UpdateMotion integrates it"
+      },
+      {
+        "offset": "0x10",
+        "type": "int32",
+        "name": "field10",
+        "evidence": "set from prim +0x98 by FxSpawner_Setup (FxObj_SetField10 0x081375e0)"
+      },
+      {
+        "offset": "0x14",
+        "type": "float[3]",
+        "name": "mins",
+        "evidence": "FxObj_SetVec14OrClear <- prim.mins (+0xa0); chunk 054 mins"
+      },
+      {
+        "offset": "0x20",
+        "type": "float[3]",
+        "name": "maxs",
+        "evidence": "FxObj_SetVec20OrClear <- prim.maxs (+0xac)"
+      },
+      {
+        "offset": "0x2c",
+        "type": "int32",
+        "name": "impactEffect",
+        "evidence": "FxObj_SetField2c <- FxPickList_Pick(prim+0x70 impactFx)"
+      },
+      {
+        "offset": "0x30",
+        "type": "int32",
+        "name": "deathEffect",
+        "evidence": "FxObj_SetField30 <- FxPickList_Pick(prim+0x78 deathFx); vtbl+8 (0x08124cda) plays it when flag 0x200"
+      },
+      {
+        "offset": "0x34",
+        "type": "fx_template*",
+        "name": "template",
+        "evidence": "FxObj_SetField34 <- spawner id; FX_ReadEffects uses it as FxPtrTable (name,count,prims[])"
+      },
+      {
+        "offset": "0x38",
+        "type": "int32",
+        "name": "primIndex",
+        "evidence": "FxObj_SetField38 <- prim +0x44; indexes template->prims in FX_ReadEffects"
+      },
+      {
+        "offset": "0x3c",
+        "type": "float",
+        "name": "frac",
+        "evidence": "lifetime fraction 0..1, Effect::UpdateFraction 0x081247f0"
+      },
+      {
+        "offset": "0x40",
+        "type": "int32",
+        "name": "materialHandle",
+        "evidence": "chunk 054 templateId (copied to the render descriptor); chunk 058 sortKey2 (draw-sort key 2); value from FxObj_SetField40_*"
+      },
+      {
+        "offset": "0x44",
+        "type": "float",
+        "name": "angle",
+        "evidence": "degrees, UpdateRotation adds frameTime*0.01*rate"
+      },
+      {
+        "offset": "0x48",
+        "type": "float[9]",
+        "name": "axes",
+        "evidence": "Mat3_Copy into FxRenderDesc.axes"
+      },
+      {
+        "offset": "0x6c",
+        "type": "byte[0x10]",
+        "name": "unknown6c",
+        "evidence": "chunk 055 reads color vec3 at 0x6c for Light/Flash"
+      },
+      {
+        "offset": "0x7c",
+        "type": "float[3]",
+        "name": "worldOrigin",
+        "evidence": "chunk 058 origin@0x7c; chunk 055 screenPos@0x7c"
+      },
+      {
+        "offset": "0x88",
+        "type": "float",
+        "name": "size",
+        "evidence": "Particle::UpdateSize"
+      },
+      {
+        "offset": "0x8c",
+        "type": "float",
+        "name": "size2",
+        "evidence": "Particle::UpdateSize2"
+      },
+      {
+        "offset": "0x90",
+        "type": "byte[4]",
+        "name": "rgba",
+        "evidence": "UpdateColor/UpdateAlpha"
+      },
+      {
+        "offset": "0x94",
+        "type": "int32",
+        "name": "frameIndex",
+        "evidence": "UpdateFrame"
+      },
+      {
+        "offset": "0x98",
+        "type": "float",
+        "name": "prevSize",
+        "evidence": "FxRenderDesc.prevSize"
+      },
+      {
+        "offset": "0x9c",
+        "type": "float[3]",
+        "name": "prevWorldOrigin",
+        "evidence": "FxRenderDesc.prevOrigin"
+      },
+      {
+        "offset": "0xa8",
+        "type": "uint32",
+        "name": "flags",
+        "evidence": "= prim flags (FxObj_SetFlagsA8); bit meanings in chunk 054 FXF_* enum; 0x1000 = 'flagged' effect counted in g_08a5c9c4"
+      },
+      {
+        "offset": "0xac",
+        "type": "int32",
+        "name": "originRefIndex",
+        "evidence": "chunk 058 originRefIndex (FX_AddOriginRef result); chunk 054 cachedHandle"
+      },
+      {
+        "offset": "0xb0",
+        "type": "int32",
+        "name": "sortKey",
+        "evidence": "chunk 058 sortKey (FxEffect_ResetSortKey 0x08135790); chunk 054 fieldB0"
+      },
+      {
+        "offset": "0xb4",
+        "type": "int32",
+        "name": "fieldB4",
+        "evidence": "passed to the renderer stub FX_NoopA; chunk 055 FxObj29c.field_b4; meaning unknown"
+      },
+      {
+        "offset": "0xb8",
+        "type": "int32",
+        "name": "startTime",
+        "evidence": "SetTimes 0x08124894; FxSpanView.spanStart"
+      },
+      {
+        "offset": "0xbc",
+        "type": "int32",
+        "name": "endTime",
+        "evidence": "FxSpanView.spanEnd; FxObj_GetSpan = end-start"
+      },
+      {
+        "offset": "0xc0",
+        "type": "FxBindingRef",
+        "name": "binding",
+        "evidence": "smart pointer (4 bytes) to FxBinding; chunk 058 FxHandle handle"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (Effect)",
+      "chunk_058_types.h (FxEffect, common prefix)",
+      "chunk_059_types.h (fx_obj prefix)",
+      "chunk_055_types.h (FxObjFc, FxObj29c prefixes)"
+    ],
+    "conflicts": "naming only: 054 field30 vs 058/059 untyped; 054 templateId vs 058 sortKey2 @0x40; 054 cachedHandle vs 058 originRefIndex @0xac; 054 fieldB0 vs 058 sortKey @0xb0. 058 pads the same range with byte arrays and agrees on every offset it names. Light/Flash derive directly from this layout (size 0xfc).",
+    "confidence": "high"
+  },
+  {
+    "name": "Particle",
+    "size": "0x24c",
+    "fields": [
+      {
+        "offset": "0xc4",
+        "type": "float[3]",
+        "name": "offset",
+        "evidence": "accumulated offset (reflection residue), Particle_Construct clears it"
+      },
+      {
+        "offset": "0xd0",
+        "type": "float[9]",
+        "name": "basis",
+        "evidence": "SetBasis; three axis vectors (Archive: vec3 at +0xd0/+0xdc/+0xe8)"
+      },
+      {
+        "offset": "0xf4",
+        "type": "float",
+        "name": "gravity",
+        "evidence": "GetGravityVec: (0,0,ms*gravity*0.001)"
+      },
+      {
+        "offset": "0xf8",
+        "type": "byte[8]",
+        "name": "unknownF8",
+        "evidence": "not accessed by chunk 054"
+      },
+      {
+        "offset": "0x100",
+        "type": "float",
+        "name": "bounce",
+        "evidence": "HandleImpact scale"
+      },
+      {
+        "offset": "0x104",
+        "type": "uint8",
+        "name": "useSize2Curve",
+        "evidence": "UpdateSize2: copy of size when 0"
+      },
+      {
+        "offset": "0x108",
+        "type": "int32",
+        "name": "frameOffset",
+        "evidence": "UpdateFrame"
+      },
+      {
+        "offset": "0x10c",
+        "type": "float",
+        "name": "frameRate",
+        "evidence": "UpdateFrame"
+      },
+      {
+        "offset": "0x110",
+        "type": "int32",
+        "name": "loopMode",
+        "evidence": "UpdateFrame mode 0 wrap, 1 clamp/repeat"
+      },
+      {
+        "offset": "0x114",
+        "type": "int32",
+        "name": "loopCount",
+        "evidence": "UpdateFrame"
+      },
+      {
+        "offset": "0x118",
+        "type": "float",
+        "name": "colorRand",
+        "evidence": "range-curve blend weight (flag 0x2000)"
+      },
+      {
+        "offset": "0x11c",
+        "type": "float",
+        "name": "alphaRand",
+        "evidence": "flag 0x4000"
+      },
+      {
+        "offset": "0x120",
+        "type": "float",
+        "name": "sizeRand",
+        "evidence": "flag 0x8000"
+      },
+      {
+        "offset": "0x124",
+        "type": "float",
+        "name": "size2Rand",
+        "evidence": "flag 0x10000"
+      },
+      {
+        "offset": "0x128",
+        "type": "float",
+        "name": "rotationRand",
+        "evidence": "flag 0x40000"
+      },
+      {
+        "offset": "0x12c",
+        "type": "float[3]",
+        "name": "velocityRand",
+        "evidence": "SetVelocityRand 0x081252ce (flag 0x80000)"
+      },
+      {
+        "offset": "0x138",
+        "type": "float[3]",
+        "name": "accelRand",
+        "evidence": "SetAccelRand (flag 0x100000)"
+      },
+      {
+        "offset": "0x144",
+        "type": "FxCurve[22]",
+        "name": "curves",
+        "evidence": "order: color, colorAlt, alpha, alphaAlt, size, sizeAlt, size2, size2Alt, rotation, rotationAlt (0x1a4,0x1b0), velXYZ (0x1bc..), velAltXYZ (0x1e0..), accXYZ (0x204..), accAltXYZ (0x228..0x240); template slots 8 and 9 are class specific (speed/length)"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (Particle)",
+      "chunk_059_types.h (fx_obj; sparse)"
+    ],
+    "conflicts": "chunk 054 lists the 22 curves as named members; the array form is equivalent (stride 0xc, base 0x144). Template slot indices 0-7 and 10-23 map in order (Particle::InitCurves 0x0812505e).",
+    "confidence": "high"
+  },
+  {
+    "name": "Light",
+    "size": "0xfc",
+    "fields": [
+      {
+        "offset": "0xc4",
+        "type": "float",
+        "name": "colorBlend",
+        "evidence": "chunk 055 FxObjFc.colorBlend; chunk 059 field_c4 (FxObj_SetFieldC4)"
+      },
+      {
+        "offset": "0xc8",
+        "type": "float",
+        "name": "sizeBlend",
+        "evidence": "chunk 055 sizeBlend; chunk 059 field_c8"
+      },
+      {
+        "offset": "0xcc",
+        "type": "FxCurve",
+        "name": "colorCurveA",
+        "evidence": "FxObjFc_CopyFromTemplate 0x08128fca copies keys from prim +0x100"
+      },
+      {
+        "offset": "0xd8",
+        "type": "FxCurve",
+        "name": "colorCurveB",
+        "evidence": "prim +0x10c"
+      },
+      {
+        "offset": "0xe4",
+        "type": "FxCurve",
+        "name": "sizeCurveA",
+        "evidence": "prim +0x130"
+      },
+      {
+        "offset": "0xf0",
+        "type": "FxCurve",
+        "name": "sizeCurveB",
+        "evidence": "prim +0x13c"
+      }
+    ],
+    "defined_in": [
+      "chunk_055_types.h (FxObjFc)",
+      "chunk_059_types.h (fx_obj; Fx_AllocPool98 0xfc)"
+    ],
+    "conflicts": "Named FxObjFc in chunk 055; RTTI says Light (vtbl 0x0815f348) and Flash (vtbl 0x0815f308, subclass, same size). Flash differs by vtable only (Fx_ConstructG 0x0813768c). Flag 0x2000 blends the colour curves, 0x8000 the size curves (055).",
+    "confidence": "high"
+  },
+  {
+    "name": "OrientedParticle_Line",
+    "size": "0x258",
+    "fields": [
+      {
+        "offset": "0x24c",
+        "type": "float[3]",
+        "name": "extra24c",
+        "evidence": "one extra vec3 after Particle in both Line (0x0815f448) and OrientedParticle (0x0815f4c8); semantics unknown"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (Line, OrientedParticle)"
+    ],
+    "conflicts": "two separate classes with identical size 0x258 and different pools (0x08a533a8 Line, 0x08a533b0 OrientedParticle).",
+    "confidence": "medium"
+  },
+  {
+    "name": "Cloud",
+    "size": "0x27c",
+    "fields": [
+      {
+        "offset": "0x24c",
+        "type": "float[3]",
+        "name": "axis",
+        "evidence": "random unit direction (Cloud::InitRandomAxis)"
+      },
+      {
+        "offset": "0x258",
+        "type": "float",
+        "name": "speed",
+        "evidence": ""
+      },
+      {
+        "offset": "0x25c",
+        "type": "uint8",
+        "name": "useSpeedCurve",
+        "evidence": ""
+      },
+      {
+        "offset": "0x260",
+        "type": "float",
+        "name": "speedRand",
+        "evidence": ""
+      },
+      {
+        "offset": "0x264",
+        "type": "FxCurve",
+        "name": "speedCurve",
+        "evidence": "template slot 8"
+      },
+      {
+        "offset": "0x270",
+        "type": "FxCurve",
+        "name": "speedCurveAlt",
+        "evidence": "template slot 9"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (Cloud)"
+    ],
+    "conflicts": "none",
+    "confidence": "medium"
+  },
+  {
+    "name": "Tail",
+    "size": "0x278",
+    "fields": [
+      {
+        "offset": "0x24c",
+        "type": "float[3]",
+        "name": "endPoint",
+        "evidence": "UpdateTailPoint"
+      },
+      {
+        "offset": "0x258",
+        "type": "float",
+        "name": "length",
+        "evidence": ""
+      },
+      {
+        "offset": "0x25c",
+        "type": "float",
+        "name": "lengthRand",
+        "evidence": ""
+      },
+      {
+        "offset": "0x260",
+        "type": "FxCurve",
+        "name": "lengthCurve",
+        "evidence": "template slot 8"
+      },
+      {
+        "offset": "0x26c",
+        "type": "FxCurve",
+        "name": "lengthCurveAlt",
+        "evidence": "template slot 9"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (Tail, Cylinder)"
+    ],
+    "conflicts": "Cylinder derives from Tail with identical layout (size 0x278, own pool 0x08a533c0).",
+    "confidence": "medium"
+  },
+  {
+    "name": "Emitter",
+    "size": "0x29c",
+    "fields": [
+      {
+        "offset": "0x24c",
+        "type": "float[3]",
+        "name": "vec24c",
+        "evidence": "chunk 054 pos; chunk 055/059 vec24c"
+      },
+      {
+        "offset": "0x258",
+        "type": "float[3]",
+        "name": "vec258",
+        "evidence": "chunk 054 vel; 055/059 vec258"
+      },
+      {
+        "offset": "0x264",
+        "type": "float[3]",
+        "name": "vec264",
+        "evidence": "chunk 054 drift; 055/059 vec264"
+      },
+      {
+        "offset": "0x270",
+        "type": "int32",
+        "name": "nextEmitTime",
+        "evidence": "chunk 054; 055/059 field270"
+      },
+      {
+        "offset": "0x274",
+        "type": "float",
+        "name": "minStep",
+        "evidence": "chunk 054 minStep; 055 value274"
+      },
+      {
+        "offset": "0x278",
+        "type": "float[3]",
+        "name": "pos",
+        "evidence": "chunk 055/059; hidden in chunk 054's unknown278[0x18]"
+      },
+      {
+        "offset": "0x284",
+        "type": "float[3]",
+        "name": "vel",
+        "evidence": "chunk 055/059; hidden in chunk 054's unknown278[0x18]"
+      },
+      {
+        "offset": "0x290",
+        "type": "int32",
+        "name": "emitTemplateId",
+        "evidence": "chunk 054; 055/059 field290"
+      },
+      {
+        "offset": "0x294",
+        "type": "float",
+        "name": "stepBase",
+        "evidence": "FxObj29c_RandomizeValue 0x08129e24"
+      },
+      {
+        "offset": "0x298",
+        "type": "float",
+        "name": "stepRange",
+        "evidence": ""
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (Emitter)",
+      "chunk_055_types.h (FxObj29c)",
+      "chunk_059_types.h (fx_obj 0x29c)"
+    ],
+    "conflicts": "054 labels 0x24c/0x258/0x264 pos/vel/drift whereas 055/059 only name them by offset; 054 leaves 0x278..0x290 unknown, 055/059 identify two vec3 there. Pool element size 0x29c is from pool 0x08a533c8 (055) and the allocation 0x29c in FX_ReadEffects.",
+    "confidence": "medium"
+  },
+  {
+    "name": "FxTemplate",
+    "size": "0x68",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "char*",
+        "name": "name",
+        "evidence": "FX_BuildTemplate: strcpy of the effect name into FX_Alloc(strlen+1); chunk 055 field0"
+      },
+      {
+        "offset": "0x04",
+        "type": "int32",
+        "name": "primCount",
+        "evidence": "<= 0x18 (FX_TemplateAddPrim 0x0812c424)"
+      },
+      {
+        "offset": "0x08",
+        "type": "PrimitiveTemplate*[24]",
+        "name": "prims",
+        "evidence": "FX_BuildTemplate allocates 0x68 bytes"
+      }
+    ],
+    "defined_in": [
+      "chunk_055_types.h (FxEffectTemplate)",
+      "chunk_056_types.h (fx_template_s)",
+      "chunk_058_types.h (FxPtrTable {pad00,count,entries})"
+    ],
+    "conflicts": "same layout, three names. 058 FxPtrTable.pad00 is the name pointer; effects keep a pointer to the template in Effect+0x34 and the primitive index in +0x38.",
+    "confidence": "high"
+  },
+  {
+    "name": "PrimitiveTemplate",
+    "size": "0x2a4",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "char[0x20]",
+        "name": "name",
+        "evidence": "key 'name' (056/057)"
+      },
+      {
+        "offset": "0x20",
+        "type": "char[0x20]",
+        "name": "shaderImpact",
+        "evidence": "key 'shaderImpact' copies up to 0x20 bytes (057); 056 unk20[8]"
+      },
+      {
+        "offset": "0x40",
+        "type": "int32",
+        "name": "type",
+        "evidence": "segment type 1..12 (FX_BuildTemplate); 058 id40"
+      },
+      {
+        "offset": "0x44",
+        "type": "int32",
+        "name": "index",
+        "evidence": "index of the block within the effect; 058 id44 -> Effect+0x38"
+      },
+      {
+        "offset": "0x48",
+        "type": "FxRange",
+        "name": "delay",
+        "evidence": "key 'delay'"
+      },
+      {
+        "offset": "0x50",
+        "type": "FxRange",
+        "name": "count",
+        "evidence": "key 'count'"
+      },
+      {
+        "offset": "0x58",
+        "type": "FxRange",
+        "name": "life",
+        "evidence": "key 'life'; GetMaxEnd reads life.hi at +0x5c"
+      },
+      {
+        "offset": "0x60",
+        "type": "FxRange",
+        "name": "spawnRange",
+        "evidence": "key 'spawnRange'; key 'cullrange' writes only +0x64; 055 minDistance/maxDistance (0 = no limit)"
+      },
+      {
+        "offset": "0x68",
+        "type": "FxPtrList[5]",
+        "name": "lists",
+        "evidence": "materials-or-models (+0x68), impactFx (+0x70), deathFx (+0x78), emitFx (+0x80), playFx (+0x88); FxPtrList = {void **data; u16 count; u16 capacity}"
+      },
+      {
+        "offset": "0x90",
+        "type": "uint32",
+        "name": "flags",
+        "evidence": "FxFlagName table 0x0815fae0; 0x80000/0x100000 auto-set by velocity/acceleration; copied to Effect+0xa8"
+      },
+      {
+        "offset": "0x94",
+        "type": "uint32",
+        "name": "spawnFlags",
+        "evidence": "FxFlagName table 0x0815fcc0; 055 'flags' (0x200 spread delays, 0x400 cull check), 056 flags2 (0x100 spin axes), 058 flags2 (0x1 sphere, 0x4 cone/disc, 0x8 trace, 0x40/0x80 no-rotate)"
+      },
+      {
+        "offset": "0x98",
+        "type": "int32",
+        "name": "value98",
+        "evidence": "-> Effect+0x10"
+      },
+      {
+        "offset": "0x9c",
+        "type": "uint8",
+        "name": "nonUniformScale",
+        "evidence": "key"
+      },
+      {
+        "offset": "0x9d",
+        "type": "uint8",
+        "name": "useLength",
+        "evidence": "key (059 byte_9d)"
+      },
+      {
+        "offset": "0xa0",
+        "type": "float[3]",
+        "name": "mins",
+        "evidence": "key 'min' -> Effect+0x14 (058 valueA0)"
+      },
+      {
+        "offset": "0xac",
+        "type": "float[3]",
+        "name": "maxs",
+        "evidence": "key 'max' -> Effect+0x20 (058 valueAC)"
+      },
+      {
+        "offset": "0xb8",
+        "type": "FxRange[3]",
+        "name": "origin",
+        "evidence": "key 'origin' (058 offX/offY/offZ)"
+      },
+      {
+        "offset": "0xd0",
+        "type": "FxRange[3]",
+        "name": "origin2",
+        "evidence": "key 'origin2' (058 traceX/Y/Z)"
+      },
+      {
+        "offset": "0xe8",
+        "type": "FxRange",
+        "name": "radius",
+        "evidence": "key 'radius'"
+      },
+      {
+        "offset": "0xf0",
+        "type": "FxRange",
+        "name": "height",
+        "evidence": "key 'height' (058 spread)"
+      },
+      {
+        "offset": "0xf8",
+        "type": "FxRange",
+        "name": "wind",
+        "evidence": "key 'wind'"
+      },
+      {
+        "offset": "0x100",
+        "type": "FxCurveSlot[24]",
+        "name": "channels",
+        "evidence": "stride 0xc, indices from g_fxGroupKeys (fx-anim.md 3.1)"
+      },
+      {
+        "offset": "0x220",
+        "type": "FxRange",
+        "name": "rotation",
+        "evidence": "key 'rotation' (056/058; 057 pad220[8])"
+      },
+      {
+        "offset": "0x228",
+        "type": "FxRange[3]",
+        "name": "angles",
+        "evidence": "key 'angle(s)' (057)"
+      },
+      {
+        "offset": "0x240",
+        "type": "FxRange[3]",
+        "name": "angleDelta",
+        "evidence": "key 'angleDelta' (057)"
+      },
+      {
+        "offset": "0x258",
+        "type": "FxRange",
+        "name": "gravity",
+        "evidence": "key 'gravity' (057); 058 range258"
+      },
+      {
+        "offset": "0x260",
+        "type": "FxRange",
+        "name": "density",
+        "evidence": "key 'density' (057); FX_PrimSetDefaults writes (10,10) at 0x260 (056)"
+      },
+      {
+        "offset": "0x268",
+        "type": "FxRange",
+        "name": "variance",
+        "evidence": "key 'variance' (057); default (1,1)"
+      },
+      {
+        "offset": "0x270",
+        "type": "byte[0x10]",
+        "name": "unknown270",
+        "evidence": "056 defaults260[2..3] = (1,1),(1,1); role unknown"
+      },
+      {
+        "offset": "0x280",
+        "type": "FxRange",
+        "name": "intensity",
+        "evidence": "key 'bounce'/'intensity' (056); 058 range280; hidden inside 057 pad270[0x18]"
+      },
+      {
+        "offset": "0x288",
+        "type": "int32",
+        "name": "sequenceStartFrameMode",
+        "evidence": "056/057/058 agree"
+      },
+      {
+        "offset": "0x28c",
+        "type": "int32",
+        "name": "sequenceFixedFrameValue",
+        "evidence": ""
+      },
+      {
+        "offset": "0x290",
+        "type": "int32",
+        "name": "sequencePlayRateMode",
+        "evidence": ""
+      },
+      {
+        "offset": "0x294",
+        "type": "float",
+        "name": "sequenceFixedFpsValue",
+        "evidence": ""
+      },
+      {
+        "offset": "0x298",
+        "type": "int32",
+        "name": "sequenceLoopMode",
+        "evidence": ""
+      },
+      {
+        "offset": "0x29c",
+        "type": "int32",
+        "name": "sequenceLoopTimes",
+        "evidence": ""
+      },
+      {
+        "offset": "0x2a0",
+        "type": "float",
+        "name": "spawnFrustumCullRadius",
+        "evidence": "055 cullArg (int)"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (FxParticleTemplate)",
+      "chunk_055_types.h (FxPrimTemplate, FxCurvePairTemplate)",
+      "chunk_056_types.h (fx_primitive_s)",
+      "chunk_057_types.h (PrimitiveTemplate)",
+      "chunk_058_types.h (FxElemDef)",
+      "chunk_059_types.h (fx_def_s)"
+    ],
+    "conflicts": "054 FxParticleTemplate puts axes[9] at 0 and a 0xdc gap, but no code in chunk 054 reads axes; name[0x20] at 0 is proven by the 'name' key. 055 calls 0x94 'flags' and leaves 0x90 unnamed; 056/057/058 agree 0x90 flags, 0x94 spawnFlags/flags2. 056 lists[0] 'shaders' vs 057 materials: the list also holds models. 056 spawnRange at 0x60 overlapping cullrange at 0x64 is the same field pair as 055 minDistance/maxDistance and 057 field60/cullRange. 057 pad270[0x18] hides the intensity range at 0x280 (056/058). 058 names 0xd0 'trace' and 0xf0 'spread' (semantic guesses from FxSpawner_ComputeOrigin); the key names in 056 are authoritative for offsets.",
+    "confidence": "high"
+  },
+  {
+    "name": "FxScheduler",
+    "size": "0xc",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "int32",
+        "name": "seed",
+        "evidence": "055: last random seed taken from the view state; 056 unk00"
+      },
+      {
+        "offset": "0x04",
+        "type": "FxScheduledEffect*",
+        "name": "head",
+        "evidence": "delayed-spawn list head"
+      },
+      {
+        "offset": "0x08",
+        "type": "int32",
+        "name": "count",
+        "evidence": "pending count (058 pendingCount)"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (opaque)",
+      "chunk_055_types.h (FxScheduler)",
+      "chunk_056_types.h (fx_playback_list_s)",
+      "chunk_058_types.h (FxScheduler)"
+    ],
+    "conflicts": "056 calls the same object a playback list; field +0 is unnamed in 056/058. Allocated by Fx_AllocSmall (Com_MallocZeroed(0xc)), published in g_08a53804 and g_08a533f0[ctx].",
+    "confidence": "high"
+  },
+  {
+    "name": "FxScheduledEffect",
+    "size": "0x50",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "FxTemplate*",
+        "name": "effect",
+        "evidence": ""
+      },
+      {
+        "offset": "0x04",
+        "type": "int32",
+        "name": "primIndex",
+        "evidence": ""
+      },
+      {
+        "offset": "0x08",
+        "type": "int32",
+        "name": "startTime",
+        "evidence": "view time + delay (055)"
+      },
+      {
+        "offset": "0x0c",
+        "type": "int32[2]",
+        "name": "bolt",
+        "evidence": "entity/bolt reference pair, -1/-1 when none; serialised as 8 raw bytes (056 timing[8])"
+      },
+      {
+        "offset": "0x14",
+        "type": "float[3]",
+        "name": "origin",
+        "evidence": ""
+      },
+      {
+        "offset": "0x20",
+        "type": "float[9]",
+        "name": "axis",
+        "evidence": "three axes"
+      },
+      {
+        "offset": "0x44",
+        "type": "int32",
+        "name": "seed",
+        "evidence": ""
+      },
+      {
+        "offset": "0x48",
+        "type": "int32",
+        "name": "loopIndex",
+        "evidence": ""
+      },
+      {
+        "offset": "0x4c",
+        "type": "FxScheduledEffect*",
+        "name": "next",
+        "evidence": "list link"
+      }
+    ],
+    "defined_in": [
+      "chunk_055_types.h (FxScheduledEffect)",
+      "chunk_056_types.h (fx_playback_s)"
+    ],
+    "conflicts": "056 calls 0x08 unk08 and 0x0c 'timing'; 055's bolt/startTime reading is supported by FxScheduler_PlayEffect_* stores (055). Serialised by FX_SerializePlayback 0x0812ba8c.",
+    "confidence": "medium"
+  },
+  {
+    "name": "FxBlocker",
+    "size": "0x14",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "float[3]",
+        "name": "origin",
+        "evidence": "FX_GetAttenuation 0x08133c18 (chunk 058)"
+      },
+      {
+        "offset": "0x0c",
+        "type": "float",
+        "name": "radius",
+        "evidence": "compared with the squared distance of the ray point (Particle::AppendDrawEntry stores size^2)"
+      },
+      {
+        "offset": "0x10",
+        "type": "float",
+        "name": "attenuation",
+        "evidence": "multiplied into the result when hit (1 - alpha/255)"
+      }
+    ],
+    "defined_in": [
+      "chunk_054_types.h (FxDrawEntry)",
+      "chunk_058_types.h (FxBlocker)"
+    ],
+    "conflicts": "chunk 054 names it a draw-list entry (sizeSq, transparency); chunk 058's consumer FX_GetAttenuation shows it is a blocker list (count 0x08a53cb0, array 0x08a53d00). Same 0x14 layout.",
+    "confidence": "high"
+  },
+  {
+    "name": "FxOriginRef",
+    "size": "0x10",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "float[3]",
+        "name": "origin",
+        "evidence": ""
+      },
+      {
+        "offset": "0x0c",
+        "type": "int32",
+        "name": "refCount",
+        "evidence": "FX_AddOriginRef 0x081333d8 shares entries within 131072.0"
+      }
+    ],
+    "defined_in": [
+      "chunk_058_types.h (FxOriginRef)"
+    ],
+    "conflicts": "none",
+    "confidence": "high"
+  },
+  {
+    "name": "FxChannelInit",
+    "size": "0x40",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "FxRange[3]",
+        "name": "start",
+        "evidence": "ParseChannelStartVec3/Start"
+      },
+      {
+        "offset": "0x18",
+        "type": "FxRange[3]",
+        "name": "end",
+        "evidence": ""
+      },
+      {
+        "offset": "0x30",
+        "type": "FxRange",
+        "name": "parm",
+        "evidence": "keys parm/parms"
+      },
+      {
+        "offset": "0x38",
+        "type": "uint32",
+        "name": "flags",
+        "evidence": "FX_ParseWaveFlags"
+      },
+      {
+        "offset": "0x3c",
+        "type": "uint8",
+        "name": "used",
+        "evidence": "tested by FX_PrimBuildCurves"
+      }
+    ],
+    "defined_in": [
+      "chunk_056_types.h (fx_channel_s)",
+      "chunk_057_types.h (FxChannelInit)"
+    ],
+    "conflicts": "none; 24 entries (0x600 bytes) allocated from temp memory per prim parse (0x081314a0).",
+    "confidence": "high"
+  },
+  {
+    "name": "ConfigBlock",
+    "size": "0x30",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "char*",
+        "name": "name",
+        "evidence": ""
+      },
+      {
+        "offset": "0x04",
+        "type": "ConfigBlock*",
+        "name": "next",
+        "evidence": "insertion-order sibling; 0x0812ca14 reads +4"
+      },
+      {
+        "offset": "0x08",
+        "type": "ConfigBlock*",
+        "name": "sortNext",
+        "evidence": ""
+      },
+      {
+        "offset": "0x0c",
+        "type": "ConfigBlock*",
+        "name": "sortPrev",
+        "evidence": ""
+      },
+      {
+        "offset": "0x10",
+        "type": "ConfigAttr*",
+        "name": "firstAttr",
+        "evidence": "0x08131784 ParseNode_FirstChild2 reads +0x10 on a block"
+      },
+      {
+        "offset": "0x14",
+        "type": "ConfigAttr*",
+        "name": "sortedAttrs",
+        "evidence": ""
+      },
+      {
+        "offset": "0x18",
+        "type": "ConfigAttr*",
+        "name": "lastAttr",
+        "evidence": ""
+      },
+      {
+        "offset": "0x1c",
+        "type": "ConfigBlock*",
+        "name": "firstChild",
+        "evidence": "0x0812ca20 reads +0x1c"
+      },
+      {
+        "offset": "0x20",
+        "type": "ConfigBlock*",
+        "name": "sortedChildren",
+        "evidence": ""
+      },
+      {
+        "offset": "0x24",
+        "type": "ConfigBlock*",
+        "name": "lastChild",
+        "evidence": ""
+      },
+      {
+        "offset": "0x28",
+        "type": "int32",
+        "name": "expectUnclosed",
+        "evidence": ""
+      },
+      {
+        "offset": "0x2c",
+        "type": "uint8",
+        "name": "flag",
+        "evidence": ""
+      }
+    ],
+    "defined_in": [
+      "chunk_058_types.h (ConfigBlock)",
+      "chunk_056_types.h (fx_parse_node_s, 0x48, child@0x1c)",
+      "chunk_057_types.h (ParseNode, firstChild@0x10)"
+    ],
+    "conflicts": "056 fx_parse_node_s (size 0x48 asserted) and 057 ParseNode both model the same accessors: child@0x1c is ConfigBlock.firstChild, firstChild@0x10 is ConfigBlock.firstAttr or ConfigAttr.firstValue. 056's size 0x48 is unsupported (the root is a ConfigTree of 0x38 bytes, stack object in FX_LoadTemplate). ConfigAttr is 0x14 bytes (name,next,sortNext,sortPrev,firstValue@0x10); ConfigValue 0x10 (text,next,tail@8,unused).",
+    "confidence": "high"
+  },
+  {
+    "name": "ConfigTree",
+    "size": "0x38",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "ConfigBlock",
+        "name": "block",
+        "evidence": "root block named 'Top Level'"
+      },
+      {
+        "offset": "0x30",
+        "type": "StrPool*",
+        "name": "pool",
+        "evidence": "0x2800-byte string pool created on demand by ConfigTree_Parse"
+      },
+      {
+        "offset": "0x34",
+        "type": "uint8",
+        "name": "flag",
+        "evidence": "ConfigTree_SetFlag"
+      }
+    ],
+    "defined_in": [
+      "chunk_058_types.h (ConfigTree)"
+    ],
+    "conflicts": "none",
+    "confidence": "high"
+  },
+  {
+    "name": "XModelParts",
+    "size": "0x64+0x20*numBones",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "uint16",
+        "name": "numBones",
+        "evidence": "034 uint16, 031 int16; limit 0x7f"
+      },
+      {
+        "offset": "0x02",
+        "type": "uint16",
+        "name": "numRootBones",
+        "evidence": ""
+      },
+      {
+        "offset": "0x04",
+        "type": "XModelBoneHierarchy*",
+        "name": "hierarchy",
+        "evidence": "{uint16 *names@0; int8 parentDelta[]@4} (034) = XModelHier{boneNames,parentDelta} (031)"
+      },
+      {
+        "offset": "0x08",
+        "type": "int16*",
+        "name": "quats",
+        "evidence": "4 shorts per non-root bone (034); 031 unk08"
+      },
+      {
+        "offset": "0x0c",
+        "type": "float*",
+        "name": "trans",
+        "evidence": "3 floats per non-root bone (034 trans, 031 boneOffsets)"
+      },
+      {
+        "offset": "0x10",
+        "type": "uint8*",
+        "name": "partClassification",
+        "evidence": "one byte per bone (034); 031 boneGroup"
+      },
+      {
+        "offset": "0x14",
+        "type": "DObjSkel",
+        "name": "staticSkel",
+        "evidence": "embedded skeleton: setBits[4]=0xff (034 boneMaskA @0x14), controlBits[4]=0 (034 unknown24 @0x24), lockedBits[4]=0xff (034 boneMaskB @0x34), bones[] @0x44 (034 baseMat)"
+      }
+    ],
+    "defined_in": [
+      "chunk_031_types.h (XModelParts)",
+      "chunk_034_types.h (XModelParts, DObjAnimMat)"
+    ],
+    "conflicts": "031 models +0x14 as an opaque embedded DObjSkel (DObj_InitFromModelParts uses parts+0x14) while 034 splits it into boneMaskA/unknown24/boneMaskB/baseMat. Offsets coincide exactly with DObjSkel (0x10 + 0x10 + 0x10 header, bones at +0x30 => parts+0x44). 034 asserts sizeof 0x64 for the fixed part (baseMat[1] counted as 0x20?: 0x44 + 0x20 = 0x64). Names differ (quats vs unk08, trans vs boneOffsets).",
+    "confidence": "high"
+  },
+  {
+    "name": "XModelLod",
+    "size": "0x14",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "float",
+        "name": "dist",
+        "evidence": "LOD distance cutoff"
+      },
+      {
+        "offset": "0x04",
+        "type": "const char*",
+        "name": "name",
+        "evidence": "xmodelsurfs asset name, '' when unused (034); 031 unk04"
+      },
+      {
+        "offset": "0x08",
+        "type": "int16",
+        "name": "numSurfNames",
+        "evidence": ""
+      },
+      {
+        "offset": "0x0c",
+        "type": "uint16*",
+        "name": "surfNames",
+        "evidence": "script string id per surface (0 = DEFAULT material name, 031 materialNames)"
+      },
+      {
+        "offset": "0x10",
+        "type": "XModelSurfs*",
+        "name": "surfs",
+        "evidence": "block: [0] leading word/surfIds ptr, then partBits (031 XModelLodSurfs {surfIds, partBits[]}); default instance is one zero word in the dedicated build"
+      }
+    ],
+    "defined_in": [
+      "chunk_031_types.h (XModelLod, XModelLodSurfs)",
+      "chunk_034_types.h (XModelLod, XModelSurfs)",
+      "chunk_035_types.h (XModelLodInfo)"
+    ],
+    "conflicts": "031 interprets surfs->surfIds (+0) and partBits (+4); 034 declares XModelSurfs as a single header dword (default) and loads nothing on dedicated; 035 calls +0x10 surfData '[0] leading word, [1..] surface records'. Surface payload layout is unverified because the loader is a stub.",
+    "confidence": "medium"
+  },
+  {
+    "name": "XBoneInfo",
+    "size": "0x28",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "float[2][3]",
+        "name": "bounds",
+        "evidence": "mins then maxs"
+      },
+      {
+        "offset": "0x18",
+        "type": "float[3]",
+        "name": "offset",
+        "evidence": "midpoint of bounds (XModel_LoadFile)"
+      },
+      {
+        "offset": "0x24",
+        "type": "float",
+        "name": "radiusSquared",
+        "evidence": "LengthSq(maxs - offset)"
+      }
+    ],
+    "defined_in": [
+      "chunk_031_types.h (XModelHitBox)",
+      "chunk_034_types.h (XBoneInfo)"
+    ],
+    "conflicts": "same layout, different names; used as per-bone hit box by DObj_GetHitBoxes/DObj_Traceline.",
+    "confidence": "high"
+  },
+  {
+    "name": "XModelCollSurf",
+    "size": "0x2c",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "XModelCollTri*",
+        "name": "collTris",
+        "evidence": "tri = {plane[4], svec[4], tvec[4]} (0x30)"
+      },
+      {
+        "offset": "0x04",
+        "type": "int32",
+        "name": "numCollTris",
+        "evidence": ""
+      },
+      {
+        "offset": "0x08",
+        "type": "float[3]",
+        "name": "mins",
+        "evidence": ""
+      },
+      {
+        "offset": "0x14",
+        "type": "float[3]",
+        "name": "maxs",
+        "evidence": ""
+      },
+      {
+        "offset": "0x20",
+        "type": "int32",
+        "name": "boneIdx",
+        "evidence": ""
+      },
+      {
+        "offset": "0x24",
+        "type": "int32",
+        "name": "contents",
+        "evidence": ""
+      },
+      {
+        "offset": "0x28",
+        "type": "int32",
+        "name": "surfFlags",
+        "evidence": ""
+      }
+    ],
+    "defined_in": [
+      "chunk_034_types.h (XModelCollSurf, XModelCollTri)"
+    ],
+    "conflicts": "only chunk 034 (read by XModel_ReadCollision 0x080c69d0 and XModel_TraceLine 0x080c59da).",
+    "confidence": "medium"
+  },
+  {
+    "name": "XModel",
+    "size": "0x90",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "XModelParts*",
+        "name": "parts",
+        "evidence": ""
+      },
+      {
+        "offset": "0x04",
+        "type": "XModelLod[4]",
+        "name": "lod",
+        "evidence": "stride 0x14"
+      },
+      {
+        "offset": "0x54",
+        "type": "XModelCollSurf*",
+        "name": "collSurfs",
+        "evidence": "031 unk54[0x0c] covers 0x54..0x60"
+      },
+      {
+        "offset": "0x58",
+        "type": "int32",
+        "name": "numCollSurfs",
+        "evidence": ""
+      },
+      {
+        "offset": "0x5c",
+        "type": "int32",
+        "name": "contents",
+        "evidence": "OR of surface contents; XModel_GetContents"
+      },
+      {
+        "offset": "0x60",
+        "type": "XBoneInfo*",
+        "name": "boneInfo",
+        "evidence": "031 hitBoxes"
+      },
+      {
+        "offset": "0x64",
+        "type": "float[3]",
+        "name": "mins",
+        "evidence": "031 unk64[0x24]"
+      },
+      {
+        "offset": "0x70",
+        "type": "float[3]",
+        "name": "maxs",
+        "evidence": ""
+      },
+      {
+        "offset": "0x7c",
+        "type": "uint16",
+        "name": "numLods",
+        "evidence": "035 short numLods"
+      },
+      {
+        "offset": "0x7e",
+        "type": "int16",
+        "name": "collLod",
+        "evidence": "low 16 bits of the file header word"
+      },
+      {
+        "offset": "0x80",
+        "type": "int32",
+        "name": "unknown80",
+        "evidence": "never written by the loaders"
+      },
+      {
+        "offset": "0x84",
+        "type": "int32",
+        "name": "memUsage",
+        "evidence": "bytes allocated by the loaders"
+      },
+      {
+        "offset": "0x88",
+        "type": "const char*",
+        "name": "name",
+        "evidence": "interned/registered name pointer written by XModel_FindOrLoad"
+      },
+      {
+        "offset": "0x8c",
+        "type": "uint8",
+        "name": "flags",
+        "evidence": "file header flag byte; XModel_GetByte8c in chunk 035"
+      },
+      {
+        "offset": "0x8d",
+        "type": "uint8",
+        "name": "isDefault",
+        "evidence": "XModel_IsDefault 0x080c5320"
+      },
+      {
+        "offset": "0x8e",
+        "type": "byte[2]",
+        "name": "pad",
+        "evidence": ""
+      }
+    ],
+    "defined_in": [
+      "chunk_031_types.h (XModel)",
+      "chunk_034_types.h (XModel)",
+      "chunk_035_types.h (XModel)"
+    ],
+    "conflicts": "no contradictions; 031 and 035 are sparse views. lod name strings are stored after the 0x90-byte struct in the same allocation (XModel_LoadFile: size = names + 0x90).",
+    "confidence": "high"
+  },
+  {
+    "name": "DObjBone",
+    "size": "0x20",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "float[4]",
+        "name": "quat",
+        "evidence": ""
+      },
+      {
+        "offset": "0x10",
+        "type": "float[3]",
+        "name": "origin",
+        "evidence": "translation (034 trans)"
+      },
+      {
+        "offset": "0x1c",
+        "type": "float",
+        "name": "quatScale",
+        "evidence": "031: 2/|q|^2 scale (DObj_SetBoneTransform stores 0); 034 DObjAnimMat.transWeight, computed by Quat_UpdateScale"
+      }
+    ],
+    "defined_in": [
+      "chunk_031_types.h (DObjBone)",
+      "chunk_034_types.h (DObjAnimMat)",
+      "chunk_033_types.h (XAnimPoseBone: pos[3]+timer)"
+    ],
+    "conflicts": "033 XAnimPoseBone has the same size and the 4th component of the last row is 'accumulated time' (timer) in the pose buffer; 031/034 call it the quaternion scale. They are the same storage reused for pose accumulation vs final bone; confirm per stage.",
+    "confidence": "medium"
+  },
+  {
+    "name": "DObjSkel",
+    "size": "0x30+0x20*numBones",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "uint32[4]",
+        "name": "setBits",
+        "evidence": "bones given a transform this frame"
+      },
+      {
+        "offset": "0x10",
+        "type": "uint32[4]",
+        "name": "controlBits",
+        "evidence": "explicitly controlled bones"
+      },
+      {
+        "offset": "0x20",
+        "type": "uint32[4]",
+        "name": "lockedBits",
+        "evidence": "bones already evaluated"
+      },
+      {
+        "offset": "0x30",
+        "type": "DObjBone[]",
+        "name": "bones",
+        "evidence": ""
+      }
+    ],
+    "defined_in": [
+      "chunk_031_types.h (DObjSkel)"
+    ],
+    "conflicts": "embedded in XModelParts at +0x14 (see XModelParts).",
+    "confidence": "high"
+  },
+  {
+    "name": "DObj",
+    "size": "0x64",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "XAnimTree*",
+        "name": "tree",
+        "evidence": ""
+      },
+      {
+        "offset": "0x04",
+        "type": "DObjSkel*",
+        "name": "skel",
+        "evidence": "cleared by DObj_SkelExists when the stored time differs"
+      },
+      {
+        "offset": "0x08",
+        "type": "int32",
+        "name": "skelTime",
+        "evidence": "generation stamp"
+      },
+      {
+        "offset": "0x0c",
+        "type": "uint8*",
+        "name": "animTreeData",
+        "evidence": "tree + 8 + 2*numNodes (DObj_BindAnimTree)"
+      },
+      {
+        "offset": "0x10",
+        "type": "uint16",
+        "name": "dupStringId",
+        "evidence": "0 = not built; g_085bc828 = shared empty table"
+      },
+      {
+        "offset": "0x14",
+        "type": "int32",
+        "name": "unk14",
+        "evidence": ""
+      },
+      {
+        "offset": "0x18",
+        "type": "uint8",
+        "name": "numModels",
+        "evidence": "<= 8"
+      },
+      {
+        "offset": "0x19",
+        "type": "uint8",
+        "name": "numBones",
+        "evidence": "<= 0x7f"
+      },
+      {
+        "offset": "0x1a",
+        "type": "uint8",
+        "name": "modelFlagBits",
+        "evidence": "bit i = DObjModelDef.flag of model i"
+      },
+      {
+        "offset": "0x1c",
+        "type": "XModel*[8]",
+        "name": "models",
+        "evidence": ""
+      },
+      {
+        "offset": "0x3c",
+        "type": "uint8[8]",
+        "name": "parentBone",
+        "evidence": "0xff = root model"
+      },
+      {
+        "offset": "0x44",
+        "type": "uint8[8]",
+        "name": "boneBase",
+        "evidence": "first bone index of each model"
+      },
+      {
+        "offset": "0x4c",
+        "type": "float[3]",
+        "name": "mins",
+        "evidence": "sum of model bounds"
+      },
+      {
+        "offset": "0x58",
+        "type": "float[3]",
+        "name": "maxs",
+        "evidence": ""
+      }
+    ],
+    "defined_in": [
+      "chunk_031_types.h (DObj)",
+      "chunk_007_types.h (DObj_s, 100 bytes per slot)"
+    ],
+    "conflicts": "none; pool slot size 0x64 in chunk 007 (g_081a5080 + slot*100).",
+    "confidence": "high"
+  },
+  {
+    "name": "DObjModelDef",
+    "size": "0xc",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "XModel*",
+        "name": "model",
+        "evidence": ""
+      },
+      {
+        "offset": "0x04",
+        "type": "const char*",
+        "name": "parentBoneName",
+        "evidence": ""
+      },
+      {
+        "offset": "0x08",
+        "type": "int32",
+        "name": "flag",
+        "evidence": ""
+      }
+    ],
+    "defined_in": [
+      "chunk_031_types.h"
+    ],
+    "conflicts": "only chunk 031.",
+    "confidence": "high"
+  },
+  {
+    "name": "XAnimParts",
+    "size": "0x2c",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "uint16",
+        "name": "numFrames",
+        "evidence": "frames - 1 (looping adds 1 first)"
+      },
+      {
+        "offset": "0x02",
+        "type": "uint8",
+        "name": "looping",
+        "evidence": "032 wrap_flag; 033 flags02 loop mode"
+      },
+      {
+        "offset": "0x03",
+        "type": "uint8",
+        "name": "hasDelta",
+        "evidence": "033 hasData"
+      },
+      {
+        "offset": "0x04",
+        "type": "float",
+        "name": "frameRate",
+        "evidence": ""
+      },
+      {
+        "offset": "0x08",
+        "type": "float",
+        "name": "frequency",
+        "evidence": "034: frameRate/numFrames; 032/033 call it length"
+      },
+      {
+        "offset": "0x0c",
+        "type": "uint8",
+        "name": "numNotifies",
+        "evidence": "032 key_count; 033 partCount (naming error); includes the implicit 'end'"
+      },
+      {
+        "offset": "0x0e",
+        "type": "uint16",
+        "name": "numBones",
+        "evidence": "032 part_count/handle_count"
+      },
+      {
+        "offset": "0x10",
+        "type": "uint16*",
+        "name": "boneNames",
+        "evidence": "string ids; 032 part_ids/handles"
+      },
+      {
+        "offset": "0x14",
+        "type": "uint8*",
+        "name": "twoDRotBits",
+        "evidence": "032 part_bitset"
+      },
+      {
+        "offset": "0x18",
+        "type": "XAnimBoneKeys*",
+        "name": "bones",
+        "evidence": "032 part_tracks"
+      },
+      {
+        "offset": "0x1c",
+        "type": "XAnimNotify*",
+        "name": "notifies",
+        "evidence": "032 keys / entries"
+      },
+      {
+        "offset": "0x20",
+        "type": "XAnimBoneKeys*",
+        "name": "delta",
+        "evidence": ""
+      },
+      {
+        "offset": "0x24",
+        "type": "uint32",
+        "name": "loadedHandle",
+        "evidence": "032 xanim_asset_s.handle (written by XAnim_FindOrLoad); 034 unused24"
+      },
+      {
+        "offset": "0x28",
+        "type": "uint8",
+        "name": "isFallback",
+        "evidence": "032 is_fallback = built from default xanim; 033 flag28 (XAnim_ClipFlag28)"
+      }
+    ],
+    "defined_in": [
+      "chunk_034_types.h (XAnimParts)",
+      "chunk_032_types.h (xanim_clip_s 0x20, xanim_asset_s 0x2c)",
+      "chunk_033_types.h (XAnimClip)"
+    ],
+    "conflicts": "One 0x2c object seen as three structs. 033 calls +0x0c partCount and +0x1c keyTable ('array of 8-byte entries'), but those are the notify count and notify array (034 XAnim_LoadNotifies stores numNotifies at +0xc and notifies at +0x1c, 8-byte entries). 033's name at +0x24 (const char *name printed by XAnim_NodeDisplayName) conflicts with 032/034 (+0x24 is a loaded handle / unused): XAnim_NodeDisplayName may be reading the node table name instead; unresolved.",
+    "confidence": "medium"
+  },
+  {
+    "name": "XAnimKeyHeader",
+    "size": "0x8+",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "uint16",
+        "name": "lastIndex",
+        "evidence": "key count - 1; 0 = single inline key"
+      },
+      {
+        "offset": "0x02",
+        "type": "uint16",
+        "name": "pad",
+        "evidence": ""
+      },
+      {
+        "offset": "0x04",
+        "type": "void*",
+        "name": "keys",
+        "evidence": "array pointer, or the inline key (quat shorts / trans floats) when lastIndex == 0"
+      },
+      {
+        "offset": "0x08",
+        "type": "uint8|uint16[]",
+        "name": "frameIndex",
+        "evidence": "per-key frame table (u8 when numFrames<0x101), absent when every frame has a key"
+      }
+    ],
+    "defined_in": [
+      "chunk_034_types.h (XAnimKeyHeader)",
+      "chunk_032_types.h (xanim_track_s {count,data,key_table})",
+      "chunk_033_types.h (XAnimPartRec {count,leadCount,dataPtr,keyArea})"
+    ],
+    "conflicts": "033 splits +0x00 as two int16 (count, leadCount); 032/034 read a single u16. XAnimBoneKeys {trans*@0, rot*@4} (034) = xanim_part_track_s {pos, rot} (032) = XAnimChannel {posPart, rotPart} (033).",
+    "confidence": "medium"
+  },
+  {
+    "name": "XAnimNotify",
+    "size": "0x8",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "uint16",
+        "name": "name",
+        "evidence": "script string id"
+      },
+      {
+        "offset": "0x02",
+        "type": "uint16",
+        "name": "pad",
+        "evidence": ""
+      },
+      {
+        "offset": "0x04",
+        "type": "float",
+        "name": "time",
+        "evidence": "frame/numFrames, 1.0 for the implicit 'end'"
+      }
+    ],
+    "defined_in": [
+      "chunk_034_types.h",
+      "chunk_032_types.h (xanim_key_s {track_index,pad,time})"
+    ],
+    "conflicts": "032 names +0 'track_index'; it is the notify string id.",
+    "confidence": "high"
+  },
+  {
+    "name": "XAnimNodeTable",
+    "size": "0xc+8*nodeCount",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "char*",
+        "name": "name",
+        "evidence": "debug/tree name (only when debug names enabled, 032); printed by loop-mode diagnostics (033)"
+      },
+      {
+        "offset": "0x04",
+        "type": "int32",
+        "name": "nodeCount",
+        "evidence": ""
+      },
+      {
+        "offset": "0x08",
+        "type": "char**",
+        "name": "nodeNames",
+        "evidence": "per-node debug names"
+      },
+      {
+        "offset": "0x0c",
+        "type": "XAnimNode[]",
+        "name": "nodes",
+        "evidence": "8 bytes each; node k at +0x0c+8k"
+      }
+    ],
+    "defined_in": [
+      "chunk_032_types.h (xanim_node_table_s)",
+      "chunk_033_types.h (XAnimNodeTable, XAnimNode)",
+      "chunk_031_types.h (XAnimSet {unk00,numAnims@4})"
+    ],
+    "conflicts": "033 addresses nodes as table+id*8 with fields at +0x0c..+0x13; that is the same array (0x0c + 8*id) viewed from the table base. 033's open question (clip pointer at +0x10 overlaps firstChild at +0x12) is resolved by 032: payload is a union selected by childCount: leaf = clip pointer, group = {u16 modeFlags, u16 firstChild}. 033's parentIndex@0x0e = 032 aux_index (+2 of the node) = parent index for children, cached key index for the owning slot.",
+    "confidence": "high"
+  },
+  {
+    "name": "XAnimNode",
+    "size": "0x8",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "uint16",
+        "name": "childCount",
+        "evidence": "0 = leaf"
+      },
+      {
+        "offset": "0x02",
+        "type": "int16",
+        "name": "aux",
+        "evidence": "group: written onto children = parent index; otherwise cached key index (-1 = not computed)"
+      },
+      {
+        "offset": "0x04",
+        "type": "union",
+        "name": "payload",
+        "evidence": "leaf: XAnimParts*; group: {uint16 modeFlags (bits 0x2/0x4...), uint16 firstChild}; 033 also tests (ptr & 3) as flags"
+      }
+    ],
+    "defined_in": [
+      "chunk_032_types.h (xanim_node_s)",
+      "chunk_033_types.h (XAnimNode)"
+    ],
+    "conflicts": "see XAnimNodeTable.",
+    "confidence": "medium"
+  },
+  {
+    "name": "XAnimTree",
+    "size": "0x8+4*nodeCount+1+nodeCount",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "XAnimNodeTable*",
+        "name": "table",
+        "evidence": "031 XAnimSet* anims; 032 nodes"
+      },
+      {
+        "offset": "0x04",
+        "type": "int16",
+        "name": "entnum",
+        "evidence": "entity handle+1 (0 = no owner); DObj_Create stores it (031); 032 names it node_count but uses it as `Scr_RunNestedCall(node_count-1,...)`"
+      },
+      {
+        "offset": "0x06",
+        "type": "uint8",
+        "name": "flag06",
+        "evidence": "selects sampler: 0 delta-time sampler, 1 keyed (033, set by XAnim_BlendRootNode/All)"
+      },
+      {
+        "offset": "0x07",
+        "type": "uint8",
+        "name": "flag07",
+        "evidence": "weight selector for blending (033)"
+      },
+      {
+        "offset": "0x08",
+        "type": "uint16[nodeCount]",
+        "name": "slotOfNode",
+        "evidence": "blend slot index per node, 0 = none"
+      },
+      {
+        "offset": "0x08+2n",
+        "type": "uint16[nodeCount]",
+        "name": "handles",
+        "evidence": "per-node handle (animTreeData, 031)"
+      },
+      {
+        "offset": "0x08+4n",
+        "type": "uint8",
+        "name": "generation",
+        "evidence": "bumped by DObj_BindAnimTree, then nodeCount bytes cleared on wrap"
+      }
+    ],
+    "defined_in": [
+      "chunk_031_types.h (XAnimTree {anims, entnum})",
+      "chunk_032_types.h (xanim_tree_s, xanim_anim_state_s)",
+      "chunk_033_types.h (XAnimTree)"
+    ],
+    "conflicts": "032's node_count@+4 is wrong (it is entnum per 031's DObj_Create store and 032's own Scr_RunNestedCall use); 032 xanim_anim_state_s overlaps the same object from a different base (node_handles at +0x0c is the DObj.animTreeData pointer, link_count/part_count at +0x18/+0x19 are DObj.numModels/numBones): it is a DObj view, not a tree view.",
+    "confidence": "medium"
+  },
+  {
+    "name": "XAnimBlendSlot",
+    "size": "0x28",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "uint16",
+        "name": "childSlot",
+        "evidence": "033: dominant child slot (XAnim_MaxWeightChild); 032 unused"
+      },
+      {
+        "offset": "0x02",
+        "type": "int16",
+        "name": "cachedKeyIndex",
+        "evidence": "-1/0xffff = recompute"
+      },
+      {
+        "offset": "0x04",
+        "type": "int16",
+        "name": "handle",
+        "evidence": "string handle, add-ref'd (033 nameIndex)"
+      },
+      {
+        "offset": "0x06",
+        "type": "int16",
+        "name": "flags",
+        "evidence": "032 track_count; 033 flags06 (last arg of XAnim_SetSlotWeight)"
+      },
+      {
+        "offset": "0x08",
+        "type": "int16",
+        "name": "listPrev",
+        "evidence": "12-bit ring; 033 unk08"
+      },
+      {
+        "offset": "0x0a",
+        "type": "int16",
+        "name": "listNext",
+        "evidence": "033 nextFree"
+      },
+      {
+        "offset": "0x0c",
+        "type": "float",
+        "name": "time",
+        "evidence": "032 window.time; 033 curTime"
+      },
+      {
+        "offset": "0x10",
+        "type": "float",
+        "name": "lastTime",
+        "evidence": "033 prevTime"
+      },
+      {
+        "offset": "0x14",
+        "type": "int16",
+        "name": "index",
+        "evidence": "033 cycleCount"
+      },
+      {
+        "offset": "0x16",
+        "type": "int16",
+        "name": "lastIndex",
+        "evidence": "033 cycleLimit"
+      },
+      {
+        "offset": "0x18",
+        "type": "float",
+        "name": "blendRemaining",
+        "evidence": "033 minRequest"
+      },
+      {
+        "offset": "0x1c",
+        "type": "float",
+        "name": "goalWeight",
+        "evidence": "032 target_weight; 033 weight"
+      },
+      {
+        "offset": "0x20",
+        "type": "float",
+        "name": "weight",
+        "evidence": "current weight: 032 weight; 033 oldWeight"
+      },
+      {
+        "offset": "0x24",
+        "type": "float",
+        "name": "rate",
+        "evidence": "032 rate; 033 value24"
+      }
+    ],
+    "defined_in": [
+      "chunk_032_types.h (xanim_blend_slot_s, xanim_window_s)",
+      "chunk_033_types.h (XAnimSlot)"
+    ],
+    "conflicts": "Layout identical; naming conflicts: 032 vs 033 on +0x1c/+0x20 (033: weight/oldWeight) and on +0x14/+0x16 (033 cycleCount/cycleLimit vs 032 window.index/last_index) and +0x18 (minRequest vs blend_remaining). XAnim_SetSlotWeight (033) stores the requested weight into +0x1c and, when scale==0, immediately copies it into +0x20, which supports 032's naming (+0x20 = current). The pool is g_085bc900[0x1000] with slot 0 as sentinel.",
+    "confidence": "high"
+  },
+  {
+    "name": "XAnimPartState",
+    "size": "0x20",
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "uint8[8]",
+        "name": "rotRaw",
+        "evidence": "032 rot_raw; 033 XAnimPoseBone.rot[0..1] (quat as 2 or 4 shorts depending on stride)"
+      },
+      {
+        "offset": "0x08",
+        "type": "float",
+        "name": "scalar",
+        "evidence": ""
+      },
+      {
+        "offset": "0x0c",
+        "type": "float",
+        "name": "timeA",
+        "evidence": "accumulated time, no rotation track"
+      },
+      {
+        "offset": "0x10",
+        "type": "float[3]",
+        "name": "pos",
+        "evidence": ""
+      },
+      {
+        "offset": "0x1c",
+        "type": "float",
+        "name": "timeB",
+        "evidence": ""
+      }
+    ],
+    "defined_in": [
+      "chunk_032_types.h (xanim_part_state_s, xanim_calc_buffer_s 0x4020)",
+      "chunk_033_types.h (XAnimPoseBone {rot[4],pos[3],timer})"
+    ],
+    "conflicts": "032 lays rotation as 8 raw bytes + scalar + timeA before pos; 033 lays rot[4] floats at 0 and timer at 0x1c. The stride and position field agree (pos at 0x10, 0x20 stride); the interior 0x00..0x1b is typed differently and not reconciled. Scratch buffer: 0x200 parts then written/skip masks (0x4000/0x4010).",
+    "confidence": "low"
+  },
+  {
+    "name": "XModelFileHeader",
+    "size": "0x1030",
+    "fields": [
+      {
+        "offset": "0x000",
+        "type": "XModelFileLod[4]",
+        "name": "lod",
+        "evidence": "each {char name[0x400]; float dist} = 0x404"
+      },
+      {
+        "offset": "0x1010",
+        "type": "float[3]",
+        "name": "mins",
+        "evidence": ""
+      },
+      {
+        "offset": "0x101c",
+        "type": "float[3]",
+        "name": "maxs",
+        "evidence": ""
+      },
+      {
+        "offset": "0x1028",
+        "type": "uint32",
+        "name": "collLod",
+        "evidence": ""
+      },
+      {
+        "offset": "0x102c",
+        "type": "uint8",
+        "name": "flags",
+        "evidence": ""
+      }
+    ],
+    "defined_in": [
+      "chunk_034_types.h"
+    ],
+    "conflicts": "stack buffer parsed by XModel_ReadHeader; on-disk order is version(i16), flags(u8), mins, maxs, 4 x {dist, name}, collLod.",
+    "confidence": "medium"
+  }
+]

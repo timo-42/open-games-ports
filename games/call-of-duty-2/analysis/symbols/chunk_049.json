@@ -1,0 +1,946 @@
+{
+ "chunk": 49,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x08109096",
+   "name": "G_InitGame",
+   "signature": "void G_InitGame(int levelTime, uint32 randomSeed, int isRestart, int hasMapLoad)",
+   "subsystem": "game/init",
+   "confidence": "observed",
+   "evidence": "strings '------- Game Initialization -------', 'InitGame: %s\\n', 'Jun 23 2006' at 0x0815xxxx in this body",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081094e8",
+   "name": "G_ShutdownGame",
+   "signature": "void G_ShutdownGame(int freeLevel)",
+   "subsystem": "game/init",
+   "confidence": "inferred",
+   "evidence": "string '==== ShutdownGame ====' and 'ShutdownGame:' in this body [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08109616",
+   "name": "G_FlushPendingTurretUpdates",
+   "signature": "void G_FlushPendingTurretUpdates(void)",
+   "subsystem": "game/turret",
+   "confidence": "inferred",
+   "evidence": "clears flag g_0864c590 set by G_BuildEntityOrder; calls fn_080fdf08 per client",
+   "status": "translated",
+   "notes": "exact role unknown"
+  },
+  {
+   "addr": "0x0810968e",
+   "name": "G_SortRanks",
+   "signature": "int G_SortRanks(const void *a, const void *b)",
+   "subsystem": "game/entities",
+   "confidence": "inferred",
+   "evidence": "qsort comparator passed from G_BuildEntityOrder; ranks by sortState, spectator team, score [rename game: qsort comparator over client indices: state 1 sorts last, spectators (sessionTeam 3) last, then by score; Q3 SortRanks.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081097e6",
+   "name": "G_CalculateRanks",
+   "signature": "void G_CalculateRanks(void)",
+   "subsystem": "game/entities",
+   "confidence": "inferred",
+   "evidence": "builds g_0864c59c index list and calls qsort with G_CompareEntityOrder [rename game: Builds sorted client index list at 0x0864c59c from clients with state !=0, counts state-2 non-spectators (sessionTeam!=3), qsorts with the comparator, sets dirty flag 0x0864c590 consumed by G_FlushPendingTurretUpdates; Q3 CalculateRanks shape. It sorts clients, not entities.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081098b8",
+   "name": "G_ExitLevel",
+   "signature": "void G_ExitLevel(void)",
+   "subsystem": "game/level",
+   "confidence": "inferred",
+   "evidence": "string 'ExitLevel: executed\\n' is logged here; Cbuf command 'map_rotate' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08109992",
+   "name": "G_LogPrintf",
+   "signature": "void G_LogPrintf(const char *fmt, ...)",
+   "subsystem": "game/log",
+   "confidence": "inferred",
+   "evidence": "format '%3i:%i%i %s' time-stamped line written to log handle g_0864c398",
+   "status": "translated",
+   "notes": "Quake III G_LogPrintf counterpart (naming reference only)"
+  },
+  {
+   "addr": "0x08109adc",
+   "name": "G_CheckVote",
+   "signature": "void G_CheckVote(void)",
+   "subsystem": "game/vote",
+   "confidence": "inferred",
+   "evidence": "strings '%c \"GAME_VOTEPASSED\"' and '%c \"GAME_VOTEFAILED\"' [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08109ce0",
+   "name": "G_CopyTurretEntries",
+   "signature": "void G_CopyTurretEntries(void)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "copies 16 g_0864c3a4 entries into each in-use client's turretEntries; team filter at entry+0x14",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08109dfa",
+   "name": "G_UpdateClientTurretStates",
+   "signature": "void G_UpdateClientTurretStates(void)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "calls fn_08104882(client, number, 3) for each in-use entity",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08109e60",
+   "name": "G_RunThink",
+   "signature": "void G_RunThink(struct gentity_s *ent)",
+   "subsystem": "game/entities",
+   "confidence": "inferred",
+   "evidence": "string 'NULL ent->think' raised when the think table entry is empty [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08109ed8",
+   "name": "G_DumpSelectedEntity",
+   "signature": "void G_DumpSelectedEntity(void)",
+   "subsystem": "game/debug",
+   "confidence": "inferred",
+   "evidence": "prints 'server:' and dumps the entity chosen by dvar g_087a24d8",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08109f14",
+   "name": "G_StopEntityScripts",
+   "signature": "void G_StopEntityScripts(struct gentity_s *ent)",
+   "subsystem": "game/entities",
+   "confidence": "unknown",
+   "evidence": "loops Scr_ClearCurrentThread while fn_0811e394 reports work",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08109f5c",
+   "name": "G_RunEntityState",
+   "signature": "void G_RunEntityState(struct gentity_s *ent)",
+   "subsystem": "game/entities",
+   "confidence": "unknown",
+   "evidence": "dispatches on eType (4,3,2,6,0) and occupied flag; calls G_RunThink",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a13a",
+   "name": "G_RunFrame",
+   "signature": "void G_RunFrame(int levelTime)",
+   "subsystem": "game/frame",
+   "confidence": "inferred",
+   "evidence": "advances g_0864c56c/g_0864c568, runs pending pair pass then entity state pass and post-frame hooks",
+   "status": "translated",
+   "notes": "Quake III G_RunFrame counterpart (naming reference only)"
+  },
+  {
+   "addr": "0x0810a528",
+   "name": "G_TraceBox",
+   "signature": "void G_TraceBox(struct trace_s *results, const float *start, const float *mins, const float *maxs, const float *end, int passEntityNum, int contentmask)",
+   "subsystem": "game/trace",
+   "confidence": "inferred",
+   "evidence": "forwards to SV_Trace with param8=0, param9=0, extraCheck=0",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a57e",
+   "name": "G_TraceIsClearBox",
+   "signature": "int G_TraceIsClearBox(const float *start, const float *mins, const float *maxs, const float *end, int passEntityNum, int contentmask)",
+   "subsystem": "game/trace",
+   "confidence": "inferred",
+   "evidence": "forwards to SV_TraceIsClear with passOwnerNum=0x3ff; result discarded",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a5cc",
+   "name": "G_TracePointEx",
+   "signature": "void G_TracePointEx(struct trace_s *results, const float *start, const float *end, int passEntityNum, int contentmask, const char *surface)",
+   "subsystem": "game/trace",
+   "confidence": "unknown",
+   "evidence": "zero-extent SV_Trace with param8=1, extraCheck=1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a622",
+   "name": "G_TraceIsClearPoint",
+   "signature": "int G_TraceIsClearPoint(const float *start, const float *end, int passEntityNum, int contentmask)",
+   "subsystem": "game/trace",
+   "confidence": "unknown",
+   "evidence": "zero-extent SV_TraceIsClear with passOwnerNum=0x3ff, flags 1/1",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a672",
+   "name": "G_TraceAccumulateHit",
+   "signature": "void G_TraceAccumulateHit(int *hit, float *start, float *end, int passEntityNum, int contentmask)",
+   "subsystem": "game/trace",
+   "confidence": "unknown",
+   "evidence": "zero-extent SV_TraceAccumulateHit with passOwnerNum=0x3ff",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a6ba",
+   "name": "G_NoopCallback",
+   "signature": "void G_NoopCallback(const float *origin, const float *rgba, float scale, const char *text)",
+   "subsystem": "game/entities",
+   "confidence": "unknown",
+   "evidence": "empty body; used as a no-op callback slot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a6c0",
+   "name": "G_ReleaseEntityUse",
+   "signature": "void G_ReleaseEntityUse(struct gentity_s *ent)",
+   "subsystem": "game/entities",
+   "confidence": "unknown",
+   "evidence": "forwards to fn_0811ee50",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a708",
+   "name": "G_TeleportEntity",
+   "signature": "void G_TeleportEntity(struct gentity_s *ent, const float *origin, const float *angles)",
+   "subsystem": "game/player",
+   "confidence": "inferred",
+   "evidence": "copies origin to client, lifts origin z by 1.0, toggles client eFlags bit 0x2 (teleport bit), relinks",
+   "status": "translated",
+   "notes": "Quake III TeleportPlayer counterpart (naming reference only)"
+  },
+  {
+   "addr": "0x0810a84a",
+   "name": "G_ClearTurretSlots",
+   "signature": "void G_ClearTurretSlots(void)",
+   "subsystem": "game/turret",
+   "confidence": "inferred",
+   "evidence": "sets inUse=0 for all 32 turret slots at g_08844e00",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810a880",
+   "name": "Turret_ComputeFlashFrame",
+   "signature": "void Turret_ComputeFlashFrame(struct gentity_s *turret, void *viewer, float *frame)",
+   "subsystem": "game/turret",
+   "confidence": "inferred",
+   "evidence": "string 'tag_flash' in the 'Couldn't find %s on turret' error raised here [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": "tag orientation buffer assumed 48 bytes; origin at float index 9 (see open questions)"
+  },
+  {
+   "addr": "0x0810a982",
+   "name": "Turret_UpdateAimState",
+   "signature": "void Turret_UpdateAimState(struct gentity_s *turret, void *viewer)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "computes flash frame, selects aim path by weaponinfo fireModeFlag, sends event 0xaf",
+   "status": "translated",
+   "notes": "decompiler call site passes an extra zero argument; ignored by callee"
+  },
+  {
+   "addr": "0x0810aa50",
+   "name": "Turret_PositionUser",
+   "signature": "void Turret_PositionUser(struct gentity_s *user, struct gentity_s *turret)",
+   "subsystem": "game/turret",
+   "confidence": "inferred",
+   "evidence": "string \"WARNING: aborting player positioning on turret since 'tag_weapon' does not exist\" [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "partial",
+   "notes": "fn_080c* anim helper argument meanings unresolved; g_087035bc bank layout known only to +0x4a4; long double arithmetic kept as in the disassembly"
+  },
+  {
+   "addr": "0x0810b6ce",
+   "name": "Turret_SetInitialAngles",
+   "signature": "void Turret_SetInitialAngles(struct gentity_s *turret, struct gentity_s *user)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "sets turret aim from user view angles clamped by arcs; clears flag 0x800",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810b7e0",
+   "name": "Turret_StartReload",
+   "signature": "void Turret_StartReload(struct gentity_s *turret, struct gentity_s *user)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "timer = weaponinfo.fireInterval*3; client aim state 2",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810b850",
+   "name": "Turret_UpdateUser",
+   "signature": "void Turret_UpdateUser(struct gentity_s *turret, struct gentity_s *user)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "per-frame: initial angles, positioning, cooldown countdown by 50, reload restart",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810b926",
+   "name": "Turret_UpdateAmmo",
+   "signature": "void Turret_UpdateAmmo(struct gentity_s *turret)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "countdown timer by 50; reports tag event through fn_0811f32e on expiry",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810b9a4",
+   "name": "Turret_ReleaseUser",
+   "signature": "void Turret_ReleaseUser(struct gentity_s *turret)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "releases the seated user: tag event, teleport, clears client/target turret fields",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810bb0a",
+   "name": "Turret_Think",
+   "signature": "void Turret_Think(struct gentity_s *turret)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "updates pending user (turretPending==1 and unk26a8==0), otherwise releases",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810bb76",
+   "name": "Turret_ClampAim",
+   "signature": "int Turret_ClampAim(struct gentity_s *turret, const float *target, int hasLimit)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "rate-limited aim step toward target; returns 1 when not clamped",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810be1c",
+   "name": "Turret_RestAim",
+   "signature": "void Turret_RestAim(struct gentity_s *turret, int flag)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "target = rest angle (flag 0) or zero, then Turret_ClampAim",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810c1be",
+   "name": "Turret_IsAimingAtUser",
+   "signature": "int Turret_IsAimingAtUser(struct gentity_s *ent, struct gentity_s *other)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "aim cone test using arc half-width and angle from acos of direction dot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810c2ec",
+   "name": "Turret_Reset",
+   "signature": "void Turret_Reset(struct gentity_s *ent)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "releases attached user, clears pending, frees slot",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810c358",
+   "name": "Turret_CanBeUsed",
+   "signature": "int Turret_CanBeUsed(struct gentity_s *ent, struct gentity_s *user)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "usability test: not pending, has slot, user aiming, user not on a turret",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810c6b2",
+   "name": "G_SpawnTurret",
+   "signature": "void G_SpawnTurret(struct gentity_s *ent, const char *weaponName)",
+   "subsystem": "game/turret",
+   "confidence": "observed",
+   "evidence": "strings 'G_SpawnTurret: weapon ... isn't a turret', 'turret '%s' not precached', 'G_SpawnTurret: max number of turrets (%d) exceeded'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810cc8a",
+   "name": "G_SpawnTurretFromWeapon",
+   "signature": "void G_SpawnTurretFromWeapon(struct gentity_s *ent)",
+   "subsystem": "game/turret",
+   "confidence": "inferred",
+   "evidence": "reads 'weaponinfo' key then calls G_SpawnTurret; error string 'no weaponinfo specified for turret'",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ccd8",
+   "name": "Float_Abs",
+   "signature": "float Float_Abs(float v)",
+   "subsystem": "math/float",
+   "confidence": "unknown",
+   "evidence": "fabs of float (disassembly: fld/fabs/fstp)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ccf2",
+   "name": "Float_Clamp",
+   "signature": "float Float_Clamp(float v, float min, float max)",
+   "subsystem": "math/float",
+   "confidence": "unknown",
+   "evidence": "Float_Select ladder: min(v,max) then max(lo, .) per disassembly",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810cd30",
+   "name": "Vec2_Add",
+   "signature": "void Vec2_Add(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "2-component add",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810cd5c",
+   "name": "Vec3_Clear",
+   "signature": "void Vec3_Clear(float *v)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "zero 3-vector",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810cd86",
+   "name": "Vec3_Set",
+   "signature": "void Vec3_Set(float *v, float x, float y, float z)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "set 3-vector",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810cdaa",
+   "name": "Vec3_Copy",
+   "signature": "void Vec3_Copy(const float *in, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "copy 3-vector",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810cdda",
+   "name": "Vec3_Add",
+   "signature": "void Vec3_Add(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out = a + b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ce1e",
+   "name": "Vec3_Sub",
+   "signature": "void Vec3_Sub(const float *a, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out = a - b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ce62",
+   "name": "Vec3_MultiplyAdd",
+   "signature": "void Vec3_MultiplyAdd(const float *a, float scale, const float *b, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out = a + scale*b",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ceb6",
+   "name": "Vec3_Dot",
+   "signature": "long double Vec3_Dot(const float *a, const float *b)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "dot product in x87 extended precision",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810ceea",
+   "name": "Float_Select",
+   "signature": "float Float_Select(float a, float b, float c)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "disassembly: returns b when a >= 0 else c (fucompp/jae) [audit 2026-11-17: no binary string contains this name; downgraded observed->inferred]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810cf14",
+   "name": "Vec3_Scale",
+   "signature": "void Vec3_Scale(const float *in, float scale, float *out)",
+   "subsystem": "math/vector",
+   "confidence": "inferred",
+   "evidence": "out = scale*in",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810cf4c",
+   "name": "Turret_UpdateTrajectoryAim",
+   "signature": "void Turret_UpdateTrajectoryAim(struct gentity_s *ent, const float *input, float *out, int isInitial)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "evaluates angular trajectory at input time, spin/yaw steering, jitter when not initial",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810d1a8",
+   "name": "Turret_UpdateFromInput",
+   "signature": "int Turret_UpdateFromInput(struct gentity_s *ent, struct turret_input_s *in)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "evaluates linear trajectory, updates trDelta from weapon arc params, returns 1 when clear and far",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810d512",
+   "name": "Turret_ProcessInput",
+   "signature": "void Turret_ProcessInput(struct gentity_s *ent, struct turret_input_s *in, void *unused, float *out)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "dispatches turret input: unoccupied direct path or occupied damage/projectile path with events 0xbb/0xbd/0xbe",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810dd2c",
+   "name": "Turret_TraceAimWithFlags",
+   "signature": "void Turret_TraceAimWithFlags(struct trace_s *trace, float *start, float *end, int passEntityNum, int contentmask)",
+   "subsystem": "game/trace",
+   "confidence": "unknown",
+   "evidence": "point trace with table parameter; zeroes fraction and sets endpos when trace byte 0x23 set",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810dda6",
+   "name": "Turret_TraceAimNoContents",
+   "signature": "void Turret_TraceAimNoContents(struct trace_s *trace, int index, struct gentity_s *turret, float *end)",
+   "subsystem": "game/trace",
+   "confidence": "unknown",
+   "evidence": "zeroes entity contents mask during trace, then restores it",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810de20",
+   "name": "Float_TanDeg",
+   "signature": "float Float_TanDeg(float deg)",
+   "subsystem": "math/float",
+   "confidence": "inferred",
+   "evidence": "tan of degrees via double, returned as float",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0810de4e",
+   "name": "Turret_Advance",
+   "signature": "void Turret_Advance(struct gentity_s *ent)",
+   "subsystem": "game/turret",
+   "confidence": "unknown",
+   "evidence": "randomises projectile direction by spread tangent, sets speed, time and angles",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x0864c380",
+   "name": "level_clients",
+   "type": "struct gclient_s *",
+   "confidence": "observed",
+   "evidence": "assigned to &g_087a2500 in G_InitGame; indexed with stride 0x28a4"
+  },
+  {
+   "addr": "0x0864c384",
+   "name": "level_gentities",
+   "type": "struct gentity_s *",
+   "confidence": "observed",
+   "evidence": "assigned to &g_08716400 in G_InitGame; indexed with stride 0x230"
+  },
+  {
+   "addr": "0x08716400",
+   "name": "g_gentities",
+   "type": "struct gentity_s[1024]",
+   "confidence": "observed",
+   "evidence": "static array; memset 0x8c000 in G_InitGame"
+  },
+  {
+   "addr": "0x087a2500",
+   "name": "g_gclients",
+   "type": "struct gclient_s[64]",
+   "confidence": "observed",
+   "evidence": "static array; memset 0xa2900 in G_InitGame"
+  },
+  {
+   "addr": "0x0864c564",
+   "name": "g_0864c564",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "set from maxclients dvar value; loop bound for clients"
+  },
+  {
+   "addr": "0x0864c56c",
+   "name": "g_0864c56c",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "server time (ms): set by G_RunFrame and G_InitGame, compared with nextThink"
+  },
+  {
+   "addr": "0x0864c570",
+   "name": "level_previousTime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "previous server time, set in G_RunFrame"
+  },
+  {
+   "addr": "0x0864c574",
+   "name": "level_frameTime",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "frame delta in ms, set in G_RunFrame"
+  },
+  {
+   "addr": "0x0864c568",
+   "name": "level_frameNum",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "frame counter incremented in G_RunFrame, stored per entity at +0x188"
+  },
+  {
+   "addr": "0x0864c38c",
+   "name": "level_numEntities",
+   "type": "int",
+   "confidence": "observed",
+   "evidence": "set to 0x48 in G_InitGame; loop bound over gentities"
+  },
+  {
+   "addr": "0x0864c398",
+   "name": "level_logFile",
+   "type": "int",
+   "confidence": "observed",
+   "evidence": "log file handle passed to fn_080a3562 and fn_080a0656"
+  },
+  {
+   "addr": "0x0864c39c",
+   "name": "level_initializing",
+   "type": "int",
+   "confidence": "observed",
+   "evidence": "1 during init, 0 after; gates turret precache check"
+  },
+  {
+   "addr": "0x0864c3a4",
+   "name": "level_objectives",
+   "type": "int[16*7]",
+   "confidence": "inferred",
+   "evidence": "16 turret request entries of 0x1c bytes; read by G_CopyTurretEntries"
+  },
+  {
+   "addr": "0x0864c590",
+   "name": "level_teamScoresDirty",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "sorted-list dirty flag set by G_BuildEntityOrder, cleared by G_FlushPendingTurretUpdates"
+  },
+  {
+   "addr": "0x0864c59c",
+   "name": "level_sortedClientIndices",
+   "type": "int[1024]",
+   "confidence": "observed",
+   "evidence": "qsort target in G_BuildEntityOrder"
+  },
+  {
+   "addr": "0x0864ed68",
+   "name": "g_0864ed68",
+   "type": "struct entity_pair_s[]",
+   "confidence": "inferred",
+   "evidence": "pending pair list processed by G_RunFrame"
+  },
+  {
+   "addr": "0x0864e168",
+   "name": "g_entityPairQueue",
+   "type": "struct entity_pair_s[]",
+   "confidence": "inferred",
+   "evidence": "source of Com_Memcpy into g_0864ed68 in G_RunFrame"
+  },
+  {
+   "addr": "0x08844e00",
+   "name": "g_turrets",
+   "type": "struct turret_s[32]",
+   "confidence": "observed",
+   "evidence": "stride 0x44 turret slots; G_SpawnTurret allocates from here"
+  },
+  {
+   "addr": "0x087035bc",
+   "name": "g_087035bc",
+   "type": "struct clientInfo_s[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x4b8 bank indexed by gentity.turretSlot"
+  },
+  {
+   "addr": "0x08187d00",
+   "name": "g_entityHandlerTable",
+   "type": "struct entity_handler_s[]",
+   "confidence": "inferred",
+   "evidence": "stride 0x28 table; think fn at +0, fields at +0x20/+0x24; filled at runtime (zero in .data)"
+  },
+  {
+   "addr": "0x0860b420",
+   "name": "g_gameContextPtr",
+   "type": "uint8 *",
+   "confidence": "observed",
+   "evidence": "set to &g_0864f9c0 in init and frame; cleared at end"
+  },
+  {
+   "addr": "0x0864f9c0",
+   "name": "g_levelBlock",
+   "type": "uint8[0xb3bc8]",
+   "confidence": "observed",
+   "evidence": "memset 0xb3bc8 in G_InitGame; base of level block"
+  },
+  {
+   "addr": "0x0814cfc8",
+   "name": "vec3_origin",
+   "type": "float[3]",
+   "confidence": "observed",
+   "evidence": "zero vector in .rodata (all zeros); used as zero mins/maxs"
+  },
+  {
+   "addr": "0x08187c0c",
+   "name": "g_08187c0c",
+   "type": "uint8[]",
+   "confidence": "unknown",
+   "evidence": "passed as int param9 to SV_Trace from Turret_TraceAimWithFlags"
+  },
+  {
+   "addr": "0x0864c69c",
+   "name": "level_voteCommandBuf",
+   "type": "char[1024]",
+   "confidence": "observed",
+   "evidence": "format '%s\\n' source for vote command in G_CheckVote"
+  },
+  {
+   "addr": "0x0864f988",
+   "name": "g_scrFileHandles",
+   "type": "int[1]",
+   "confidence": "observed",
+   "evidence": "-1 sentinel slots; freed in G_ShutdownGame"
+  },
+  {
+   "addr": "0x0864f98c",
+   "name": "g_0864f98c",
+   "type": "int[1]",
+   "confidence": "observed",
+   "evidence": "handle slots freed with Com_Free_A in G_ShutdownGame"
+  },
+  {
+   "addr": "0x087a2408",
+   "name": "g_087a2408",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "maxclients dvar; value.integer read in init and G_ExitLevel"
+  },
+  {
+   "addr": "0x087a246c",
+   "name": "g_087a246c",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "string dvar (log file name) read in G_InitGame"
+  },
+  {
+   "addr": "0x087a2470",
+   "name": "g_087a2470",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "bool dvar (log sync) read in G_InitGame"
+  },
+  {
+   "addr": "0x087a2480",
+   "name": "g_087a2480",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "bool dvar; when set G_RunFrame dumps entity model names and clears it via Dvar_SetBool"
+  },
+  {
+   "addr": "0x087a24d0",
+   "name": "dvar_g_oldVoting",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "bool dvar gating G_CheckVote"
+  },
+  {
+   "addr": "0x087a24d4",
+   "name": "g_087a24d4",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "float dvar used as vote ratio in G_CheckVote"
+  },
+  {
+   "addr": "0x087a24d8",
+   "name": "g_087a24d8",
+   "type": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "int dvar selecting entity for G_DumpSelectedEntity"
+  },
+  {
+   "addr": "0x0884e7bc",
+   "name": "g_0884e7bc",
+   "type": "uint8[] stride 0x4c8",
+   "confidence": "inferred",
+   "evidence": "int at +0 of each stride set to -1 in G_InitGame"
+  },
+  {
+   "addr": "0x088532ac",
+   "name": "scrStr_tag_flash",
+   "type": "uint16",
+   "confidence": "observed",
+   "evidence": "scr string handle for 'tag_flash' used by Turret_ComputeFlashFrame"
+  },
+  {
+   "addr": "0x088532b8",
+   "name": "scrStr_tag_weapon",
+   "type": "uint16",
+   "confidence": "inferred",
+   "evidence": "scr string handle for 'tag_weapon' used by Turret_PositionUser"
+  },
+  {
+   "addr": "0x08853274",
+   "name": "scr_str_trigger",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "argument to fn_0811b2de in G_RunFrame"
+  },
+  {
+   "addr": "0x08703574",
+   "name": "g_turretAnimTableHandle",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "anim table handle used by Turret_PositionUser"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "gentity_s",
+   "size": "0x230",
+   "evidence": "stride 0x230 over g_08716400; field offsets 0x000..0x228 consistent across G_RunFrame, G_SpawnTurret, Turret_*; checked with offsetof probe"
+  },
+  {
+   "name": "gclient_s",
+   "size": "0x28a4",
+   "evidence": "stride 0x28a4 over g_087a2500; origin at 0x14, turretEntries at 0x5e4, sessionTeam 0x274c, flags27bc 0x27bc"
+  },
+  {
+   "name": "turret_s",
+   "size": "0x44",
+   "evidence": "stride 0x44 at g_08844e00; arcs at 0x0c..0x18, restAngle 0x1c, timer 0x28, tags 0x40..0x43"
+  },
+  {
+   "name": "turret_user_s",
+   "size": "0x4b8",
+   "evidence": "stride 0x4b8 at g_087035bc; useFlags at 0x390, turret ptr 0x394, pose 0x4a4"
+  },
+  {
+   "name": "turret_mode_s",
+   "size": "0x28",
+   "evidence": "g_08187d00 stride 0x28; handler at +0, fields at +0x20 and +0x24"
+  },
+  {
+   "name": "weaponinfo_s",
+   "size": "partial (>= 0x5b0)",
+   "evidence": "offsets 0x078..0x5a8 used (arcs 0x528..0x534, speed 0x564, spread 0x5a8); total size unknown"
+  },
+  {
+   "name": "trajectory_s",
+   "size": "0x24",
+   "evidence": "BG_EvaluateTrajectory input at gentity +0x0c; trBase at +0x18, trDelta at +0x24"
+  },
+  {
+   "name": "turret_input_s",
+   "size": "partial (>= 0x24)",
+   "evidence": "fraction at 0, aim at 4..0x0f, flags at 0x10, entityNum at 0x1c, seatCmd at 0x1e, pendingFlag at 0x23"
+  },
+  {
+   "name": "trace_s",
+   "size": "partial (>= 0x24)",
+   "evidence": "fraction at 0, endpos at 4, flag byte at 0x23 used by Turret_TraceAimWithFlags"
+  },
+  {
+   "name": "dvar_s",
+   "size": "partial (>= 0x0c)",
+   "evidence": "value union at +0x08 used as int/bool/float/string"
+  },
+  {
+   "name": "turret_entry_s",
+   "size": "0x1c",
+   "evidence": "16 per client at 0x5e4 and in g_0864c3a4 request table"
+  },
+  {
+   "name": "entity_pair_s",
+   "size": "0x0c",
+   "evidence": "g_0864ed68 stride 12; entityA/B ushort then serials compared with gentity +0x228"
+  }
+ ],
+ "open_questions": [
+  "Call-site mismatches with merged symbols: Scr_Init and Scr_IsInitialized are called with an int argument, AnglesToAxis_ZUp is called with a float yaw, AnglesToForward_ProjectedNormalized and QuatTransform_ToMat3 receive non-pointer arguments; these callees use fn_ placeholders (fn_080844de, fn_08084678, fn_080a94f2, fn_080aaa30, fn_080ab4a0). Merge lane should reconcile signatures.",
+  "Turret_PositionUser (0x0810aa50) is partial: the fn_080c0* / fn_080c2930 / fn_080c15ba anim-tree helper contracts (argument meanings) and the g_087035bc bank layout beyond +0x4a4 are unresolved; float/long double precision follows the disassembly.",
+  "Turret_ComputeFlashFrame (0x0810a880): fn_0811e542 writes a tag orientation; the origin is read at float index 9 of a 48-byte buffer (inferred from the stack layout); confirm the callee's output size.",
+  "Turret_StartReload call site (0x0810a982 via 0x0810b7e0) passes a third zero argument that the two-parameter callee ignores; confirm whether the true callee takes a third argument.",
+  "Turret seat index comes from input flags bits 20..24 and indexes 4-element weaponinfo arrays unk3a0/unk3fc (0x3a0, 0x3fc); seats above 3 read past the array (faithful to the binary but undefined in C).",
+  "G_InitGame zeroes 0x3624 bytes starting at the global g_0864c380 (memset of the global block); this is layout dependent and must be preserved by the merge lane's global placement.",
+  "G_TeleportEntity (0x0810a708): the z lift of 1.0 is inferred from the Quake III TeleportPlayer pattern (naming reference only); the observed code adds 1.0 to client origin[2].",
+  "Turret_UpdateAimState (0x0810a982) and the trace wrappers 0x0810a5cc/0x0810a622/0x0810a672 are named unknown; their roles are fixed only by argument forwarding.",
+  "Float_Select and Float_Clamp were checked against disassembly (0x0810ceea, 0x0810ccf2); the decompiler return types were lost (float via st0).",
+  "trace_s byte 0x23 (flagAt23) and gentity +0x050 bit 0x4 test semantics are unknown.",
+  "Several gentity/client fields are named fieldNNN where no consistent role was recovered; the merge lane should cross-check them against chunks that touch the same offsets."
+ ]
+}

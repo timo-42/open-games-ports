@@ -1,0 +1,1665 @@
+{
+ "chunk": 53,
+ "model": "haiku",
+ "functions": [
+  {
+   "addr": "0x081203d4",
+   "name": "G_FireShotgunPellets",
+   "signature": "void G_FireShotgunPellets(struct gentity_s *ent, int shotA, struct shot_view_s *view, int shotB, int shotC)",
+   "subsystem": "game/weapon",
+   "confidence": "inferred",
+   "evidence": "no string evidence; loops over the weapon's pellet count with a per-pellet spread, called only for objType 3 from G_FireWeaponShot (FUN_081203d4)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120484",
+   "name": "G_FireWeaponShot",
+   "signature": "void G_FireWeaponShot(struct gentity_s *ent, int aimAngleBits, struct shot_view_s *view, struct gentity_s *ent2, int time)",
+   "subsystem": "game/weapon",
+   "confidence": "inferred",
+   "evidence": "no string evidence; objType 3 takes the pellet path, otherwise one trace-and-fire along the view with range 8192 (FUN_08120484)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120552",
+   "name": "G_LaunchWeaponMissile",
+   "signature": "struct gentity_s *G_LaunchWeaponMissile(struct gentity_s *ent, int weaponHandle, struct shot_view_s *view)",
+   "subsystem": "game/weapon",
+   "confidence": "inferred",
+   "evidence": "no string evidence; spawns a projectile from the view origin with the weapon's speed and lift, then adds the owner's velocity along the launch direction (FUN_08120552)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812061a",
+   "name": "G_ComputeFovViewOffset",
+   "signature": "void G_ComputeFovViewOffset(struct gentity_s *ent, float fov, struct shot_view_s *view)",
+   "subsystem": "game/weapon",
+   "confidence": "unknown",
+   "evidence": "no string or callee name; the tan(fov) scale and the -64 velocity push have no named counterpart in this chunk (FUN_0812061a)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120752",
+   "name": "G_ClientCanTargetEntity",
+   "signature": "int G_ClientCanTargetEntity(struct gentity_s *ent, struct gentity_s *other)",
+   "subsystem": "game/use-trigger",
+   "confidence": "unknown",
+   "evidence": "no string or callee name; a player-controlled source with a distinct, client-backed target below session type 6 and no blocking result from fn_0811c0d0 (FUN_08120752)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081207ec",
+   "name": "G_GetViewFrame",
+   "signature": "void G_GetViewFrame(struct gentity_s *ent, struct shot_view_s *view)",
+   "subsystem": "game/weapon",
+   "confidence": "inferred",
+   "evidence": "no string evidence; builds the aim frame (forward/right/up from the base and aim angles) plus the eye origin (FUN_081207ec)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120870",
+   "name": "G_FireWeaponByMode",
+   "signature": "void G_FireWeaponByMode(struct gentity_s *ent, int time)",
+   "subsystem": "game/weapon",
+   "confidence": "inferred",
+   "evidence": "format string \"Unknown weapon type %i for %s.\" at 0x0815ede0 is printed by the default branch; the three branches are the three fire routines (FUN_08120870)",
+   "status": "translated",
+   "notes": "aim angle passed to G_FireWeaponShot as raw float bits via COD2_BITS"
+  },
+  {
+   "addr": "0x081209fa",
+   "name": "G_FireWeaponAtLevelTime",
+   "signature": "void G_FireWeaponAtLevelTime(struct gentity_s *ent)",
+   "subsystem": "game/weapon",
+   "confidence": "inferred",
+   "evidence": "no string evidence; fires the weapon with the current level time (FUN_081209fa)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120a16",
+   "name": "G_FireMissileAtTarget",
+   "signature": "void G_FireMissileAtTarget(struct gentity_s *ent)",
+   "subsystem": "game/weapon",
+   "confidence": "inferred",
+   "evidence": "no string evidence; resolves the current weapon def handle and launches a missile along the aim frame (FUN_08120a16)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120a70",
+   "name": "G_UpdateWeaponTargetLock",
+   "signature": "void G_UpdateWeaponTargetLock(struct gentity_s *ent)",
+   "subsystem": "game/use-trigger",
+   "confidence": "unknown",
+   "evidence": "no string or callee name; passes three cvar values (+8 words) to a targeting routine after building the aim frame (FUN_08120a70)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120b26",
+   "name": "G_TouchTriggerEntity",
+   "signature": "int G_TouchTriggerEntity(struct gclient_s *client, int entNum)",
+   "subsystem": "game/use-trigger",
+   "confidence": "unknown",
+   "evidence": "no string or callee name; per-client trigger touch bookkeeping over two entity sets and the two use slots, returns 1 when the touch is recorded (FUN_08120b26)",
+   "status": "translated",
+   "notes": "first argument is the client block (trigger context lives at client+0x0cc..0x55c)"
+  },
+  {
+   "addr": "0x08120d74",
+   "name": "G_SetupWeaponDef",
+   "signature": "void G_SetupWeaponDef(void)",
+   "subsystem": "game/weapon",
+   "confidence": "observed",
+   "evidence": "string \"Game: G_SetupWeaponDef\" is printed by this function between two divider banners; the one-time default weapon load follows it (FUN_08120d74)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120dd0",
+   "name": "G_LoadWeaponDef",
+   "signature": "int G_LoadWeaponDef(const char *name)",
+   "subsystem": "game/weapon",
+   "confidence": "inferred",
+   "evidence": "called from G_SetupWeaponDef with \"defaultweapon_mp\"; picks one of two loaders by the g_0864c39c mode flag (FUN_08120dd0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120e0a",
+   "name": "G_SendCharIndexA",
+   "signature": "void G_SendCharIndexA(int chan, int value)",
+   "subsystem": "game/weapon",
+   "confidence": "unknown",
+   "evidence": "format \"%c %i\" with the character 'a'; the formatted text goes to the send routine on channel chan (FUN_08120e0a)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120e44",
+   "name": "G_SendCharIndexC",
+   "signature": "void G_SendCharIndexC(int chan, int value)",
+   "subsystem": "game/weapon",
+   "confidence": "unknown",
+   "evidence": "same as G_SendCharIndexA with the character 'C' (0x43) (FUN_08120e44)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120e7e",
+   "name": "Math_Lerp",
+   "signature": "long double Math_Lerp(float a, float b, float t)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "no string evidence; linear interpolation a + (b - a) * t written as b*t + (1 - t)*a in extended precision (FUN_08120e7e)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120e94",
+   "name": "Math_SinCos",
+   "signature": "void Math_SinCos(float angle, float *sinOut, float *cosOut)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "no string evidence; computes sine and cosine of one angle through double libm calls and stores them as float (FUN_08120e94)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120ec2",
+   "name": "Vec3_Copy",
+   "signature": "void Vec3_Copy(const float *src, float *dst)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "no string evidence; copies a three-float vector (FUN_08120ec2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120ef2",
+   "name": "Vec3_Subtract",
+   "signature": "void Vec3_Subtract(const float *a, const float *b, float *out)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "no string evidence; out = a - b (FUN_08120ef2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120f36",
+   "name": "Vec3_Scale",
+   "signature": "void Vec3_Scale(const float *v, float s, float *out)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "no string evidence; out = s * v (FUN_08120f36)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120f6e",
+   "name": "Vec3_MultiplyAdd",
+   "signature": "void Vec3_MultiplyAdd(const float *a, float s, const float *b, float *out)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "no string evidence; out = a + s * b (FUN_08120f6e)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120fc2",
+   "name": "Vec3_Dot",
+   "signature": "long double Vec3_Dot(const float *a, const float *b)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "no string evidence; dot product in extended precision, summed x then y then z as compiled (FUN_08120fc2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08120ff6",
+   "name": "Vec3_LengthDiscard_08120ff6",
+   "signature": "float Vec3_LengthDiscard_08120ff6(const float *v)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "computes the length of a vector and discards the result (no caller reads it in this chunk) (FUN_08120ff6) [rename botlib-sound-math: Duplicate Vec3_Length body per subsystem notes (same pattern as 0x080dc54a); suffixed for uniqueness.]",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08121034",
+   "name": "Math_Sqrt",
+   "signature": "float Math_Sqrt(float v)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "no string evidence; square root through a double libm call, rounded to float before returning (FUN_08121034)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08121054",
+   "name": "G_NotifyTriggerUse",
+   "signature": "void G_NotifyTriggerUse(struct gentity_s *ent, struct gentity_s *other)",
+   "subsystem": "game/use-trigger",
+   "confidence": "inferred",
+   "evidence": "notify strings \"touch\" (eType 3) and \"trigger\" (other types) are sent to the target; the impact table callbacks run; the client's use entity is cleared (FUN_08121054)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08121174",
+   "name": "G_UpdateUseTargetState",
+   "signature": "int G_UpdateUseTargetState(struct gentity_s *ent)",
+   "subsystem": "game/use-trigger",
+   "confidence": "unknown",
+   "evidence": "no string or callee name; chooses the client's use target from the stored use-target number and updates the use state byte (FUN_08121174)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08121264",
+   "name": "G_TryActivateUseTarget",
+   "signature": "void G_TryActivateUseTarget(struct gentity_s *ent)",
+   "subsystem": "game/use-trigger",
+   "confidence": "unknown",
+   "evidence": "no string or callee name; fires the notify when the use target is set and both timers have elapsed (FUN_08121264)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08121314",
+   "name": "G_UpdateUseState",
+   "signature": "void G_UpdateUseState(struct gentity_s *ent)",
+   "subsystem": "game/use-trigger",
+   "confidence": "unknown",
+   "evidence": "no string or callee name; drives the client use flags from the button edge bits 0x20 and 0x28 (FUN_08121314)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08121458",
+   "name": "G_CompareKeyedEntity",
+   "signature": "int G_CompareKeyedEntity(const void *a, const void *b)",
+   "subsystem": "game/use-trigger",
+   "confidence": "inferred",
+   "evidence": "used as the qsort comparator for keyed entity lists (the float key sits at +4 of each 8-byte entry) (FUN_08121458)",
+   "status": "translated",
+   "notes": "qsort comparator; result is (int) truncation of the float key difference"
+  },
+  {
+   "addr": "0x08121494",
+   "name": "G_CollectUseCandidates",
+   "signature": "int G_CollectUseCandidates(struct gentity_s *ent, struct keyed_ent_s *out)",
+   "subsystem": "game/use-trigger",
+   "confidence": "inferred",
+   "evidence": "strings \"trigger_use\"/\"trigger_use_touch\" select the two candidate classes; a box scan around the eye feeds two qsort passes keyed by view distance (FUN_08121494)",
+   "status": "translated",
+   "notes": "key arithmetic is float with double intermediates as in the pseudocode"
+  },
+  {
+   "addr": "0x08121aaa",
+   "name": "G_CheckUseCandidateEntity",
+   "signature": "int G_CheckUseCandidateEntity(struct gclient_s *client, struct gentity_s *ent)",
+   "subsystem": "game/use-trigger",
+   "confidence": "unknown",
+   "evidence": "no string or callee name; reads a 0x2c-byte entry for the candidate's weapon index and returns the target number + 4 when it is free (FUN_08121aaa)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08121b36",
+   "name": "G_SetUseTargetFromSlot",
+   "signature": "void G_SetUseTargetFromSlot(struct gentity_s *ent)",
+   "subsystem": "game/use-trigger",
+   "confidence": "unknown",
+   "evidence": "no string or callee name; when the current weapon's record has a non-empty name string, copies the weapon's handle and slot into the client (FUN_08121b36)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08121bc6",
+   "name": "G_UpdateUseTarget",
+   "signature": "void G_UpdateUseTarget(struct gentity_s *ent)",
+   "subsystem": "game/use-trigger",
+   "confidence": "inferred",
+   "evidence": "use-target selection: scans the collected candidates in order and records the first usable handle, slot and number; uses trigger_use classnames (FUN_08121bc6)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08121f4e",
+   "name": "G_TraceUseRay",
+   "signature": "struct gentity_s *G_TraceUseRay(struct trace_s *trace, const float *start, const float *end, int owner, int mask, const char *surface, const float *dir)",
+   "subsystem": "game/use-trigger",
+   "confidence": "unknown",
+   "evidence": "traces start to end with the given mask and returns the hit entity when the hit is within the ray (hit distance test uses fn_08090afa) (FUN_08121f4e)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812200a",
+   "name": "G_UpdateLookAtTrigger",
+   "signature": "void G_UpdateLookAtTrigger(struct gentity_s *ent)",
+   "subsystem": "game/use-trigger",
+   "confidence": "inferred",
+   "evidence": "the \"trigger_lookat\" classname (0x0885327c) marks look-at triggers; a 15000-unit aim ray picks the target and sets the look-at flags (FUN_0812200a)",
+   "status": "translated",
+   "notes": "trace surfaceFlags read at trace+0x10 (stack slot aliasing); hit->client dereferenced without a NULL check as in the binary"
+  },
+  {
+   "addr": "0x0812236e",
+   "name": "Math_Square",
+   "signature": "long double Math_Square(float v)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "no string evidence; squares a float in extended precision (FUN_0812236e)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812237a",
+   "name": "Vec3_Add",
+   "signature": "void Vec3_Add(const float *a, const float *b, float *out)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "no string evidence; out = a + b (FUN_0812237a)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081223be",
+   "name": "Vec3_SubtractAlt",
+   "signature": "void Vec3_SubtractAlt(const float *a, const float *b, float *out)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "identical body to Vec3_Subtract (0x08120ef2); kept as a separate symbol because the binary has two copies (FUN_081223be)",
+   "status": "translated",
+   "notes": "identical body to Vec3_Subtract (FUN_08120ef2); second copy in the binary"
+  },
+  {
+   "addr": "0x08122402",
+   "name": "Vec3_Scale_08122402",
+   "signature": "void Vec3_Scale_08122402(const float *v, float s, float *out)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body out = v*s per component stored to float; same byte family as Vec3_Scale_080ab190. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": "identical body to Vec3_Scale (FUN_08120f36)"
+  },
+  {
+   "addr": "0x0812243a",
+   "name": "Vec3_MultiplyAddAlt",
+   "signature": "void Vec3_MultiplyAddAlt(const float *a, float s, const float *b, float *out)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "identical body to Vec3_MultiplyAdd (0x08120f6e); second copy in the binary (FUN_0812243a)",
+   "status": "translated",
+   "notes": "identical body to Vec3_MultiplyAdd (FUN_08120f6e)"
+  },
+  {
+   "addr": "0x0812248e",
+   "name": "Vec3_Dot_0812248e",
+   "signature": "long double Vec3_Dot_0812248e(const float *a, const float *b)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body ((a0*b0+a1*b1)+a2*b2) in st(0); same byte family as Vec3_Dot_080ab260. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: none (call target differs); observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": "identical body to Vec3_Dot (FUN_08120fc2)"
+  },
+  {
+   "addr": "0x081224c2",
+   "name": "Vec3_LengthSquared",
+   "signature": "long double Vec3_LengthSquared(const float *v)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "no string evidence; squared length of a vector in extended precision, summed x then y then z as compiled (FUN_081224c2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081224f8",
+   "name": "G_InitScriptStrings",
+   "signature": "void G_InitScriptStrings(void)",
+   "subsystem": "game/use-trigger",
+   "confidence": "inferred",
+   "evidence": "no single string names the function; it interns the script keyword table (classnames, tags, notify names, sound priorities) into 16-bit handles (FUN_081224f8)",
+   "status": "translated",
+   "notes": "interns 90 keyword strings into 16-bit handles g_08853220..g_088532d2"
+  },
+  {
+   "addr": "0x08122b54",
+   "name": "MsgStream_Reset",
+   "signature": "void MsgStream_Reset(struct msgstream_s *s)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "zeroes every field of a message stream (byte buffer, mode flags, counters) (FUN_08122b54)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08122b98",
+   "name": "MsgStream_ResetAlt",
+   "signature": "void MsgStream_ResetAlt(struct msgstream_s *s)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "identical body to MsgStream_Reset (0x08122b54); second copy in the binary (FUN_08122b98)",
+   "status": "translated",
+   "notes": "identical body to MsgStream_Reset (FUN_08122b54)"
+  },
+  {
+   "addr": "0x08122bdc",
+   "name": "MsgStream_InitRead",
+   "signature": "void MsgStream_InitRead(struct msgstream_s *s, struct msgbuf_s *msg)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "binds a message stream to a buffer for reading; the write cursor starts at the buffer's cursize (FUN_08122bdc)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08122c24",
+   "name": "MsgStream_InitWrite",
+   "signature": "void MsgStream_InitWrite(struct msgstream_s *s, struct msgbuf_s *msg)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "binds a message stream to a buffer for writing; sets the write-mode flag byte at +5 (FUN_08122c24)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08122c6c",
+   "name": "MsgStream_ReadFxEffect",
+   "signature": "int MsgStream_ReadFxEffect(struct msgstream_s *s)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "format \"fx/%s\" at 0x0815f23c names the effect path built from the decoded name (FUN_08122c6c)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08122d02",
+   "name": "MsgStream_ReadScrString",
+   "signature": "int MsgStream_ReadScrString(struct msgstream_s *s)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "decodes a length-prefixed name (1..63 bytes) and returns its interned handle through fn_08131526 (FUN_08122d02)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08122d64",
+   "name": "MsgStream_ReadScrStringAlt",
+   "signature": "int MsgStream_ReadScrStringAlt(struct msgstream_s *s)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "same decoding as MsgStream_ReadScrString but returns the handle through fn_08131530 (FUN_08122d64)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08122dc6",
+   "name": "MsgStream_ReadValueFloat",
+   "signature": "void MsgStream_ReadValueFloat(struct msgstream_s *s, struct msg_value_s *v)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "reads one float value into a typed script value: type 0, aux 0, number as float (FUN_08122dc6)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08122df8",
+   "name": "MsgStream_ReadCompressed",
+   "signature": "void MsgStream_ReadCompressed(struct msgstream_s *s, unsigned char *out, int count)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "run-length decoder: the top two bits of each control byte select a raw run, a zero run, or a repeat-of-previous-byte run; raw bytes come from the message buffer (FUN_08122df8)",
+   "status": "translated",
+   "notes": "goto-free rewrite of the decode loop; semantics follow the pseudocode control flow"
+  },
+  {
+   "addr": "0x08122f32",
+   "name": "MsgStream_WriteStringRef",
+   "signature": "void MsgStream_WriteStringRef(struct msgstream_s *s, const char **strRef)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "writes a length byte then the string bytes; a NULL reference writes the empty string (FUN_08122f32)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08122f92",
+   "name": "MsgStream_WriteScrString",
+   "signature": "void MsgStream_WriteScrString(struct msgstream_s *s, int handle)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "writes a string selected by an interned handle (lookup table at g_08188ac0); handle 0 writes the empty string (FUN_08122f92)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123000",
+   "name": "MsgStream_WriteStringIdx",
+   "signature": "void MsgStream_WriteStringIdx(struct msgstream_s *s, int handle)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "writes a string selected by a string index through fn_080c79f0; index 0 writes the empty string (FUN_08123000)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812306c",
+   "name": "MsgStream_WriteValueInt",
+   "signature": "void MsgStream_WriteValueInt(struct msgstream_s *s, const struct msg_value_s *v)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "writes the integer number of a typed script value (its +8 word) (FUN_0812306c)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812308a",
+   "name": "MsgStream_WriteCompressed",
+   "signature": "void MsgStream_WriteCompressed(struct msgstream_s *s, const unsigned char *src, int count)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "run-length encoder, the counterpart of MsgStream_ReadCompressed: rewrites the previous control byte in place (adds 1, switches the run kind, or merges two bytes) before appending new raw bytes (FUN_0812308a)",
+   "status": "translated",
+   "notes": "goto-based state machine kept from the binary control flow"
+  },
+  {
+   "addr": "0x08123414",
+   "name": "MsgStream_TransferBytes",
+   "signature": "void MsgStream_TransferBytes(struct msgstream_s *s, unsigned char *buf, int count)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "direction dispatch: encodes when the stream is in write mode, decodes when it is in read mode (FUN_08123414)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812345a",
+   "name": "MsgStream_TransferStringRef",
+   "signature": "void MsgStream_TransferStringRef(struct msgstream_s *s, int *slot)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "direction dispatch for a string reference slot: write the slot's string, or read an effect name into it (FUN_0812345a)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123496",
+   "name": "MsgStream_TransferScrString",
+   "signature": "void MsgStream_TransferScrString(struct msgstream_s *s, int *slot)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "direction dispatch for a string-handle slot (table lookup on write, decode on read) (FUN_08123496)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081234d0",
+   "name": "MsgStream_TransferStringIdx",
+   "signature": "void MsgStream_TransferStringIdx(struct msgstream_s *s, int *slot)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "direction dispatch for a string-index slot (fn_080c79f0 on write, alternate handle decode on read) (FUN_081234d0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812350a",
+   "name": "MsgStream_TransferValue",
+   "signature": "void MsgStream_TransferValue(struct msgstream_s *s, struct msg_value_s *v)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "direction dispatch for a typed script value: write the integer number, or read a float number (FUN_0812350a)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123542",
+   "name": "MsgStream_WriteRawByte",
+   "signature": "void MsgStream_WriteRawByte(struct msgbuf_s *msg, unsigned char v)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "writes one raw byte through the message write routine (FUN_08123542)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812356a",
+   "name": "MsgStream_ReadRawByte",
+   "signature": "unsigned char MsgStream_ReadRawByte(struct msgbuf_s *msg)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "reads one raw byte through the message read routine (FUN_0812356a)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123590",
+   "name": "MsgStream_ReadDecodedByte",
+   "signature": "unsigned char MsgStream_ReadDecodedByte(struct msgstream_s *s)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "reads one byte through the run-length decoder (FUN_08123590)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081235b6",
+   "name": "MsgStream_ReadDecodedFloat",
+   "signature": "float MsgStream_ReadDecodedFloat(struct msgstream_s *s)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "reads four bytes through the run-length decoder as one float (FUN_081235b6)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x081235e2",
+   "name": "MsgStream_WriteDecodedByte",
+   "signature": "void MsgStream_WriteDecodedByte(struct msgstream_s *s, unsigned char v)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "writes one byte through the run-length encoder (FUN_081235e2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812360a",
+   "name": "MsgStream_WriteDecodedInt32",
+   "signature": "void MsgStream_WriteDecodedInt32(struct msgstream_s *s, int value)",
+   "subsystem": "common/msg-stream",
+   "confidence": "inferred",
+   "evidence": "writes a four-byte integer through the run-length encoder (FUN_0812360a)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x0812362c",
+   "name": "Curve_CreateRamp",
+   "signature": "void Curve_CreateRamp(struct curve_ref_s *out, int sampleCount, float from, float to)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "builds a two-row curve from a constant \"from\" value at key 0 to a constant \"to\" value at key 1, then sets the range to (1, 1) (FUN_0812362c)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123702",
+   "name": "Curve_CreateLinear",
+   "signature": "void Curve_CreateLinear(struct curve_ref_s *out, int sampleCount, const float *from, const float *to)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "builds a two-row curve (key 0 and key 1) from two sample arrays; writes only the curve pointer (FUN_08123702)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123794",
+   "name": "Curve_CreateMidpoint",
+   "signature": "void Curve_CreateMidpoint(struct curve_ref_s *out, int sampleCount, const float *a, const float *b, float midKey)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "builds a three-row curve: key 0 with the first array, a middle key with the first array again, and key 1 with the second array (FUN_08123794)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123854",
+   "name": "Curve_CreateWave",
+   "signature": "void Curve_CreateWave(struct curve_ref_s *out, int sampleCount, unsigned int mode, const float *a, const float *b, float ratioEdge, float cosScale)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "samples 16 keys in steps of 1/15 and blends a and b with a mode-selected weight: linear, cosine, or edge fade; mode bit 2 clamps through fn_080aaa84 (FUN_08123854)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123b5e",
+   "name": "FxCurve_Build",
+   "signature": "void FxCurve_Build(const struct fx_curve_spec_s *spec, int sampleCount, float scale, char linearOnly, struct curve_ref_s *out)",
+   "subsystem": "fx/curve",
+   "confidence": "unknown",
+   "evidence": "fx parameter-curve builder: derives per-dimension lo/hi samples and a range from the spec pairs, then calls one of the three curve builders selected by the raw flag word (FUN_08123b5e)",
+   "status": "translated",
+   "notes": "spec flags read as raw int bits (mov at +0x38); the pair loop indexes pairs[2k] for k < sampleCount as in the binary"
+  },
+  {
+   "addr": "0x08123d7e",
+   "name": "Math_Max",
+   "signature": "float Math_Max(float a, float b)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "maximum of two floats via the select helper (ties return the first argument) (FUN_08123d7e)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123da2",
+   "name": "Math_SelectNonNegative",
+   "signature": "float Math_SelectNonNegative(float diff, float ifNonNeg, float ifNeg)",
+   "subsystem": "common/math",
+   "confidence": "inferred",
+   "evidence": "returns the first candidate when the difference is non-negative, otherwise the second (FUN_08123da2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123dcc",
+   "name": "IntPair_Init",
+   "signature": "void IntPair_Init(int *p, int v)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "stores an int and clears its companion word (FUN_08123dcc)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123de4",
+   "name": "IntRef_Clear",
+   "signature": "void IntRef_Clear(int *p)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "clears one int (FUN_08123de4)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123df2",
+   "name": "Curve_TrapezoidArea",
+   "signature": "long double Curve_TrapezoidArea(float k0, float k1, float v0, float v1)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "trapezoid area between two keys: (v0 + v1) * 0.5 * (k1 - k0) (FUN_08123df2)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123e0e",
+   "name": "Curve_IntegrateToKey",
+   "signature": "float Curve_IntegrateToKey(const struct curve_table_s *curve, float key)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "integrates a curve's first value column over key from the first row up to the given key (piecewise trapezoids plus the last partial segment) (FUN_08123e0e)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123ef0",
+   "name": "Curve_InterpolateSegment",
+   "signature": "long double Curve_InterpolateSegment(const float *row, float key)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "linear interpolation of a row's value at key between its first two samples (FUN_08123ef0)",
+   "status": "translated",
+   "notes": ""
+  },
+  {
+   "addr": "0x08123f3c",
+   "name": "Curve_Create",
+   "signature": "struct curve_table_s *Curve_Create(const float *rows, int sampleCount, int rowCount)",
+   "subsystem": "fx/curve",
+   "confidence": "inferred",
+   "evidence": "allocates a curve table, copies the rows, and adds a leading row (key 0) when the first key is non-zero and a trailing row (key 1) when the last key is not 1.0; the added rows copy row 0's values, as the binary does (FUN_08123f3c)",
+   "status": "translated",
+   "notes": "the binary copies row 0 values into the added leading/trailing rows (faithful quirk); copies are raw 32-bit words"
+  },
+  {
+   "addr": "0x081240d0",
+   "name": "Int_Identity_081240d0",
+   "signature": "int Int_Identity_081240d0(int v)",
+   "subsystem": "common/math",
+   "confidence": "unknown",
+   "evidence": "naming pass 2 (descriptive name): Reconstructed body returns its int argument unchanged, 8-byte body identical to Identity_080527da. Descriptive role name; address suffix keeps it unique because the same header-inline is compiled into many translation units (subsystem md finding 10). Byte-family mates: Identity_080527da, LittleLong_0805536c, Int_Identity; observed disassembly, no string evidence.",
+   "status": "translated",
+   "notes": ""
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08716400",
+   "name": "g_gentities",
+   "type": "struct gentity_s[]",
+   "confidence": "inferred",
+   "evidence": "entity array, stride 0x230 (0x230 indexing in every entity access; classname at +0x168)"
+  },
+  {
+   "addr": "0x0864c384",
+   "name": "level_gentities",
+   "type": "struct gentity_s *",
+   "confidence": "inferred",
+   "evidence": "pointer-sized base read as a value and added to clientEntity*0x230 (FUN_08121b36)"
+  },
+  {
+   "addr": "0x0864c56c",
+   "name": "g_0864c56c",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "level time: stored as use start time and compared with client nextUseTime/useStartTime"
+  },
+  {
+   "addr": "0x08627080",
+   "name": "g_08627080",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "one-time init flag tested by G_SetupWeaponDef"
+  },
+  {
+   "addr": "0x0864c39c",
+   "name": "level_initializing",
+   "type": "int",
+   "confidence": "inferred",
+   "evidence": "mode flag selecting the weapon-def loader in G_LoadWeaponDef"
+  },
+  {
+   "addr": "0x087a2420",
+   "name": "g_087a2420",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "cvar reference; int value at +8 compared against level time deltas"
+  },
+  {
+   "addr": "0x087a2424",
+   "name": "g_087a2424",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "cvar reference; int value at +8 compared against level time deltas"
+  },
+  {
+   "addr": "0x087a24b8",
+   "name": "g_087a24b8",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "cvar reference; float value at +8 squared in the look-at test"
+  },
+  {
+   "addr": "0x087a24bc",
+   "name": "g_087a24bc",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "cvar reference; float value at +8 squared in the look-at test"
+  },
+  {
+   "addr": "0x087a24c0",
+   "name": "g_087a24c0",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "cvar reference; int value at +8 passed to fn_0811f844"
+  },
+  {
+   "addr": "0x087a24c4",
+   "name": "g_087a24c4",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "cvar reference; int value at +8 passed to fn_0811f844"
+  },
+  {
+   "addr": "0x087a24c8",
+   "name": "g_087a24c8",
+   "type": "struct dvar_s *",
+   "confidence": "inferred",
+   "evidence": "cvar reference; int value at +8 passed to fn_0811f844"
+  },
+  {
+   "addr": "0x08187d0c",
+   "name": "g_08187d0c",
+   "type": "struct entity_handler_s[]",
+   "confidence": "unknown",
+   "evidence": "impact table, stride 0x28, onTouch at +0 and onUse at +4, indexed by entity impactType"
+  },
+  {
+   "addr": "0x08188ac0",
+   "name": "g_fxSystem",
+   "type": "int",
+   "confidence": "unknown",
+   "evidence": "table pointer passed to the handle lookup in MsgStream_WriteScrString"
+  },
+  {
+   "addr": "0x0814cfc8",
+   "name": "vec3_origin",
+   "type": "unsigned char[]",
+   "confidence": "unknown",
+   "evidence": "opaque table passed twice to fn_0810a57e as the trace filter"
+  },
+  {
+   "addr": "0x08187c0c",
+   "name": "g_08187c0c",
+   "type": "const unsigned char[]",
+   "confidence": "unknown",
+   "evidence": "selector table used by G_UpdateLookAtTrigger when the weapon has no slot"
+  },
+  {
+   "addr": "0x08187c1f",
+   "name": "g_08187c1f",
+   "type": "const unsigned char[]",
+   "confidence": "unknown",
+   "evidence": "selector table used by G_UpdateLookAtTrigger when the weapon has a slot"
+  },
+  {
+   "addr": "0x081850dc",
+   "name": "g_081850dc",
+   "type": "const unsigned char[]",
+   "confidence": "observed",
+   "evidence": "0x2c-byte use table: int kind at +0, int entity number at +4 (rodata/data dump)"
+  },
+  {
+   "addr": "0x08853220",
+   "name": "scr_str_emptystring",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string '' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853222",
+   "name": "scr_str_allies",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'allies' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853224",
+   "name": "scr_str_axis",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'axis' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853226",
+   "name": "scr_str_current",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'current' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853228",
+   "name": "scrStr_damage",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'damage' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885322a",
+   "name": "scr_str_death",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'death' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885322c",
+   "name": "scrStr_dlight",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'dlight' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885322e",
+   "name": "scrStr_done",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'done' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853230",
+   "name": "scr_str_empty",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'empty' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853232",
+   "name": "scr_str_entity",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'entity' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853234",
+   "name": "scrStr_failed",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'failed' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853236",
+   "name": "scr_str_fraction",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'fraction' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853238",
+   "name": "scrStr_goal",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'goal' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885323a",
+   "name": "scrStr_grenade",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'grenade' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885323c",
+   "name": "scrStr_info_notnull",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'info_notnull' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885323e",
+   "name": "scr_str_invisible",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'invisible' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853240",
+   "name": "scrStr_key1",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'key1' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853242",
+   "name": "scrStr_key2",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'key2' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853244",
+   "name": "scrStr_killanimscript",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'killanimscript' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853246",
+   "name": "scrStr_left",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'left' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853248",
+   "name": "scrStr_movedone",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'movedone' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885324a",
+   "name": "scrStr_noclass",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'noclass' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885324c",
+   "name": "scr_str_normal",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'normal' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885324e",
+   "name": "scrStr_pistol",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'pistol' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853250",
+   "name": "scrStr_plane_waypoint",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'plane_waypoint' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853252",
+   "name": "scrStr_player",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'player' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853254",
+   "name": "scr_str_position",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'position' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853256",
+   "name": "scrStr_primary",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'primary' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853258",
+   "name": "scrStr_primaryb",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'primaryb' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885325a",
+   "name": "scrStr_prone",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'prone' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885325c",
+   "name": "scrStr_right",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'right' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885325e",
+   "name": "scrStr_rocket",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'rocket' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853260",
+   "name": "scrStr_rotatedone",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'rotatedone' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853262",
+   "name": "scrStr_script_brushmodel",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'script_brushmodel' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853264",
+   "name": "scr_str_script_model",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'script_model' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853266",
+   "name": "scr_str_script_origin",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'script_origin' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853268",
+   "name": "scr_str_spectator",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'spectator' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885326a",
+   "name": "scrStr_stand",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'stand' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885326c",
+   "name": "scr_str_surfacetype",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'surfacetype' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885326e",
+   "name": "scrStr_target_script_trigger",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'target_script_trigger' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853270",
+   "name": "scrStr_tempEntity",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tempEntity' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853272",
+   "name": "scrStr_touch",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'touch' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853274",
+   "name": "scr_str_trigger",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'trigger' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853276",
+   "name": "scr_str_trigger_use",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'trigger_use' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853278",
+   "name": "scr_str_trigger_use_touch",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'trigger_use_touch' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885327a",
+   "name": "scrStr_trigger_damage",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'trigger_damage' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885327c",
+   "name": "scrStr_trigger_lookat",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'trigger_lookat' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885327e",
+   "name": "scrStr_truck_cam",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'truck_cam' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853280",
+   "name": "scrStr_worldspawn",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'worldspawn' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853282",
+   "name": "scrStr_binocular_enter",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'binocular_enter' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853284",
+   "name": "scrStr_binocular_exit",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'binocular_exit' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853286",
+   "name": "scrStr_binocular_fire",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'binocular_fire' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853288",
+   "name": "scrStr_binocular_release",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'binocular_release' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885328a",
+   "name": "scrStr_binocular_drop",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'binocular_drop' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885328c",
+   "name": "scrStr_begin",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'begin' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885328e",
+   "name": "scr_str_intermission",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'intermission' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853290",
+   "name": "scrStr_menuresponse",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'menuresponse' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853292",
+   "name": "scr_str_playing",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'playing' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853294",
+   "name": "scr_str_none",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'none' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853296",
+   "name": "scr_str_dead",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'dead' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x08853298",
+   "name": "scr_str_auto_change",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'auto_change' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885329a",
+   "name": "scr_str_manual_change",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'manual_change' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885329c",
+   "name": "scr_str_freelook",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'freelook' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x0885329e",
+   "name": "scrStr_call_vote",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'call_vote' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532a0",
+   "name": "scrStr_vote",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'vote' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532a2",
+   "name": "scr_str_snd_enveffectsprio_level",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'snd_enveffectsprio_level' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532a4",
+   "name": "scr_str_snd_enveffectsprio_shellshock",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'snd_enveffectsprio_shellshock' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532a6",
+   "name": "scr_str_snd_channelvolprio_holdbreath",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'snd_channelvolprio_holdbreath' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532a8",
+   "name": "scr_str_snd_channelvolprio_pain",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'snd_channelvolprio_pain' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532aa",
+   "name": "scr_str_snd_channelvolprio_shellshock",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'snd_channelvolprio_shellshock' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532ac",
+   "name": "scrStr_tag_flash",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_flash' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532ae",
+   "name": "scrStr_tag_flash_11",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_flash_11' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532b0",
+   "name": "scrStr_tag_flash_2",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_flash_2' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532b2",
+   "name": "scrStr_tag_flash_22",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_flash_22' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532b4",
+   "name": "scrStr_tag_brass",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_brass' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532b6",
+   "name": "scrStr_j_head",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'j_head' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532b8",
+   "name": "scrStr_tag_weapon",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_weapon' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532ba",
+   "name": "scrStr_tag_player",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_player' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532bc",
+   "name": "scrStr_tag_camera",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_camera' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532be",
+   "name": "scrStr_tag_aim",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_aim' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532c0",
+   "name": "scrStr_tag_aim_animated",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_aim_animated' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532c2",
+   "name": "scrStr_tag_origin",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_origin' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532c4",
+   "name": "scrStr_tag_butt",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_butt' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532c6",
+   "name": "scr_str_tag_weapon_right",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'tag_weapon_right' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532c8",
+   "name": "scrStr_back_low",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'back_low' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532ca",
+   "name": "scrStr_back_mid",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'back_mid' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532cc",
+   "name": "scrStr_back_up",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'back_up' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532ce",
+   "name": "scrStr_neck",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'neck' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532d0",
+   "name": "scrStr_head",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'head' in G_InitScriptStrings"
+  },
+  {
+   "addr": "0x088532d2",
+   "name": "scrStr_pelvis",
+   "type": "unsigned short",
+   "confidence": "observed",
+   "evidence": "interned from string 'pelvis' in G_InitScriptStrings"
+  }
+ ],
+ "types_proposed": [
+  {
+   "name": "gentity_s",
+   "size": "0x230",
+   "evidence": "g_08716400 stride 0x230; fields at 0x00 number, 0x04 eType, 0x0c.. trBase 0x24, contents 0x11c, absmin 0x120, absmax 0x12c, client 0x158, classname 0x168, weaponIndex 0x1ac, ownerNum 0x1b4 read by this chunk"
+  },
+  {
+   "name": "gclient_s",
+   "size": "unresolved (>= 0x5a4)",
+   "evidence": "gentity+0x158 client pointer; fields used by this chunk: origin 0x14, velocity 0x20, buttons 0x0a0/0x27bc/0x27c0/0x27c4, use slots 0x594..0x5a0, look-at 0x282c, use times 0x2834/0x28a0, touched sets at 0x544 and 0x55c"
+  },
+  {
+   "name": "weaponDef_s",
+   "size": "unresolved (>= 0x5a0)",
+   "evidence": "returned by fn_080eb9a4(handle): name at 0, fireType 0x78, objType 0x7c, linkChildren 0x84, pelletCount 0x1dc, missileKind 0x248, rangeAtFire 0x260, nextLink 0x36c, aimBaseAngle 0x4bc, str56c/str570 0x56c/0x570; identity of the record is unresolved"
+  },
+  {
+   "name": "shot_view_s",
+   "size": "0x40",
+   "evidence": "frame passed to the fire routines: forward 0x00, right 0x0c, up 0x18, origin 0x24, weapon pointer 0x3c (stack frame 0x3c bytes plus one pointer)"
+  },
+  {
+   "name": "msgstream_s",
+   "size": "unresolved (>= 0x18)",
+   "evidence": "MsgStream codec state: msg 0x00, isReading 0x04, flag5 0x05, bytesDone 0x08, rawRemaining 0x0c, zeroRemaining 0x10, writePos 0x14"
+  },
+  {
+   "name": "msgbuf_s",
+   "size": "unresolved (>= 0x0c)",
+   "evidence": "byte buffer used by the codec: data pointer 0x00, cursize 0x08"
+  },
+  {
+   "name": "msg_value_s",
+   "size": "0x0c",
+   "evidence": "typed script value written and read by MsgStream_TransferValue: type 0x00, aux 0x04, number 0x08 (int or float)"
+  },
+  {
+   "name": "trace_s",
+   "size": "unresolved (>= 0x1e)",
+   "evidence": "trace result written by fn_0810a5cc: fraction 0x00, endpos 0x04, surfaceFlags 0x10, entityNum (ushort) 0x1c"
+  },
+  {
+   "name": "keyed_ent_s",
+   "size": "0x08",
+   "evidence": "qsort entries in G_CollectUseCandidates: entity pointer at 0, float key at 4"
+  },
+  {
+   "name": "curve_table_s",
+   "size": "unresolved",
+   "evidence": "curve table header: sampleCount 0x00, rowCount 0x04, rows from 0x08 with stride sampleCount+1 floats"
+  },
+  {
+   "name": "curve_ref_s",
+   "size": "0x0c",
+   "evidence": "curve output: table pointer 0x00 and range lo/hi at 0x04/0x08 (fn_081315a2 target)"
+  },
+  {
+   "name": "fx_curve_spec_s",
+   "size": "0x3c",
+   "evidence": "FxCurve_Build parameter block: pairs 0x00..0x2c, midPair 0x30, raw int flags 0x38"
+  },
+  {
+   "name": "dvar_s",
+   "size": "unresolved (>= 0x0c)",
+   "evidence": "cvar/dvar reference whose value word at +8 is read as int or float by different users"
+  },
+  {
+   "name": "entity_handler_s",
+   "size": "0x28",
+   "evidence": "impact table stride 0x28 in g_08187d0c: onTouch at 0x00, onUse at 0x04"
+  }
+ ],
+ "open_questions": [
+  "fn_080eb9a4(handle) returns a record used both as a weapon definition (fireType, pelletCount, launchSpeedInt) and as an entity-like object (objType, linkChildren, nextLink); its identity and full size need the owning chunk (lookup function and callers) to confirm.",
+  "MsgStream_ReadCompressed and MsgStream_WriteCompressed (FUN_08122df8 / FUN_0812308a) implement a run-length protocol with control classes 0x00/0x40/0x80/0xc0; the class semantics are read from the control flow only, and the writer rewrites the previous control byte in place. Validate against the msg writer/reader pair in the merge.",
+  "G_UpdateLookAtTrigger reads the trace surfaceFlags at trace+0x10 by stack-slot aliasing (local_3c is inside the trace written by fn_0810a5cc); confirm the trace_t layout from the trace routine chunk.",
+  "Curve_Create copies row 0 values into the synthesized leading and trailing rows (FUN_08123f3c reads param_1[k+1] for both). Confirm this is the intended behaviour and not a binary defect before relying on the extra rows.",
+  "Out-of-chunk placeholders used here: fn_0811fac8, fn_0811fe90, fn_0811fc76, fn_0811fdec, fn_0811fa70, fn_0811f844, fn_0811c0d0, fn_0811c45c, fn_0811b150, fn_0811b2de, fn_0811e5fa, fn_0810a5cc, fn_0810a57e, fn_0810c358, fn_0810e68e, fn_0810e938, fn_080a4424, fn_080a5226, fn_080f8916, fn_080f8af8, fn_080ec8cc, fn_080f2b34, fn_080ed3fc, fn_080ebd6e, fn_080dc5ce, fn_080dc5a8, fn_080eb0dc, fn_080ebbd0, fn_080ebc24, fn_080eb7fc, fn_08092396, fn_08106e92, fn_080917aa, fn_080b7fa6, fn_08091ad6, fn_080df39e, fn_0805e986, fn_08060e3a, fn_08061124, fn_08084678, fn_0812d1f4, fn_080c79f0, fn_080abf94, fn_0812c38a, fn_080b7f0a, fn_080b5bfe, fn_080b5d5e, fn_08131526, fn_08131530, fn_08131600, fn_081315a2, fn_080aaa84, fn_08090afa, fn_081101b4, fn_08107216 (all not yet merged).",
+  "Float precision: helpers that return x87 values unrounded are declared long double (Math_Lerp, Vec3_Dot, Math_Square, Vec3_LengthSquared, Curve_TrapezoidArea, Curve_InterpolateSegment); float-only returns (Math_Sqrt, Math_Max, Math_SelectNonNegative, fn_080a4424) are float. Mixed float/double expressions depend on GCC excess-precision handling.",
+  "G_FireWeaponByMode and G_FireWeaponShot pass float bits through int parameters (aim angle) exactly as the binary does; the callee fn_0811fac8 interprets the first argument per the merged prototype."
+ ]
+}

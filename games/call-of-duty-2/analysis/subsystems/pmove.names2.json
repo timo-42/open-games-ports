@@ -1,0 +1,618 @@
+{
+ "functions": [
+  {
+   "addr": "0x080f80e4",
+   "old": "Player_SetField26b8",
+   "new": "Player_SetScore",
+   "confidence": "observed",
+   "evidence": "g_playerFields entry 'score' (offset 0x26b8, setter 0x080f80e4); body stores Scr_GetInt(0) at +0x26b8 then G_CalculateRanks."
+  },
+  {
+   "addr": "0x080f814a",
+   "old": "Player_SetConfigIndex",
+   "new": "Player_SetStatusIcon",
+   "confidence": "observed",
+   "evidence": "g_playerFields entry 'statusicon' setter slot = 0x080f814a (getter 0x080f817a); body converts the script string with G_StatusIconIndex."
+  },
+  {
+   "addr": "0x080f817a",
+   "old": "Player_GetConfigName",
+   "new": "Player_GetStatusIcon",
+   "confidence": "observed",
+   "evidence": "g_playerFields entry 'statusicon' getter slot; returns configstring text for the stored icon index or empty string."
+  },
+  {
+   "addr": "0x080f8420",
+   "old": "Player_SetScaledValue",
+   "new": "Player_SetArchiveTime",
+   "confidence": "observed",
+   "evidence": "g_playerFields entry 'archivetime' (offset 0x26b4, type 1 float) setter slot; stores (int)(1000*float)."
+  },
+  {
+   "addr": "0x080f8460",
+   "old": "Player_GetScaledValue",
+   "new": "Player_GetArchiveTime",
+   "confidence": "observed",
+   "evidence": "g_playerFields entry 'archivetime' getter slot; pushes 0.001*int at +0x26b4."
+  },
+  {
+   "addr": "0x080f8482",
+   "old": "Player_SetField27a4",
+   "new": "Player_SetPsOffsetTime",
+   "confidence": "observed",
+   "evidence": "g_playerFields entry 'psoffsettime' (offset 0x27a4) setter slot; stores Scr_GetInt(0) at +0x27a4."
+  },
+  {
+   "addr": "0x080f84a4",
+   "old": "Player_GetScaledIndex",
+   "new": "Player_GetPsOffsetTime",
+   "confidence": "observed",
+   "evidence": "g_playerFields entry 'psoffsettime' getter slot 0x080f84a4. Caveat: the reconstructed body pushes the +0x26b4 value, not +0x27a4; the table assignment is the evidence for the name."
+  },
+  {
+   "addr": "0x08104ac4",
+   "old": "Client_MoveClipToReserve",
+   "new": "Client_FillClipFromAmmo",
+   "confidence": "inferred",
+   "evidence": "Body moves min(ps->ammo[ammoIdx], clipSize - ps->ammoclip[clipIdx]) from the reserve array (ps+0x144) into the clip array (ps+0x344); the current name states the opposite direction. Same contract as BG_ReloadClipFromAmmo on a gclient."
+  },
+  {
+   "addr": "0x080eb944",
+   "old": "PlayerState_SetField5d0",
+   "new": "PlayerState_SetWeapAnim",
+   "confidence": "observed",
+   "evidence": "netField table 0x08142520 names ps+0x5d0 'weapAnim' (10 bits); body toggles bit 0x200 and ORs the animation index for pm_type<6."
+  },
+  {
+   "addr": "0x080eb974",
+   "old": "PlayerState_SetField5d0IfChanged",
+   "new": "PlayerState_SetWeapAnimIfChanged",
+   "confidence": "observed",
+   "evidence": "Calls PlayerState_SetWeapAnim only when (weapAnim & ~0x200) != bits; ps+0x5d0 is 'weapAnim' in the netField table."
+  },
+  {
+   "addr": "0x080ebcdc",
+   "old": "BG_FindFirstType3Weapon",
+   "new": "BG_FindFirstBinocularsWeapon",
+   "confidence": "observed",
+   "evidence": "Scans bg_weaponDefs for weaponType==3; type name table g_081869e0 reads bullet,grenade,projectile,binoculars so 3 = binoculars. Used by BG_GetCurrentWeapon when pm_flags&0x20000."
+  },
+  {
+   "addr": "0x080ebe72",
+   "old": "BG_GetWeaponField32c",
+   "new": "BG_GetWeaponAimDownSight",
+   "confidence": "observed",
+   "evidence": "Returns weaponDef+0x32c; weapon field table g_08186a60 names that offset 'aimDownSight'. Callers: ADS sway/aim offset code and ClientThink_real."
+  },
+  {
+   "addr": "0x080ed3e2",
+   "old": "BG_GetWeaponField340",
+   "new": "BG_GetWeaponClipOnly",
+   "confidence": "observed",
+   "evidence": "Returns weaponDef+0x340; weapon field table g_08186a60 names that offset 'clipOnly'. Callers: ammo-room/total/give/reload code."
+  },
+  {
+   "addr": "0x080ecb42",
+   "old": "PM_UpdateWeaponFlag40",
+   "new": "PM_UpdateAdsFlag",
+   "confidence": "inferred",
+   "evidence": "Recomputes pm_flags 0x40 from cmd.buttons 0x1000 plus PM_WeaponStateAllowsZoom; reports to BG_UpdateConditionValue(7); PM_ResetWeaponFlag40 emits event 0x95 (ADS toggle sound per pmove.md). IW lineage: PMF_SIGHT_AIMING."
+  },
+  {
+   "addr": "0x080ecc72",
+   "old": "PM_ResetWeaponFlag40",
+   "new": "PM_ClearAdsFlag",
+   "confidence": "inferred",
+   "evidence": "Clears pm_flags 0x40 (the ADS flag set by PM_UpdateWeaponFlag40) and adds event 0x95."
+  },
+  {
+   "addr": "0x080e7f68",
+   "old": "PM_UpdateFlag100",
+   "new": "PM_UpdateAdsSlowMoveFlag",
+   "confidence": "inferred",
+   "evidence": "Sets pm_flags 0x100 while button 0x1000 held, pm_type<6, not prone, ADS flag 0x40 set and weaponstate not in 5..9; PM_CmdScale applies x0.4 for 0x100 (pmove.md 2.2)."
+  },
+  {
+   "addr": "0x080ec9ea",
+   "old": "PM_WeaponStateAllowsZoom",
+   "new": "PM_WeaponStateAllowsAds",
+   "confidence": "inferred",
+   "evidence": "Returns 0 for weapons whose aimDownSight (def+0x32c) is 0 and for several weaponstates; sole caller PM_UpdateWeaponFlag40 gates the ADS flag on it."
+  },
+  {
+   "addr": "0x080ecb0e",
+   "old": "PM_WeaponStateIs13or14",
+   "new": "PM_WeaponStateIsBinocularsRaiseOrHold",
+   "confidence": "inferred",
+   "evidence": "True for weaponstate 0x13/0x14 (decimal 19/20), the states entered by PM_Weapon_EnterState19 (raise binoculars, sets pm_flags 0x20000) and 20; the old name reads the hex values as if decimal."
+  },
+  {
+   "addr": "0x080ec9c2",
+   "old": "Weapon_StateIs13or14",
+   "new": "Weapon_StateIsBinocularsRaiseOrHold",
+   "confidence": "inferred",
+   "evidence": "Same predicate as PM_WeaponStateIsBinocularsRaiseOrHold taking a raw state; called from PM_WeaponStateAllowsZoom only."
+  },
+  {
+   "addr": "0x080eff82",
+   "old": "PM_Weapon_SetFlag20000",
+   "new": "PM_Weapon_SetBinocularsActive",
+   "confidence": "inferred",
+   "evidence": "Sets pm_flags 0x20000 and adds event 0xa8; BG_GetCurrentWeapon returns the first binoculars weapon when 0x20000 is set. Sole caller is the binoculars raise state."
+  },
+  {
+   "addr": "0x080effae",
+   "old": "PM_Weapon_ClearFlag20000",
+   "new": "PM_Weapon_ClearBinocularsActive",
+   "confidence": "inferred",
+   "evidence": "Clears pm_flags 0x20000 (binoculars-active flag); callers PM_Weapon_ResetAdsState and the binoculars restore state."
+  },
+  {
+   "addr": "0x080f0006",
+   "old": "PM_Weapon_EnterState17",
+   "new": "PM_Weapon_BinocularsEnterBegin",
+   "confidence": "inferred",
+   "evidence": "Enters weaponstate 17 with delay adsExitDelay+adsTransOutTime; called from PM_Weapon_HandleButtonEdges; state 17 leads to 18 (quick drop of the held weapon) then 19 (binoculars raise). States 17-22 use BG_FindFirstType3Weapon (weaponType 3 = 'binoculars')."
+  },
+  {
+   "addr": "0x080f005c",
+   "old": "PM_Weapon_EnterState18",
+   "new": "PM_Weapon_BinocularsLowerWeapon",
+   "confidence": "inferred",
+   "evidence": "Case 17 of PM_Weapon_Frame; enters state 18 with weaponTime=quickDropTime and weapAnim 0x11; also called from HandleButtonEdges."
+  },
+  {
+   "addr": "0x080f00b2",
+   "old": "PM_Weapon_EnterState19",
+   "new": "PM_Weapon_BinocularsRaise",
+   "confidence": "inferred",
+   "evidence": "Enters state 19 using the first binoculars weapon def, weaponTime=adsTransInTime, sets 0x20000 via PM_Weapon_SetFlag20000."
+  },
+  {
+   "addr": "0x080f0114",
+   "old": "PM_Weapon_EnterState20",
+   "new": "PM_Weapon_BinocularsHold",
+   "confidence": "inferred",
+   "evidence": "Enters state 20 with no timers; state 20 has an empty case in PM_Weapon_Frame (held until exit)."
+  },
+  {
+   "addr": "0x080f013a",
+   "old": "PM_Weapon_EnterState21",
+   "new": "PM_Weapon_BinocularsExitBegin",
+   "confidence": "inferred",
+   "evidence": "Enters state 21 with timer adsExitDelay+adsTransOutTime of the binoculars def and event 0xac; called from PM_Weapon_HandleButtonEdges; state 21 leads to 22."
+  },
+  {
+   "addr": "0x080f01ac",
+   "old": "PM_Weapon_EnterState22",
+   "new": "PM_Weapon_BinocularsRestoreWeapon",
+   "confidence": "inferred",
+   "evidence": "Enters state 22, clears 0x20000, loads quickRaiseTime (weapAnim 0x12) or a one-tick delay when cmd.weapon==0; state 22 then ForceReady."
+  },
+  {
+   "addr": "0x080ef9b6",
+   "old": "PM_Weapon_EnterState12",
+   "new": "PM_Weapon_BeginOffhandLower",
+   "confidence": "inferred",
+   "evidence": "Enters weaponstate 12 with weaponTime=quickDropTime (anim 0x11), clears pm_flags 0x10; sole caller PM_Weapon_HandleOffhandButtons; case 12 of PM_Weapon_Frame advances to PM_Weapon_EnterOffhandState13."
+  },
+  {
+   "addr": "0x080efc3e",
+   "old": "PM_Weapon_EnterState16",
+   "new": "PM_Weapon_BeginOffhandRaise",
+   "confidence": "inferred",
+   "evidence": "Case 15 of PM_Weapon_Frame; enters state 16 with weaponTime=quickRaiseTime (anim 0x12); state 16 then PM_Weapon_ForceReady. Closes the offhand 12..16 sequence."
+  },
+  {
+   "addr": "0x080ef6a4",
+   "old": "PM_Weapon_EnterState11",
+   "new": "PM_Weapon_BeginMeleeStrike",
+   "confidence": "inferred",
+   "evidence": "Enters weaponstate 11 with floor weaponTime=meleeTime-meleeDelay and event 0xa4; reached from state 10 (case 10 of PM_Weapon_Frame) or directly when meleeDelay==0. weapon-def field names read from the weapon field table g_08186a60 (observed)."
+  },
+  {
+   "addr": "0x080ef74e",
+   "old": "PM_Weapon_TryStartAltFire",
+   "new": "PM_Weapon_TryStartMelee",
+   "confidence": "inferred",
+   "evidence": "Requires meleeDamage!=0 and cmd.buttons&4; emits event 0xa3, sets weapAnim 8 and enters state 10 (meleeTime/meleeDelay) or 11. weapon-def field names read from the weapon field table g_08186a60 (observed)."
+  },
+  {
+   "addr": "0x080ed68c",
+   "old": "PM_Weapon_TryStartFire",
+   "new": "PM_Weapon_TryStartRechamber",
+   "confidence": "inferred",
+   "evidence": "Bolt-action path: requires boltAction!=0 and the weaponrechamber bit for the weapon; sets weaponstate 4 with weaponTime=rechamberTime, weaponDelay=rechamberBoltTime, event 0xa1 (0xa2 on release). weapon-def field names read from the weapon field table g_08186a60 (observed)."
+  },
+  {
+   "addr": "0x080ee9ee",
+   "old": "PM_Weapon_UpdateAttackMeter",
+   "new": "PM_Weapon_UpdateAimSpread",
+   "confidence": "observed",
+   "evidence": "Writes ps->aimSpreadScale (netField 'aimSpreadScale' at 0x5d4) from weapon fields hipSpreadDecayRate/TurnAdd/MoveAdd/DuckedDecay/ProneDecay and dvar bg_aimSpreadMoveSpeedThreshold."
+  },
+  {
+   "addr": "0x080ef50a",
+   "old": "PM_Weapon_AdvanceAttackMeter",
+   "new": "PM_Weapon_AddFireAimSpread",
+   "confidence": "observed",
+   "evidence": "Adds weapon field hipSpreadFireAdd*255 to ps->aimSpreadScale when not fully ADS (fWeaponPosFrac!=1), clamped to 255; sole caller PM_Weapon_FireShot."
+  },
+  {
+   "addr": "0x080ee95e",
+   "old": "PM_Weapon_NotifyEmptyMagazine",
+   "new": "PM_Weapon_TakeEmptyClipOnlyWeapon",
+   "confidence": "inferred",
+   "evidence": "If def.clipOnly!=0 and both ammoclip and ammo for the weapon are 0, calls BG_TakeWeapon and adds event 0x92 (empty); sole caller PM_Weapon_FireShot."
+  },
+  {
+   "addr": "0x080ecf6c",
+   "old": "PM_SetFlag4000",
+   "new": "PM_SetHoldingBreathFlag",
+   "confidence": "observed",
+   "evidence": "Sets pm_flags 0x4000 only from PM_UpdateTimer5b8 when button 0x8000 is held and holdBreathTimer==0; dvars player_breath_hold_time/gasp_time govern it."
+  },
+  {
+   "addr": "0x080ecf84",
+   "old": "PM_ClearFlag4000",
+   "new": "PM_ClearHoldingBreathFlag",
+   "confidence": "observed",
+   "evidence": "Clears pm_flags 0x4000, the flag set by PM_SetFlag4000; called by the hold-breath updater and the fire-delay path."
+  },
+  {
+   "addr": "0x080ed084",
+   "old": "PM_UpdateTimer5b8",
+   "new": "PM_UpdateHoldBreath",
+   "confidence": "observed",
+   "evidence": "Maintains ps->holdBreathTimer (0x5b8) and holdBreathScale (0x5b4) (netField names) using dvars player_breath_hold_time, gasp_time, gasp_scale, hold_lerp, gasp_lerp."
+  },
+  {
+   "addr": "0x080ecf9c",
+   "old": "PM_AdvanceTimer5b8",
+   "new": "PM_ApplyBreathFireDelay",
+   "confidence": "observed",
+   "evidence": "When fully ADS with a scope-overlay weapon, adds dvar player_breath_fire_delay*1000 to holdBreathTimer (cap hold_time*1000) and clears the holding-breath flag; sole caller PM_Weapon_FireShot."
+  },
+  {
+   "addr": "0x080f095a",
+   "old": "PM_Weapon_ComputeSwayOffset",
+   "new": "BG_WeaponRandomFireKick",
+   "confidence": "inferred",
+   "evidence": "Random view kick (adsViewKick*/hipViewKick* pitch/yaw ranges) and gun kick (adsGunKick*/hipGunKick*) from the weapon def, scaled by reduced-kick percent while weaponRestrictKickTime>0; only caller is G_HandleClientEvent. weapon-def field names read from the weapon field table g_08186a60 (observed)."
+  },
+  {
+   "addr": "0x080f0bde",
+   "old": "PM_Weapon_SwayPhase",
+   "new": "BG_BobCyclePhase",
+   "confidence": "inferred",
+   "evidence": "Returns 2*pi*(byte)bobCycle/255 + 2*pi: the bob phase from ps->bobCycle (netField 'bobCycle', ps+8); consumed with the sine sway helpers by G_GetPlayerViewOrigin."
+  },
+  {
+   "addr": "0x080f0c3a",
+   "old": "PM_Weapon_SineSwayPair",
+   "new": "BG_BobSinePair",
+   "confidence": "inferred",
+   "evidence": "(sin(2p)+0.2*sin(4p+pi/2))*0.75*amp where amp is scaled by dvar bg_bobAmplitudeStanding/Ducked/Prone chosen from viewHeightTarget 0x3c/0x28/0x0b and clamped by limit."
+  },
+  {
+   "addr": "0x080f0cfa",
+   "old": "PM_Weapon_SineSway",
+   "new": "BG_BobSine",
+   "confidence": "inferred",
+   "evidence": "sin(phase)*amp with amp scaled by dvar bg_bobAmplitude{Standing,Ducked,Prone} by viewHeightTarget and clamped by limit."
+  },
+  {
+   "addr": "0x080f0d74",
+   "old": "PM_Weapon_SpringView",
+   "new": "WeaponView_UpdateMoveRotation",
+   "confidence": "inferred",
+   "evidence": "Eases view->offset[] toward standRotP/duckedRotP/proneRotP scaled by speed between *RotMinSpeed and ps->speed, at posRotRate/posProneRotRate (weapon field names observed in g_08186a60); only caller PM_Weapon_ComputeAimOffset."
+  },
+  {
+   "addr": "0x080f1140",
+   "old": "PM_Weapon_ComputeAimOffset",
+   "new": "WeaponView_ComputeAdsAimOffset",
+   "confidence": "inferred",
+   "evidence": "Adds fWeaponPosFrac*adsAimPitch to out[0] when aimDownSight!=0 then runs the move-rotation spring; sole caller WeaponView_ComputeOffset."
+  },
+  {
+   "addr": "0x080f11b0",
+   "old": "PM_Weapon_ComputeSwayVector",
+   "new": "WeaponView_ComputeIdleSway",
+   "confidence": "inferred",
+   "evidence": "Blends hipIdleAmount/adsIdleAmount and hipIdleSpeed/adsIdleSpeed by fWeaponPosFrac, scales by idleCrouchFactor/idleProneFactor, adds three sines (phase*0.0005/0.0007/0.001) to out[]; sole caller WeaponView_ComputeOffset."
+  }
+ ],
+ "globals": [
+  {
+   "addr": "0x08626fb0",
+   "old": "g_08626fb0",
+   "new": "g_mantleAnimTree",
+   "type_hint": "unsigned int",
+   "confidence": "observed",
+   "evidence": "Assigned from XAnim_AllocNodeTable(\"PLAYER_MANTLE\",0xb,...) in Mantle_ValidateAnims; read by mantle duration/position sampling; reset by Mantle_ResetTree."
+  },
+  {
+   "addr": "0x08184d00",
+   "old": "g_08184d00",
+   "new": "g_mantleStages",
+   "type_hint": "struct MantleStage[7]",
+   "confidence": "observed",
+   "evidence": "7 rows {upAnim,overAnim,zHeight} = {1,8,57}..{7,10,21} read from .data, indexed by mantle transIndex."
+  },
+  {
+   "addr": "0x08184d60",
+   "old": "g_08184d60",
+   "new": "g_mantleAnimNames",
+   "type_hint": "const char *const[11]",
+   "confidence": "observed",
+   "evidence": "Pointer table to the 11 clip names mp_mantle_root, mp_mantle_up_57..21, mp_mantle_over_high/mid, player_mantle_over_low used by Mantle_ValidateAnims."
+  },
+  {
+   "addr": "0x081869c0",
+   "old": "g_081869c0",
+   "new": "g_pmTraceDispatch",
+   "type_hint": "cod2_pm_dispatch_s[2]",
+   "confidence": "observed",
+   "evidence": "Two 12-byte rows {trace,aux,notify} selected by pm->traceMode in PM_TraceRaw and by notifyRow in BG_PlayerStateToEntityState (row 1 notify = G_HandleClientEvent)."
+  },
+  {
+   "addr": "0x081551e0",
+   "old": "g_081551e0",
+   "new": "g_pmCorrectAllSolidOffsets",
+   "type_hint": "float[26][3]",
+   "confidence": "observed",
+   "evidence": "26 probe offsets iterated by PM_CorrectAllSolid (Q3 PM_CorrectAllSolid jitter table counterpart); bytes read from the ELF image."
+  },
+  {
+   "addr": "0x08186780",
+   "old": "g_08186780",
+   "new": "g_stanceHeightCurveStandToCrouch",
+   "type_hint": "cod2_pm_curve_key_s[]",
+   "confidence": "observed",
+   "evidence": "Rows {percent,value} 0:60,1:59.5,4:58.5,30:56,80:44,90:41.5,95:40.5,100:40 read from .data; PM_UpdateStanceHeight selects it for viewHeightLerpTarget 0x28 when viewHeightLerpDown!=0."
+  },
+  {
+   "addr": "0x08186800",
+   "old": "g_08186800",
+   "new": "g_stanceHeightCurveCrouchToStand",
+   "type_hint": "cod2_pm_curve_key_s[]",
+   "confidence": "observed",
+   "evidence": "Rows 0:40,5:40.5,10:41.5,20:44,70:56,96:58.5,99:59.5,100:60; used when the lerp target is not 0x0b/0x28 (standing)."
+  },
+  {
+   "addr": "0x08186880",
+   "old": "g_08186880",
+   "new": "g_stanceHeightCurveToProne",
+   "type_hint": "cod2_pm_curve_key_s[]",
+   "confidence": "observed",
+   "evidence": "Rows 0:40,11:38,22:33,34:25,45:16,50:15,55:16,70:18,90:17,100:11; used when viewHeightLerpTarget==0x0b (prone)."
+  },
+  {
+   "addr": "0x08186960",
+   "old": "g_08186960",
+   "new": "g_stanceHeightCurveProneToCrouch",
+   "type_hint": "cod2_pm_curve_key_s[]",
+   "confidence": "observed",
+   "evidence": "Rows 0:11,5:10,30:21,50:25,67:31,83:34,100:40; used for target 0x28 when viewHeightLerpDown==0 (rising from prone)."
+  },
+  {
+   "addr": "0x0815486c",
+   "old": "g_0815486c",
+   "new": "g_pmLocalOnlyEventIds",
+   "type_hint": "int32[]",
+   "confidence": "observed",
+   "evidence": "-1 terminated id list {140,141,142,143,185,186} (0x8c..0x8f,0xb9,0xba); BG_PlayerStateToEntityState does not forward these events to entityState.events (they only reach the notify hook)."
+  },
+  {
+   "addr": "0x087a2410",
+   "old": "g_087a2410",
+   "new": "dvar_g_speed",
+   "type_hint": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Registered as dvar 'g_speed' in G_RegisterDvars (existing evidence); feeds ps->speed in the client think path."
+  },
+  {
+   "addr": "0x087a2414",
+   "old": "g_087a2414",
+   "new": "dvar_g_gravity",
+   "type_hint": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar_RegisterFloat(\"g_gravity\",800,...) in chunk_048; chunk_046 copies its value into client->ps.gravity."
+  },
+  {
+   "addr": "0x087a2440",
+   "old": "g_087a2440",
+   "new": "dvar_g_synchronousClients",
+   "type_hint": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar_RegisterBool(\"g_synchronousClients\") in chunk_048; chunk_046 uses it to defer ClientThink_real to the frame loop."
+  },
+  {
+   "addr": "0x087a2444",
+   "old": "g_087a2444",
+   "new": "dvar_g_playerCollisionEjectSpeed",
+   "type_hint": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar_RegisterInt(\"g_playerCollisionEjectSpeed\",25,0,32000); used as eject speed in the player-player collision code."
+  },
+  {
+   "addr": "0x087a2458",
+   "old": "g_087a2458",
+   "new": "dvar_g_mantleBlockTimeBuffer",
+   "type_hint": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar_RegisterInt(\"g_mantleBlockTimeBuffer\",500,...); added to nextthink in G_SpawnMantleBlocker."
+  },
+  {
+   "addr": "0x087a248c",
+   "old": "g_087a248c",
+   "new": "dvar_g_smoothClients",
+   "type_hint": "struct dvar_s *",
+   "confidence": "observed",
+   "evidence": "Dvar_RegisterBool(\"g_smoothClients\",1); selects BG_PlayerStateToEntityState vs G_PlayerStateToEntityState in ClientThink_real."
+  }
+ ],
+ "left_unknown": [
+  {
+   "addr": "0x080d6c32",
+   "name": "Noop_080d6c32",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6c38",
+   "name": "Noop_080d6c38",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6c3e",
+   "name": "ReturnZero_080d6c3e",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6c48",
+   "name": "Noop_080d6c48",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6c4e",
+   "name": "ReturnZero_080d6c4e",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6c58",
+   "name": "Noop_080d6c58",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6c5e",
+   "name": "Noop_080d6c5e",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6c64",
+   "name": "Noop_080d6c64",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6c6a",
+   "name": "Noop_080d6c6a",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6c70",
+   "name": "Noop_080d6c70",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6c76",
+   "name": "Noop_080d6c76",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6ca6",
+   "name": "Noop_080d6ca6",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6cb2",
+   "name": "Noop_080d6cb2",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6cb8",
+   "name": "Noop_080d6cb8",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6cbe",
+   "name": "ReturnZero_080d6cbe",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6cc8",
+   "name": "Noop_080d6cc8",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6cce",
+   "name": "Noop_080d6cce",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6cd4",
+   "name": "ReturnZero_080d6cd4",
+   "why": "Empty/return-0 stub with no direct call sites and no data pointers found in the ELF image; original role not evidenced (likely stripped client animscript hooks)."
+  },
+  {
+   "addr": "0x080d6cac",
+   "name": "Noop_080d6cac",
+   "why": "Empty stub whose only callers are Com_ShutdownSubsystems and Com_Restart_Subsystems; plausibly a stripped client shutdown hook but no string or lineage evidence."
+  },
+  {
+   "addr": "0x080d9c02",
+   "name": "BG_AnimFlagsTestA",
+   "why": "Tests animation moveTypeBits against masks 0xc4/0x180; only callers are two sites in BG_SetNewAnimation; mask bit meanings not decoded."
+  },
+  {
+   "addr": "0x080d9c58",
+   "name": "BG_AnimFlagsTestB",
+   "why": "Tests animation moveTypeBits against mask 0x308; same single caller BG_SetNewAnimation; bit meanings not decoded."
+  },
+  {
+   "addr": "0x080ebfb6",
+   "name": "BG_WeaponFlagA",
+   "why": "True when weaponClass!=9 and offhandClass==0; callers BG_CanItemBeGrabbed, Player_GiveWeapon, Item_PickupWeapon, but the weaponClass enum names were not decoded."
+  },
+  {
+   "addr": "0x080ed2de",
+   "name": "PM_WeaponStateHandler",
+   "why": "Returns 1 for weaponstate 0-2,4-9, 0 for 3,11,12-16, forces ready otherwise; sole caller is the prone-weapon gate in PM_SingleStep; role clear but no clean name."
+  },
+  {
+   "addr": "0x080e7f44",
+   "name": "PM_Flags_SetBit11IfBit0",
+   "why": "Sets pm_flags 0x800 when 0x1 (prone) is set; meaning of 0x800 not established beyond its use in PM_SingleStep move zeroing."
+  },
+  {
+   "addr": "0x080dc9ee",
+   "name": "Player_JumpSpeedFactorB",
+   "why": "Duplicate of Player_JumpSpeedFactor called once from Player_BeginJump; no distinguishing role."
+  },
+  {
+   "addr": "0x080e302a",
+   "name": "PM_GroundSoundIndexPlus18",
+   "why": "Name already states the surfaceType+base event id; semantics of the event ids are unknown, so no semantic rename."
+  },
+  {
+   "addr": "0x080e305c",
+   "name": "PM_GroundSoundIndexPlus1",
+   "why": "Name already states the surfaceType+base event id; semantics of the event ids are unknown, so no semantic rename."
+  },
+  {
+   "addr": "0x080e308c",
+   "name": "PM_GroundSoundIndexPlus5D",
+   "why": "Name already states the surfaceType+base event id; semantics of the event ids are unknown, so no semantic rename."
+  },
+  {
+   "addr": "0x080e30a8",
+   "name": "PM_GroundSoundIndexPlus74",
+   "why": "Name already states the surfaceType+base event id; semantics of the event ids are unknown, so no semantic rename."
+  },
+  {
+   "addr": "0x080e5672",
+   "name": "PM_YawQuadrantAnim",
+   "why": "Maps a yaw delta to anim indices 0x1f/0x21/0x20/0x22 by quadrant; sole caller PM_Footsteps; names of those animations not decoded."
+  },
+  {
+   "addr": "0x080ef376",
+   "name": "PM_Weapon_AmmoPerShot",
+   "why": "Constant 1 ammo-per-shot stub ignoring its argument; current name already precise."
+  },
+  {
+   "addr": "0x0860b420",
+   "name": "g_0860b420",
+   "why": "Pointer set to &g_0864f9c0 (level block base); pmove.md calls it animScriptData, chunks view it as gameLocals; role unresolved."
+  }
+ ]
+}
